@@ -25,6 +25,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             <div className="flex w-2/3 gap-2 flex-col">
               <div className="flex flex-row w-full">
                 <img
+                  style={{ width: '100%' }}
                   src={
                     props.images && typeof props.images[0]?.image === 'object'
                       ? getMediaUrl(props.images[0]?.image.url).toString()
@@ -36,6 +37,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
               <div className="flex flex-row gap-2 w-full">
                 <div className="flex w-2/3">
                   <img
+                    style={{ width: '100%' }}
                     src={
                       props.images && typeof props.images[1]?.image === 'object'
                         ? getMediaUrl(props.images[1]?.image.url).toString()
@@ -46,6 +48,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
                 </div>
                 <div className="flex w-1/3">
                   <img
+                    style={{ width: '100%' }}
                     src={
                       props.images && typeof props.images[2]?.image === 'object'
                         ? getMediaUrl(props.images[2]?.image.url).toString()
@@ -60,6 +63,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
               <div className="flex flex-col gap-2 h-full">
                 <div className="flex h-1/3">
                   <img
+                    style={{ width: '100%' }}
                     src={
                       props.images && typeof props.images[3]?.image === 'object'
                         ? getMediaUrl(props.images[3]?.image.url).toString()
@@ -70,6 +74,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
                 </div>
                 <div className="flex h-2/3">
                   <img
+                    style={{ width: '100%' }}
                     src={
                       props.images && typeof props.images[4]?.image === 'object'
                         ? getMediaUrl(props.images[4]?.image.url).toString()

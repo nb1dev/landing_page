@@ -40,7 +40,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="pr-10 pl-10 pt-10" key={index}>
+                <div className="pr-10 pl-10 pt-5 pb-5" key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

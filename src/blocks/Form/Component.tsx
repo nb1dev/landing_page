@@ -188,6 +188,7 @@ export const FormBlock: React.FC<
       </div>
       <div className="flex w-1/2">
         <img
+          style={{ width: '100%' }}
           src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
           alt="icon"
         />

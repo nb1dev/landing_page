@@ -18,7 +18,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         borderRadius: '20px',
-        background: `url(${getMediaUrl(typeof props?.backgroundImage === 'object' ? props.backgroundImage.url : '')})`,
+        backgroundImage: `url(${getMediaUrl(typeof props?.backgroundImage === 'object' ? props.backgroundImage.url : '')})`,
       }}
     >
       <div className="p-16">
