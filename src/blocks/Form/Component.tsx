@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
@@ -11,8 +10,6 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
-import { Media } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 export type FormBlockType = {
   blockName?: string
@@ -20,9 +17,6 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: DefaultTypedEditorState
-  heading: DefaultTypedEditorState
-  description: string
-  icon: number | Media
 }
 
 export const FormBlock: React.FC<
@@ -120,78 +114,49 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div
-      className="flex flex-row"
-      style={{
-        width: '100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        borderRadius: '20px',
-        background: 'white',
-      }}
-    >
-      <div className="flex w-1/2 p-16">
-        <div>
-          <div style={{ fontSize: '3rem', width: '75%', marginBottom: '24px' }}>
-            <RichText data={props.heading} />
-          </div>
-          <div style={{ fontSize: '1.2rem', marginBottom: '32px' }}>{props.description}</div>
-          <div>
-            <FormProvider {...formMethods}>
-              {!isLoading && hasSubmitted && confirmationType === 'message' && (
-                <RichText data={confirmationMessage} />
-              )}
-              {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-              {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-              {!hasSubmitted && (
-                <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-                  <div className="mb-4 last:mb-0">
-                    {formFromProps &&
-                      formFromProps.fields &&
-                      formFromProps.fields?.map((field, index) => {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        const Field: React.FC<any> =
-                          fields?.[field.blockType as keyof typeof fields]
-                        if (Field) {
-                          return (
-                            <div className="mb-6 last:mb-0" key={index}>
-                              <Field
-                                form={formFromProps}
-                                {...field}
-                                {...formMethods}
-                                control={control}
-                                errors={errors}
-                                register={register}
-                              />
-                            </div>
-                          )
-                        }
-                        return null
-                      })}
-                  </div>
+    <div className="container lg:max-w-[48rem]">
+      {enableIntro && introContent && !hasSubmitted && (
+        <RichText className="mb-8 lg:mb-12" data={introContent} />
+      )}
+      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
+        <FormProvider {...formMethods}>
+          {!isLoading && hasSubmitted && confirmationType === 'message' && (
+            <RichText data={confirmationMessage} />
+          )}
+          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {!hasSubmitted && (
+            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-4 last:mb-0">
+                {formFromProps &&
+                  formFromProps.fields &&
+                  formFromProps.fields?.map((field, index) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
+                    if (Field) {
+                      return (
+                        <div className="mb-6 last:mb-0" key={index}>
+                          <Field
+                            form={formFromProps}
+                            {...field}
+                            {...formMethods}
+                            control={control}
+                            errors={errors}
+                            register={register}
+                          />
+                        </div>
+                      )
+                    }
+                    return null
+                  })}
+              </div>
 
-                  <Button
-                    form={formID}
-                    type="submit"
-                    variant="default"
-                    style={{ borderRadius: '20px', marginTop: '24px' }}
-                    className="w-full"
-                  >
-                    {submitButtonLabel}
-                  </Button>
-                </form>
-              )}
-            </FormProvider>
-          </div>
-        </div>
-      </div>
-      <div className="flex w-1/2">
-        <img
-          style={{ width: '100%' }}
-          src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
-          alt="icon"
-        />
+              <Button form={formID} type="submit" variant="default">
+                {submitButtonLabel}
+              </Button>
+            </form>
+          )}
+        </FormProvider>
       </div>
     </div>
   )

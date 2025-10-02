@@ -200,6 +200,7 @@ export interface Page {
     | MissionBannerBlock
     | WelcomeBannerBlock
     | DetailsBannerBlock
+    | FormCustomBlock
   )[];
   meta?: {
     title?: string | null;
@@ -548,23 +549,6 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  heading: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  description: string;
-  icon: number | Media;
   form: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -877,6 +861,49 @@ export interface DetailsBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormCustomBlock".
+ */
+export interface FormCustomBlock {
+  heading: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  description: string;
+  icon: number | Media;
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formCustomBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1169,6 +1196,7 @@ export interface PagesSelect<T extends boolean = true> {
         'mission-banner'?: T | MissionBannerBlockSelect<T>;
         'welcome-banner'?: T | WelcomeBannerBlockSelect<T>;
         'details-banner'?: T | DetailsBannerBlockSelect<T>;
+        formCustomBlock?: T | FormCustomBlockSelect<T>;
       };
   meta?:
     | T
@@ -1262,9 +1290,6 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  icon?: T;
   form?: T;
   enableIntro?: T;
   introContent?: T;
@@ -1328,6 +1353,20 @@ export interface DetailsBannerBlockSelect<T extends boolean = true> {
         description?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormCustomBlock_select".
+ */
+export interface FormCustomBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  icon?: T;
+  form?: T;
+  enableIntro?: T;
+  introContent?: T;
   id?: T;
   blockName?: T;
 }

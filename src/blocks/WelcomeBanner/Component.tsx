@@ -14,6 +14,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       style={{
         height: '680px',
         width: '100%',
+        backgroundColor: 'white',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',

@@ -10,6 +10,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { DetailsBannerBlock } from './DetailsBanner/Component'
 import { WelcomeBannerBlock } from './WelcomeBanner/Component'
 import { MissionBannerBlock } from './MissionBanner/Component'
+import { FormCustomBlock } from './Form/FormCostom/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -20,6 +21,7 @@ const blockComponents = {
   'details-banner': DetailsBannerBlock,
   'welcome-banner': WelcomeBannerBlock,
   'mission-banner': MissionBannerBlock,
+  formCustomBlock: FormCustomBlock,
 }
 
 export const RenderBlocks: React.FC<{

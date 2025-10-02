@@ -23,6 +23,7 @@ import {
 import { MissionBannerBlock } from '@/blocks/MissionBanner/config'
 import { WelcomeBannerBlock } from '@/blocks/WelcomeBanner/config'
 import { DetailsBannerBlock } from '@/blocks/DetailsBanner/config'
+import { FormCustomBlock } from '@/blocks/Form/FormCostom/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -87,6 +88,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MissionBannerBlock,
                 WelcomeBannerBlock,
                 DetailsBannerBlock,
+                FormCustomBlock,
               ],
               required: true,
               admin: {

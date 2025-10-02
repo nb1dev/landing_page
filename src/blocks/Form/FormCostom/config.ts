@@ -6,11 +6,39 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-export const FormBlock: Block = {
-  slug: 'formBlock',
-  interfaceName: 'FormBlock',
+export const FormCustomBlock: Block = {
+  slug: 'formCustomBlock',
+  interfaceName: 'FormCustomBlock',
   fields: [
+    {
+      name: 'heading',
+      type: 'richText',
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => {
+          return [
+            ...rootFeatures,
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+            TextColorFeature(),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          ]
+        },
+      }),
+      required: true,
+    },
+    {
+      name: 'description',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'icon',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+    },
     {
       name: 'form',
       type: 'relationship',
@@ -42,10 +70,10 @@ export const FormBlock: Block = {
     },
   ],
   graphQL: {
-    singularName: 'FormBlock',
+    singularName: 'FormCustomBlock',
   },
   labels: {
-    plural: 'Form Blocks',
-    singular: 'Form Block',
+    plural: 'Form Custom Blocks',
+    singular: 'Form Custom Block',
   },
 }

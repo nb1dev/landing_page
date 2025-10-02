@@ -19,7 +19,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         backgroundColor: '#1D1D1D',
       }}
     >
-      <div className="flex flex-row gap-6 w-full">
+      <div className="flex flex-row w-full">
         <div className="flex w-1/2">
           <div className="flex w-full gap-2">
             <div className="flex w-2/3 gap-2 flex-col">
