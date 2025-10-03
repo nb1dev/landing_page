@@ -133,10 +133,10 @@ export const FormCustomBlock: React.FC<
     >
       <div className="flex w-full p-16">
         <div className={`${isMobile ? 'w-full' : 'w-1/2'} mr-auto ml-auto text-center`}>
-          <div style={{ fontSize: '3rem', marginBottom: '24px' }}>
+          <div style={{ fontSize: '4.3rem', marginBottom: '24px' }}>
             <RichText data={props.heading} />
           </div>
-          <div style={{ fontSize: '1.2rem', marginBottom: '32px', color: 'black' }}>
+          <div style={{ fontSize: '1.5rem', marginBottom: '32px', color: 'black' }}>
             {props.description}
           </div>
           <div>
