@@ -134,7 +134,7 @@ export const FormCustomBlock: React.FC<
         <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
           <div
             style={{
-              fontSize: '4.3rem',
+              fontSize: isMobile ? '2.375rem' : '4.3rem',
               marginBottom: '24px',
               fontFamily: 'Instrument Sans',
               fontWeight: '500',

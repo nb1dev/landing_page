@@ -95,7 +95,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           </div>
         </div> */}
         {isMobile && (
-          <div style={{ fontSize: '4.3rem', marginBottom: '16px' }}>
+          <div style={{ fontSize: isMobile ? '2.375rem' : '4.3rem', marginBottom: '16px' }}>
             <RichText data={props.heading} />
           </div>
         )}
@@ -114,7 +114,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           {!isMobile && (
             <div
               style={{
-                fontSize: '4.3rem',
+                fontSize: isMobile ? '2.375rem' : '4.3rem',
                 marginBottom: '16px',
                 fontFamily: 'Intrument Sans',
                 fontWeight: '500',

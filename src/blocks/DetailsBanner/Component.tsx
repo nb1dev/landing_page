@@ -24,7 +24,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
     >
       <div>
         <div>
-          <div style={{ fontSize: '4.3rem', width: '75%' }}>
+          <div style={{ fontSize: isMobile ? '2.375rem' : '4.3rem', width: '75%' }}>
             <RichText data={props.heading} />
           </div>
         </div>

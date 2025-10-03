@@ -39,9 +39,13 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         </div>
         <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
           <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col gap-8`}>
-            <div className={`${isMobile ? 'mb-4' : 'mb-16'}`}>
+            <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16 '}`}>
               <div
-                style={{ fontSize: '4.3rem', fontFamily: 'Instrument Sans', fontWeight: '500' }}
+                style={{
+                  fontSize: isMobile ? '2.375rem' : '4.3rem',
+                  fontFamily: 'Instrument Sans',
+                  fontWeight: '500',
+                }}
                 className="mb-6"
               >
                 <RichText data={props.heading} />
