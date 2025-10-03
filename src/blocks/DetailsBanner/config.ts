@@ -45,6 +45,11 @@ export const DetailsBannerBlock: Block = {
           name: 'description',
           type: 'text',
         },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+        },
       ],
     },
   ],

@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
@@ -13,6 +12,8 @@ import { fields } from '../fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { isMobile } from '@/utilities/isMobile'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export type FormCustomBlockType = {
   blockName?: string
@@ -49,6 +50,7 @@ export const FormCustomBlock: React.FC<
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
   const router = useRouter()
+  const isMobile = useIsMobile()
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
@@ -129,9 +131,9 @@ export const FormCustomBlock: React.FC<
         background: 'white',
       }}
     >
-      <div className="flex w-1/2 p-16">
-        <div>
-          <div style={{ fontSize: '3rem', width: '75%', marginBottom: '24px' }}>
+      <div className="flex w-full p-16">
+        <div className={`${isMobile ? 'w-full' : 'w-1/2'} mr-auto ml-auto text-center`}>
+          <div style={{ fontSize: '3rem', marginBottom: '24px' }}>
             <RichText data={props.heading} />
           </div>
           <div style={{ fontSize: '1.2rem', marginBottom: '32px' }}>{props.description}</div>
@@ -184,13 +186,13 @@ export const FormCustomBlock: React.FC<
           </div>
         </div>
       </div>
-      <div className="flex w-1/2">
+      {/* <div className="flex w-1/2">
         <img
           style={{ width: '100%' }}
           src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
           alt="icon"
         />
-      </div>
+      </div> */}
     </div>
   )
 }

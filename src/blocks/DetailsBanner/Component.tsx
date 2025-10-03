@@ -1,17 +1,20 @@
-/* eslint-disable @next/next/no-img-element */
+'use client'
+
 import type { DetailsBannerBlock as DetailsBannerBlockProps } from 'src/payload-types'
 import React from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 import RichText from '@/components/RichText'
+import { useIsMobile } from '@/hooks/useIsMobile'
 // import { BlocksField } from '@payloadcms/ui'
 
 export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => {
+  const isMobile = useIsMobile()
+
   return (
     <div
       style={{
         width: '100%',
-        padding: '20px',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -26,12 +29,25 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
           </div>
         </div>
         <div>
-          <div className="flex w-full gap-4 mb-4 flex-row">
+          <div className={`flex w-full gap-4 mb-4 ${isMobile ? 'flex-col' : 'flex-row'}`}>
             <div
-              className="w-1/2"
-              style={{ backgroundColor: 'black', padding: '24px', borderRadius: '20px' }}
+              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+              style={{
+                minHeight: '300px',
+                backgroundColor: 'black',
+                padding: '24px',
+                borderRadius: '20px',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundImage: `url(${getMediaUrl(
+                  props.content && typeof props.content[0]?.backgroundImage === 'object'
+                    ? getMediaUrl(props.content[0]?.backgroundImage?.url).toString()
+                    : undefined,
+                )})`,
+              }}
             >
-              <img
+              {/* <img
                 style={{ marginBottom: '16px' }}
                 src={
                   props.content && typeof props.content[0]?.icon === 'object'
@@ -39,19 +55,35 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     : undefined
                 }
                 alt="icon"
-              />
-              <div style={{ color: '#e7e7e7', marginBottom: '16px' }}>
+              /> */}
+              <div
+                className="w-1/2"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+              >
                 {props.content ? props.content[0]?.title : ''}
               </div>
-              <div style={{ color: '#8B8A8A' }}>
+              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
                 {props.content ? props.content[0]?.description : ''}
               </div>
             </div>
             <div
-              className="w-1/2"
-              style={{ backgroundColor: 'black', padding: '24px', borderRadius: '20px' }}
+              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+              style={{
+                minHeight: '300px',
+                backgroundColor: 'black',
+                padding: '24px',
+                borderRadius: '20px',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundImage: `url(${getMediaUrl(
+                  props.content && typeof props.content[1]?.backgroundImage === 'object'
+                    ? getMediaUrl(props.content[1]?.backgroundImage?.url).toString()
+                    : undefined,
+                )})`,
+              }}
             >
-              <img
+              {/* <img
                 style={{ marginBottom: '16px' }}
                 src={
                   props.content && typeof props.content[1]?.icon === 'object'
@@ -59,21 +91,37 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     : undefined
                 }
                 alt="icon"
-              />
-              <div style={{ color: '#e7e7e7', marginBottom: '16px' }}>
+              /> */}
+              <div
+                className="w-1/2"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+              >
                 {props.content ? props.content[1]?.title : ''}
               </div>
-              <div style={{ color: '#8B8A8A' }}>
+              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
                 {props.content ? props.content[1]?.description : ''}
               </div>
             </div>
           </div>
-          <div className="flex w-full gap-4 flex-row">
+          <div className={`flex w-full gap-4 ${isMobile ? 'flex-col' : 'flex-row'}`}>
             <div
-              className="w-1/2"
-              style={{ backgroundColor: 'black', padding: '24px', borderRadius: '20px' }}
+              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+              style={{
+                minHeight: '300px',
+                backgroundColor: 'black',
+                padding: '24px',
+                borderRadius: '20px',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundImage: `url(${getMediaUrl(
+                  props.content && typeof props.content[2]?.backgroundImage === 'object'
+                    ? getMediaUrl(props.content[2]?.backgroundImage?.url).toString()
+                    : undefined,
+                )})`,
+              }}
             >
-              <img
+              {/* <img
                 style={{ marginBottom: '16px' }}
                 src={
                   props.content && typeof props.content[2]?.icon === 'object'
@@ -81,19 +129,35 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     : undefined
                 }
                 alt="icon"
-              />
-              <div style={{ color: '#e7e7e7', marginBottom: '16px' }}>
+              /> */}
+              <div
+                className="w-1/3"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+              >
                 {props.content ? props.content[2]?.title : ''}
               </div>
-              <div style={{ color: '#8B8A8A' }}>
+              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
                 {props.content ? props.content[2]?.description : ''}
               </div>
             </div>
             <div
-              className="w-1/2"
-              style={{ backgroundColor: 'black', padding: '24px', borderRadius: '20px' }}
+              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+              style={{
+                minHeight: '300px',
+                backgroundColor: 'black',
+                padding: '24px',
+                borderRadius: '20px',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundImage: `url(${getMediaUrl(
+                  props.content && typeof props.content[3]?.backgroundImage === 'object'
+                    ? getMediaUrl(props.content[3]?.backgroundImage?.url).toString()
+                    : undefined,
+                )})`,
+              }}
             >
-              <img
+              {/* <img
                 style={{ marginBottom: '16px' }}
                 src={
                   props.content && typeof props.content[3]?.icon === 'object'
@@ -101,11 +165,14 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     : undefined
                 }
                 alt="icon"
-              />
-              <div style={{ color: '#e7e7e7', marginBottom: '16px' }}>
+              /> */}
+              <div
+                className="w-1/3"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+              >
                 {props.content ? props.content[3]?.title : ''}
               </div>
-              <div style={{ color: '#8B8A8A' }}>
+              <div className="w-1/3" style={{ color: 'white', fontSize: '16px' }}>
                 {props.content ? props.content[3]?.description : ''}
               </div>
             </div>

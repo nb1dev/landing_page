@@ -1,12 +1,16 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import type { MissionBannerBlock as MissionBannerBlockProps } from 'src/payload-types'
 import React from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 import RichText from '@/components/RichText'
+import { useIsMobile } from '@/hooks/useIsMobile'
 // import { BlocksField } from '@payloadcms/ui'
 
 export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => {
+  const isMobile = useIsMobile()
+
   return (
     <div
       style={{
@@ -19,8 +23,11 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         backgroundColor: '#1D1D1D',
       }}
     >
-      <div className="flex flex-row w-full">
-        <div className="flex w-1/2">
+      <div
+        className="flex flex-row w-full gap-8"
+        style={{ flexDirection: isMobile ? 'column-reverse' : 'row' }}
+      >
+        {/* <div className="flex w-1/2">
           <div className="flex w-full gap-2">
             <div className="flex w-2/3 gap-2 flex-col">
               <div className="flex flex-row w-full">
@@ -86,8 +93,19 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
               </div>
             </div>
           </div>
+        </div> */}
+        <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
+          <img
+            style={{ width: '100%' }}
+            src={
+              props.images && typeof props.images[0]?.image === 'object'
+                ? getMediaUrl(props.images[0]?.image.url).toString()
+                : undefined
+            }
+            alt="icon"
+          />
         </div>
-        <div className="flex w-1/2 flex-col">
+        <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col`}>
           <div style={{ fontSize: '3rem', marginBottom: '16px' }}>
             <RichText data={props.heading} />
           </div>

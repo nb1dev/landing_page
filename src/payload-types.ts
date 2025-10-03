@@ -852,6 +852,7 @@ export interface DetailsBannerBlock {
         icon: number | Media;
         title?: string | null;
         description?: string | null;
+        backgroundImage?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1351,6 +1352,7 @@ export interface DetailsBannerBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        backgroundImage?: T;
         id?: T;
       };
   id?: T;
