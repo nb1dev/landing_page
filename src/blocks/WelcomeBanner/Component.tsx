@@ -6,7 +6,7 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useRouter } from 'next/navigation'
-import { useLocation } from 'react-router'
+// import { useLocation } from 'react-router'
 // import { BlocksField } from '@payloadcms/ui'
 
 export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => {
