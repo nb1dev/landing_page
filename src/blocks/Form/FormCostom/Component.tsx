@@ -136,7 +136,9 @@ export const FormCustomBlock: React.FC<
           <div style={{ fontSize: '3rem', marginBottom: '24px' }}>
             <RichText data={props.heading} />
           </div>
-          <div style={{ fontSize: '1.2rem', marginBottom: '32px' }}>{props.description}</div>
+          <div style={{ fontSize: '1.2rem', marginBottom: '32px', color: 'black' }}>
+            {props.description}
+          </div>
           <div>
             <FormProvider {...formMethods}>
               {!isLoading && hasSubmitted && confirmationType === 'message' && (
@@ -155,7 +157,7 @@ export const FormCustomBlock: React.FC<
                           fields?.[field.blockType as keyof typeof fields]
                         if (Field) {
                           return (
-                            <div className="mb-6 last:mb-0" key={index}>
+                            <div className="mb-6 last:mb-0" key={index} style={{ color: 'black' }}>
                               <Field
                                 form={formFromProps}
                                 {...field}
@@ -175,7 +177,12 @@ export const FormCustomBlock: React.FC<
                     form={formID}
                     type="submit"
                     variant="default"
-                    style={{ borderRadius: '20px', marginTop: '24px' }}
+                    style={{
+                      borderRadius: '20px',
+                      marginTop: '24px',
+                      color: 'white',
+                      backgroundColor: 'black',
+                    }}
                     className="w-full"
                   >
                     {submitButtonLabel}
