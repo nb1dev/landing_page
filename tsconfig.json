@@ -31,6 +31,9 @@
       "react": [
         "./node_modules/@types/react"
       ],
+      "@/providers/HeaderTheme": [
+        "./src/providers/HeaderTheme"
+      ],
       "@/*": [
         "./src/*"
       ]
