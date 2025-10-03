@@ -1,0 +1,25 @@
+name: Deploy Landing Page (Production)
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            cd /var/www/landing_page
+            git fetch origin prod
+            git reset --hard origin/prod
+            npm ci --omit=dev
+            npm run build
+            pm2 restart landing
