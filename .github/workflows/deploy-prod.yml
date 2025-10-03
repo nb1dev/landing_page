@@ -17,9 +17,11 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            source $NVM_DIR/nvm.sh
             cd /var/www/landing_page
             git fetch origin prod
             git reset --hard origin/prod
             npm ci --omit=dev
             npm run build
-            pm2 restart landing
+            pm2 restart landing || pm2 start npm --name "landing" -- start
