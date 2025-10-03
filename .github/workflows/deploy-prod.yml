@@ -10,31 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to Production via SSH
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            source $NVM_DIR/nvm.sh
-
             cd /var/www/landing_page
-
-            echo ">>> Pulling latest code from prod branch..."
             git fetch origin prod
             git reset --hard origin/prod
-
-            echo ">>> Installing dependencies..."
-            npm ci --omit=dev
-
-            echo ">>> Building Next.js app..."
-            npm run build
-
-            echo ">>> Restarting PM2 process..."
-            pm2 delete landing || true
-            pm2 start npm --name "landing" -- run start
-
-            echo ">>> Saving PM2 process list..."
-            pm2 save
+            docker-compose up -d --build

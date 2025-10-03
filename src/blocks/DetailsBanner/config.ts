@@ -50,6 +50,11 @@ export const DetailsBannerBlock: Block = {
           type: 'upload',
           relationTo: 'media',
         },
+        {
+          name: 'backgroundImageMobile',
+          type: 'upload',
+          relationTo: 'media',
+        },
       ],
     },
   ],

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   h1,
   h2,
@@ -89,7 +90,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    @apply text-foreground min-h-[100vh] flex flex-col;
+    background-color: #1D1D1D
   }
 }
 

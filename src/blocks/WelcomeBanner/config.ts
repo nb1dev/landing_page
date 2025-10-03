@@ -44,6 +44,12 @@ export const WelcomeBannerBlock: Block = {
       required: true,
     },
     {
+      name: 'backgroundImageMobile',
+      type: 'upload',
+      relationTo: 'media',
+      required: true,
+    },
+    {
       name: 'boxImage',
       type: 'upload',
       relationTo: 'media',
@@ -80,6 +86,21 @@ export const WelcomeBannerBlock: Block = {
           name: 'url',
           type: 'text',
           required: true,
+        },
+      ],
+    },
+    {
+      name: 'copyrightText',
+      type: 'text',
+      // required: true,
+    },
+    {
+      name: 'bannerLabels',
+      type: 'array',
+      fields: [
+        {
+          name: 'textLabel',
+          type: 'text',
         },
       ],
     },

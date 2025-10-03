@@ -31,7 +31,7 @@ export const Checkbox: React.FC<
           }}
           style={{ borderColor: 'black' }}
         />
-        <Label htmlFor={name}>
+        <Label htmlFor={name} style={{ fontFamily: 'Inter', fontWeight: '400' }}>
           {required && (
             <span className="required">
               <span className="sr-only">(required)</span>

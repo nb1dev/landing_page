@@ -66,7 +66,14 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
 
   return (
-    <article style={{ backgroundColor: '#1D1D1D' }}>
+    <article
+      style={{
+        backgroundColor: '#1D1D1D',
+        maxWidth: '1440px',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+      }}
+    >
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />

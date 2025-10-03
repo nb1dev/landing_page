@@ -40,11 +40,17 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${getMediaUrl(
-                  props.content && typeof props.content[0]?.backgroundImage === 'object'
-                    ? getMediaUrl(props.content[0]?.backgroundImage?.url).toString()
-                    : undefined,
-                )})`,
+                backgroundImage: isMobile
+                  ? `url(${getMediaUrl(
+                      props.content && typeof props.content[0]?.backgroundImageMobile === 'object'
+                        ? getMediaUrl(props.content[0]?.backgroundImageMobile?.url).toString()
+                        : undefined,
+                    )})`
+                  : `url(${getMediaUrl(
+                      props.content && typeof props.content[0]?.backgroundImage === 'object'
+                        ? getMediaUrl(props.content[0]?.backgroundImage?.url).toString()
+                        : undefined,
+                    )})`,
               }}
             >
               {/* <img
@@ -58,11 +64,25 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
               /> */}
               <div
                 className="w-full"
-                style={{ color: '#292929', marginBottom: '16px', fontSize: '2rem' }}
+                style={{
+                  color: '#292929',
+                  marginBottom: '16px',
+                  fontSize: '2rem',
+                  fontFamily: 'Instrument Sans',
+                  fontWeight: '500',
+                }}
               >
                 {props.content ? props.content[0]?.title : ''}
               </div>
-              <div className="w-2/3" style={{ color: '#292929', fontSize: '1rem' }}>
+              <div
+                className={isMobile ? 'w-full' : 'w-2/3'}
+                style={{
+                  color: '#292929',
+                  fontSize: '1rem',
+                  fontFamily: 'Inter',
+                  fontWeight: '400',
+                }}
+              >
                 {props.content ? props.content[0]?.description : ''}
               </div>
             </div>
@@ -76,11 +96,17 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${getMediaUrl(
-                  props.content && typeof props.content[1]?.backgroundImage === 'object'
-                    ? getMediaUrl(props.content[1]?.backgroundImage?.url).toString()
-                    : undefined,
-                )})`,
+                backgroundImage: isMobile
+                  ? `url(${getMediaUrl(
+                      props.content && typeof props.content[1]?.backgroundImageMobile === 'object'
+                        ? getMediaUrl(props.content[1]?.backgroundImageMobile?.url).toString()
+                        : undefined,
+                    )})`
+                  : `url(${getMediaUrl(
+                      props.content && typeof props.content[1]?.backgroundImage === 'object'
+                        ? getMediaUrl(props.content[1]?.backgroundImage?.url).toString()
+                        : undefined,
+                    )})`,
               }}
             >
               {/* <img
@@ -94,11 +120,20 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
               /> */}
               <div
                 className="w-full"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
+                style={{
+                  color: 'white',
+                  marginBottom: '16px',
+                  fontSize: '2rem',
+                  fontFamily: 'Instrument Sans',
+                  fontWeight: '500',
+                }}
               >
                 {props.content ? props.content[1]?.title : ''}
               </div>
-              <div className="w-2/3" style={{ color: 'white', fontSize: '1rem' }}>
+              <div
+                className={isMobile ? 'w-full' : 'w-2/3'}
+                style={{ color: 'white', fontSize: '1rem', fontFamily: 'Inter', fontWeight: '400' }}
+              >
                 {props.content ? props.content[1]?.description : ''}
               </div>
             </div>
@@ -107,18 +142,25 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
             <div
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
-                minHeight: '300px',
+                minHeight: isMobile ? '570px' : '300px',
+                height: isMobile ? '570px' : '',
                 backgroundColor: 'black',
                 padding: '24px',
                 borderRadius: '20px',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${getMediaUrl(
-                  props.content && typeof props.content[2]?.backgroundImage === 'object'
-                    ? getMediaUrl(props.content[2]?.backgroundImage?.url).toString()
-                    : undefined,
-                )})`,
+                backgroundImage: isMobile
+                  ? `url(${getMediaUrl(
+                      props.content && typeof props.content[2]?.backgroundImageMobile === 'object'
+                        ? getMediaUrl(props.content[2]?.backgroundImageMobile?.url).toString()
+                        : undefined,
+                    )})`
+                  : `url(${getMediaUrl(
+                      props.content && typeof props.content[2]?.backgroundImage === 'object'
+                        ? getMediaUrl(props.content[2]?.backgroundImage?.url).toString()
+                        : undefined,
+                    )})`,
               }}
             >
               {/* <img
@@ -130,31 +172,55 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 }
                 alt="icon"
               /> */}
-              <div
-                className="w-1/2"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
-              >
-                {props.content ? props.content[2]?.title : ''}
-              </div>
-              <div className="w-1/2" style={{ color: 'white', fontSize: '1rem' }}>
-                {props.content ? props.content[2]?.description : ''}
+              <div className={`${isMobile ? 'h-1/2' : ''}`}></div>
+              <div className={`w-full ${isMobile ? 'h-1/2' : ''}`}>
+                <div
+                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                  style={{
+                    color: 'white',
+                    marginBottom: '16px',
+                    fontSize: '2rem',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '500',
+                  }}
+                >
+                  {props.content ? props.content[2]?.title : ''}
+                </div>
+                <div
+                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                  style={{
+                    color: 'white',
+                    fontSize: '1rem',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                  }}
+                >
+                  {props.content ? props.content[2]?.description : ''}
+                </div>
               </div>
             </div>
             <div
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
-                minHeight: '300px',
+                minHeight: isMobile ? '570px' : '300px',
+                height: isMobile ? '570px' : '',
                 backgroundColor: 'black',
                 padding: '24px',
                 borderRadius: '20px',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundImage: `url(${getMediaUrl(
-                  props.content && typeof props.content[3]?.backgroundImage === 'object'
-                    ? getMediaUrl(props.content[3]?.backgroundImage?.url).toString()
-                    : undefined,
-                )})`,
+                backgroundImage: isMobile
+                  ? `url(${getMediaUrl(
+                      props.content && typeof props.content[3]?.backgroundImageMobile === 'object'
+                        ? getMediaUrl(props.content[3]?.backgroundImageMobile?.url).toString()
+                        : undefined,
+                    )})`
+                  : `url(${getMediaUrl(
+                      props.content && typeof props.content[3]?.backgroundImage === 'object'
+                        ? getMediaUrl(props.content[3]?.backgroundImage?.url).toString()
+                        : undefined,
+                    )})`,
               }}
             >
               {/* <img
@@ -166,14 +232,31 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 }
                 alt="icon"
               /> */}
-              <div
-                className="w-1/2"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
-              >
-                {props.content ? props.content[3]?.title : ''}
-              </div>
-              <div className="w-1/3" style={{ color: 'white', fontSize: '1rem' }}>
-                {props.content ? props.content[3]?.description : ''}
+              <div className={`${isMobile ? 'h-1/2' : ''}`}></div>
+              <div className={`w-full ${isMobile ? 'h-1/2' : ''}`}>
+                <div
+                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                  style={{
+                    color: 'white',
+                    marginBottom: '16px',
+                    fontSize: '2rem',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '500',
+                  }}
+                >
+                  {props.content ? props.content[3]?.title : ''}
+                </div>
+                <div
+                  className={`${isMobile ? 'w-full' : 'w-1/3'}`}
+                  style={{
+                    color: 'white',
+                    fontSize: '1rem',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                  }}
+                >
+                  {props.content ? props.content[3]?.description : ''}
+                </div>
               </div>
             </div>
           </div>
