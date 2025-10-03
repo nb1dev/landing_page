@@ -19,9 +19,22 @@ jobs:
           script: |
             export NVM_DIR="$HOME/.nvm"
             source $NVM_DIR/nvm.sh
+
             cd /var/www/landing_page
+
+            echo ">>> Pulling latest code from prod branch..."
             git fetch origin prod
             git reset --hard origin/prod
+
+            echo ">>> Installing dependencies..."
             npm ci --omit=dev
+
+            echo ">>> Building Next.js app..."
             npm run build
-            pm2 restart landing || pm2 start npm --name "landing" -- start
+
+            echo ">>> Restarting PM2 process..."
+            pm2 delete landing || true
+            pm2 start npm --name "landing" -- run start
+
+            echo ">>> Saving PM2 process list..."
+            pm2 save
