@@ -96,7 +96,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         </div> */}
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
           <img
-            style={{ width: '100%' }}
+            style={{ width: '100%', marginBottom: '5px' }}
             src={
               props.images && typeof props.images[0]?.image === 'object'
                 ? getMediaUrl(props.images[0]?.image.url).toString()
@@ -106,20 +106,21 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           />
         </div>
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col`}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>
+          <div style={{ fontSize: '4.3rem', marginBottom: '16px' }}>
             <RichText data={props.heading} />
           </div>
-          <div style={{ marginBottom: '16px' }}>
+          <div style={{ marginBottom: '16px', fontSize: '1.125rem' }}>
             <RichText data={props.description} />
           </div>
           <div style={{ marginTop: 'auto' }}>
             <img
+              style={{ marginBottom: '5px' }}
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }
               alt="icon"
             />
-            <div style={{ color: '#8b8a8a' }}>{props.copyright}</div>
+            <div style={{ color: '#8b8a8a', fontSize: '1.125rem' }}>{props.copyright}</div>
           </div>
         </div>
       </div>

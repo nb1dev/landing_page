@@ -24,7 +24,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
     >
       <div>
         <div>
-          <div style={{ fontSize: '3rem', width: '75%' }}>
+          <div style={{ fontSize: '4.3rem', width: '75%' }}>
             <RichText data={props.heading} />
           </div>
         </div>
@@ -57,12 +57,12 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 alt="icon"
               /> */}
               <div
-                className="w-1/2"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+                className="w-full"
+                style={{ color: '#292929', marginBottom: '16px', fontSize: '2rem' }}
               >
                 {props.content ? props.content[0]?.title : ''}
               </div>
-              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
+              <div className="w-2/3" style={{ color: '#292929', fontSize: '1rem' }}>
                 {props.content ? props.content[0]?.description : ''}
               </div>
             </div>
@@ -93,12 +93,12 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 alt="icon"
               /> */}
               <div
-                className="w-1/2"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+                className="w-full"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
               >
                 {props.content ? props.content[1]?.title : ''}
               </div>
-              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
+              <div className="w-2/3" style={{ color: 'white', fontSize: '1rem' }}>
                 {props.content ? props.content[1]?.description : ''}
               </div>
             </div>
@@ -131,12 +131,12 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 alt="icon"
               /> */}
               <div
-                className="w-1/3"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+                className="w-1/2"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
               >
                 {props.content ? props.content[2]?.title : ''}
               </div>
-              <div className="w-1/2" style={{ color: 'white', fontSize: '16px' }}>
+              <div className="w-1/2" style={{ color: 'white', fontSize: '1rem' }}>
                 {props.content ? props.content[2]?.description : ''}
               </div>
             </div>
@@ -167,12 +167,12 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 alt="icon"
               /> */}
               <div
-                className="w-1/3"
-                style={{ color: 'white', marginBottom: '16px', fontSize: '32px' }}
+                className="w-1/2"
+                style={{ color: 'white', marginBottom: '16px', fontSize: '2rem' }}
               >
                 {props.content ? props.content[3]?.title : ''}
               </div>
-              <div className="w-1/3" style={{ color: 'white', fontSize: '16px' }}>
+              <div className="w-1/3" style={{ color: 'white', fontSize: '1rem' }}>
                 {props.content ? props.content[3]?.description : ''}
               </div>
             </div>

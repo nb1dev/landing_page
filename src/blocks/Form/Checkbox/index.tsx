@@ -29,6 +29,7 @@ export const Checkbox: React.FC<
           onCheckedChange={(checked) => {
             setValue(props.name, checked)
           }}
+          style={{ borderColor: 'black' }}
         />
         <Label htmlFor={name}>
           {required && (

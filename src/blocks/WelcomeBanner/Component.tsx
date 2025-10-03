@@ -16,7 +16,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       className="flex flex-col"
       style={{
         width: '100%',
-        height: '640px',
+        minHeight: '640px',
         backgroundColor: 'white',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -38,10 +38,10 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
           <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col gap-8`}>
             <div className={`${isMobile ? 'mb-4' : 'mb-16'}`}>
-              <div style={{ fontSize: '70px' }} className="mb-6">
+              <div style={{ fontSize: '4.3rem' }} className="mb-6">
                 <RichText data={props.heading} />
               </div>
-              <div style={{ fontSize: '24px', color: '#292929' }}>{props.description}</div>
+              <div style={{ fontSize: '1.5rem', color: '#292929' }}>{props.description}</div>
             </div>
             {/* <div className={`flex flex-row gap-2 ${isMobile ? 'mt-4' : 'mt-16'}`}>
               <div
