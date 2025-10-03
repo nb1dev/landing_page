@@ -12,7 +12,6 @@ import { fields } from '../fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { isMobile } from '@/utilities/isMobile'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 export type FormCustomBlockType = {
@@ -131,12 +130,27 @@ export const FormCustomBlock: React.FC<
         background: 'white',
       }}
     >
-      <div className="flex w-full p-16">
-        <div className={`${isMobile ? 'w-full' : 'w-1/2'} mr-auto ml-auto text-center`}>
-          <div style={{ fontSize: '4.3rem', marginBottom: '24px' }}>
+      <div className={`flex w-full ${isMobile ? 'p-6' : 'p-16'}`}>
+        <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
+          <div
+            style={{
+              fontSize: '4.3rem',
+              marginBottom: '24px',
+              fontFamily: 'Instrument Sans',
+              fontWeight: '500',
+            }}
+          >
             <RichText data={props.heading} />
           </div>
-          <div style={{ fontSize: '1.5rem', marginBottom: '32px', color: 'black' }}>
+          <div
+            style={{
+              fontSize: '1.5rem',
+              marginBottom: '32px',
+              color: 'black',
+              fontFamily: 'Inter',
+              fontWeight: '400',
+            }}
+          >
             {props.description}
           </div>
           <div>
@@ -182,6 +196,10 @@ export const FormCustomBlock: React.FC<
                       marginTop: '24px',
                       color: 'white',
                       backgroundColor: 'black',
+                      height: '60px',
+                      fontFamily: 'Instrument Sans',
+                      fontWeight: '500',
+                      fontSize: '1.25rem',
                     }}
                     className="w-full"
                   >

@@ -814,6 +814,7 @@ export interface WelcomeBannerBlock {
   };
   description: string;
   backgroundImage: number | Media;
+  backgroundImageMobile: number | Media;
   boxImage: number | Media;
   access_button: {
     label: string;
@@ -823,6 +824,13 @@ export interface WelcomeBannerBlock {
     label: string;
     url: string;
   };
+  copyrightText?: string | null;
+  bannerLabels?:
+    | {
+        textLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'welcome-banner';
@@ -853,6 +861,7 @@ export interface DetailsBannerBlock {
         title?: string | null;
         description?: string | null;
         backgroundImage?: (number | null) | Media;
+        backgroundImageMobile?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -1324,6 +1333,7 @@ export interface WelcomeBannerBlockSelect<T extends boolean = true> {
   heading?: T;
   description?: T;
   backgroundImage?: T;
+  backgroundImageMobile?: T;
   boxImage?: T;
   access_button?:
     | T
@@ -1336,6 +1346,13 @@ export interface WelcomeBannerBlockSelect<T extends boolean = true> {
     | {
         label?: T;
         url?: T;
+      };
+  copyrightText?: T;
+  bannerLabels?:
+    | T
+    | {
+        textLabel?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -1353,6 +1370,7 @@ export interface DetailsBannerBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         backgroundImage?: T;
+        backgroundImageMobile?: T;
         id?: T;
       };
   id?: T;

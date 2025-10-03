@@ -25,7 +25,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
     >
       <div
         className="flex flex-row w-full gap-8"
-        style={{ flexDirection: isMobile ? 'column-reverse' : 'row' }}
+        style={{ flexDirection: isMobile ? 'column' : 'row' }}
       >
         {/* <div className="flex w-1/2">
           <div className="flex w-full gap-2">
@@ -94,9 +94,14 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             </div>
           </div>
         </div> */}
+        {isMobile && (
+          <div style={{ fontSize: '4.3rem', marginBottom: '16px' }}>
+            <RichText data={props.heading} />
+          </div>
+        )}
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
           <img
-            style={{ width: '100%', marginBottom: '5px' }}
+            style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px' }}
             src={
               props.images && typeof props.images[0]?.image === 'object'
                 ? getMediaUrl(props.images[0]?.image.url).toString()
@@ -106,10 +111,27 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           />
         </div>
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col`}>
-          <div style={{ fontSize: '4.3rem', marginBottom: '16px' }}>
-            <RichText data={props.heading} />
-          </div>
-          <div style={{ marginBottom: '16px', fontSize: '1.125rem' }}>
+          {!isMobile && (
+            <div
+              style={{
+                fontSize: '4.3rem',
+                marginBottom: '16px',
+                fontFamily: 'Intrument Sans',
+                fontWeight: '500',
+              }}
+            >
+              <RichText data={props.heading} />
+            </div>
+          )}
+
+          <div
+            style={{
+              marginBottom: '16px',
+              fontSize: '1.125rem',
+              fontFamily: 'Inter',
+              fontWeight: '400',
+            }}
+          >
             <RichText data={props.description} />
           </div>
           <div style={{ marginTop: 'auto' }}>
