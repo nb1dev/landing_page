@@ -1,7 +1,11 @@
 version: "3.9"
+
 services:
   landing:
-    build: .
+    build:
+      context: .
+      args:
+        ENV_FILE: .env.prod
     container_name: landing
     restart: always
     ports:
