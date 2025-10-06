@@ -11,7 +11,6 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { fields } from '../fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import { Media } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 export type FormCustomBlockType = {
@@ -130,7 +129,10 @@ export const FormCustomBlock: React.FC<
         background: 'white',
       }}
     >
-      <div className={`flex w-full ${isMobile ? 'p-6' : 'p-16'}`}>
+      <div
+        className={`flex w-full ${isMobile ? '' : 'p-16'}`}
+        style={{ padding: isMobile ? '24px' : '' }}
+      >
         <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
           <div
             style={{
@@ -145,7 +147,7 @@ export const FormCustomBlock: React.FC<
           <div
             style={{
               fontSize: '1.5rem',
-              marginBottom: '32px',
+              marginBottom: '60px',
               color: 'black',
               fontFamily: 'Inter',
               fontWeight: '400',
@@ -156,8 +158,11 @@ export const FormCustomBlock: React.FC<
           <div>
             <FormProvider {...formMethods}>
               {!isLoading && hasSubmitted && confirmationType === 'message' && (
-                <RichText data={confirmationMessage} />
+                <div className="text-center" style={{ color: 'black' }}>
+                  <RichText data={confirmationMessage} />
+                </div>
               )}
+
               {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
               {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
               {!hasSubmitted && (
@@ -192,7 +197,7 @@ export const FormCustomBlock: React.FC<
                     type="submit"
                     variant="default"
                     style={{
-                      borderRadius: '20px',
+                      borderRadius: '100px',
                       marginTop: '24px',
                       color: 'white',
                       backgroundColor: 'black',

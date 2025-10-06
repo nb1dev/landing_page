@@ -15,6 +15,9 @@ export const WelcomeBannerBlock: Block = {
       type: 'upload',
       relationTo: 'media',
       required: true,
+      filterOptions: {
+        mimeType: { contains: 'image/svg+xml' },
+      },
     },
     {
       name: 'heading',

@@ -24,8 +24,8 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
       }}
     >
       <div
-        className="flex flex-row w-full gap-8"
-        style={{ flexDirection: isMobile ? 'column' : 'row' }}
+        className="flex flex-row w-full"
+        style={{ flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '24px' : '80px' }}
       >
         {/* <div className="flex w-1/2">
           <div className="flex w-full gap-2">
@@ -95,7 +95,13 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           </div>
         </div> */}
         {isMobile && (
-          <div style={{ fontSize: isMobile ? '2.375rem' : '4.3rem', marginBottom: '16px' }}>
+          <div
+            style={{
+              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              marginBottom: '16px',
+              width: isMobile ? '50%' : '100%',
+            }}
+          >
             <RichText data={props.heading} />
           </div>
         )}
@@ -116,7 +122,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
               style={{
                 fontSize: isMobile ? '2.375rem' : '4.3rem',
                 marginBottom: '16px',
-                fontFamily: 'Intrument Sans',
+                fontFamily: 'Instrument Sans',
                 fontWeight: '500',
               }}
             >
@@ -136,13 +142,22 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           </div>
           <div style={{ marginTop: 'auto' }}>
             <img
-              style={{ marginBottom: '5px' }}
+              style={{ marginBottom: '16px' }}
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }
               alt="icon"
             />
-            <div style={{ color: '#8b8a8a', fontSize: '1.125rem' }}>{props.copyright}</div>
+            <div
+              style={{
+                color: '#8b8a8a',
+                fontSize: '0.875rem',
+                fontFamily: 'Inter',
+                fontWeight: '400',
+              }}
+            >
+              {props.copyright}
+            </div>
           </div>
         </div>
       </div>

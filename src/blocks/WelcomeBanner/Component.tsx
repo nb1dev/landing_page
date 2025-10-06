@@ -95,7 +95,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                 </div>
                 <div
                   style={{
-                    fontSize: '1.5rem',
+                    fontSize: isMobile ? '1.25rem' : '1.5rem',
                     color: '#292929',
                     fontWeight: '400',
                     fontFamily: 'Inter',

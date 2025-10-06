@@ -1,26 +1,29 @@
 # 1. Use official Node image
 FROM node:24-alpine AS builder
 
-# 2. Set working dir
 WORKDIR /app
 
-# 3. Install dependencies
+# Install dependencies
 COPY package.json package-lock.json ./
 RUN npm install --legacy-peer-deps
 
-# 4. Copy source code
+# Copy source code
 COPY . .
 
-# 5. Build the Next.js app
+# Accept ENV_FILE argument
+ARG ENV_FILE=.env
+COPY ${ENV_FILE} .env
+
+# Build Next.js
 RUN npm run build
 
-# 6. Use lightweight Node image for production
+# Runner
 FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy only necessary files from builder
+# Copy files from builder
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/.next ./.next
@@ -30,9 +33,8 @@ COPY --from=builder /app/redirects.js ./redirects.js
 COPY --from=builder /app/tailwind.config.mjs ./tailwind.config.mjs
 COPY --from=builder /app/postcss.config.js ./postcss.config.js
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/.env ./.env
 
-# Expose port
 EXPOSE 3000
 
-# Run the app
 CMD ["npm", "start"]

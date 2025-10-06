@@ -24,12 +24,21 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
     >
       <div>
         <div>
-          <div style={{ fontSize: isMobile ? '2.375rem' : '4.3rem', width: '75%' }}>
+          <div
+            style={{
+              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              width: '75%',
+              marginBottom: '32px',
+            }}
+          >
             <RichText data={props.heading} />
           </div>
         </div>
         <div>
-          <div className={`flex w-full gap-4 mb-4 ${isMobile ? 'flex-col' : 'flex-row'}`}>
+          <div
+            className={`flex w-full mb-6 ${isMobile ? 'flex-col' : 'flex-row'}`}
+            style={{ gap: '1.5rem' }}
+          >
             <div
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
@@ -67,7 +76,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 style={{
                   color: '#292929',
                   marginBottom: '16px',
-                  fontSize: '2rem',
+                  fontSize: isMobile ? '1.5rem' : '2rem',
                   fontFamily: 'Instrument Sans',
                   fontWeight: '500',
                 }}
@@ -123,7 +132,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 style={{
                   color: 'white',
                   marginBottom: '16px',
-                  fontSize: '2rem',
+                  fontSize: isMobile ? '1.5rem' : '2rem',
                   fontFamily: 'Instrument Sans',
                   fontWeight: '500',
                 }}
@@ -138,7 +147,10 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
               </div>
             </div>
           </div>
-          <div className={`flex w-full gap-4 ${isMobile ? 'flex-col' : 'flex-row'}`}>
+          <div
+            className={`flex w-full ${isMobile ? 'flex-col' : 'flex-row'}`}
+            style={{ gap: '1.5rem' }}
+          >
             <div
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
@@ -179,7 +191,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   style={{
                     color: 'white',
                     marginBottom: '16px',
-                    fontSize: '2rem',
+                    fontSize: isMobile ? '1.5rem' : '2rem',
                     fontFamily: 'Instrument Sans',
                     fontWeight: '500',
                   }}
@@ -239,7 +251,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   style={{
                     color: 'white',
                     marginBottom: '16px',
-                    fontSize: '2rem',
+                    fontSize: isMobile ? '1.5rem' : '2rem',
                     fontFamily: 'Instrument Sans',
                     fontWeight: '500',
                   }}
