@@ -56,8 +56,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         </div>
       </div>
       <div
-        className="flex flex-col
-        "
+        className="flex flex-col"
         style={{
           width: '100%',
           minHeight: isMobile ? '755px' : '640px',
