@@ -1,4 +1,4 @@
-name: Deploy Landing Page (Production)
+name: Deploy to Production
 
 on:
   push:
@@ -8,16 +8,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Deploy via SSH
+      - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
+            set -e
             cd /var/www/landing_page
             git fetch origin prod
             git reset --hard origin/prod
-            docker-compose up -d --build
+            docker compose -f docker-compose.prod.yml up -d --build
