@@ -30,7 +30,15 @@ export const Email: React.FC<
         id={name}
         placeholder={label}
         type="text"
-        style={{ borderRadius: '20px', backgroundColor: 'white' }}
+        style={{
+          borderRadius: '100px',
+          backgroundColor: 'white',
+          fontFamily: 'Inter',
+          fontWeight: '400',
+          height: '60px',
+          fontSize: '1.25rem',
+          paddingLeft: '24px',
+        }}
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
       />
 

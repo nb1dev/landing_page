@@ -21,7 +21,7 @@ export const Checkbox: React.FC<
 
   return (
     <Width width={width}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" style={{ paddingLeft: '24px' }}>
         <CheckboxUi
           defaultChecked={defaultValue}
           id={name}
