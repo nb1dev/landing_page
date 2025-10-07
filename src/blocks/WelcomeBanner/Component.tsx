@@ -151,7 +151,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
 
         <div
           className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
-          style={{ marginTop: isMobile ? '30px' : '260px' }}
+          style={{ marginTop: isMobile ? (locationUrl === '/de' ? '10px' : '40px') : '260px' }}
         >
           <CarouselBanner {...props} />
         </div>
