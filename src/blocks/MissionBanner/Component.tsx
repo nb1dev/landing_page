@@ -108,7 +108,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             style={{
               fontSize: isMobile ? '42px' : '50px',
               marginBottom: '16px',
-              width: isMobile ? '50%' : '100%',
+              width: isMobile ? '100%' : '100%',
             }}
           >
             <RichText data={props.heading} />
