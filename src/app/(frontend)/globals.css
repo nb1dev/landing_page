@@ -103,3 +103,29 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+
+.position0 {
+    transform: translate3d(0px, 0px, 0px); 
+
+}
+
+.position1 {
+    transform: translate3d(0px, 50px, 0px); 
+
+}
+
+.position2 {
+    transform: translate3d(0px, 100px, 0px); 
+
+}
+
+.position3 {
+    transform: translate3d(0px, 150px, 0px); 
+
+}
+
+.position4 {
+    transform: translate3d(0px, 200px, 0px); 
+
+}

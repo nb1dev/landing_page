@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import type { DetailsBannerBlock as DetailsBannerBlockProps } from 'src/payload-types'
@@ -155,9 +156,9 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
                 minHeight: isMobile ? '570px' : '300px',
-                height: isMobile ? '570px' : '',
-                backgroundColor: 'black',
+                backgroundColor: '#138DF1',
                 padding: '24px',
+                paddingRight: '0px',
                 borderRadius: '20px',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
@@ -184,40 +185,62 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 }
                 alt="icon"
               /> */}
-              <div className={`${isMobile ? 'h-1/2' : ''}`}></div>
-              <div className={`w-full ${isMobile ? 'h-1/2' : ''}`}>
+              <div className={`${isMobile ? '' : ''}`}></div>
+              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
                 <div
-                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-                  style={{
-                    color: 'white',
-                    marginBottom: '16px',
-                    fontSize: isMobile ? '1.5rem' : '2rem',
-                    fontFamily: 'Instrument Sans',
-                    fontWeight: '500',
-                  }}
+                  className={`${isMobile ? 'w-full' : ''}`}
+                  style={{ width: isMobile ? '' : '70%', paddingRight: isMobile ? '24px' : '0' }}
                 >
-                  {props.content ? props.content[2]?.title : ''}
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{
+                      color: 'white',
+                      marginBottom: '16px',
+                      fontSize: isMobile ? '1.5rem' : '2rem',
+                      fontFamily: 'Instrument Sans',
+                      fontWeight: '500',
+                      width: isMobile ? '' : '35%',
+                    }}
+                  >
+                    {props.content ? props.content[2]?.title : ''}
+                  </div>
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{
+                      color: 'white',
+                      fontSize: '1rem',
+                      fontFamily: 'Inter',
+                      fontWeight: '400',
+                    }}
+                  >
+                    {props.content ? props.content[2]?.description : ''}
+                  </div>
                 </div>
                 <div
-                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-                  style={{
-                    color: 'white',
-                    fontSize: '1rem',
-                    fontFamily: 'Inter',
-                    fontWeight: '400',
-                  }}
+                  className={`${isMobile ? 'w-full' : ''}`}
+                  style={{ width: isMobile ? '' : '' }}
                 >
-                  {props.content ? props.content[2]?.description : ''}
+                  <img
+                    className="w-full"
+                    src={
+                      props.content &&
+                      props.content[2].imageContent &&
+                      typeof props.content[2].imageContent === 'object'
+                        ? getMediaUrl(props.content[2].imageContent.url).toString()
+                        : undefined
+                    }
+                    alt="icon"
+                  />
                 </div>
               </div>
             </div>
             <div
               className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
-                minHeight: isMobile ? '570px' : '300px',
-                height: isMobile ? '570px' : '',
-                backgroundColor: 'black',
+                minHeight: isMobile ? '' : '300px',
+                backgroundColor: '#008498',
                 padding: '24px',
+                paddingRight: '0',
                 borderRadius: '20px',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
@@ -244,30 +267,51 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 }
                 alt="icon"
               /> */}
-              <div className={`${isMobile ? 'h-1/2' : ''}`}></div>
-              <div className={`w-full ${isMobile ? 'h-1/2' : ''}`}>
+              <div className={`${isMobile ? '' : ''}`}></div>
+              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
                 <div
-                  className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-                  style={{
-                    color: 'white',
-                    marginBottom: '16px',
-                    fontSize: isMobile ? '1.5rem' : '2rem',
-                    fontFamily: 'Instrument Sans',
-                    fontWeight: '500',
-                  }}
+                  className={`${isMobile ? 'w-full' : ''}`}
+                  style={{ width: isMobile ? '' : '60%', paddingRight: isMobile ? '24px' : '0' }}
                 >
-                  {props.content ? props.content[3]?.title : ''}
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{
+                      color: 'white',
+                      marginBottom: '16px',
+                      fontSize: isMobile ? '1.5rem' : '2rem',
+                      fontFamily: 'Instrument Sans',
+                      fontWeight: '500',
+                    }}
+                  >
+                    {props.content ? props.content[3]?.title : ''}
+                  </div>
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{
+                      color: 'white',
+                      fontSize: '1rem',
+                      fontFamily: 'Inter',
+                      fontWeight: '400',
+                    }}
+                  >
+                    {props.content ? props.content[3]?.description : ''}
+                  </div>
                 </div>
                 <div
-                  className={`${isMobile ? 'w-full' : 'w-1/3'}`}
-                  style={{
-                    color: 'white',
-                    fontSize: '1rem',
-                    fontFamily: 'Inter',
-                    fontWeight: '400',
-                  }}
+                  className={`${isMobile ? 'w-full' : ''}`}
+                  style={{ width: isMobile ? '' : '' }}
                 >
-                  {props.content ? props.content[3]?.description : ''}
+                  <img
+                    className="w-full"
+                    src={
+                      props.content &&
+                      props.content[3].imageContent &&
+                      typeof props.content[3].imageContent === 'object'
+                        ? getMediaUrl(props.content[3].imageContent.url).toString()
+                        : undefined
+                    }
+                    alt="icon"
+                  />
                 </div>
               </div>
             </div>

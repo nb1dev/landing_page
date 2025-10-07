@@ -6,6 +6,8 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useRouter } from 'next/navigation'
+import { CarouselBanner } from './CarouselBanner'
+import 'flag-icons/css/flag-icons.min.css'
 // import { useLocation } from 'react-router'
 // import { BlocksField } from '@payloadcms/ui'
 
@@ -36,7 +38,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/')
             }}
           >
-            EN
+            <span style={{ border: '1px solid white' }} className="fi fi-gb"></span>
           </div>
           <div
             className="p-2"
@@ -51,12 +53,12 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/de')
             }}
           >
-            DE
+            <span style={{ border: '1px solid white' }} className="fi fi-de"></span>
           </div>
         </div>
       </div>
       <div
-        className="flex flex-col"
+        className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}
         style={{
           width: '100%',
           minHeight: isMobile ? '755px' : '640px',
@@ -65,12 +67,15 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           borderRadius: '20px',
+          position: 'relative',
+          overflowY: 'hidden',
+          overflowX: 'hidden',
           backgroundImage: isMobile
             ? `url(${getMediaUrl(typeof props?.backgroundImageMobile === 'object' ? props.backgroundImageMobile.url : '')})`
             : `url(${getMediaUrl(typeof props?.backgroundImage === 'object' ? props.backgroundImage.url : '')})`,
         }}
       >
-        <div className="p-16">
+        <div className={`${isMobile ? 'w-full p-16 pb-1' : 'w-1/2 p-16 pr-0'}`}>
           <div className={`${isMobile ? 'mb-4' : 'mb-16'}`}>
             <img
               // style={{ width: '1000px' }}
@@ -81,7 +86,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             />
           </div>
           <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
-            <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col gap-8`}>
+            <div className={`flex ${isMobile ? 'w-full' : ''} flex-col gap-8`}>
               <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16 '}`}>
                 <div
                   style={{
@@ -143,6 +148,14 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               </div> */}
           </div>
         </div>
+        {!isMobile && (
+          <div
+            className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
+            style={{ marginTop: isMobile ? '0' : '300px' }}
+          >
+            <CarouselBanner {...props} />
+          </div>
+        )}
       </div>
     </>
   )
