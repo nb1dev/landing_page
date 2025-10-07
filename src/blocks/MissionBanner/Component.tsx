@@ -106,7 +106,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         {isMobile && (
           <div
             style={{
-              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              fontSize: isMobile ? '42px' : '50px',
               marginBottom: '16px',
               width: isMobile ? '50%' : '100%',
             }}
@@ -129,7 +129,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           {!isMobile && (
             <div
               style={{
-                fontSize: isMobile ? '2.375rem' : '4.3rem',
+                fontSize: isMobile ? '42px' : '50px',
                 marginBottom: '16px',
                 fontFamily: 'Instrument Sans',
                 fontWeight: '500',
@@ -142,7 +142,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           <div
             style={{
               marginBottom: '16px',
-              fontSize: '1.125rem',
+              fontSize: isMobile ? '15px' : '18px',
               fontFamily: 'Inter',
               fontWeight: '400',
             }}
@@ -160,7 +160,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             <div
               style={{
                 color: '#8b8a8a',
-                fontSize: '0.875rem',
+                fontSize: isMobile ? '12px' : '14px',
                 fontFamily: 'Inter',
                 fontWeight: '400',
               }}

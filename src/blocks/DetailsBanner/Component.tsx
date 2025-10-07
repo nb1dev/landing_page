@@ -27,7 +27,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
         <div>
           <div
             style={{
-              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              fontSize: isMobile ? '38px' : '50px',
               width: '75%',
               marginBottom: '32px',
             }}
@@ -77,7 +77,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 style={{
                   color: '#292929',
                   marginBottom: '16px',
-                  fontSize: isMobile ? '1.5rem' : '2rem',
+                  fontSize: isMobile ? '24px' : '32px',
                   fontFamily: 'Instrument Sans',
                   fontWeight: '400',
                 }}
@@ -88,7 +88,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 className={isMobile ? 'w-full' : 'w-2/3'}
                 style={{
                   color: '#292929',
-                  fontSize: isMobile ? '0.938rem' : '1rem',
+                  fontSize: isMobile ? '15px' : '16px',
                   fontFamily: 'Inter',
                   fontWeight: '400',
                 }}
@@ -133,7 +133,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 style={{
                   color: 'white',
                   marginBottom: '16px',
-                  fontSize: isMobile ? '1.5rem' : '2rem',
+                  fontSize: isMobile ? '24px' : '32px',
                   fontFamily: 'Instrument Sans',
                   fontWeight: '400',
                 }}
@@ -144,7 +144,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 className={isMobile ? 'w-full' : 'w-2/3'}
                 style={{
                   color: 'white',
-                  fontSize: isMobile ? '0.938rem' : '1rem',
+                  fontSize: isMobile ? '15px' : '16px',
                   fontFamily: 'Inter',
                   fontWeight: '400',
                 }}
@@ -201,7 +201,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     style={{
                       color: 'white',
                       marginBottom: '16px',
-                      fontSize: isMobile ? '1.5rem' : '2rem',
+                      fontSize: isMobile ? '24px' : '32px',
                       fontFamily: 'Instrument Sans',
                       fontWeight: '400',
                       width: isMobile ? '' : '35%',
@@ -213,7 +213,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     className={`${isMobile ? 'w-full' : ''}`}
                     style={{
                       color: 'white',
-                      fontSize: isMobile ? '0.938rem' : '1rem',
+                      fontSize: isMobile ? '15px' : '16px',
                       fontFamily: 'Inter',
                       fontWeight: '400',
                     }}
@@ -283,7 +283,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     style={{
                       color: 'white',
                       marginBottom: '16px',
-                      fontSize: isMobile ? '1.5rem' : '2rem',
+                      fontSize: isMobile ? '24px' : '32px',
                       fontFamily: 'Instrument Sans',
                       fontWeight: '400',
                     }}
@@ -294,7 +294,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     className={`${isMobile ? 'w-full' : ''}`}
                     style={{
                       color: 'white',
-                      fontSize: isMobile ? '0.938rem' : '1rem',
+                      fontSize: isMobile ? '15px' : '16px',
                       fontFamily: 'Inter',
                       fontWeight: '400',
                     }}
