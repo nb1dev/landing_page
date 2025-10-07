@@ -33,8 +33,9 @@ COPY --from=builder /app/redirects.js ./redirects.js
 COPY --from=builder /app/tailwind.config.mjs ./tailwind.config.mjs
 COPY --from=builder /app/postcss.config.js ./postcss.config.js
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
+COPY --from=builder /app/src ./src
 COPY --from=builder /app/.env ./.env
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npx payload migrate && npm start"]
