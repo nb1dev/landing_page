@@ -45,6 +45,7 @@
     "colortranslator": "^5.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
+    "flag-icons": "^7.5.0",
     "geist": "^1.3.0",
     "graphql": "^16.8.2",
     "lucide-react": "^0.378.0",
