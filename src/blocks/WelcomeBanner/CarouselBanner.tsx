@@ -36,9 +36,9 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   useEffect(() => {
     intervalidMobile = setInterval(() => {
       const pos = yPositionsMobile.slice()
-      const elem = pos.shift()
+      const elem = pos.pop()
       if (elem !== undefined) {
-        pos.push(elem)
+        pos.unshift(elem)
       }
       setYPositionsMobile(pos)
     }, 4000)
