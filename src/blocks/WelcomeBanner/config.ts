@@ -107,6 +107,11 @@ export const WelcomeBannerBlock: Block = {
         },
       ],
     },
+    {
+      name: 'lineText',
+      type: 'text',
+      // required: true,
+    },
   ],
   interfaceName: 'WelcomeBannerBlock',
 }

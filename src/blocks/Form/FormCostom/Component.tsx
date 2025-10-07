@@ -131,12 +131,17 @@ export const FormCustomBlock: React.FC<
     >
       <div
         className={`flex w-full ${isMobile ? '' : 'p-16'}`}
-        style={{ padding: isMobile ? '24px' : '' }}
+        style={{
+          paddingRight: isMobile ? '24px' : '',
+          paddingLeft: isMobile ? '24px' : '',
+          paddingTop: isMobile ? '32px' : '',
+          paddingBottom: isMobile ? '32px' : '',
+        }}
       >
         <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
           <div
             style={{
-              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              fontSize: isMobile ? '38px' : '72px',
               marginBottom: '24px',
               fontFamily: 'Instrument Sans',
               fontWeight: '500',
@@ -146,8 +151,8 @@ export const FormCustomBlock: React.FC<
           </div>
           <div
             style={{
-              fontSize: '1.5rem',
-              marginBottom: '60px',
+              fontSize: isMobile ? '20px' : '24px',
+              marginBottom: isMobile ? '24px' : '60px',
               color: 'black',
               fontFamily: 'Inter',
               fontWeight: '400',
@@ -204,7 +209,7 @@ export const FormCustomBlock: React.FC<
                       height: '60px',
                       fontFamily: 'Instrument Sans',
                       fontWeight: '500',
-                      fontSize: '1.25rem',
+                      fontSize: isMobile ? '18px' : '20px',
                     }}
                     className="w-full"
                   >

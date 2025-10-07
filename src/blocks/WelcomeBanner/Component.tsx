@@ -90,7 +90,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16 '}`}>
                 <div
                   style={{
-                    fontSize: isMobile ? '2.375rem' : '4.3rem',
+                    fontSize: isMobile ? '38px' : '70px',
                     fontFamily: 'Instrument Sans',
                     fontWeight: '500',
                   }}
@@ -100,7 +100,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                 </div>
                 <div
                   style={{
-                    fontSize: isMobile ? '1.25rem' : '1.5rem',
+                    fontSize: isMobile ? '20px' : '24px',
                     color: '#292929',
                     fontWeight: '400',
                     fontFamily: 'Inter',
@@ -148,14 +148,26 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               </div> */}
           </div>
         </div>
-        {!isMobile && (
-          <div
-            className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
-            style={{ marginTop: isMobile ? '0' : '300px' }}
-          >
-            <CarouselBanner {...props} />
-          </div>
-        )}
+
+        <div
+          className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
+          style={{ marginTop: isMobile ? (locationUrl === '/de' ? '10px' : '40px') : '260px' }}
+        >
+          <CarouselBanner {...props} />
+        </div>
+      </div>
+      <div
+        className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+        style={{
+          fontSize: isMobile ? '15px' : '18px',
+          marginTop: isMobile ? '32px' : '80px',
+          // marginBottom: '32px',
+          color: '#a6a6a6',
+          fontFamily: 'Inter',
+          fontWeight: '400',
+        }}
+      >
+        {props.lineText}
       </div>
     </>
   )

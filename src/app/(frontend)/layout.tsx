@@ -15,8 +15,10 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
-import '@fontsource/inter'
-import '@fontsource/instrument-sans'
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/instrument-sans/500.css'
+import '@fontsource/instrument-sans/400.css'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()

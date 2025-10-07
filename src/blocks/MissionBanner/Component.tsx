@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
 import type { MissionBannerBlock as MissionBannerBlockProps } from 'src/payload-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 import RichText from '@/components/RichText'
@@ -10,12 +10,18 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 
 export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
+  const [locationUrl, setLocationUrl] = useState('/')
+
+  useEffect(() => {
+    const loc = window.location.pathname
+    setLocationUrl(loc)
+  }, [])
 
   return (
     <div
       style={{
         width: '100%',
-        padding: '20px',
+        paddingBottom: '20px',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -25,7 +31,10 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
     >
       <div
         className="flex flex-row w-full"
-        style={{ flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '24px' : '80px' }}
+        style={{
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '24px' : locationUrl === '/' ? '80px' : '80px',
+        }}
       >
         {/* <div className="flex w-1/2">
           <div className="flex w-full gap-2">
@@ -97,7 +106,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         {isMobile && (
           <div
             style={{
-              fontSize: isMobile ? '2.375rem' : '4.3rem',
+              fontSize: isMobile ? '42px' : '50px',
               marginBottom: '16px',
               width: isMobile ? '50%' : '100%',
             }}
@@ -107,7 +116,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         )}
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
           <img
-            style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px' }}
+            style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px', maxHeight: '384px' }}
             src={
               props.images && typeof props.images[0]?.image === 'object'
                 ? getMediaUrl(props.images[0]?.image.url).toString()
@@ -120,7 +129,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           {!isMobile && (
             <div
               style={{
-                fontSize: isMobile ? '2.375rem' : '4.3rem',
+                fontSize: isMobile ? '42px' : '50px',
                 marginBottom: '16px',
                 fontFamily: 'Instrument Sans',
                 fontWeight: '500',
@@ -133,7 +142,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           <div
             style={{
               marginBottom: '16px',
-              fontSize: '1.125rem',
+              fontSize: isMobile ? '15px' : '18px',
               fontFamily: 'Inter',
               fontWeight: '400',
             }}
@@ -142,7 +151,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           </div>
           <div style={{ marginTop: 'auto' }}>
             <img
-              style={{ marginBottom: '16px' }}
+              style={{ marginBottom: '16px', maxHeight: '384px' }}
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }
@@ -151,7 +160,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             <div
               style={{
                 color: '#8b8a8a',
-                fontSize: '0.875rem',
+                fontSize: isMobile ? '12px' : '14px',
                 fontFamily: 'Inter',
                 fontWeight: '400',
               }}
