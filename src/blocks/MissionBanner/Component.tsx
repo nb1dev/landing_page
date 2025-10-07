@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
 import type { MissionBannerBlock as MissionBannerBlockProps } from 'src/payload-types'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 import RichText from '@/components/RichText'
@@ -10,6 +10,12 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 
 export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
+  const [locationUrl, setLocationUrl] = useState('/')
+
+  useEffect(() => {
+    const loc = window.location.pathname
+    setLocationUrl(loc)
+  }, [])
 
   return (
     <div
@@ -25,7 +31,10 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
     >
       <div
         className="flex flex-row w-full"
-        style={{ flexDirection: isMobile ? 'column' : 'row', gap: isMobile ? '24px' : '80px' }}
+        style={{
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '24px' : locationUrl === '/' ? '80px' : '50px',
+        }}
       >
         {/* <div className="flex w-1/2">
           <div className="flex w-full gap-2">

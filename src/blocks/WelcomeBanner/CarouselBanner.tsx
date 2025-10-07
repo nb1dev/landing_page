@@ -20,9 +20,9 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   useEffect(() => {
     intervalid = setInterval(() => {
       const pos = yPositions.slice()
-      const elem = pos.pop()
+      const elem = pos.shift()
       if (elem !== undefined) {
-        pos.unshift(elem)
+        pos.push(elem)
       }
       setYPositions(pos)
     }, 4000)
@@ -36,9 +36,9 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   useEffect(() => {
     intervalidMobile = setInterval(() => {
       const pos = yPositionsMobile.slice()
-      const elem = pos.pop()
+      const elem = pos.shift()
       if (elem !== undefined) {
-        pos.unshift(elem)
+        pos.push(elem)
       }
       setYPositionsMobile(pos)
     }, 4000)
@@ -104,7 +104,8 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
         <div
           className="absolute"
           style={{
-            marginLeft: locationUrl === '/' ? '180px' : '0px',
+            // marginLeft: locationUrl === '/' ? '180px' : '0px',
+            right: '500px',
           }}
         >
           {bannerLabels?.map((item, index) => {

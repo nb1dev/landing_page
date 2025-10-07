@@ -831,6 +831,7 @@ export interface WelcomeBannerBlock {
         id?: string | null;
       }[]
     | null;
+  lineText?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'welcome-banner';
@@ -1355,6 +1356,7 @@ export interface WelcomeBannerBlockSelect<T extends boolean = true> {
         textLabel?: T;
         id?: T;
       };
+  lineText?: T;
   id?: T;
   blockName?: T;
 }
