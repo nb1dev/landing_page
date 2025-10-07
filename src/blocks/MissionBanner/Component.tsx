@@ -21,7 +21,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
     <div
       style={{
         width: '100%',
-        padding: '20px',
+        paddingBottom: '20px',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
@@ -33,7 +33,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         className="flex flex-row w-full"
         style={{
           flexDirection: isMobile ? 'column' : 'row',
-          gap: isMobile ? '24px' : locationUrl === '/' ? '80px' : '50px',
+          gap: isMobile ? '24px' : locationUrl === '/' ? '80px' : '80px',
         }}
       >
         {/* <div className="flex w-1/2">
@@ -116,7 +116,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
         )}
         <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
           <img
-            style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px' }}
+            style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px', maxHeight: '384px' }}
             src={
               props.images && typeof props.images[0]?.image === 'object'
                 ? getMediaUrl(props.images[0]?.image.url).toString()
@@ -151,7 +151,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           </div>
           <div style={{ marginTop: 'auto' }}>
             <img
-              style={{ marginBottom: '16px' }}
+              style={{ marginBottom: '16px', maxHeight: '384px' }}
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }

@@ -159,9 +159,9 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       <div
         className={`${isMobile ? 'w-full' : 'w-1/2'}`}
         style={{
-          fontSize: '1.125rem',
-          marginTop: '80px',
-          marginBottom: '32px',
+          fontSize: isMobile ? '0.938' : '1.125rem',
+          marginTop: isMobile ? '32px' : '80px',
+          // marginBottom: '32px',
           color: '#a6a6a6',
           fontFamily: 'Inter',
           fontWeight: '400',
