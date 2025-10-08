@@ -14,5 +14,18 @@ services:
       - .env.stg
     environment:
       NODE_ENV: staging
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: landing_stg_db
+    restart: always
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payloadpass
+      POSTGRES_DB: payloaddb
     volumes:
-      - ./data/stg:/app/data
+      - ./data/stg-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
