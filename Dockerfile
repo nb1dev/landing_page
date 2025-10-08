@@ -14,6 +14,8 @@ COPY . .
 ARG ENV_FILE=.env
 COPY ${ENV_FILE} .env
 
+RUN npx payload migrate || true
+
 # Build Next.js
 RUN npm run build
 
