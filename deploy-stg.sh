@@ -6,6 +6,7 @@ BRANCH="main"
 APP_NAME="landing_stg"
 PORT="3000"
 
+echo "TEST"
 export NVM_DIR="$HOME/.nvm"
 if [ -s "$NVM_DIR/nvm.sh" ]; then
   . "$NVM_DIR/nvm.sh"
