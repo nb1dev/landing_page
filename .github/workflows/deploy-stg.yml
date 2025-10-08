@@ -1,4 +1,4 @@
-name: Sync Main to STG & Deploy
+name: Merge Main into STG & Deploy
 
 on:
   push:
@@ -9,23 +9,24 @@ permissions:
   contents: write
 
 jobs:
-  sync-and-deploy:
+  merge-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Sync main → stg (force update)
+      - name: Merge main → stg
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git fetch origin
-          git checkout -B stg origin/stg || git checkout -b stg
-          git reset --hard origin/main
-          git push origin stg --force
+          git checkout stg
+          git merge origin/main --no-edit || true   # dacă există conflicte, job-ul pică
+          git push origin stg
 
       - name: Deploy to Staging via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -37,5 +38,5 @@ jobs:
             set -e
             cd /var/www/landing_page
             git fetch origin stg
-            git reset --hard origin/stg
-            docker compose -f docker-compose.stg.yml up -d --build
+            git merge origin/stg --no-edit
+            bash deploy-stg.sh
