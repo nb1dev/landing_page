@@ -22,7 +22,10 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
   }, [])
 
   return (
-    <>
+    <div
+      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
+      style={{ padding: isMobile ? '20px' : '' }}
+    >
       <div className="flex flex-row mb-6 ml-auto w-full">
         <div className="flex ml-auto">
           <div
@@ -58,10 +61,10 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         </div>
       </div>
       <div
-        className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-2`}
+        className={`flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
         style={{
           width: '100%',
-          minHeight: isMobile ? '755px' : '640px',
+          minHeight: isMobile ? '596px' : '640px',
           backgroundColor: 'white',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -75,8 +78,15 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             : `url(${getMediaUrl(typeof props?.backgroundImage === 'object' ? props.backgroundImage.url : '')})`,
         }}
       >
-        <div className={`${isMobile ? 'w-full p-16 pb-1' : 'w-1/2 p-16 pr-0'}`}>
-          <div className={`${isMobile ? 'mb-4' : 'mb-16'}`}>
+        <div
+          className={`${isMobile ? 'w-full ' : 'w-1/2'}`}
+          style={{
+            paddingTop: isMobile ? '37px' : '100px',
+            paddingLeft: isMobile ? '37px' : '87px',
+            paddingRight: isMobile ? '37px' : '',
+          }}
+        >
+          <div className={`${isMobile ? '' : 'mb-16'}`}>
             <img
               // style={{ width: '1000px' }}
               src={
@@ -93,6 +103,9 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                     fontSize: isMobile ? '38px' : '70px',
                     fontFamily: 'Instrument Sans',
                     fontWeight: '500',
+                    lineHeight: isMobile ? '42px' : '74px',
+                    marginBottom: '24px',
+                    width: isMobile ? '85%' : '100%',
                   }}
                   className="mb-6"
                 >
@@ -104,6 +117,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                     color: '#292929',
                     fontWeight: '400',
                     fontFamily: 'Inter',
+                    lineHeight: isMobile ? '26px' : '34px',
+                    width: isMobile ? '85%' : '100%',
                   }}
                 >
                   {props.description}
@@ -151,7 +166,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
 
         <div
           className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
-          style={{ marginTop: isMobile ? (locationUrl === '/de' ? '10px' : '40px') : '260px' }}
+          style={{ marginTop: isMobile ? '' : '260px' }}
         >
           <CarouselBanner {...props} />
         </div>
@@ -165,10 +180,11 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           color: '#a6a6a6',
           fontFamily: 'Inter',
           fontWeight: '400',
+          lineHeight: isMobile ? '22px' : '30px',
         }}
       >
         {props.lineText}
       </div>
-    </>
+    </div>
   )
 }

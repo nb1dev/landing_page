@@ -127,7 +127,7 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
           className="absolute"
           style={{
             marginLeft: locationUrl === '/' && !isMobile ? '100px' : '',
-            left: isMobile ? '165px' : '',
+            left: isMobile ? '95px' : '',
           }}
         >
           {bannerLabels?.map((item, index) => {
