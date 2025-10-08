@@ -6,7 +6,11 @@ node_modules
 .next
 .vercel
 .vscode
-# landing-page-nb1.db
+
+# SQLite DB local
+*.db
+/data/
+
 
 # Payload default media upload directory
 # public/media/
