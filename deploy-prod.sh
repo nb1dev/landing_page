@@ -19,9 +19,6 @@ npm install --legacy-peer-deps
 echo ">>> Use .env.prod"
 cp .env.prod .env
 
-echo ">>> Payload migrations"
-npx payload migrate -y || true
-
 echo ">>> Build Next.js"
 npm run build
 
