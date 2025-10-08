@@ -14,5 +14,3 @@ services:
       - .env.prod
     environment:
       NODE_ENV: production
-    volumes:
-      - ./data/prod:/app/data

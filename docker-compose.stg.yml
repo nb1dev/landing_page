@@ -14,5 +14,4 @@ services:
       - .env.stg
     environment:
       NODE_ENV: staging
-    volumes:
-      - ./data/stg:/app/data
+
