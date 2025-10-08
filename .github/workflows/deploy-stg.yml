@@ -35,5 +35,8 @@ jobs:
           username: ${{ secrets.STG_USER }}
           key: ${{ secrets.STG_SSH_KEY }}
           script: |
+            set -e
             cd /var/www/landing_page
+            git fetch origin stg
+            git merge origin/stg --no-edit
             bash deploy-stg.sh
