@@ -1,25 +1,32 @@
-name: Deploy to Production
+name: Merge STG into PROD & Deploy
 
 on:
   push:
     branches:
       - prod
 
+permissions:
+  contents: write
+
 jobs:
-  deploy:
+  merge-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout prod branch
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: prod
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Ensure prod is fast-forward
+      - name: Merge stg → prod
         run: |
-          git fetch origin prod
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin
           git checkout prod
-          git merge --ff-only origin/prod
+          git merge origin/stg --no-edit
+          git push origin prod
 
       - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@v1.0.0
@@ -28,6 +35,5 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
-            set -e
             cd /var/www/landing_page
             bash deploy-prod.sh
