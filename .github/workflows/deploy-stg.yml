@@ -36,6 +36,4 @@ jobs:
           script: |
             set -e
             cd /var/www/landing_page
-            git fetch origin stg
-            git reset --hard origin/stg
-            docker compose -f docker-compose.stg.yml up -d --build
+            bash deploy-stg.sh
