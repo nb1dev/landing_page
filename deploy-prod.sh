@@ -26,7 +26,12 @@ echo ">>> Build Next.js"
 npm run build
 
 echo ">>> Restart PM2"
-pm2 restart "$APP_NAME" || pm2 start "npm start" --name "$APP_NAME" -- \
-  && pm2 save
+if pm2 list | grep -q "$APP_NAME"; then
+  pm2 restart "$APP_NAME" --update-env
+else
+  pm2 start npm --name "$APP_NAME" -- start
+fi
+
+pm2 save
 
 echo ">>> Deploy DONE ($(date))"
