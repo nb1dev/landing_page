@@ -25,7 +25,7 @@ jobs:
 
           git fetch origin
           git checkout prod
-          git merge origin/stg --no-edit
+          git merge origin/stg --no-edit || true
           git push origin prod
 
       - name: Deploy to Production via SSH
@@ -35,5 +35,8 @@ jobs:
           username: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_SSH_KEY }}
           script: |
+            set -e
             cd /var/www/landing_page
+            git fetch origin prod
+            git merge origin/prod --no-edit
             bash deploy-prod.sh

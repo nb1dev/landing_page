@@ -25,7 +25,7 @@ jobs:
 
           git fetch origin
           git checkout stg
-          git merge origin/main --no-edit || true   # dacă există conflicte, job-ul pică
+          git merge origin/main --no-edit || true
           git push origin stg
 
       - name: Deploy to Staging via SSH
