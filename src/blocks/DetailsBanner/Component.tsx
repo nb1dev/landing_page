@@ -14,309 +14,326 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
 
   return (
     <div
-      style={{
-        width: '100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        borderRadius: '20px',
-        backgroundColor: '#1D1D1D',
-      }}
+      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
+      style={{ padding: isMobile ? '0 20px 20px' : '' }}
     >
-      <div>
+      <div
+        style={{
+          width: '100%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          borderRadius: '20px',
+          backgroundColor: '#1D1D1D',
+        }}
+      >
         <div>
-          <div
-            style={{
-              fontSize: isMobile ? '38px' : '50px',
-              width: isMobile ? '100%' : '75%',
-              marginBottom: '32px',
-            }}
-          >
-            <RichText data={props.heading} />
-          </div>
-        </div>
-        <div>
-          <div
-            className={`flex w-full mb-6 ${isMobile ? 'flex-col' : 'flex-row'}`}
-            style={{ gap: '1.5rem' }}
-          >
+          <div>
             <div
-              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
               style={{
-                minHeight: '300px',
-                backgroundColor: 'black',
-                padding: '32px',
-                borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: isMobile
-                  ? `url(${getMediaUrl(
-                      props.content && typeof props.content[0]?.backgroundImageMobile === 'object'
-                        ? getMediaUrl(props.content[0]?.backgroundImageMobile?.url).toString()
-                        : undefined,
-                    )})`
-                  : `url(${getMediaUrl(
-                      props.content && typeof props.content[0]?.backgroundImage === 'object'
-                        ? getMediaUrl(props.content[0]?.backgroundImage?.url).toString()
-                        : undefined,
-                    )})`,
+                fontSize: isMobile ? '38px' : '50px',
+                width: isMobile ? '100%' : '75%',
+                marginBottom: isMobile ? '24px' : '40px',
+                lineHeight: isMobile ? '42px' : '74px',
               }}
             >
-              {/* <img
-                style={{ marginBottom: '16px' }}
-                src={
-                  props.content && typeof props.content[0]?.icon === 'object'
-                    ? getMediaUrl(props.content[0]?.icon.url).toString()
-                    : undefined
-                }
-                alt="icon"
-              /> */}
-              <div
-                className="w-full"
-                style={{
-                  color: '#292929',
-                  marginBottom: '16px',
-                  fontSize: isMobile ? '24px' : '32px',
-                  fontFamily: 'Instrument Sans',
-                  fontWeight: '400',
-                }}
-              >
-                {props.content ? props.content[0]?.title : ''}
-              </div>
-              <div
-                className={isMobile ? 'w-full' : 'w-2/3'}
-                style={{
-                  color: '#292929',
-                  fontSize: isMobile ? '15px' : '16px',
-                  fontFamily: 'Inter',
-                  fontWeight: '400',
-                }}
-              >
-                {props.content ? props.content[0]?.description : ''}
-              </div>
-            </div>
-            <div
-              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-              style={{
-                minHeight: '300px',
-                backgroundColor: 'black',
-                padding: '32px',
-                borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: isMobile
-                  ? `url(${getMediaUrl(
-                      props.content && typeof props.content[1]?.backgroundImageMobile === 'object'
-                        ? getMediaUrl(props.content[1]?.backgroundImageMobile?.url).toString()
-                        : undefined,
-                    )})`
-                  : `url(${getMediaUrl(
-                      props.content && typeof props.content[1]?.backgroundImage === 'object'
-                        ? getMediaUrl(props.content[1]?.backgroundImage?.url).toString()
-                        : undefined,
-                    )})`,
-              }}
-            >
-              {/* <img
-                style={{ marginBottom: '16px' }}
-                src={
-                  props.content && typeof props.content[1]?.icon === 'object'
-                    ? getMediaUrl(props.content[1]?.icon.url).toString()
-                    : undefined
-                }
-                alt="icon"
-              /> */}
-              <div
-                className="w-full"
-                style={{
-                  color: 'white',
-                  marginBottom: '16px',
-                  fontSize: isMobile ? '24px' : '32px',
-                  fontFamily: 'Instrument Sans',
-                  fontWeight: '400',
-                }}
-              >
-                {props.content ? props.content[1]?.title : ''}
-              </div>
-              <div
-                className={isMobile ? 'w-full' : 'w-2/3'}
-                style={{
-                  color: 'white',
-                  fontSize: isMobile ? '15px' : '16px',
-                  fontFamily: 'Inter',
-                  fontWeight: '400',
-                }}
-              >
-                {props.content ? props.content[1]?.description : ''}
-              </div>
+              <RichText data={props.heading} />
             </div>
           </div>
-          <div
-            className={`flex w-full ${isMobile ? 'flex-col' : 'flex-row'}`}
-            style={{ gap: '1.5rem' }}
-          >
+          <div>
             <div
-              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-              style={{
-                minHeight: isMobile ? '570px' : '300px',
-                backgroundColor: '#138DF1',
-                padding: '32px',
-                paddingRight: '0px',
-                borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: isMobile
-                  ? `url(${getMediaUrl(
-                      props.content && typeof props.content[2]?.backgroundImageMobile === 'object'
-                        ? getMediaUrl(props.content[2]?.backgroundImageMobile?.url).toString()
-                        : undefined,
-                    )})`
-                  : `url(${getMediaUrl(
-                      props.content && typeof props.content[2]?.backgroundImage === 'object'
-                        ? getMediaUrl(props.content[2]?.backgroundImage?.url).toString()
-                        : undefined,
-                    )})`,
-              }}
+              className={`flex w-full mb-6 ${isMobile ? 'flex-col' : 'flex-row'}`}
+              style={{ gap: '24px' }}
             >
-              {/* <img
-                style={{ marginBottom: '16px' }}
-                src={
-                  props.content && typeof props.content[2]?.icon === 'object'
-                    ? getMediaUrl(props.content[2]?.icon.url).toString()
-                    : undefined
-                }
-                alt="icon"
-              /> */}
-              <div className={`${isMobile ? '' : ''}`}></div>
-              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
+              <div
+                className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                style={{
+                  minHeight: '300px',
+                  backgroundColor: 'black',
+                  padding: isMobile ? '24px' : '32px 40px',
+                  marginBottom: isMobile ? '0' : '8px',
+                  borderRadius: '20px',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage: isMobile
+                    ? `url(${getMediaUrl(
+                        props.content && typeof props.content[0]?.backgroundImageMobile === 'object'
+                          ? getMediaUrl(props.content[0]?.backgroundImageMobile?.url).toString()
+                          : undefined,
+                      )})`
+                    : `url(${getMediaUrl(
+                        props.content && typeof props.content[0]?.backgroundImage === 'object'
+                          ? getMediaUrl(props.content[0]?.backgroundImage?.url).toString()
+                          : undefined,
+                      )})`,
+                }}
+              >
+                {/* <img
+                  style={{ marginBottom: '16px' }}
+                  src={
+                    props.content && typeof props.content[0]?.icon === 'object'
+                      ? getMediaUrl(props.content[0]?.icon.url).toString()
+                      : undefined
+                  }
+                  alt="icon"
+                /> */}
                 <div
-                  className={`${isMobile ? 'w-full' : ''}`}
-                  style={{ width: isMobile ? '' : '70%', paddingRight: isMobile ? '32px' : '0' }}
+                  className="w-full"
+                  style={{
+                    color: '#292929',
+                    marginBottom: isMobile ? '16px' : '32px',
+                    fontSize: isMobile ? '24px' : '32px',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '400',
+                    lineHeight: isMobile ? '38px' : '38px',
+                  }}
                 >
-                  <div
-                    className={`${isMobile ? 'w-full' : ''}`}
-                    style={{
-                      color: 'white',
-                      marginBottom: '16px',
-                      fontSize: isMobile ? '24px' : '32px',
-                      fontFamily: 'Instrument Sans',
-                      fontWeight: '400',
-                      width: isMobile ? '' : '35%',
-                    }}
-                  >
-                    {props.content ? props.content[2]?.title : ''}
-                  </div>
-                  <div
-                    className={`${isMobile ? 'w-full' : ''}`}
-                    style={{
-                      color: 'white',
-                      fontSize: isMobile ? '15px' : '16px',
-                      fontFamily: 'Inter',
-                      fontWeight: '400',
-                    }}
-                  >
-                    {props.content ? props.content[2]?.description : ''}
-                  </div>
+                  {props.content ? props.content[0]?.title : ''}
                 </div>
                 <div
-                  className={`${isMobile ? 'w-full' : ''}`}
-                  style={{ width: isMobile ? '' : '' }}
+                  className={isMobile ? 'w-full' : 'w-2/3'}
+                  style={{
+                    color: '#292929',
+                    fontSize: isMobile ? '15px' : '16px',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                    lineHeight: '24px',
+                  }}
                 >
-                  <img
-                    className="w-full"
-                    src={
-                      props.content &&
-                      props.content[2].imageContent &&
-                      typeof props.content[2].imageContent === 'object'
-                        ? getMediaUrl(props.content[2].imageContent.url).toString()
-                        : undefined
-                    }
-                    alt="icon"
-                  />
+                  {props.content ? props.content[0]?.description : ''}
+                </div>
+              </div>
+              <div
+                className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                style={{
+                  minHeight: '300px',
+                  backgroundColor: 'black',
+                  padding: isMobile ? '24px' : '32px 40px',
+                  borderRadius: '20px',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  marginBottom: isMobile ? '0' : '8px',
+                  backgroundImage: isMobile
+                    ? `url(${getMediaUrl(
+                        props.content && typeof props.content[1]?.backgroundImageMobile === 'object'
+                          ? getMediaUrl(props.content[1]?.backgroundImageMobile?.url).toString()
+                          : undefined,
+                      )})`
+                    : `url(${getMediaUrl(
+                        props.content && typeof props.content[1]?.backgroundImage === 'object'
+                          ? getMediaUrl(props.content[1]?.backgroundImage?.url).toString()
+                          : undefined,
+                      )})`,
+                }}
+              >
+                {/* <img
+                  style={{ marginBottom: '16px' }}
+                  src={
+                    props.content && typeof props.content[1]?.icon === 'object'
+                      ? getMediaUrl(props.content[1]?.icon.url).toString()
+                      : undefined
+                  }
+                  alt="icon"
+                /> */}
+                <div
+                  className="w-full"
+                  style={{
+                    color: 'white',
+                    marginBottom: isMobile ? '16px' : '32px',
+                    fontSize: isMobile ? '24px' : '32px',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '400',
+                    lineHeight: isMobile ? '32px' : '38px',
+                  }}
+                >
+                  {props.content ? props.content[1]?.title : ''}
+                </div>
+                <div
+                  className={isMobile ? 'w-full' : 'w-2/3'}
+                  style={{
+                    color: 'white',
+                    fontSize: isMobile ? '15px' : '16px',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                    lineHeight: '24px',
+                    opacity: '0.8',
+                  }}
+                >
+                  {props.content ? props.content[1]?.description : ''}
                 </div>
               </div>
             </div>
             <div
-              className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-              style={{
-                minHeight: isMobile ? '' : '300px',
-                backgroundColor: '#008498',
-                padding: '32px',
-                paddingRight: '0',
-                borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: isMobile
-                  ? `url(${getMediaUrl(
-                      props.content && typeof props.content[3]?.backgroundImageMobile === 'object'
-                        ? getMediaUrl(props.content[3]?.backgroundImageMobile?.url).toString()
-                        : undefined,
-                    )})`
-                  : `url(${getMediaUrl(
-                      props.content && typeof props.content[3]?.backgroundImage === 'object'
-                        ? getMediaUrl(props.content[3]?.backgroundImage?.url).toString()
-                        : undefined,
-                    )})`,
-              }}
+              className={`flex w-full ${isMobile ? 'flex-col' : 'flex-row'}`}
+              style={{ gap: '24px' }}
             >
-              {/* <img
-                style={{ marginBottom: '16px' }}
-                src={
-                  props.content && typeof props.content[3]?.icon === 'object'
-                    ? getMediaUrl(props.content[3]?.icon.url).toString()
-                    : undefined
-                }
-                alt="icon"
-              /> */}
-              <div className={`${isMobile ? '' : ''}`}></div>
-              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
-                <div
-                  className={`${isMobile ? 'w-full' : ''}`}
-                  style={{ width: isMobile ? '' : '60%', paddingRight: isMobile ? '24px' : '0' }}
-                >
+              <div
+                className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                style={{
+                  minHeight: isMobile ? '' : '300px',
+                  backgroundColor: '#138DF1',
+                  padding: isMobile ? '24px 0 24px 24px' : '32px 0 32px 40px',
+                  borderRadius: '20px',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage: isMobile
+                    ? `url(${getMediaUrl(
+                        props.content && typeof props.content[2]?.backgroundImageMobile === 'object'
+                          ? getMediaUrl(props.content[2]?.backgroundImageMobile?.url).toString()
+                          : undefined,
+                      )})`
+                    : `url(${getMediaUrl(
+                        props.content && typeof props.content[2]?.backgroundImage === 'object'
+                          ? getMediaUrl(props.content[2]?.backgroundImage?.url).toString()
+                          : undefined,
+                      )})`,
+                }}
+              >
+                {/* <img
+                  style={{ marginBottom: '16px' }}
+                  src={
+                    props.content && typeof props.content[2]?.icon === 'object'
+                      ? getMediaUrl(props.content[2]?.icon.url).toString()
+                      : undefined
+                  }
+                  alt="icon"
+                /> */}
+                <div className={`${isMobile ? '' : ''}`}></div>
+                <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
                   <div
                     className={`${isMobile ? 'w-full' : ''}`}
-                    style={{
-                      color: 'white',
-                      marginBottom: '16px',
-                      fontSize: isMobile ? '24px' : '32px',
-                      fontFamily: 'Instrument Sans',
-                      fontWeight: '400',
-                    }}
+                    style={{ width: isMobile ? '' : '70%', paddingRight: isMobile ? '32px' : '0' }}
                   >
-                    {props.content ? props.content[3]?.title : ''}
+                    <div
+                      className={`${isMobile ? 'w-full' : ''}`}
+                      style={{
+                        color: 'white',
+                        marginBottom: isMobile ? '16px' : '32px',
+                        fontSize: isMobile ? '24px' : '32px',
+                        fontFamily: 'Instrument Sans',
+                        fontWeight: '400',
+                        width: isMobile ? '' : '35%',
+                        lineHeight: isMobile ? '32px' : '38px',
+                      }}
+                    >
+                      {props.content ? props.content[2]?.title : ''}
+                    </div>
+                    <div
+                      className={`${isMobile ? 'w-full' : ''}`}
+                      style={{
+                        color: 'white',
+                        fontSize: isMobile ? '15px' : '16px',
+                        fontFamily: 'Inter',
+                        fontWeight: '400',
+                        lineHeight: '24px',
+                        opacity: '0.8',
+                      }}
+                    >
+                      {props.content ? props.content[2]?.description : ''}
+                    </div>
                   </div>
                   <div
                     className={`${isMobile ? 'w-full' : ''}`}
-                    style={{
-                      color: 'white',
-                      fontSize: isMobile ? '15px' : '16px',
-                      fontFamily: 'Inter',
-                      fontWeight: '400',
-                    }}
+                    style={{ width: isMobile ? '' : '' }}
                   >
-                    {props.content ? props.content[3]?.description : ''}
+                    <img
+                      style={{ width: isMobile ? '73%' : '100%', marginLeft: 'auto' }}
+                      src={
+                        props.content &&
+                        props.content[2].imageContent &&
+                        typeof props.content[2].imageContent === 'object'
+                          ? getMediaUrl(props.content[2].imageContent.url).toString()
+                          : undefined
+                      }
+                      alt="icon"
+                    />
                   </div>
                 </div>
-                <div
-                  className={`${isMobile ? 'w-full' : ''}`}
-                  style={{ width: isMobile ? '' : '' }}
-                >
-                  <img
-                    className="w-full"
-                    src={
-                      props.content &&
-                      props.content[3].imageContent &&
-                      typeof props.content[3].imageContent === 'object'
-                        ? getMediaUrl(props.content[3].imageContent.url).toString()
-                        : undefined
-                    }
-                    alt="icon"
-                  />
+              </div>
+              <div
+                className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+                style={{
+                  minHeight: isMobile ? '' : '300px',
+                  backgroundColor: '#008498',
+                  padding: isMobile ? '0 24px 24px 24px' : '32px 0 32px 40px',
+                  borderRadius: '20px',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundImage: isMobile
+                    ? `url(${getMediaUrl(
+                        props.content && typeof props.content[3]?.backgroundImageMobile === 'object'
+                          ? getMediaUrl(props.content[3]?.backgroundImageMobile?.url).toString()
+                          : undefined,
+                      )})`
+                    : `url(${getMediaUrl(
+                        props.content && typeof props.content[3]?.backgroundImage === 'object'
+                          ? getMediaUrl(props.content[3]?.backgroundImage?.url).toString()
+                          : undefined,
+                      )})`,
+                }}
+              >
+                {/* <img
+                  style={{ marginBottom: '16px' }}
+                  src={
+                    props.content && typeof props.content[3]?.icon === 'object'
+                      ? getMediaUrl(props.content[3]?.icon.url).toString()
+                      : undefined
+                  }
+                  alt="icon"
+                /> */}
+                <div className={`${isMobile ? '' : ''}`}></div>
+                <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{ width: isMobile ? '' : '60%', paddingRight: isMobile ? '0' : '0' }}
+                  >
+                    <div
+                      className={`${isMobile ? 'w-full' : ''}`}
+                      style={{
+                        color: 'white',
+                        marginBottom: isMobile ? '16px' : '32px',
+                        fontSize: isMobile ? '24px' : '32px',
+                        fontFamily: 'Instrument Sans',
+                        fontWeight: '400',
+                        lineHeight: isMobile ? '32px' : '38px',
+                      }}
+                    >
+                      {props.content ? props.content[3]?.title : ''}
+                    </div>
+                    <div
+                      className={`${isMobile ? 'w-full' : ''}`}
+                      style={{
+                        color: 'white',
+                        fontSize: isMobile ? '15px' : '16px',
+                        fontFamily: 'Inter',
+                        fontWeight: '400',
+                        lineHeight: isMobile ? '24px' : '',
+                        opacity: '0.8',
+                      }}
+                    >
+                      {props.content ? props.content[3]?.description : ''}
+                    </div>
+                  </div>
+                  <div
+                    className={`${isMobile ? 'w-full' : ''}`}
+                    style={{ width: isMobile ? '' : '' }}
+                  >
+                    <img
+                      className="w-full"
+                      src={
+                        props.content &&
+                        props.content[3].imageContent &&
+                        typeof props.content[3].imageContent === 'object'
+                          ? getMediaUrl(props.content[3].imageContent.url).toString()
+                          : undefined
+                      }
+                      alt="icon"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

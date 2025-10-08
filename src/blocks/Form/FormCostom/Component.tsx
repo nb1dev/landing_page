@@ -119,115 +119,126 @@ export const FormCustomBlock: React.FC<
 
   return (
     <div
-      className="flex flex-row"
-      style={{
-        width: '100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        borderRadius: '20px',
-        background: 'white',
-      }}
+      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
+      style={{ padding: isMobile ? '20px' : '' }}
     >
       <div
-        className={`flex w-full ${isMobile ? '' : 'p-16'}`}
+        className="flex flex-row"
         style={{
-          paddingRight: isMobile ? '24px' : '',
-          paddingLeft: isMobile ? '24px' : '',
-          paddingTop: isMobile ? '32px' : '',
-          paddingBottom: isMobile ? '32px' : '',
+          width: '100%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          borderRadius: '20px',
+          background: 'white',
         }}
       >
-        <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
-          <div
-            style={{
-              fontSize: isMobile ? '38px' : '72px',
-              marginBottom: '24px',
-              fontFamily: 'Instrument Sans',
-              fontWeight: '500',
-            }}
-          >
-            <RichText data={props.heading} />
-          </div>
-          <div
-            style={{
-              fontSize: isMobile ? '20px' : '24px',
-              marginBottom: isMobile ? '24px' : '60px',
-              color: 'black',
-              fontFamily: 'Inter',
-              fontWeight: '400',
-            }}
-          >
-            {props.description}
-          </div>
-          <div>
-            <FormProvider {...formMethods}>
-              {!isLoading && hasSubmitted && confirmationType === 'message' && (
-                <div className="text-center" style={{ color: 'black' }}>
-                  <RichText data={confirmationMessage} />
-                </div>
-              )}
-
-              {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-              {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-              {!hasSubmitted && (
-                <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-                  <div className="mb-4 last:mb-0">
-                    {formFromProps &&
-                      formFromProps.fields &&
-                      formFromProps.fields?.map((field, index) => {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        const Field: React.FC<any> =
-                          fields?.[field.blockType as keyof typeof fields]
-                        if (Field) {
-                          return (
-                            <div className="mb-6 last:mb-0" key={index} style={{ color: 'black' }}>
-                              <Field
-                                form={formFromProps}
-                                {...field}
-                                {...formMethods}
-                                control={control}
-                                errors={errors}
-                                register={register}
-                              />
-                            </div>
-                          )
-                        }
-                        return null
-                      })}
+        <div
+          className={`flex w-full ${isMobile ? '' : 'p-16'}`}
+          style={{
+            paddingRight: isMobile ? '24px' : '',
+            paddingLeft: isMobile ? '24px' : '',
+            paddingTop: isMobile ? '41px' : '',
+            paddingBottom: isMobile ? '41px' : '',
+          }}
+        >
+          <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
+            <div
+              style={{
+                fontSize: isMobile ? '38px' : '72px',
+                marginBottom: '24px',
+                fontFamily: 'Instrument Sans',
+                fontWeight: '500',
+                lineHeight: isMobile ? '42px' : '74px',
+              }}
+            >
+              <RichText data={props.heading} />
+            </div>
+            <div
+              style={{
+                fontSize: isMobile ? '20px' : '24px',
+                marginBottom: isMobile ? '24px' : '60px',
+                color: 'black',
+                fontFamily: 'Inter',
+                fontWeight: '400',
+                lineHeight: isMobile ? '28px' : '24px',
+              }}
+            >
+              {props.description}
+            </div>
+            <div>
+              <FormProvider {...formMethods}>
+                {!isLoading && hasSubmitted && confirmationType === 'message' && (
+                  <div className="text-center" style={{ color: 'black' }}>
+                    <RichText data={confirmationMessage} />
                   </div>
+                )}
 
-                  <Button
-                    form={formID}
-                    type="submit"
-                    variant="default"
-                    style={{
-                      borderRadius: '100px',
-                      marginTop: '24px',
-                      color: 'white',
-                      backgroundColor: 'black',
-                      height: '60px',
-                      fontFamily: 'Instrument Sans',
-                      fontWeight: '500',
-                      fontSize: isMobile ? '18px' : '20px',
-                    }}
-                    className="w-full"
-                  >
-                    {submitButtonLabel}
-                  </Button>
-                </form>
-              )}
-            </FormProvider>
+                {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+                {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+                {!hasSubmitted && (
+                  <form id={formID} onSubmit={handleSubmit(onSubmit)}>
+                    <div className="mb-4 last:mb-0">
+                      {formFromProps &&
+                        formFromProps.fields &&
+                        formFromProps.fields?.map((field, index) => {
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          const Field: React.FC<any> =
+                            fields?.[field.blockType as keyof typeof fields]
+                          if (Field) {
+                            return (
+                              <div
+                                className="mb-6 last:mb-0"
+                                key={index}
+                                style={{ color: 'black' }}
+                              >
+                                <Field
+                                  form={formFromProps}
+                                  {...field}
+                                  {...formMethods}
+                                  control={control}
+                                  errors={errors}
+                                  register={register}
+                                />
+                              </div>
+                            )
+                          }
+                          return null
+                        })}
+                    </div>
+
+                    <Button
+                      form={formID}
+                      type="submit"
+                      variant="default"
+                      style={{
+                        borderRadius: '100px',
+                        marginTop: '24px',
+                        color: 'white',
+                        backgroundColor: 'black',
+                        height: '60px',
+                        fontFamily: 'Instrument Sans',
+                        fontWeight: '500',
+                        fontSize: isMobile ? '18px' : '20px',
+                      }}
+                      className="w-full"
+                    >
+                      {submitButtonLabel}
+                    </Button>
+                  </form>
+                )}
+              </FormProvider>
+            </div>
           </div>
         </div>
+        {/* <div className="flex w-1/2">
+          <img
+            style={{ width: '100%' }}
+            src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
+            alt="icon"
+          />
+        </div> */}
       </div>
-      {/* <div className="flex w-1/2">
-        <img
-          style={{ width: '100%' }}
-          src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
-          alt="icon"
-        />
-      </div> */}
     </div>
   )
 }
