@@ -32,11 +32,8 @@ const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
 
   if (!userEmail) return emails
 
-  // 2) Return the SAME objects with only `to` changed
   return emails.map((e) => ({
     ...e,
-    // `FormattedEmail["to"]` is typically `string | string[]`
-    // Using string here satisfies the union cleanly.
     to: userEmail,
   }))
 }
