@@ -16,6 +16,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -58,6 +59,20 @@ export default buildConfig({
     },
   },
   // This config helps us configure global or default features that the other editors can inherit
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.SMTP_FROM ? process.env.SMTP_FROM : 'no-replay@nb1.com',
+    defaultFromName: 'NB1',
+    // Nodemailer transportOptions
+    transportOptions: {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      auth: {
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    },
+  }),
+
   editor: defaultLexical,
   db: sqliteAdapter({
     client: {
