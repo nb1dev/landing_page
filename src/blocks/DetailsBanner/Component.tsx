@@ -32,7 +32,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
             <div
               style={{
                 fontSize: isMobile ? '38px' : '50px',
-                width: isMobile ? '100%' : '75%',
+                width: isMobile ? '78%' : '75%',
                 marginBottom: isMobile ? '24px' : '40px',
                 lineHeight: isMobile ? '42px' : '74px',
               }}

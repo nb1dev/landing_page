@@ -138,8 +138,8 @@ export const FormCustomBlock: React.FC<
           style={{
             paddingRight: isMobile ? '24px' : '',
             paddingLeft: isMobile ? '24px' : '',
-            paddingTop: isMobile ? '41px' : '',
-            paddingBottom: isMobile ? '41px' : '',
+            paddingTop: isMobile ? '40px' : '',
+            paddingBottom: isMobile ? '40px' : '',
           }}
         >
           <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
