@@ -15,9 +15,8 @@ const sendConfirmationEmail: CollectionAfterChangeHook = async ({ req, operation
 
   await req.payload.sendEmail({
     to: Array.isArray(userEmail) ? userEmail : [userEmail],
-    subject: `Thanks for your submission, ${name}!`,
-    html: `<p>Hi ${name},</p>
-           <p>We received your message:</p>
+    subject: `Thanks for your submission!`,
+    html: `<p>We received your message:</p>
            <p>This is a confirmation email sent to <b>${userEmail}</b>.</p>`,
   })
 }
