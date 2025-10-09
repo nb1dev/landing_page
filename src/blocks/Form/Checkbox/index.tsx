@@ -9,6 +9,7 @@ import React from 'react'
 
 import { Error } from '../Error'
 import { Width } from '../Width'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 export const Checkbox: React.FC<
   CheckboxField & {
@@ -18,10 +19,14 @@ export const Checkbox: React.FC<
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const props = register(name, { required: required })
   const { setValue } = useFormContext()
+  const isMobile = useIsMobile()
 
   return (
     <Width width={width}>
-      <div className="flex items-center gap-2" style={{ paddingLeft: '24px' }}>
+      <div
+        className={`flex items-center ${isMobile ? 'gap-1' : 'gap-2'}`}
+        style={{ paddingLeft: isMobile ? '0' : '24px' }}
+      >
         <CheckboxUi
           defaultChecked={defaultValue}
           id={name}
@@ -31,7 +36,15 @@ export const Checkbox: React.FC<
           }}
           style={{ borderColor: 'black' }}
         />
-        <Label htmlFor={name} style={{ fontFamily: 'Inter', fontWeight: '400' }}>
+        <Label
+          htmlFor={name}
+          style={{
+            fontFamily: 'Inter',
+            fontWeight: '400',
+            lineHeight: '24px',
+            fontSize: isMobile ? '13px' : '16px',
+          }}
+        >
           {required && (
             <span className="required">
               <span className="sr-only">(required)</span>

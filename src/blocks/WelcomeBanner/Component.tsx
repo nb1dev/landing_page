@@ -166,9 +166,31 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
 
         <div
           className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
-          style={{ marginTop: isMobile ? '' : '260px' }}
+          style={{ marginTop: isMobile ? '' : '' }}
         >
-          <CarouselBanner {...props} />
+          {!isMobile && (
+            <div className="w-full">
+              <div
+                className="ml-auto"
+                style={{
+                  width: 'fit-content',
+                  marginRight: '22px',
+                  marginTop: '22px',
+                  fontSize: '14px',
+                  fontFamily: 'Inter',
+                  fontWeight: '400',
+                  lineHeight: '34px',
+                  color: '#646464',
+                }}
+              >
+                {props.copyrightText}
+              </div>
+            </div>
+          )}
+
+          <div style={{ marginTop: isMobile ? '' : '206px' }}>
+            <CarouselBanner {...props} />
+          </div>
         </div>
       </div>
       <div
