@@ -13,6 +13,7 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { formSubmissionOverrides } from '@/collections/formSubmissionsOverwrites'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | NB1 - One gut, one plan` : 'NB1 - One gut, one plan'
@@ -80,13 +81,7 @@ export const plugins: Plugin[] = [
         })
       },
     },
-    beforeEmail: (emailsToSend, beforeChangeParams) => {
-      // modify the emails in any way before they are sent
-      return emailsToSend.map((email) => ({
-        ...email,
-        html: email.html, // transform the html in any way you'd like (maybe wrap it in an html template?)
-      }))
-    },
+    formSubmissionOverrides: formSubmissionOverrides,
   }),
   searchPlugin({
     collections: ['posts'],
