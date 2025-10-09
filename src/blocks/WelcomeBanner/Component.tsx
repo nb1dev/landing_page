@@ -64,7 +64,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         className={`flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
         style={{
           width: '100%',
-          minHeight: isMobile ? '596px' : '640px',
+          minHeight: isMobile ? (locationUrl === '/de' ? '673px' : '620px') : '640px',
           backgroundColor: 'white',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
