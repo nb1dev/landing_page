@@ -13,6 +13,8 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { BeforeEmail, FormattedEmail } from '@payloadcms/plugin-form-builder/types'
+
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | NB1 - One gut, one plan` : 'NB1 - One gut, one plan'
 }
@@ -21,6 +23,22 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()
 
   return doc?.slug ? `${url}/${doc.slug}` : url
+}
+
+const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
+  const userEmail = data?.submissionData?.find?.(
+    (f: { field: string; value: string }) => f.field === 'email',
+  )?.value as string | undefined
+
+  if (!userEmail) return emails
+
+  // 2) Return the SAME objects with only `to` changed
+  return emails.map((e) => ({
+    ...e,
+    // `FormattedEmail["to"]` is typically `string | string[]`
+    // Using string here satisfies the union cleanly.
+    to: userEmail,
+  }))
 }
 
 export const plugins: Plugin[] = [
@@ -79,6 +97,7 @@ export const plugins: Plugin[] = [
         })
       },
     },
+    beforeEmail,
   }),
   searchPlugin({
     collections: ['posts'],
