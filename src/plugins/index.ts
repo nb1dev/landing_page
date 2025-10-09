@@ -13,8 +13,6 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
-import { formSubmissionOverrides } from '@/collections/formSubmissionsOverwrites'
-
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | NB1 - One gut, one plan` : 'NB1 - One gut, one plan'
 }
@@ -81,7 +79,6 @@ export const plugins: Plugin[] = [
         })
       },
     },
-    formSubmissionOverrides: formSubmissionOverrides,
   }),
   searchPlugin({
     collections: ['posts'],
