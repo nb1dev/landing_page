@@ -174,7 +174,9 @@ export const FormCustomBlock: React.FC<
                   </div>
                 )}
 
-                {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+                {isLoading && !hasSubmitted && (
+                  <p style={{ color: 'black' }}>Loading, please wait...</p>
+                )}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
                 {!hasSubmitted && (
                   <form id={formID} onSubmit={handleSubmit(onSubmit)}>
