@@ -26,22 +26,39 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
-  // console.log('dfdsf')
-  // console.log(data)
   const userEmail = data?.submissionData?.find?.(
     (f: { field: string; value: string }) => f.field === 'email',
   )?.value as string | undefined
 
   if (!userEmail) return emails
 
-  const emailsUpdated = emails.map((e) => ({
-    ...e,
-    to: userEmail,
-  }))
+  const updatedEmails = emails.map((email) => {
+    const formMessage = (email as any).message ?? email.html ?? ''
+    const formSubject = (email as any).subject ?? email.subject ?? 'Form submission'
 
-  // console.log(emailsUpdated)
+    // Optionally resolve submission placeholders like {{name}} or {{message}}
+    const submissionMap = Object.fromEntries(
+      (data.submissionData || []).map((f: any) => [f.field, f.value]),
+    )
 
-  return emailsUpdated
+    const resolvePlaceholders = (template: string) =>
+      template.replace(/\{\{(.*?)\}\}/g, (_, k) => submissionMap[k.trim()] || '')
+
+    const resolvedMessage = resolvePlaceholders(formMessage)
+    const resolvedSubject = resolvePlaceholders(formSubject)
+
+    return {
+      ...email,
+      to: userEmail, // send to the email field value from submission
+      subject: resolvedSubject,
+      html: `<div style="font-family:sans-serif;">${resolvedMessage}</div>`,
+      text: resolvedMessage.replace(/<[^>]*>/g, ''), // text fallback
+    }
+  })
+
+  console.log(updatedEmails)
+
+  return updatedEmails
 }
 
 // const beforeEmail = (emails: any, { data }: any) => {
@@ -138,7 +155,7 @@ export const plugins: Plugin[] = [
         })
       },
     },
-    formSubmissionOverrides,
+    // formSubmissionOverrides,
     beforeEmail,
   }),
   searchPlugin({
