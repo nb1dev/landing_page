@@ -25,20 +25,24 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
-// const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
-//   console.log('dfdsf')
-//   console.log(data)
-//   const userEmail = data?.submissionData?.find?.(
-//     (f: { field: string; value: string }) => f.field === 'email',
-//   )?.value as string | undefined
+const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
+  // console.log('dfdsf')
+  // console.log(data)
+  const userEmail = data?.submissionData?.find?.(
+    (f: { field: string; value: string }) => f.field === 'email',
+  )?.value as string | undefined
 
-//   if (!userEmail) return emails
+  if (!userEmail) return emails
 
-//   return emails.map((e) => ({
-//     ...e,
-//     emailTo: userEmail,
-//   }))
-// }
+  const emailsUpdated = emails.map((e) => ({
+    ...e,
+    to: userEmail,
+  }))
+
+  // console.log(emailsUpdated)
+
+  return emailsUpdated
+}
 
 // const beforeEmail = (emails: any, { data }: any) => {
 //   console.log('🔥 beforeEmail reached', {
@@ -49,11 +53,15 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 // }
 
 const sendConfirmationEmail: CollectionAfterChangeHook = async ({ req, operation, doc }) => {
-  console.log('hook')
+  // console.log('hook')
   if (operation !== 'create') return
   try {
+    console.log(doc.submissionData)
     const get = (k: string) => doc?.submissionData?.find?.((f: any) => f.field === k)?.value
     const userEmail = get('email')
+
+    // console.log(userEmail)
+
     if (!userEmail) return
     await req.payload.sendEmail({
       to: userEmail,
@@ -131,6 +139,7 @@ export const plugins: Plugin[] = [
       },
     },
     formSubmissionOverrides,
+    beforeEmail,
   }),
   searchPlugin({
     collections: ['posts'],
