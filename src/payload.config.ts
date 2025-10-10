@@ -70,6 +70,7 @@ export default buildConfig({
         user: process.env.SMTP_USERNAME,
         pass: process.env.SMTP_PASSWORD,
       },
+      secure: false,
       requireTLS: true,
     },
   }),
