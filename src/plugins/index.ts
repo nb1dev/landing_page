@@ -36,7 +36,6 @@ const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
     const formMessage = (email as any).message ?? email.html ?? ''
     const formSubject = (email as any).subject ?? email.subject ?? 'Form submission'
 
-    // Optionally resolve submission placeholders like {{name}} or {{message}}
     const submissionMap = Object.fromEntries(
       (data.submissionData || []).map((f: any) => [f.field, f.value]),
     )
@@ -49,35 +48,21 @@ const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
 
     return {
       ...email,
-      to: userEmail, // send to the email field value from submission
+      to: userEmail,
       subject: resolvedSubject,
       html: `<div style="font-family:sans-serif;">${resolvedMessage}</div>`,
-      text: resolvedMessage.replace(/<[^>]*>/g, ''), // text fallback
+      text: resolvedMessage.replace(/<[^>]*>/g, ''),
     }
   })
-
-  console.log(updatedEmails)
 
   return updatedEmails
 }
 
-// const beforeEmail = (emails: any, { data }: any) => {
-//   console.log('🔥 beforeEmail reached', {
-//     emailsCount: Array.isArray(emails) ? emails.length : 'n/a',
-//     submissionData: data?.submissionData,
-//   })
-//   return emails
-// }
-
 const sendConfirmationEmail: CollectionAfterChangeHook = async ({ req, operation, doc }) => {
-  // console.log('hook')
   if (operation !== 'create') return
   try {
-    console.log(doc.submissionData)
     const get = (k: string) => doc?.submissionData?.find?.((f: any) => f.field === k)?.value
     const userEmail = get('email')
-
-    // console.log(userEmail)
 
     if (!userEmail) return
     await req.payload.sendEmail({
@@ -85,7 +70,6 @@ const sendConfirmationEmail: CollectionAfterChangeHook = async ({ req, operation
       subject: 'Thanks!',
       html: `<p>Confirmation sent to ${userEmail}</p>`,
     })
-    console.log('[afterChange] Confirmation sent to', userEmail)
   } catch (e) {
     console.error('[afterChange] sendEmail failed:', e)
   }

@@ -107,8 +107,4 @@ export default buildConfig({
     },
     tasks: [],
   },
-  onInit: async (payload) => {
-    const hooks = payload.collections?.['form-submissions']?.config?.hooks?.afterChange
-    console.log('[onInit] form-submissions afterChange count =', hooks?.length)
-  },
 })
