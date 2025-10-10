@@ -4,7 +4,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
+import { CollectionAfterChangeHook, Field, Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -25,17 +25,53 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
-const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
-  const userEmail = data?.submissionData?.find?.(
-    (f: { field: string; value: string }) => f.field === 'email',
-  )?.value as string | undefined
+// const beforeEmail: BeforeEmail = (emails: FormattedEmail[], { data }) => {
+//   console.log('dfdsf')
+//   console.log(data)
+//   const userEmail = data?.submissionData?.find?.(
+//     (f: { field: string; value: string }) => f.field === 'email',
+//   )?.value as string | undefined
 
-  if (!userEmail) return emails
+//   if (!userEmail) return emails
 
-  return emails.map((e) => ({
-    ...e,
-    to: userEmail,
-  }))
+//   return emails.map((e) => ({
+//     ...e,
+//     emailTo: userEmail,
+//   }))
+// }
+
+// const beforeEmail = (emails: any, { data }: any) => {
+//   console.log('🔥 beforeEmail reached', {
+//     emailsCount: Array.isArray(emails) ? emails.length : 'n/a',
+//     submissionData: data?.submissionData,
+//   })
+//   return emails
+// }
+
+const sendConfirmationEmail: CollectionAfterChangeHook = async ({ req, operation, doc }) => {
+  console.log('hook')
+  if (operation !== 'create') return
+  try {
+    const get = (k: string) => doc?.submissionData?.find?.((f: any) => f.field === k)?.value
+    const userEmail = get('email')
+    if (!userEmail) return
+    await req.payload.sendEmail({
+      to: userEmail,
+      subject: 'Thanks!',
+      html: `<p>Confirmation sent to ${userEmail}</p>`,
+    })
+    console.log('[afterChange] Confirmation sent to', userEmail)
+  } catch (e) {
+    console.error('[afterChange] sendEmail failed:', e)
+  }
+}
+
+export const formSubmissionOverrides: {
+  fields: (args: { defaultFields: Field[] }) => Field[]
+  hooks: { afterChange: CollectionAfterChangeHook[] }
+} = {
+  fields: ({ defaultFields }) => defaultFields,
+  hooks: { afterChange: [sendConfirmationEmail] },
 }
 
 export const plugins: Plugin[] = [
@@ -94,7 +130,7 @@ export const plugins: Plugin[] = [
         })
       },
     },
-    beforeEmail,
+    formSubmissionOverrides,
   }),
   searchPlugin({
     collections: ['posts'],
