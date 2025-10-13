@@ -57,12 +57,13 @@ export const sendEmailsAfterSubmit: CollectionAfterChangeHook = async ({ req, op
     }
 
     try {
-      await req.payload.sendEmail({
-        to: resolvedTo,
-        subject: resolvedSubject,
-        html: `<div style="font-family:sans-serif;">${resolvedHtml}</div>`,
-        text: stripHtml(resolvedHtml),
-      })
+      console.log(resolvedTo)
+      // await req.payload.sendEmail({
+      //   to: resolvedTo,
+      //   subject: resolvedSubject,
+      //   html: `<div style="font-family:sans-serif;">${resolvedHtml}</div>`,
+      //   text: stripHtml(resolvedHtml),
+      // })
     } catch (e) {
       console.error('[form-submissions] sendEmail failed:', e)
     }
