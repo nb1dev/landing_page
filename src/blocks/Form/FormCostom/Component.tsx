@@ -52,7 +52,7 @@ export const FormCustomBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
+      // let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
@@ -62,9 +62,10 @@ export const FormCustomBlock: React.FC<
         }))
 
         // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true)
-        }, 1000)
+        // loadingTimerID = setTimeout(() => {
+        //   setIsLoading(true)
+        // }, 1000)
+        setIsLoading(true)
 
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
@@ -80,7 +81,7 @@ export const FormCustomBlock: React.FC<
 
           const res = await req.json()
 
-          clearTimeout(loadingTimerID)
+          // clearTimeout(loadingTimerID)
 
           if (req.status >= 400) {
             setIsLoading(false)
@@ -175,7 +176,9 @@ export const FormCustomBlock: React.FC<
                 )}
 
                 {isLoading && !hasSubmitted && (
-                  <p style={{ color: 'black' }}>Loading, please wait...</p>
+                  <p style={{ color: 'black' }} className="mb-3">
+                    Please wait...
+                  </p>
                 )}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
                 {!hasSubmitted && (
