@@ -60,17 +60,20 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM ? process.env.SMTP_FROM : 'no-replay@nb1.com',
+    defaultFromAddress: process.env.SMTP_FROM || 'no-reply@nb1.com',
     defaultFromName: 'NB1',
-    // Nodemailer transportOptions
+
     transportOptions: {
-      host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
+      host: process.env.SMTP_HOST || '127.0.0.1',
+      port: Number(process.env.SMTP_PORT) || 1025,
+      secure: false, // STARTTLS
       auth: {
         user: process.env.SMTP_USERNAME,
         pass: process.env.SMTP_PASSWORD,
       },
-      requireTLS: true,
+      tls: {
+        rejectUnauthorized: false, // self-signed certificate
+      },
     },
   }),
 
