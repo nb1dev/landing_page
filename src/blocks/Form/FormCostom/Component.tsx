@@ -52,7 +52,6 @@ export const FormCustomBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      // let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
@@ -61,10 +60,6 @@ export const FormCustomBlock: React.FC<
           value,
         }))
 
-        // delay loading indicator by 1s
-        // loadingTimerID = setTimeout(() => {
-        //   setIsLoading(true)
-        // }, 1000)
         setIsLoading(true)
 
         try {
@@ -80,8 +75,6 @@ export const FormCustomBlock: React.FC<
           })
 
           const res = await req.json()
-
-          // clearTimeout(loadingTimerID)
 
           if (req.status >= 400) {
             setIsLoading(false)
@@ -137,10 +130,7 @@ export const FormCustomBlock: React.FC<
         <div
           className={`flex w-full ${isMobile ? '' : 'p-16'}`}
           style={{
-            paddingRight: isMobile ? '24px' : '',
-            paddingLeft: isMobile ? '24px' : '',
-            paddingTop: isMobile ? '40px' : '',
-            paddingBottom: isMobile ? '40px' : '',
+            padding: isMobile ? '40px 24px' : '',
           }}
         >
           <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
@@ -236,13 +226,6 @@ export const FormCustomBlock: React.FC<
             </div>
           </div>
         </div>
-        {/* <div className="flex w-1/2">
-          <img
-            style={{ width: '100%' }}
-            src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
-            alt="icon"
-          />
-        </div> */}
       </div>
     </div>
   )

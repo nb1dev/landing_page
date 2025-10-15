@@ -69,15 +69,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                       )})`,
                 }}
               >
-                {/* <img
-                  style={{ marginBottom: '16px' }}
-                  src={
-                    props.content && typeof props.content[0]?.icon === 'object'
-                      ? getMediaUrl(props.content[0]?.icon.url).toString()
-                      : undefined
-                  }
-                  alt="icon"
-                /> */}
                 <div
                   className="w-full"
                   style={{
@@ -128,15 +119,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                       )})`,
                 }}
               >
-                {/* <img
-                  style={{ marginBottom: '16px' }}
-                  src={
-                    props.content && typeof props.content[1]?.icon === 'object'
-                      ? getMediaUrl(props.content[1]?.icon.url).toString()
-                      : undefined
-                  }
-                  alt="icon"
-                /> */}
                 <div
                   className="w-full"
                   style={{
@@ -201,7 +183,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   }
                   alt="icon"
                 /> */}
-                <div className={`${isMobile ? '' : ''}`}></div>
                 <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
                   <div
                     className={`${isMobile ? 'w-full' : ''}`}
@@ -235,10 +216,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                       {props.content ? props.content[2]?.description : ''}
                     </div>
                   </div>
-                  <div
-                    className={`${isMobile ? 'w-full' : ''}`}
-                    style={{ width: isMobile ? '' : '' }}
-                  >
+                  <div className={`${isMobile ? 'w-full' : ''}`}>
                     <img
                       style={{ width: isMobile ? '73%' : '100%', marginLeft: 'auto' }}
                       src={
@@ -285,7 +263,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   }
                   alt="icon"
                 /> */}
-                <div className={`${isMobile ? '' : ''}`}></div>
                 <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
                   <div
                     className={`${isMobile ? 'w-full' : ''}`}
@@ -318,10 +295,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                       {props.content ? props.content[3]?.description : ''}
                     </div>
                   </div>
-                  <div
-                    className={`${isMobile ? 'w-full' : ''}`}
-                    style={{ width: isMobile ? '' : '' }}
-                  >
+                  <div className={`${isMobile ? 'w-full' : ''}`}>
                     <img
                       className="w-full"
                       src={
