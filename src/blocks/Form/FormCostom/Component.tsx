@@ -244,7 +244,7 @@ export const FormCustomBlock: React.FC<
                     >
                       {submitButtonLabel}
                     </Button>
-                    <Button
+                    {/* <Button
                       form={formID}
                       type="submit"
                       variant="default"
@@ -261,7 +261,7 @@ export const FormCustomBlock: React.FC<
                       className="w-full"
                     >
                       {submitButtonLabel}
-                    </Button>
+                    </Button> */}
                   </form>
                 )}
               </FormProvider>
