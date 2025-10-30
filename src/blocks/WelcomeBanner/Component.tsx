@@ -29,6 +29,13 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       <div className="flex flex-row mb-6 ml-auto w-full">
         <div className="flex ml-auto">
           <div
+            className="mr-4 mt-auto mb-auto"
+            style={{ color: 'white', cursor: 'pointer' }}
+            onClick={() => router.push('/login')}
+          >
+            Login
+          </div>
+          <div
             className="p-2"
             style={{
               backgroundColor: locationUrl === '/' ? 'white' : 'black',

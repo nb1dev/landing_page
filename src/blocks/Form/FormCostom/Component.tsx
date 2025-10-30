@@ -104,6 +104,12 @@ export const FormCustomBlock: React.FC<
             message: 'Something went wrong.',
           })
         }
+
+        const emailValue = dataToSend.filter((data) => {
+          if (data.field === 'email') return data
+        })[0].value
+
+        router.push(`/login?email=${emailValue}`)
       }
 
       void submitForm()
@@ -111,6 +117,24 @@ export const FormCustomBlock: React.FC<
     [router, formID, redirect, confirmationType],
   )
 
+  const onClick = useCallback((data: FormFieldBlock[]) => {
+    const dataToSend = Object.entries(data).map(([name, value]) => ({
+      field: name,
+      value,
+    }))
+
+    console.log(
+      dataToSend.filter((data) => {
+        if (data.field === 'email') return data
+      }),
+    )
+
+    const emailValue = dataToSend.filter((data) => {
+      if (data.field === 'email') return data
+    })[0].value
+
+    router.push(`/login?email=${emailValue}`)
+  }, [])
   return (
     <div
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
@@ -202,6 +226,24 @@ export const FormCustomBlock: React.FC<
                         })}
                     </div>
 
+                    <Button
+                      form={formID}
+                      type="submit"
+                      variant="default"
+                      style={{
+                        borderRadius: '100px',
+                        marginTop: '24px',
+                        color: 'white',
+                        backgroundColor: 'black',
+                        height: '60px',
+                        fontFamily: 'Instrument Sans',
+                        fontWeight: '500',
+                        fontSize: isMobile ? '18px' : '20px',
+                      }}
+                      className="w-full"
+                    >
+                      {submitButtonLabel}
+                    </Button>
                     <Button
                       form={formID}
                       type="submit"
