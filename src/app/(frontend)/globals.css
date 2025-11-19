@@ -130,7 +130,7 @@ html[data-theme='light'] {
 
 }
 
-/* #lanyard_fab_button,
+#lanyard_fab_button,
 #lanyard_fab_button button {
   position: fixed !important;
   bottom: 75px !important;
@@ -138,9 +138,9 @@ html[data-theme='light'] {
   right: auto !important;
   top: auto !important;
   z-index: 1000;
-} */
+}
 
 /* Remove the built-in bottom-right class behavior */
-/* #lanyard_fab_button .bottomRight__ILequ {
+#lanyard_fab_button .bottomRight__ILequ {
   inset: auto !important;
-} */
+}
