@@ -18,7 +18,7 @@ import '@fontsource/inter/500.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
 import Script from 'next/script'
-import { KetchScriptLoader } from './KetchScriptLoader' // 👈 add this
+// import { KetchScriptLoader } from './KetchScriptLoader'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         {/* Load Ketch only on the client after hydration */}
-        <KetchScriptLoader />
+        {/* <KetchScriptLoader /> */}
 
         <Providers>
           <AdminBar
