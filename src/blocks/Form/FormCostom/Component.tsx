@@ -52,7 +52,6 @@ export const FormCustomBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
@@ -61,10 +60,7 @@ export const FormCustomBlock: React.FC<
           value,
         }))
 
-        // delay loading indicator by 1s
-        loadingTimerID = setTimeout(() => {
-          setIsLoading(true)
-        }, 1000)
+        setIsLoading(true)
 
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
@@ -79,8 +75,6 @@ export const FormCustomBlock: React.FC<
           })
 
           const res = await req.json()
-
-          clearTimeout(loadingTimerID)
 
           if (req.status >= 400) {
             setIsLoading(false)
@@ -110,6 +104,12 @@ export const FormCustomBlock: React.FC<
             message: 'Something went wrong.',
           })
         }
+
+        const emailValue = dataToSend.filter((data) => {
+          if (data.field === 'email') return data
+        })[0].value
+
+        router.push(`/login?email=${emailValue}`)
       }
 
       void submitForm()
@@ -117,6 +117,24 @@ export const FormCustomBlock: React.FC<
     [router, formID, redirect, confirmationType],
   )
 
+  const onClick = useCallback((data: FormFieldBlock[]) => {
+    const dataToSend = Object.entries(data).map(([name, value]) => ({
+      field: name,
+      value,
+    }))
+
+    console.log(
+      dataToSend.filter((data) => {
+        if (data.field === 'email') return data
+      }),
+    )
+
+    const emailValue = dataToSend.filter((data) => {
+      if (data.field === 'email') return data
+    })[0].value
+
+    router.push(`/login?email=${emailValue}`)
+  }, [])
   return (
     <div
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
@@ -136,10 +154,7 @@ export const FormCustomBlock: React.FC<
         <div
           className={`flex w-full ${isMobile ? '' : 'p-16'}`}
           style={{
-            paddingRight: isMobile ? '24px' : '',
-            paddingLeft: isMobile ? '24px' : '',
-            paddingTop: isMobile ? '40px' : '',
-            paddingBottom: isMobile ? '40px' : '',
+            padding: isMobile ? '40px 24px' : '',
           }}
         >
           <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto `}>
@@ -174,7 +189,11 @@ export const FormCustomBlock: React.FC<
                   </div>
                 )}
 
-                {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
+                {isLoading && !hasSubmitted && (
+                  <p style={{ color: 'black' }} className="mb-3">
+                    Please wait...
+                  </p>
+                )}
                 {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
                 {!hasSubmitted && (
                   <form id={formID} onSubmit={handleSubmit(onSubmit)}>
@@ -225,19 +244,30 @@ export const FormCustomBlock: React.FC<
                     >
                       {submitButtonLabel}
                     </Button>
+                    {/* <Button
+                      form={formID}
+                      type="submit"
+                      variant="default"
+                      style={{
+                        borderRadius: '100px',
+                        marginTop: '24px',
+                        color: 'white',
+                        backgroundColor: 'black',
+                        height: '60px',
+                        fontFamily: 'Instrument Sans',
+                        fontWeight: '500',
+                        fontSize: isMobile ? '18px' : '20px',
+                      }}
+                      className="w-full"
+                    >
+                      {submitButtonLabel}
+                    </Button> */}
                   </form>
                 )}
               </FormProvider>
             </div>
           </div>
         </div>
-        {/* <div className="flex w-1/2">
-          <img
-            style={{ width: '100%' }}
-            src={typeof props.icon === 'object' ? getMediaUrl(props.icon.url).toString() : undefined}
-            alt="icon"
-          />
-        </div> */}
       </div>
     </div>
   )

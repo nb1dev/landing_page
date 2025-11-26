@@ -29,10 +29,17 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       <div className="flex flex-row mb-6 ml-auto w-full">
         <div className="flex ml-auto">
           <div
+            className="mr-4 mt-auto mb-auto"
+            style={{ color: 'white', cursor: 'pointer' }}
+            onClick={() => router.push('/login')}
+          >
+            Login
+          </div>
+          <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/' ? 'white' : 'black',
-              color: locationUrl === '/' ? 'black' : 'white',
+              backgroundColor: locationUrl === '/' ? 'black' : 'white',
+              color: locationUrl === '/' ? 'white' : 'black',
               borderTopLeftRadius: '20px',
               borderBottomLeftRadius: '20px',
               cursor: 'pointer',
@@ -41,13 +48,22 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/')
             }}
           >
-            <span style={{ border: '1px solid white' }} className="fi fi-gb"></span>
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '150%',
+              }}
+            >
+              EN
+            </span>
           </div>
           <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/de' ? 'white' : 'black',
-              color: locationUrl === '/de' ? 'black' : 'white',
+              backgroundColor: locationUrl === '/de' ? 'black' : 'white',
+              color: locationUrl === '/de' ? 'white' : 'black',
               borderTopRightRadius: '20px',
               borderBottomRightRadius: '20px',
               cursor: 'pointer',
@@ -56,7 +72,16 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/de')
             }}
           >
-            <span style={{ border: '1px solid white' }} className="fi fi-de"></span>
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '150%',
+              }}
+            >
+              DE
+            </span>
           </div>
         </div>
       </div>
@@ -88,7 +113,6 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         >
           <div className={`${isMobile ? '' : 'mb-16'}`}>
             <img
-              // style={{ width: '1000px' }}
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }
@@ -124,50 +148,11 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                   {props.description}
                 </div>
               </div>
-              {/* <div className={`flex flex-row gap-2 ${isMobile ? 'mt-4' : 'mt-16'}`}>
-                  <div
-                    style={{
-                      backgroundColor: 'white',
-                      color: 'black',
-                      borderRadius: '20px',
-                      border: '1px solid black',
-                    }}
-                  >
-                    <Button className="p-3">
-                      <p>{props.access_button.label}</p>
-                    </Button>
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: 'black',
-                      color: 'white',
-                      borderRadius: '20px',
-                      border: '1px solid black',
-                    }}
-                  >
-                    <Button className="p-3">
-                      <p>{props.details_button.label}</p>
-                    </Button>
-                  </div>
-                </div> */}
             </div>
-            {/* <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
-                <img
-                  src={
-                    typeof props.boxImage === 'object'
-                      ? getMediaUrl(props.boxImage.url).toString()
-                      : undefined
-                  }
-                  alt="icon"
-                />
-              </div> */}
           </div>
         </div>
 
-        <div
-          className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}
-          style={{ marginTop: isMobile ? '' : '' }}
-        >
+        <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
           {!isMobile && (
             <div className="w-full">
               <div

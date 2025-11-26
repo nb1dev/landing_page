@@ -129,3 +129,18 @@ html[data-theme='light'] {
     transform: translate3d(0px, 200px, 0px); 
 
 }
+
+#lanyard_fab_button,
+#lanyard_fab_button button {
+  position: fixed !important;
+  bottom: 75px !important;
+  left: 24px !important;
+  right: auto !important;
+  top: auto !important;
+  z-index: 1000;
+}
+
+/* Remove the built-in bottom-right class behavior */
+#lanyard_fab_button .bottomRight__ILequ {
+  inset: auto !important;
+}

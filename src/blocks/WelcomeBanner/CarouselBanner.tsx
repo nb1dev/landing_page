@@ -64,7 +64,6 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
         fontSize: '6rem',
         color: yPositions[index] === 200 ? '#00a8c2' : 'white',
         opacity: yPositions[index] === 200 ? '1' : '0.5',
-        // display: yPositions[index] === 0 ? 'none' : 'inherit',
       }
     } else {
       return {
@@ -89,7 +88,6 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
         fontSize: '3rem',
         color: yPositionsMobile[index] === 120 ? '#00a8c2' : 'white',
         opacity: yPositionsMobile[index] === 120 ? '1' : '0.5',
-        // display: yPositions[index] === 0 ? 'none' : 'inherit',
       }
     } else {
       return {
@@ -104,7 +102,6 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
         <div
           className="absolute"
           style={{
-            // marginLeft: locationUrl === '/' ? '180px' : '0px',
             right: '500px',
           }}
         >

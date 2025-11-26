@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { CollectionAfterReadHook } from 'payload'
 import { User } from 'src/payload-types'
 
