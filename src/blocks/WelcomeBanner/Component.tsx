@@ -38,8 +38,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/' ? 'white' : 'black',
-              color: locationUrl === '/' ? 'black' : 'white',
+              backgroundColor: locationUrl === '/' ? 'black' : 'white',
+              color: locationUrl === '/' ? 'white' : 'black',
               borderTopLeftRadius: '20px',
               borderBottomLeftRadius: '20px',
               cursor: 'pointer',
@@ -48,13 +48,22 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/')
             }}
           >
-            <span style={{ border: '1px solid white' }} className="fi fi-gb"></span>
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '150%',
+              }}
+            >
+              EN
+            </span>
           </div>
           <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/de' ? 'white' : 'black',
-              color: locationUrl === '/de' ? 'black' : 'white',
+              backgroundColor: locationUrl === '/de' ? 'black' : 'white',
+              color: locationUrl === '/de' ? 'white' : 'black',
               borderTopRightRadius: '20px',
               borderBottomRightRadius: '20px',
               cursor: 'pointer',
@@ -63,7 +72,16 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               router.push('/de')
             }}
           >
-            <span style={{ border: '1px solid white' }} className="fi fi-de"></span>
+            <span
+              style={{
+                fontFamily: 'Inter',
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '150%',
+              }}
+            >
+              DE
+            </span>
           </div>
         </div>
       </div>
