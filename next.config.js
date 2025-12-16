@@ -20,6 +20,11 @@ const nextConfig = {
       }),
     ],
   },
+  // Turbopack configuration for Next.js 16+
+  turbopack: {
+    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.mts', '.cjs', '.cts'],
+  },
+  // Keep webpack config for fallback compatibility
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
