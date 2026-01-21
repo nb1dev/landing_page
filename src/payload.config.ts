@@ -46,6 +46,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: { rejectUnauthorized: false },
+      max: 10, // Maximum number of connections in the pool
+      min: 2, // Minimum number of connections
+      idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+      connectionTimeoutMillis: 10000, // Timeout after 10 seconds if can't connect
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, Authors],
