@@ -1,95 +1,132 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from 'src/payload-types'
-import React, { useEffect, useState } from 'react'
+
+import React, { useEffect, useMemo, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+
+import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
-import { useRouter } from 'next/navigation'
+
 import { CarouselBanner } from './CarouselBanner'
-import 'flag-icons/css/flag-icons.min.css'
-// import { useLocation } from 'react-router'
-// import { BlocksField } from '@payloadcms/ui'
+// import 'flag-icons/css/flag-icons.min.css'
+
+const LOCALES = ['en', 'de', 'fr'] as const
+type AppLocale = (typeof LOCALES)[number]
+
+function detectLocaleFromPath(pathname: string): AppLocale {
+  const seg = (pathname || '/').split('/').filter(Boolean)[0]
+  if (seg === 'de' || seg === 'en' || seg === 'fr') return seg
+  return 'en'
+}
+
+function stripLocalePrefix(pathname: string): string {
+  const parts = (pathname || '/').split('/').filter(Boolean)
+  const first = parts[0]
+  if (first === 'de' || first === 'en' || first === 'fr') {
+    const rest = parts.slice(1).join('/')
+    return '/' + rest
+  }
+  return pathname || '/'
+}
 
 export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
   const router = useRouter()
-  const [locationUrl, setLocationUrl] = useState('/')
+  const pathname = usePathname() || '/'
+
+  const locale = useMemo(() => detectLocaleFromPath(pathname), [pathname])
+  const pathWithoutLocale = useMemo(() => stripLocalePrefix(pathname), [pathname])
+
+  // used only to style buttons like your old version
+  const [locationUrl, setLocationUrl] = useState(pathname)
 
   useEffect(() => {
-    const loc = window.location.pathname
-    setLocationUrl(loc)
-  }, [])
+    setLocationUrl(pathname)
+  }, [pathname])
+
+  const goToLocale = (target: AppLocale) => {
+    // keep the current path, just swap locale
+    const nextPath = `/${target}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`
+    router.push(nextPath)
+  }
+
+  const goLogin = () => {
+    // locale-aware login path
+    router.push(`/${locale}/login`)
+  }
+
+  const bgDesktop =
+    typeof props?.backgroundImage === 'object'
+      ? getMediaUrl(props.backgroundImage.url).toString()
+      : ''
+  const bgMobile =
+    typeof props?.backgroundImageMobile === 'object'
+      ? getMediaUrl(props.backgroundImageMobile.url).toString()
+      : ''
 
   return (
     <div
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
       style={{ padding: isMobile ? '20px' : '' }}
     >
-      <div className="flex flex-row mb-6 ml-auto w-full">
+      {/* Top right actions */}
+      {/* <div className="flex flex-row mb-6 ml-auto w-full">
         <div className="flex ml-auto">
           <div
             className="mr-4 mt-auto mb-auto"
             style={{ color: 'white', cursor: 'pointer' }}
-            onClick={() => router.push('/login')}
+            onClick={goLogin}
           >
             Login
           </div>
+
+        
           <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/' ? 'black' : 'white',
-              color: locationUrl === '/' ? 'white' : 'black',
+              backgroundColor: locale === 'en' ? 'black' : 'white',
+              color: locale === 'en' ? 'white' : 'black',
               borderTopLeftRadius: '20px',
               borderBottomLeftRadius: '20px',
               cursor: 'pointer',
             }}
-            onClick={() => {
-              router.push('/')
-            }}
+            onClick={() => goToLocale('en')}
           >
             <span
-              style={{
-                fontFamily: 'Inter',
-                fontWeight: 500,
-                fontSize: '14px',
-                lineHeight: '150%',
-              }}
+              style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '150%' }}
             >
               EN
             </span>
           </div>
+
           <div
             className="p-2"
             style={{
-              backgroundColor: locationUrl === '/de' ? 'black' : 'white',
-              color: locationUrl === '/de' ? 'white' : 'black',
+              backgroundColor: locale === 'de' ? 'black' : 'white',
+              color: locale === 'de' ? 'white' : 'black',
               borderTopRightRadius: '20px',
               borderBottomRightRadius: '20px',
               cursor: 'pointer',
             }}
-            onClick={() => {
-              router.push('/de')
-            }}
+            onClick={() => goToLocale('de')}
           >
             <span
-              style={{
-                fontFamily: 'Inter',
-                fontWeight: 500,
-                fontSize: '14px',
-                lineHeight: '150%',
-              }}
+              style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '150%' }}
             >
               DE
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
+
+      {/* Main banner */}
       <div
         className={`flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
         style={{
           width: '100%',
-          minHeight: isMobile ? (locationUrl === '/de' ? '673px' : '620px') : '640px',
+          minHeight: isMobile ? '620px' : '640px',
           backgroundColor: 'white',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -99,12 +136,17 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           overflowY: 'hidden',
           overflowX: 'hidden',
           backgroundImage: isMobile
-            ? `url(${getMediaUrl(typeof props?.backgroundImageMobile === 'object' ? props.backgroundImageMobile.url : '')})`
-            : `url(${getMediaUrl(typeof props?.backgroundImage === 'object' ? props.backgroundImage.url : '')})`,
+            ? bgMobile
+              ? `url(${bgMobile})`
+              : undefined
+            : bgDesktop
+              ? `url(${bgDesktop})`
+              : undefined,
         }}
       >
+        {/* Left column */}
         <div
-          className={`${isMobile ? 'w-full ' : 'w-1/2'}`}
+          className={`${isMobile ? 'w-full' : 'w-1/2'}`}
           style={{
             paddingTop: isMobile ? '37px' : '100px',
             paddingLeft: isMobile ? '37px' : '87px',
@@ -116,12 +158,13 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               src={
                 typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
               }
-              alt="icon"
+              alt="NB1"
             />
           </div>
+
           <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
             <div className={`flex ${isMobile ? 'w-full' : ''} flex-col gap-8`}>
-              <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16 '}`}>
+              <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16'}`}>
                 <div
                   style={{
                     fontSize: isMobile ? '38px' : '70px',
@@ -133,8 +176,9 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                   }}
                   className="mb-6"
                 >
-                  <RichText data={props.heading} />
+                  <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
                 </div>
+
                 <div
                   style={{
                     fontSize: isMobile ? '20px' : '24px',
@@ -152,6 +196,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           </div>
         </div>
 
+        {/* Right column */}
         <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
           {!isMobile && (
             <div className="w-full">
@@ -173,17 +218,18 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             </div>
           )}
 
-          <div style={{ marginTop: isMobile ? '' : '206px' }}>
+          <div style={{ marginTop: isMobile ? undefined : '206px' }}>
             <CarouselBanner {...props} />
           </div>
         </div>
       </div>
+
+      {/* Bottom line */}
       <div
         className={`${isMobile ? 'w-full' : 'w-1/2'}`}
         style={{
           fontSize: isMobile ? '15px' : '18px',
           marginTop: isMobile ? '32px' : '80px',
-          // marginBottom: '32px',
           color: '#a6a6a6',
           fontFamily: 'Inter',
           fontWeight: '400',

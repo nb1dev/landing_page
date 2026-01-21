@@ -22,6 +22,7 @@ export const WelcomeBannerBlock: Block = {
     {
       name: 'heading',
       type: 'richText',
+      localized: true,
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
@@ -38,6 +39,7 @@ export const WelcomeBannerBlock: Block = {
     {
       name: 'description',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -53,46 +55,6 @@ export const WelcomeBannerBlock: Block = {
       required: true,
     },
     {
-      name: 'boxImage',
-      type: 'upload',
-      relationTo: 'media',
-      required: true,
-    },
-    {
-      name: 'access_button',
-      label: 'Access Button',
-      type: 'group',
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-        },
-      ],
-    },
-    {
-      name: 'details_button',
-      label: 'Details Button',
-      type: 'group',
-      fields: [
-        {
-          name: 'label',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'url',
-          type: 'text',
-          required: true,
-        },
-      ],
-    },
-    {
       name: 'copyrightText',
       type: 'text',
       // required: true,
@@ -104,12 +66,14 @@ export const WelcomeBannerBlock: Block = {
         {
           name: 'textLabel',
           type: 'text',
+          localized: true,
         },
       ],
     },
     {
       name: 'lineText',
       type: 'text',
+      localized: true,
       // required: true,
     },
   ],

@@ -1,38 +1,40 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { CollectionAfterReadHook } from 'payload'
-import { User } from 'src/payload-types'
 
-// The `user` collection has access control locked so that users are not publicly accessible
-// This means that we need to populate the authors manually here to protect user privacy
-// GraphQL will not return mutated user data that differs from the underlying schema
-// So we use an alternative `populatedAuthors` field to populate the user data, hidden from the admin UI
-export const populateAuthors: CollectionAfterReadHook = async ({ doc, req, req: { payload } }) => {
-  if (doc?.authors && doc?.authors?.length > 0) {
-    const authorDocs: User[] = []
+export const populateAuthors: CollectionAfterReadHook = async ({ doc, req }) => {
+  const authors = Array.isArray(doc?.authors) ? doc.authors : []
 
-    for (const author of doc.authors) {
-      try {
-        const authorDoc = await payload.findByID({
-          id: typeof author === 'object' ? author?.id : author,
-          collection: 'users',
-          depth: 0,
-        })
-
-        if (authorDoc) {
-          authorDocs.push(authorDoc)
-        }
-
-        if (authorDocs.length > 0) {
-          doc.populatedAuthors = authorDocs.map((authorDoc) => ({
-            id: authorDoc.id,
-            name: authorDoc.name,
-          }))
-        }
-      } catch {
-        // swallow error
-      }
-    }
+  if (!authors.length) {
+    doc.populatedAuthors = []
+    return doc
   }
 
+  const populated = await Promise.all(
+    authors.map(async (a: any) => {
+      const id = typeof a === 'string' ? a : a?.id
+      if (!id) return null
+
+      // If already hydrated, use it; else fetch
+      const author =
+        typeof a === 'object' && a?.id
+          ? a
+          : await req.payload.findByID({
+              collection: 'authors',
+              id,
+              overrideAccess: true,
+            })
+
+      const avatarUrl = author?.avatar?.url || ''
+
+      return {
+        id: String(id),
+        name: String(author?.name || ''),
+        slug: String(author?.slug || ''),
+        credentials: String(author?.credentials || ''),
+        avatarUrl: String(avatarUrl),
+      }
+    }),
+  )
+
+  doc.populatedAuthors = populated.filter(Boolean)
   return doc
 }

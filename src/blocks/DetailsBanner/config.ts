@@ -7,22 +7,22 @@ import {
 import type { Block } from 'payload'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-export const DetailsBannerBlock: Block = {
+export const DetailsBanner: Block = {
   slug: 'details-banner',
+  interfaceName: 'DetailsBannerBlock',
   fields: [
     {
       name: 'heading',
       type: 'richText',
+      localized: true, // ✅
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            TextColorFeature(),
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          ]
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          TextColorFeature(),
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+        ],
       }),
       label: false,
       required: true,
@@ -30,20 +30,22 @@ export const DetailsBannerBlock: Block = {
     {
       name: 'content',
       type: 'array',
+      required: true,
+      minRows: 4,
+      maxRows: 4,
+      admin: {
+        description: 'Exactly 4 cards (layout expects 4).',
+      },
       fields: [
-        {
-          name: 'icon',
-          type: 'upload',
-          relationTo: 'media',
-          required: true,
-        },
         {
           name: 'title',
           type: 'text',
+          localized: true, // ✅
         },
         {
           name: 'description',
           type: 'text',
+          localized: true, // ✅
         },
         {
           name: 'backgroundImage',
@@ -63,5 +65,4 @@ export const DetailsBannerBlock: Block = {
       ],
     },
   ],
-  interfaceName: 'DetailsBannerBlock',
 }

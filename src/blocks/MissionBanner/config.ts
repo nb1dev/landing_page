@@ -7,38 +7,37 @@ import {
 import type { Block } from 'payload'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-export const MissionBannerBlock: Block = {
+export const MissionBanner: Block = {
   slug: 'mission-banner',
+  interfaceName: 'MissionBannerBlock',
   fields: [
     {
       name: 'heading',
       type: 'richText',
+      localized: true, // ✅ EN/DE
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            TextColorFeature(),
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          ]
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          TextColorFeature(),
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+        ],
       }),
       required: true,
     },
     {
       name: 'description',
       type: 'richText',
+      localized: true, // ✅ EN/DE
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-            TextColorFeature(),
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          ]
-        },
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          TextColorFeature(),
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+        ],
       }),
       required: true,
     },
@@ -54,11 +53,15 @@ export const MissionBannerBlock: Block = {
     {
       name: 'copyright',
       type: 'text',
+      localized: true, // ✅ EN/DE (usually)
       required: true,
     },
     {
       name: 'images',
       type: 'array',
+      minRows: 1,
+      maxRows: 1,
+      required: true,
       fields: [
         {
           name: 'image',
@@ -69,5 +72,4 @@ export const MissionBannerBlock: Block = {
       ],
     },
   ],
-  interfaceName: 'MissionBannerBlock',
 }

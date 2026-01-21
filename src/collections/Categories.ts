@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-import { slugField } from '@/fields/slug'
+import { slugField } from 'payload'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -20,7 +20,13 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
-    ...slugField(),
+    {
+      name: 'slug',
+      type: 'text',
+      required: true,
+      localized: true,
+    },
   ],
 }

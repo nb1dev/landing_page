@@ -17,6 +17,12 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { TableOfContents } from '../../blocks/TableOfContents/config'
+import { AuthorBox } from '../../blocks/AuthorBox/config'
+import { FAQAccordion } from '../../blocks/FAQAccordion/config'
+import { Citation } from '../../blocks/Citation/config'
+import { ExpertQuote } from '../../blocks/ExpertQuote/config'
+import { ComparisonTable } from '../../blocks/ComparisonTable/config'
 
 import {
   MetaDescriptionField,
@@ -25,7 +31,8 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-import { slugField } from '@/fields/slug'
+import { slugField } from 'payload'
+import { costomSlugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -50,19 +57,16 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) => {
-        const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
+      url: ({ data, req }) =>
+        generatePreviewPath({
+          slug: data?.slug,
           collection: 'posts',
           req,
-        })
-
-        return path
-      },
+        }),
     },
     preview: (data, { req }) =>
       generatePreviewPath({
-        slug: typeof data?.slug === 'string' ? data.slug : '',
+        slug: data?.slug as string,
         collection: 'posts',
         req,
       }),
@@ -92,7 +96,19 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock] }),
+                    BlocksFeature({
+                      blocks: [
+                        Banner,
+                        Code,
+                        MediaBlock,
+                        TableOfContents,
+                        AuthorBox,
+                        FAQAccordion,
+                        Citation,
+                        ExpertQuote,
+                        ComparisonTable,
+                      ],
+                    }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -101,6 +117,45 @@ export const Posts: CollectionConfig<'posts'> = {
               }),
               label: false,
               required: true,
+            },
+            {
+              name: 'schemaMarkup',
+              type: 'group',
+              label: 'Structured Data',
+              fields: [
+                {
+                  name: 'type',
+                  type: 'select',
+                  required: true,
+                  defaultValue: 'Article',
+                  options: [
+                    { label: 'Article', value: 'Article' },
+                    { label: 'TechArticle', value: 'TechArticle' },
+                    { label: 'FAQPage', value: 'FAQPage' },
+                  ],
+                },
+                {
+                  name: 'headline',
+                  type: 'text',
+                  localized: true,
+                  admin: {
+                    description: 'Optional. If empty, the post title will be used.',
+                  },
+                },
+
+                // FAQ items only when type = FAQPage
+                {
+                  name: 'faqItems',
+                  type: 'array',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.type === 'FAQPage',
+                  },
+                  fields: [
+                    { name: 'question', type: 'text', required: true, localized: true },
+                    { name: 'answer', type: 'textarea', required: true, localized: true },
+                  ],
+                },
+              ],
             },
           ],
           label: 'Content',
@@ -187,11 +242,9 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'authors',
       type: 'relationship',
-      admin: {
-        position: 'sidebar',
-      },
+      admin: { position: 'sidebar' },
       hasMany: true,
-      relationTo: 'users',
+      relationTo: 'authors',
     },
     // This field is only used to populate the user data via the `populateAuthors` hook
     // This is because the `user` collection has access control locked to protect user privacy
@@ -207,17 +260,14 @@ export const Posts: CollectionConfig<'posts'> = {
         readOnly: true,
       },
       fields: [
-        {
-          name: 'id',
-          type: 'text',
-        },
-        {
-          name: 'name',
-          type: 'text',
-        },
+        { name: 'id', type: 'text' },
+        { name: 'name', type: 'text' },
+        { name: 'slug', type: 'text' },
+        { name: 'credentials', type: 'text' },
+        { name: 'avatarUrl', type: 'text' },
       ],
     },
-    ...slugField(),
+    costomSlugField(),
   ],
   hooks: {
     afterChange: [revalidatePost],
