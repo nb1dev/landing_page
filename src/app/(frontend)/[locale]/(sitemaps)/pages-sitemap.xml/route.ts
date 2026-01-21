@@ -28,9 +28,15 @@ function withLocale(siteURL: string, locale: AppLocale, path: string) {
   return `${siteURL}/${locale}${clean}`
 }
 
-export async function GET(_req: Request, { params }: { params: { locale: string } }) {
-  // ✅ Narrow to the allowed locale union
-  const locale: AppLocale = isAppLocale(params?.locale) ? params.locale : 'en'
+export async function GET(
+  _req: Request,
+  // ✅ In your Next version, route handler params are a Promise
+  { params }: { params: Promise<{ locale: string }> },
+) {
+  const resolved = await params
+
+  // ✅ Narrow to allowed locale union
+  const locale: AppLocale = isAppLocale(resolved?.locale) ? resolved.locale : 'en'
 
   const getPagesSitemap = unstable_cache(
     async () => {
@@ -46,7 +52,7 @@ export async function GET(_req: Request, { params }: { params: { locale: string 
         limit: 1000,
         pagination: false,
 
-        // ✅ Now correctly typed: "en" | "de" | "fr" | "all" | undefined
+        // ✅ Correctly typed for Payload localization
         locale: locale as PayloadLocale,
 
         where: {
