@@ -45,9 +45,7 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      ssl: process.env.DATABASE_URL?.includes('sslmode=require')
-        ? { rejectUnauthorized: false }
-        : false,
+      ssl: { rejectUnauthorized: false }, // Always use SSL with self-signed cert
       max: 5, // Reduced to avoid exhausting DB connections during build
       min: 1, // Minimum number of connections
       idleTimeoutMillis: 20000, // Close idle connections after 20 seconds
