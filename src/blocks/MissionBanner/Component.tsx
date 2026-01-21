@@ -1,21 +1,26 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import type { MissionBannerBlock as MissionBannerBlockProps } from 'src/payload-types'
-import React, { useEffect, useState } from 'react'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
 
+import React from 'react'
+import type { MissionBannerBlock as MissionBannerBlockProps } from '@/payload-types'
+
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
-// import { BlocksField } from '@payloadcms/ui'
 
 export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
-  const [locationUrl, setLocationUrl] = useState('/')
 
-  useEffect(() => {
-    const loc = window.location.pathname
-    setLocationUrl(loc)
-  }, [])
+  const firstImage =
+    Array.isArray(props.images) && props.images.length > 0 ? props.images[0] : undefined
+
+  const heroImageUrl =
+    firstImage && typeof firstImage.image === 'object'
+      ? getMediaUrl(firstImage.image.url).toString()
+      : undefined
+
+  const logoUrl =
+    typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
 
   return (
     <div
@@ -31,49 +36,58 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
           backgroundSize: 'cover',
           borderRadius: '20px',
           backgroundColor: '#1D1D1D',
+          padding: isMobile ? '24px' : '',
         }}
       >
         <div
           className="flex flex-row w-full"
           style={{
             flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '24px' : locationUrl === '/' ? '80px' : '80px',
+            gap: isMobile ? '24px' : '80px',
           }}
         >
+          {/* Mobile heading on top */}
           {isMobile && (
             <div
               style={{
-                fontSize: isMobile ? '42px' : '50px',
+                fontSize: '42px',
                 marginBottom: '16px',
-                width: isMobile ? '100%' : '100%',
+                width: '100%',
+                fontFamily: 'Instrument Sans',
+                fontWeight: '500',
+                lineHeight: '42px',
+                color: 'white',
               }}
             >
-              <RichText data={props.heading} />
+              <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
             </div>
           )}
+
+          {/* Left image */}
           <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
             <img
               style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px', maxHeight: '384px' }}
-              src={
-                props.images && typeof props.images[0]?.image === 'object'
-                  ? getMediaUrl(props.images[0]?.image.url).toString()
-                  : undefined
-              }
-              alt="icon"
+              src={heroImageUrl}
+              alt=""
             />
           </div>
-          <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col`}>
+
+          {/* Right column */}
+          <div
+            className={`flex ${isMobile ? 'w-full' : 'w-1/2'} flex-col`}
+            style={{ color: 'white' }}
+          >
             {!isMobile && (
               <div
                 style={{
-                  fontSize: isMobile ? '42px' : '50px',
+                  fontSize: '50px',
                   marginBottom: '16px',
                   fontFamily: 'Instrument Sans',
                   fontWeight: '500',
-                  lineHeight: isMobile ? '42px' : '74px',
+                  lineHeight: '74px',
                 }}
               >
-                <RichText data={props.heading} />
+                <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
               </div>
             )}
 
@@ -84,20 +98,15 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
                 fontFamily: 'Inter',
                 fontWeight: '400',
                 lineHeight: isMobile ? '22px' : '24px',
+                opacity: 0.9,
               }}
             >
-              <RichText data={props.description} />
+              <RichText data={props.description as any} enableGutter={false} enableProse={false} />
             </div>
+
             <div style={{ marginTop: 'auto' }}>
-              <img
-                style={{ marginBottom: '16px', maxHeight: '384px' }}
-                src={
-                  typeof props.logo === 'object'
-                    ? getMediaUrl(props.logo.url).toString()
-                    : undefined
-                }
-                alt="icon"
-              />
+              <img style={{ marginBottom: '16px', maxHeight: '384px' }} src={logoUrl} alt="" />
+
               <div
                 style={{
                   color: '#8b8a8a',

@@ -6,11 +6,7 @@ node_modules
 .next
 .vercel
 .vscode
-
-# SQLite DB local
-*.db
-/data/
-
+pnpm-lock.yaml
 
 # Payload default media upload directory
 # public/media/

@@ -19,7 +19,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
                 format: 0,
                 mode: 'normal',
                 style: '',
-                text: 'Payload Website Template',
+                text: 'NB1',
                 version: 1,
               },
             ],
@@ -49,7 +49,7 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
                 fields: {
                   linkType: 'custom',
                   newTab: false,
-                  url: '/admin',
+                  url: 'cms/admin',
                 },
                 format: '',
                 indent: 0,
@@ -80,8 +80,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
     },
   },
   meta: {
-    description: 'An open-source website built with Payload and Next.js.',
-    title: 'Payload Website Template',
+    description: 'NB1 website',
+    title: 'NB1',
   },
   title: 'Home',
   layout: [],

@@ -1,7 +1,5 @@
-// storage-adapter-import-placeholder
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
-
-import sharp from 'sharp' // sharp-import
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
@@ -16,7 +14,11 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import { Navigation } from './globals/Navigation'
+import { SiteSettings } from './globals/SiteSettings'
+import { Products } from './collections/Products'
+import { Authors } from './collections/Authors'
+import { FAQ } from './globals/FAQ'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,11 +26,7 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
       beforeLogin: ['@/components/BeforeLogin'],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below.
       beforeDashboard: ['@/components/BeforeDashboard'],
     },
     importMap: {
@@ -37,59 +35,30 @@ export default buildConfig({
     user: Users.slug,
     livePreview: {
       breakpoints: [
-        {
-          label: 'Mobile',
-          name: 'mobile',
-          width: 375,
-          height: 667,
-        },
-        {
-          label: 'Tablet',
-          name: 'tablet',
-          width: 768,
-          height: 1024,
-        },
-        {
-          label: 'Desktop',
-          name: 'desktop',
-          width: 1440,
-          height: 900,
-        },
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
       ],
     },
   },
-  // This config helps us configure global or default features that the other editors can inherit
-  email: nodemailerAdapter({
-    defaultFromAddress: process.env.SMTP_FROM || 'no-reply@nb1.com',
-    defaultFromName: 'NB1',
-
-    transportOptions: {
-      host: process.env.SMTP_HOST || '127.0.0.1',
-      port: Number(process.env.SMTP_PORT) || 1025,
-      secure: false, // STARTTLS
-      auth: {
-        user: process.env.SMTP_USERNAME,
-        pass: process.env.SMTP_PASSWORD,
-      },
-      tls: {
-        rejectUnauthorized: false, // self-signed certificate
-      },
-    },
-  }),
-
   editor: defaultLexical,
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || '',
+  db: postgresAdapter({
+    pool: {
+      connectionString: process.env.DATABASE_URL || '',
+      ssl: { rejectUnauthorized: false }, // Always use SSL with self-signed cert
+      max: 5, // Reduced to avoid exhausting DB connections during build
+      min: 1, // Minimum number of connections
+      idleTimeoutMillis: 20000, // Close idle connections after 20 seconds
+      connectionTimeoutMillis: 10000, // Timeout after 10 seconds if can't connect
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, Products, Authors],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
-  plugins: [
-    ...plugins,
-    // storage-adapter-placeholder
-  ],
+
+  // ✅ UPDATED
+  globals: [Header, Footer, Navigation, SiteSettings, FAQ],
+
+  plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
@@ -98,16 +67,24 @@ export default buildConfig({
   jobs: {
     access: {
       run: ({ req }: { req: PayloadRequest }): boolean => {
-        // Allow logged in users to execute this endpoint (default)
         if (req.user) return true
-
-        // If there is no logged in user, then check
-        // for the Vercel Cron secret to be present as an
-        // Authorization header:
         const authHeader = req.headers.get('authorization')
         return authHeader === `Bearer ${process.env.CRON_SECRET}`
       },
     },
     tasks: [],
+  },
+  localization: {
+    locales: [
+      { code: 'en', label: 'English (EU)' },
+      { code: 'de', label: 'German' },
+      { code: 'fr', label: 'French' },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
+  routes: {
+    admin: '/cms/admin',
+    api: '/cms/api',
   },
 })

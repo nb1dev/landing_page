@@ -10,7 +10,7 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
 const nextConfig = {
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
+      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)
 
         return {
@@ -20,11 +20,6 @@ const nextConfig = {
       }),
     ],
   },
-  // Turbopack configuration for Next.js 16+
-  turbopack: {
-    resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.mts', '.cjs', '.cts'],
-  },
-  // Keep webpack config for fallback compatibility
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
@@ -35,6 +30,7 @@ const nextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
+  trailingSlash: true,
   redirects,
 }
 

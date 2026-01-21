@@ -63,7 +63,7 @@ export const FormBlock: React.FC<
         }, 1000)
 
         try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+          const req = await fetch(`${getClientSideURL()}/cms/api/form-submissions`, {
             body: JSON.stringify({
               form: formID,
               submissionData: dataToSend,
@@ -116,7 +116,7 @@ export const FormBlock: React.FC<
   return (
     <div className="container lg:max-w-[48rem]">
       {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} />
+        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
       )}
       <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
         <FormProvider {...formMethods}>
