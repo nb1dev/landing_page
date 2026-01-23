@@ -10,16 +10,26 @@ function normalizeSiteURL(url: string) {
   return `https://${url}`
 }
 
-export async function GET() {
+export async function GET(_req: Request, { params }: { params: { locale: string } }) {
+  const locale = params?.locale
+
+  if (!locale || !LOCALES.includes(locale)) {
+    return new Response('Not found', { status: 404 })
+  }
+
   const site = normalizeSiteURL(SITE_URL).replace(/\/$/, '')
   const lastmod = new Date().toISOString()
 
-  const entries = LOCALES.map(
-    (locale) => `<sitemap>
-       <loc>${site}/${locale}/sitemap.xml</loc>
+  const entries = [
+    `<sitemap>
+       <loc>${site}/${locale}/pages-sitemap.xml</loc>
        <lastmod>${lastmod}</lastmod>
      </sitemap>`,
-  ).join('')
+    `<sitemap>
+       <loc>${site}/${locale}/posts-sitemap.xml</loc>
+       <lastmod>${lastmod}</lastmod>
+     </sitemap>`,
+  ].join('')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
