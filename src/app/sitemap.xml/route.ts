@@ -6,19 +6,20 @@ const SITE_URL =
 const LOCALES = ['en', 'de', 'fr']
 
 function normalizeSiteURL(url: string) {
+  if (!url) return 'https://example.com'
   if (url.startsWith('http://') || url.startsWith('https://')) return url
   return `https://${url}`
 }
 
-export async function GET() {
+export async function GET(_req: Request) {
   const site = normalizeSiteURL(SITE_URL).replace(/\/$/, '')
   const lastmod = new Date().toISOString()
 
   const entries = LOCALES.map(
     (locale) => `<sitemap>
-       <loc>${site}/${locale}/sitemap.xml</loc>
-       <lastmod>${lastmod}</lastmod>
-     </sitemap>`,
+  <loc>${site}/${locale}/sitemap.xml</loc>
+  <lastmod>${lastmod}</lastmod>
+</sitemap>`,
   ).join('')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

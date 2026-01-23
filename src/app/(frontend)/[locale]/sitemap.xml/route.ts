@@ -6,18 +6,19 @@ const SITE_URL =
 const LOCALES = ['en', 'de', 'fr']
 
 function normalizeSiteURL(url: string) {
-  if (url.startsWith('http://') || url.startsWith('https://')) return url
-  return `https://${url}`
+  if (!url) return 'https://example.com'
+  if (url.startsWith('http://') || url.startsWith('https://')) return url.replace(/\/$/, '')
+  return `https://${url.replace(/\/$/, '')}`
 }
 
-export async function GET(_req: Request, { params }: { params: { locale: string } }) {
-  const locale = params?.locale
+export async function GET(_req: Request, context: any) {
+  const locale = context?.params?.locale as string | undefined
 
   if (!locale || !LOCALES.includes(locale)) {
     return new Response('Not found', { status: 404 })
   }
 
-  const site = normalizeSiteURL(SITE_URL).replace(/\/$/, '')
+  const site = normalizeSiteURL(SITE_URL)
   const lastmod = new Date().toISOString()
 
   const entries = [
