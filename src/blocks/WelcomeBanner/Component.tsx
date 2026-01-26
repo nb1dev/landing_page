@@ -12,19 +12,19 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 import { CarouselBanner } from './CarouselBanner'
 // import 'flag-icons/css/flag-icons.min.css'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function detectLocaleFromPath(pathname: string): AppLocale {
   const seg = (pathname || '/').split('/').filter(Boolean)[0]
-  if (seg === 'de' || seg === 'en' || seg === 'fr') return seg
+  if (seg === 'de' || seg === 'en') return seg
   return 'en'
 }
 
 function stripLocalePrefix(pathname: string): string {
   const parts = (pathname || '/').split('/').filter(Boolean)
   const first = parts[0]
-  if (first === 'de' || first === 'en' || first === 'fr') {
+  if (first === 'de' || first === 'en') {
     const rest = parts.slice(1).join('/')
     return '/' + rest
   }

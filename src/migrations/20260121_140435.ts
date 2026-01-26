@@ -2,7 +2,7 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
-   CREATE TYPE "public"."_locales" AS ENUM('en', 'de', 'fr');
+   CREATE TYPE "public"."_locales" AS ENUM('en', 'de');
   CREATE TYPE "public"."enum_pages_hero_links_link_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_pages_hero_links_link_appearance" AS ENUM('default', 'outline');
   CREATE TYPE "public"."enum_pages_blocks_cta_links_link_type" AS ENUM('reference', 'custom');
@@ -27,15 +27,15 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__pages_v_version_hero_type" AS ENUM('none', 'highImpact', 'mediumImpact', 'lowImpact');
   CREATE TYPE "public"."enum__pages_v_version_meta_robots" AS ENUM('index,follow', 'noindex,follow', 'index,nofollow', 'noindex,nofollow');
   CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__pages_v_published_locale" AS ENUM('en', 'de', 'fr');
+  CREATE TYPE "public"."enum__pages_v_published_locale" AS ENUM('en', 'de');
   CREATE TYPE "public"."enum_posts_schema_markup_type" AS ENUM('Article', 'TechArticle', 'FAQPage');
   CREATE TYPE "public"."enum_posts_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__posts_v_version_schema_markup_type" AS ENUM('Article', 'TechArticle', 'FAQPage');
   CREATE TYPE "public"."enum__posts_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__posts_v_published_locale" AS ENUM('en', 'de', 'fr');
+  CREATE TYPE "public"."enum__posts_v_published_locale" AS ENUM('en', 'de');
   CREATE TYPE "public"."enum_products_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__products_v_version_status" AS ENUM('draft', 'published');
-  CREATE TYPE "public"."enum__products_v_published_locale" AS ENUM('en', 'de', 'fr');
+  CREATE TYPE "public"."enum__products_v_published_locale" AS ENUM('en', 'de');
   CREATE TYPE "public"."enum_redirects_to_type" AS ENUM('reference', 'custom');
   CREATE TYPE "public"."enum_forms_confirmation_type" AS ENUM('message', 'redirect');
   CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'schedulePublish');

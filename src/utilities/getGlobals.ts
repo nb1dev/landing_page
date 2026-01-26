@@ -5,7 +5,7 @@ import { unstable_cache } from 'next/cache'
 
 type Global = keyof Config['globals']
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 type PayloadLocale = AppLocale | 'all'
 

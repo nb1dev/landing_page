@@ -14,7 +14,7 @@ interface HeaderClientProps {
   locale: string
 }
 
-const SUPPORTED_LOCALES = ['en', 'de', 'fr'] as const
+const SUPPORTED_LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof SUPPORTED_LOCALES)[number]
 
 function normalizePath(p: string) {
