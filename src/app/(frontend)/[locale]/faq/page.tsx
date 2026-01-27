@@ -4,7 +4,7 @@ import config from '@payload-config'
 import { JsonLd } from '@/components/JsonLd'
 import { buildFAQPageSchema } from '@/utilities/buildFAQPageSchema'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 const isAppLocale = (v: string): v is AppLocale => (LOCALES as readonly string[]).includes(v)
 

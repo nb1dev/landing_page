@@ -27,7 +27,7 @@ import { JsonLd } from '@/components/JsonLd'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isAppLocale(v: string): v is AppLocale {
@@ -103,7 +103,7 @@ export default async function RootLayout({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
-    title: {
+  title: {
     default: 'NB1 - One gut, One plan',
     template: '%s | NB1',
   },

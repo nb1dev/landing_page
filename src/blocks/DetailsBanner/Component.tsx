@@ -1,41 +1,56 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import type { DetailsBannerBlock as DetailsBannerBlockProps } from '@/payload-types'
 
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
+function toRelativeSrc(input?: string): string | undefined {
+  if (!input) return undefined
+  if (input.startsWith('/')) return input
+
+  try {
+    const u = new URL(input)
+    return `${u.pathname}${u.search}`
+  } catch {
+    return input
+  }
+}
+
 export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
   const items = Array.isArray(props.content) ? props.content : []
 
-  // ✅ Safety: avoid crashes if admin content isn't filled yet
   const c0 = items[0]
   const c1 = items[1]
   const c2 = items[2]
   const c3 = items[3]
 
   const bg = (item: any) => {
-    if (!item) return undefined
-    const chosen =
+    if (!item) return null
+
+    const chosenMedia =
       isMobile && typeof item?.backgroundImageMobile === 'object'
-        ? item.backgroundImageMobile?.url
+        ? item.backgroundImageMobile
         : typeof item?.backgroundImage === 'object'
-          ? item.backgroundImage?.url
-          : undefined
+          ? item.backgroundImage
+          : null
 
-    if (!chosen) return undefined
-    return `url(${getMediaUrl(chosen).toString()})`
+    if (!chosenMedia?.url) return null
+
+    return {
+      src: toRelativeSrc(getMediaUrl(chosenMedia.url).toString()),
+      alt: chosenMedia.alt || 'Card background',
+    }
   }
 
-  const imgUrl = (media: any) => {
-    if (!media || typeof media !== 'object') return undefined
-    const url = media?.url
-    return url ? getMediaUrl(url).toString() : undefined
-  }
+  const bg0 = bg(c0)
+  const bg1 = bg(c1)
+  const bg2 = bg(c2)
+  const bg3 = bg(c3)
 
   return (
     <div
@@ -78,36 +93,46 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 padding: isMobile ? '24px' : '32px 40px',
                 marginBottom: isMobile ? '0' : '8px',
                 borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: bg(c0),
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <div
-                className="w-full"
-                style={{
-                  color: '#292929',
-                  marginBottom: isMobile ? '16px' : '32px',
-                  fontSize: isMobile ? '24px' : '32px',
-                  fontFamily: 'Instrument Sans',
-                  fontWeight: '400',
-                  lineHeight: '38px',
-                }}
-              >
-                {c0?.title || ''}
-              </div>
-              <div
-                className={isMobile ? 'w-full' : 'w-2/3'}
-                style={{
-                  color: '#292929',
-                  fontSize: isMobile ? '15px' : '16px',
-                  fontFamily: 'Inter',
-                  fontWeight: '400',
-                  lineHeight: '24px',
-                }}
-              >
-                {c0?.description || ''}
+              {bg0?.src && (
+                <Image
+                  src={bg0.src}
+                  alt={bg0.alt}
+                  fill
+                  sizes={isMobile ? '100vw' : '50vw'}
+                  quality={90}
+                  className="object-cover"
+                />
+              )}
+              <div className="relative z-10">
+                <div
+                  className="w-full"
+                  style={{
+                    color: '#292929',
+                    marginBottom: isMobile ? '16px' : '32px',
+                    fontSize: isMobile ? '24px' : '32px',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '400',
+                    lineHeight: '38px',
+                  }}
+                >
+                  {c0?.title || ''}
+                </div>
+                <div
+                  className={isMobile ? 'w-full' : 'w-2/3'}
+                  style={{
+                    color: '#292929',
+                    fontSize: isMobile ? '15px' : '16px',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                    lineHeight: '24px',
+                  }}
+                >
+                  {c0?.description || ''}
+                </div>
               </div>
             </div>
 
@@ -118,39 +143,49 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 minHeight: '300px',
                 backgroundColor: 'black',
                 padding: isMobile ? '24px' : '32px 40px',
-                borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 marginBottom: isMobile ? '0' : '8px',
-                backgroundImage: bg(c1),
+                borderRadius: '20px',
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <div
-                className="w-full"
-                style={{
-                  color: 'white',
-                  marginBottom: isMobile ? '16px' : '32px',
-                  fontSize: isMobile ? '24px' : '32px',
-                  fontFamily: 'Instrument Sans',
-                  fontWeight: '400',
-                  lineHeight: isMobile ? '32px' : '38px',
-                }}
-              >
-                {c1?.title || ''}
-              </div>
-              <div
-                className={isMobile ? 'w-full' : 'w-2/3'}
-                style={{
-                  color: 'white',
-                  fontSize: isMobile ? '15px' : '16px',
-                  fontFamily: 'Inter',
-                  fontWeight: '400',
-                  lineHeight: '24px',
-                  opacity: '0.8',
-                }}
-              >
-                {c1?.description || ''}
+              {bg1?.src && (
+                <Image
+                  src={bg1.src}
+                  alt={bg1.alt}
+                  fill
+                  sizes={isMobile ? '100vw' : '50vw'}
+                  quality={90}
+                  className="object-cover"
+                />
+              )}
+              <div className="relative z-10">
+                <div
+                  className="w-full"
+                  style={{
+                    color: 'white',
+                    marginBottom: isMobile ? '16px' : '32px',
+                    fontSize: isMobile ? '24px' : '32px',
+                    fontFamily: 'Instrument Sans',
+                    fontWeight: '400',
+                    lineHeight: isMobile ? '32px' : '38px',
+                  }}
+                >
+                  {c1?.title || ''}
+                </div>
+                <div
+                  className={isMobile ? 'w-full' : 'w-2/3'}
+                  style={{
+                    color: 'white',
+                    fontSize: isMobile ? '15px' : '16px',
+                    fontFamily: 'Inter',
+                    fontWeight: '400',
+                    lineHeight: '24px',
+                    opacity: '0.8',
+                  }}
+                >
+                  {c1?.description || ''}
+                </div>
               </div>
             </div>
           </div>
@@ -167,13 +202,24 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 backgroundColor: '#138DF1',
                 padding: isMobile ? '24px 0 24px 24px' : '32px 0 32px 40px',
                 borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: bg(c2),
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
+              {bg2?.src && (
+                <Image
+                  src={bg2.src}
+                  alt={bg2.alt}
+                  fill
+                  sizes={isMobile ? '100vw' : '50vw'}
+                  quality={90}
+                  className="object-cover"
+                />
+              )}
+
+              <div
+                className={`relative z-10 w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}
+              >
                 <div
                   style={{
                     width: isMobile ? '100%' : '70%',
@@ -192,6 +238,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   >
                     {c2?.title || ''}
                   </div>
+
                   <div
                     style={{
                       color: 'white',
@@ -206,12 +253,29 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   </div>
                 </div>
 
-                <div className={isMobile ? 'w-full' : ''}>
-                  <img
-                    style={{ width: isMobile ? '73%' : '100%', marginLeft: 'auto' }}
-                    src={imgUrl(c2?.imageContent)}
-                    alt=""
-                  />
+                <div
+                  style={{
+                    width: isMobile ? '100%' : '40%',
+                    flexShrink: 0,
+                    marginLeft: 'auto',
+                  }}
+                >
+                  {typeof c2?.imageContent === 'object' && c2.imageContent?.url && (
+                    <Image
+                      src={toRelativeSrc(getMediaUrl(c2.imageContent.url).toString()) as string}
+                      alt={c2.imageContent.alt || 'Illustration'}
+                      width={2000}
+                      height={2000}
+                      quality={95}
+                      sizes={isMobile ? '73vw' : '30vw'}
+                      style={{
+                        width: isMobile ? '73%' : '100%',
+                        height: 'auto',
+                        display: 'block',
+                        marginLeft: 'auto',
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -223,13 +287,25 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 backgroundColor: '#008498',
                 padding: isMobile ? '0 24px 24px 24px' : '32px 0 32px 40px',
                 borderRadius: '20px',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundImage: bg(c3),
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: isMobile ? 'auto' : '326px',
               }}
             >
-              <div className={`w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}>
+              {bg3?.src && (
+                <Image
+                  src={bg3.src}
+                  alt={bg3.alt}
+                  fill
+                  sizes={isMobile ? '100vw' : '50vw'}
+                  quality={90}
+                  className="object-cover"
+                />
+              )}
+
+              <div
+                className={`relative z-10 w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}
+              >
                 <div style={{ width: isMobile ? '100%' : '60%' }}>
                   <div
                     style={{
@@ -243,6 +319,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   >
                     {c3?.title || ''}
                   </div>
+
                   <div
                     style={{
                       color: 'white',
@@ -257,8 +334,28 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                   </div>
                 </div>
 
-                <div className={isMobile ? 'w-full' : ''}>
-                  <img className="w-full" src={imgUrl(c3?.imageContent)} alt="" />
+                <div
+                  style={{
+                    width: isMobile ? '100%' : '46%',
+                    flexShrink: 0,
+                    marginLeft: 'auto',
+                  }}
+                >
+                  {typeof c3?.imageContent === 'object' && c3.imageContent?.url && (
+                    <Image
+                      src={toRelativeSrc(getMediaUrl(c3.imageContent.url).toString()) as string}
+                      alt={c3.imageContent.alt || 'Illustration'}
+                      width={2000}
+                      height={2000}
+                      quality={95}
+                      sizes={isMobile ? '100vw' : '40vw'}
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        display: 'block',
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>

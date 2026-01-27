@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Navigation as NavigationType } from '../../payload-types'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isLocale(v: string): v is AppLocale {

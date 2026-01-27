@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number] // "en" | "de" | "fr"
 
 // Payload types in your project also accept "all"

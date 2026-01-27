@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 const DEFAULT_LOCALE = 'en'
 
 // ✅ ROOT routes that must NOT be localized (served by something else on same host)

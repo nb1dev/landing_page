@@ -1,5 +1,7 @@
 import type { MetadataRoute } from 'next'
 
+const LOCALES = ['en', 'de']
+
 function normalizeSiteURL(raw?: string) {
   if (!raw) return 'http://localhost:3000'
   if (raw.startsWith('http://') || raw.startsWith('https://')) return raw
@@ -17,6 +19,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/cms', '/cms/admin', '/cms/api'],
     },
-    sitemap: `${site}/sitemap.xml`,
+    sitemap: [`${site}/sitemap.xml`, ...LOCALES.map((l) => `${site}/${l}/sitemap.xml`)],
   }
 }

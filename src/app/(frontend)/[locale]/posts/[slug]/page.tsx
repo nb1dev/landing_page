@@ -24,7 +24,7 @@ import { extractHeadingsFromLexical } from '@/utilities/extractHeadingsFromLexic
 // ✅ add hreflang helper
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isAppLocale(v: string): v is AppLocale {
