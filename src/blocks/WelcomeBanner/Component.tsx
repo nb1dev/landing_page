@@ -10,7 +10,6 @@ import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
 import { CarouselBanner } from './CarouselBanner'
-// import 'flag-icons/css/flag-icons.min.css'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -31,6 +30,25 @@ function stripLocalePrefix(pathname: string): string {
   return pathname || '/'
 }
 
+/**
+ * Convert absolute media URLs (https://stg.nb1.com/...) to relative (/cms/...)
+ * so Next Image treats them as same-origin and doesn't require remotePatterns.
+ */
+function toRelativeSrc(input?: string): string | undefined {
+  if (!input) return undefined
+
+  // already relative
+  if (input.startsWith('/')) return input
+
+  try {
+    const u = new URL(input)
+    return `${u.pathname}${u.search}`
+  } catch {
+    // if it's not a valid absolute URL, return as-is
+    return input
+  }
+}
+
 export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -39,7 +57,6 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
   const locale = useMemo(() => detectLocaleFromPath(pathname), [pathname])
   const pathWithoutLocale = useMemo(() => stripLocalePrefix(pathname), [pathname])
 
-  // used only to style buttons like your old version
   const [locationUrl, setLocationUrl] = useState(pathname)
 
   useEffect(() => {
@@ -47,20 +64,18 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
   }, [pathname])
 
   const goToLocale = (target: AppLocale) => {
-    // keep the current path, just swap locale
     const nextPath = `/${target}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`
     router.push(nextPath)
   }
 
   const goLogin = () => {
-    // locale-aware login path
     router.push(`/${locale}/login`)
   }
 
   const bgDesktop =
     typeof props?.backgroundImage === 'object'
       ? {
-          src: getMediaUrl(props.backgroundImage.url).toString(),
+          src: toRelativeSrc(getMediaUrl(props.backgroundImage.url).toString()),
           alt: props.backgroundImage.alt || 'Hero background',
         }
       : null
@@ -68,7 +83,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
   const bgMobile =
     typeof props?.backgroundImageMobile === 'object'
       ? {
-          src: getMediaUrl(props.backgroundImageMobile.url).toString(),
+          src: toRelativeSrc(getMediaUrl(props.backgroundImageMobile.url).toString()),
           alt: props.backgroundImageMobile.alt || 'Hero background mobile',
         }
       : null
@@ -76,7 +91,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
   const logo =
     typeof props?.logo === 'object'
       ? {
-          src: getMediaUrl(props.logo.url).toString(),
+          src: toRelativeSrc(getMediaUrl(props.logo.url).toString()),
           alt: props.logo.alt || 'Logo',
         }
       : null
@@ -86,57 +101,6 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
       style={{ padding: isMobile ? '20px' : '' }}
     >
-      {/* Top right actions */}
-      {/* <div className="flex flex-row mb-6 ml-auto w-full">
-        <div className="flex ml-auto">
-          <div
-            className="mr-4 mt-auto mb-auto"
-            style={{ color: 'white', cursor: 'pointer' }}
-            onClick={goLogin}
-          >
-            Login
-          </div>
-
-        
-          <div
-            className="p-2"
-            style={{
-              backgroundColor: locale === 'en' ? 'black' : 'white',
-              color: locale === 'en' ? 'white' : 'black',
-              borderTopLeftRadius: '20px',
-              borderBottomLeftRadius: '20px',
-              cursor: 'pointer',
-            }}
-            onClick={() => goToLocale('en')}
-          >
-            <span
-              style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '150%' }}
-            >
-              EN
-            </span>
-          </div>
-
-          <div
-            className="p-2"
-            style={{
-              backgroundColor: locale === 'de' ? 'black' : 'white',
-              color: locale === 'de' ? 'white' : 'black',
-              borderTopRightRadius: '20px',
-              borderBottomRightRadius: '20px',
-              cursor: 'pointer',
-            }}
-            onClick={() => goToLocale('de')}
-          >
-            <span
-              style={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '14px', lineHeight: '150%' }}
-            >
-              DE
-            </span>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Main banner */}
       <div
         className={`relative flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
         style={{
@@ -147,9 +111,9 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           overflow: 'hidden',
         }}
       >
-        {(isMobile ? bgMobile : bgDesktop) && (
+        {(isMobile ? bgMobile : bgDesktop)?.src && (
           <Image
-            src={(isMobile ? bgMobile : bgDesktop)!.src}
+            src={(isMobile ? bgMobile : bgDesktop)!.src as string}
             alt={(isMobile ? bgMobile : bgDesktop)!.alt}
             fill
             priority
@@ -158,8 +122,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             className="object-cover"
           />
         )}
+
         <div className={`relative z-10 ${isMobile ? 'flex-col' : 'flex'} w-full`}>
-          {/* Left column */}
           <div
             className={`${isMobile ? 'w-full' : 'w-1/2'}`}
             style={{
@@ -169,9 +133,9 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             }}
           >
             <div className={`${isMobile ? '' : 'mb-16'}`}>
-              {logo && (
+              {logo?.src && (
                 <Image
-                  src={logo.src}
+                  src={logo.src as string}
                   alt={logo.alt}
                   width={220}
                   height={90}
@@ -220,7 +184,6 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
             </div>
           </div>
 
-          {/* Right column */}
           <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
             {!isMobile && (
               <div className="w-full">
@@ -249,7 +212,6 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         </div>
       </div>
 
-      {/* Bottom line */}
       <div
         className={`${isMobile ? 'w-full' : 'w-1/2'}`}
         style={{
