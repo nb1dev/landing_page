@@ -32,13 +32,14 @@ function prefixLocale(locale: string, href: string) {
 export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data, locale }) => {
   const navItems = data?.navItems || []
 
+  // Optional: avoid rendering empty nav (helps debugging too)
+  if (!navItems.length) return null
+
   return (
     <nav role="navigation" aria-label="Main menu" className="flex items-center gap-3">
-      {/* ✅ Desktop menu (semantic) */}
-      <ul className="desktop-menu flex gap-3 items-center">
+      {/* Desktop */}
+      <ul className="hidden lg:flex gap-3 items-center">
         {navItems.map(({ link }, i) => {
-          // If your CMSLink supports passing className / appearance, keep it
-          // We’ll just fix locale for internal links by adjusting link.url when present.
           const patchedLink =
             link &&
             typeof link === 'object' &&
@@ -53,16 +54,10 @@ export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data
             </li>
           )
         })}
-        {/* <li>
-          <Link href={`/${locale}/search`}>
-            <span className="sr-only">Search</span>
-            <SearchIcon className="w-5 text-primary" />
-          </Link>
-        </li> */}
       </ul>
 
-      {/* ✅ Mobile menu exists in DOM (can be visually hidden and toggled with CSS) */}
-      <ul className="mobile-menu hidden">
+      {/* Mobile (now NOT permanently hidden) */}
+      <ul className="flex lg:hidden flex-col gap-3">
         {navItems.map(({ link }, i) => {
           const patchedLink =
             link &&
@@ -78,9 +73,6 @@ export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data
             </li>
           )
         })}
-        {/* <li>
-          <Link href={`/${locale}/search`}>Search</Link>
-        </li> */}
       </ul>
     </nav>
   )
