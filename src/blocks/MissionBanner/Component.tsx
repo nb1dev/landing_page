@@ -1,7 +1,7 @@
 'use client'
-/* eslint-disable @next/next/no-img-element */
 
 import React from 'react'
+import Image from 'next/image'
 import type { MissionBannerBlock as MissionBannerBlockProps } from '@/payload-types'
 
 import { getMediaUrl } from '@/utilities/getMediaUrl'
@@ -14,14 +14,21 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
   const firstImage =
     Array.isArray(props.images) && props.images.length > 0 ? props.images[0] : undefined
 
-  const heroImageUrl =
-    firstImage && typeof firstImage.image === 'object'
-      ? getMediaUrl(firstImage.image.url).toString()
-      : undefined
+  const hero =
+    firstImage && typeof firstImage.image === 'object' && firstImage.image?.url
+      ? {
+          src: getMediaUrl(firstImage.image.url).toString(),
+          alt: firstImage.image.alt || 'Mission image',
+        }
+      : null
 
-  const logoUrl =
-    typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
-
+  const logo =
+    typeof props.logo === 'object' && props.logo?.url
+      ? {
+          src: getMediaUrl(props.logo.url).toString(),
+          alt: props.logo.alt || 'Logo',
+        }
+      : null
   return (
     <div
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
@@ -65,11 +72,24 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
 
           {/* Left image */}
           <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
-            <img
-              style={{ width: isMobile ? '75%' : '100%', marginBottom: '5px', maxHeight: '384px' }}
-              src={heroImageUrl}
-              alt=""
-            />
+            {hero && (
+              <Image
+                src={hero.src}
+                alt={hero.alt}
+                width={2400}
+                height={1600}
+                priority
+                quality={100}
+                sizes="(min-width: 1024px) 50vw, 75vw"
+                style={{
+                  width: isMobile ? '75%' : '100%',
+                  height: 'auto',
+                  marginBottom: '5px',
+                  maxHeight: '384px',
+                  display: 'block',
+                }}
+              />
+            )}
           </div>
 
           {/* Right column */}
@@ -105,7 +125,23 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             </div>
 
             <div style={{ marginTop: 'auto' }}>
-              <img style={{ marginBottom: '16px', maxHeight: '384px' }} src={logoUrl} alt="" />
+              {logo && (
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={1200}
+                  height={600}
+                  quality={95}
+                  sizes={isMobile ? '60vw' : '25vw'}
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                    maxHeight: '384px',
+                    marginBottom: '16px',
+                    display: 'block',
+                  }}
+                />
+              )}
 
               <div
                 style={{

@@ -1,7 +1,7 @@
 'use client'
-/* eslint-disable @next/next/no-img-element */
 
 import React, { useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 
 import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-types'
@@ -59,12 +59,27 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
 
   const bgDesktop =
     typeof props?.backgroundImage === 'object'
-      ? getMediaUrl(props.backgroundImage.url).toString()
-      : ''
+      ? {
+          src: getMediaUrl(props.backgroundImage.url).toString(),
+          alt: props.backgroundImage.alt || 'Hero background',
+        }
+      : null
+
   const bgMobile =
     typeof props?.backgroundImageMobile === 'object'
-      ? getMediaUrl(props.backgroundImageMobile.url).toString()
-      : ''
+      ? {
+          src: getMediaUrl(props.backgroundImageMobile.url).toString(),
+          alt: props.backgroundImageMobile.alt || 'Hero background mobile',
+        }
+      : null
+
+  const logo =
+    typeof props?.logo === 'object'
+      ? {
+          src: getMediaUrl(props.logo.url).toString(),
+          alt: props.logo.alt || 'Logo',
+        }
+      : null
 
   return (
     <div
@@ -123,103 +138,113 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
 
       {/* Main banner */}
       <div
-        className={`flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
+        className={`relative flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
         style={{
           width: '100%',
           minHeight: isMobile ? '620px' : '640px',
           backgroundColor: 'white',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
           borderRadius: '20px',
-          position: 'relative',
-          overflowY: 'hidden',
-          overflowX: 'hidden',
-          backgroundImage: isMobile
-            ? bgMobile
-              ? `url(${bgMobile})`
-              : undefined
-            : bgDesktop
-              ? `url(${bgDesktop})`
-              : undefined,
+          overflow: 'hidden',
         }}
       >
-        {/* Left column */}
-        <div
-          className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-          style={{
-            paddingTop: isMobile ? '37px' : '100px',
-            paddingLeft: isMobile ? '37px' : '87px',
-            paddingRight: isMobile ? '37px' : '',
-          }}
-        >
-          <div className={`${isMobile ? '' : 'mb-16'}`}>
-            <img
-              src={
-                typeof props.logo === 'object' ? getMediaUrl(props.logo.url).toString() : undefined
-              }
-              alt="NB1"
-            />
+        {(isMobile ? bgMobile : bgDesktop) && (
+          <Image
+            src={(isMobile ? bgMobile : bgDesktop)!.src}
+            alt={(isMobile ? bgMobile : bgDesktop)!.alt}
+            fill
+            priority
+            quality={90}
+            sizes="100vw"
+            className="object-cover"
+          />
+        )}
+        <div className={`relative z-10 ${isMobile ? 'flex-col' : 'flex'} w-full`}>
+          {/* Left column */}
+          <div
+            className={`${isMobile ? 'w-full' : 'w-1/2'}`}
+            style={{
+              paddingTop: isMobile ? '37px' : '100px',
+              paddingLeft: isMobile ? '37px' : '87px',
+              paddingRight: isMobile ? '37px' : '',
+            }}
+          >
+            <div className={`${isMobile ? '' : 'mb-16'}`}>
+              {logo && (
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={220}
+                  height={90}
+                  priority
+                  quality={95}
+                  style={{ height: 'auto', width: 'auto', maxWidth: '240px' }}
+                />
+              )}
+            </div>
+
+            <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
+              <div className={`flex ${isMobile ? 'w-full' : ''} flex-col gap-8`}>
+                <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16'}`}>
+                  <div
+                    style={{
+                      fontSize: isMobile ? '38px' : '70px',
+                      fontFamily: 'Instrument Sans',
+                      fontWeight: '500',
+                      lineHeight: isMobile ? '42px' : '74px',
+                      marginBottom: '24px',
+                      width: isMobile ? '85%' : '100%',
+                    }}
+                    className="mb-6"
+                  >
+                    <RichText
+                      data={props.heading as any}
+                      enableGutter={false}
+                      enableProse={false}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: isMobile ? '20px' : '24px',
+                      color: '#292929',
+                      fontWeight: '400',
+                      fontFamily: 'Inter',
+                      lineHeight: isMobile ? '26px' : '34px',
+                      width: isMobile ? '85%' : '100%',
+                    }}
+                  >
+                    {props.description}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className={`flex w-full gap-8 ${isMobile ? 'flex-col' : 'flex-row'}`}>
-            <div className={`flex ${isMobile ? 'w-full' : ''} flex-col gap-8`}>
-              <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16'}`}>
+          {/* Right column */}
+          <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
+            {!isMobile && (
+              <div className="w-full">
                 <div
+                  className="ml-auto"
                   style={{
-                    fontSize: isMobile ? '38px' : '70px',
-                    fontFamily: 'Instrument Sans',
-                    fontWeight: '500',
-                    lineHeight: isMobile ? '42px' : '74px',
-                    marginBottom: '24px',
-                    width: isMobile ? '85%' : '100%',
-                  }}
-                  className="mb-6"
-                >
-                  <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
-                </div>
-
-                <div
-                  style={{
-                    fontSize: isMobile ? '20px' : '24px',
-                    color: '#292929',
-                    fontWeight: '400',
+                    width: 'fit-content',
+                    marginRight: '22px',
+                    marginTop: '22px',
+                    fontSize: '14px',
                     fontFamily: 'Inter',
-                    lineHeight: isMobile ? '26px' : '34px',
-                    width: isMobile ? '85%' : '100%',
+                    fontWeight: '400',
+                    lineHeight: '34px',
+                    color: '#646464',
                   }}
                 >
-                  {props.description}
+                  {props.copyrightText}
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            )}
 
-        {/* Right column */}
-        <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
-          {!isMobile && (
-            <div className="w-full">
-              <div
-                className="ml-auto"
-                style={{
-                  width: 'fit-content',
-                  marginRight: '22px',
-                  marginTop: '22px',
-                  fontSize: '14px',
-                  fontFamily: 'Inter',
-                  fontWeight: '400',
-                  lineHeight: '34px',
-                  color: '#646464',
-                }}
-              >
-                {props.copyrightText}
-              </div>
+            <div style={{ marginTop: isMobile ? undefined : '206px' }}>
+              <CarouselBanner {...props} />
             </div>
-          )}
-
-          <div style={{ marginTop: isMobile ? undefined : '206px' }}>
-            <CarouselBanner {...props} />
           </div>
         </div>
       </div>
