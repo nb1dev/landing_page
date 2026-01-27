@@ -53,12 +53,12 @@ export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data
             </li>
           )
         })}
-        <li>
+        {/* <li>
           <Link href={`/${locale}/search`}>
             <span className="sr-only">Search</span>
             <SearchIcon className="w-5 text-primary" />
           </Link>
-        </li>
+        </li> */}
       </ul>
 
       {/* ✅ Mobile menu exists in DOM (can be visually hidden and toggled with CSS) */}
@@ -78,9 +78,9 @@ export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data
             </li>
           )
         })}
-        <li>
+        {/* <li>
           <Link href={`/${locale}/search`}>Search</Link>
-        </li>
+        </li> */}
       </ul>
     </nav>
   )

@@ -73,21 +73,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, locale }) => {
         </Link> */}
 
         <div className="flex items-center gap-6 ml-auto">
-          {/* <HeaderNav data={data} locale={activeLocale} /> */}
-
-          {/* ✅ Login + Locale switch */}
+          <HeaderNav data={data} locale={activeLocale} />
           <div className="flex items-center">
-            <div
-              className="mr-4"
-              style={{ color: 'white', cursor: 'pointer' }}
-              onClick={() => router.push('/login')} // ✅ no locale
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && router.push('/login')}
-            >
-              Login
-            </div>
-
             <div
               className="p-2"
               style={{
