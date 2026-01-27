@@ -32,12 +32,14 @@ function prefixLocale(locale: string, href: string) {
 export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data, locale }) => {
   const navItems = data?.navItems || []
 
-  // Optional: avoid rendering empty nav (helps debugging too)
-  if (!navItems.length) return null
-
   return (
-    <nav role="navigation" aria-label="Main menu" className="flex items-center gap-3">
-      {/* Desktop */}
+    <nav
+      role="navigation"
+      aria-label="Main menu"
+      className="flex items-center gap-3"
+      data-nav-count={navItems.length}
+      data-locale={locale}
+    >
       <ul className="hidden lg:flex gap-3 items-center">
         {navItems.map(({ link }, i) => {
           const patchedLink =
@@ -56,7 +58,6 @@ export const HeaderNav: React.FC<{ data: HeaderType; locale: string }> = ({ data
         })}
       </ul>
 
-      {/* Mobile (now NOT permanently hidden) */}
       <ul className="flex lg:hidden flex-col gap-3">
         {navItems.map(({ link }, i) => {
           const patchedLink =
