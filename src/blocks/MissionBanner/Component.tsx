@@ -8,6 +8,18 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
+function toRelativeSrc(input?: string): string | undefined {
+  if (!input) return undefined
+  if (input.startsWith('/')) return input
+
+  try {
+    const u = new URL(input)
+    return `${u.pathname}${u.search}`
+  } catch {
+    return input
+  }
+}
+
 export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
 
@@ -17,7 +29,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
   const hero =
     firstImage && typeof firstImage.image === 'object' && firstImage.image?.url
       ? {
-          src: getMediaUrl(firstImage.image.url).toString(),
+          src: toRelativeSrc(getMediaUrl(firstImage.image.url).toString()),
           alt: firstImage.image.alt || 'Mission image',
         }
       : null
@@ -25,10 +37,11 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
   const logo =
     typeof props.logo === 'object' && props.logo?.url
       ? {
-          src: getMediaUrl(props.logo.url).toString(),
+          src: toRelativeSrc(getMediaUrl(props.logo.url).toString()),
           alt: props.logo.alt || 'Logo',
         }
       : null
+
   return (
     <div
       className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
@@ -70,9 +83,9 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             </div>
           )}
 
-          {/* Left image */}
+          {/* Left hero image */}
           <div className={`flex ${isMobile ? 'w-full' : 'w-1/2'}`}>
-            {hero && (
+            {hero?.src && (
               <Image
                 src={hero.src}
                 alt={hero.alt}
@@ -125,7 +138,7 @@ export const MissionBannerBlock: React.FC<MissionBannerBlockProps> = (props) => 
             </div>
 
             <div style={{ marginTop: 'auto' }}>
-              {logo && (
+              {logo?.src && (
                 <Image
                   src={logo.src}
                   alt={logo.alt}

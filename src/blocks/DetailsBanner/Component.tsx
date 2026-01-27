@@ -8,11 +8,22 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
 
+function toRelativeSrc(input?: string): string | undefined {
+  if (!input) return undefined
+  if (input.startsWith('/')) return input
+
+  try {
+    const u = new URL(input)
+    return `${u.pathname}${u.search}`
+  } catch {
+    return input
+  }
+}
+
 export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => {
   const isMobile = useIsMobile()
   const items = Array.isArray(props.content) ? props.content : []
 
-  // ✅ Safety: avoid crashes if admin content isn't filled yet
   const c0 = items[0]
   const c1 = items[1]
   const c2 = items[2]
@@ -31,7 +42,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
     if (!chosenMedia?.url) return null
 
     return {
-      src: getMediaUrl(chosenMedia.url).toString(),
+      src: toRelativeSrc(getMediaUrl(chosenMedia.url).toString()),
       alt: chosenMedia.alt || 'Card background',
     }
   }
@@ -40,12 +51,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
   const bg1 = bg(c1)
   const bg2 = bg(c2)
   const bg3 = bg(c3)
-
-  const imgUrl = (media: any) => {
-    if (!media || typeof media !== 'object') return undefined
-    const url = media?.url
-    return url ? getMediaUrl(url).toString() : undefined
-  }
 
   return (
     <div
@@ -92,7 +97,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 overflow: 'hidden',
               }}
             >
-              {bg0 && (
+              {bg0?.src && (
                 <Image
                   src={bg0.src}
                   alt={bg0.alt}
@@ -144,7 +149,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 overflow: 'hidden',
               }}
             >
-              {bg1 && (
+              {bg1?.src && (
                 <Image
                   src={bg1.src}
                   alt={bg1.alt}
@@ -201,8 +206,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 overflow: 'hidden',
               }}
             >
-              {/* Background image */}
-              {bg2 && (
+              {bg2?.src && (
                 <Image
                   src={bg2.src}
                   alt={bg2.alt}
@@ -213,7 +217,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 />
               )}
 
-              {/* Content layer */}
               <div
                 className={`relative z-10 w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}
               >
@@ -249,16 +252,17 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                     {c2?.description || ''}
                   </div>
                 </div>
+
                 <div
                   style={{
-                    width: isMobile ? '100%' : '40%', // 👈 controls how big it is on desktop
-                    flexShrink: 0, // 👈 prevents shrinking
+                    width: isMobile ? '100%' : '40%',
+                    flexShrink: 0,
                     marginLeft: 'auto',
                   }}
                 >
                   {typeof c2?.imageContent === 'object' && c2.imageContent?.url && (
                     <Image
-                      src={getMediaUrl(c2.imageContent.url).toString()}
+                      src={toRelativeSrc(getMediaUrl(c2.imageContent.url).toString()) as string}
                       alt={c2.imageContent.alt || 'Illustration'}
                       width={2000}
                       height={2000}
@@ -288,8 +292,7 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 minHeight: isMobile ? 'auto' : '326px',
               }}
             >
-              {/* Background image */}
-              {bg3 && (
+              {bg3?.src && (
                 <Image
                   src={bg3.src}
                   alt={bg3.alt}
@@ -300,7 +303,6 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
                 />
               )}
 
-              {/* Content layer */}
               <div
                 className={`relative z-10 w-full flex ${isMobile ? 'flex-col-reverse' : 'flex-row'}`}
               >
@@ -334,14 +336,14 @@ export const DetailsBannerBlock: React.FC<DetailsBannerBlockProps> = (props) => 
 
                 <div
                   style={{
-                    width: isMobile ? '100%' : '46%', // 👈 bigger than card 3, matches your old look usually
+                    width: isMobile ? '100%' : '46%',
                     flexShrink: 0,
                     marginLeft: 'auto',
                   }}
                 >
                   {typeof c3?.imageContent === 'object' && c3.imageContent?.url && (
                     <Image
-                      src={getMediaUrl(c3.imageContent.url).toString()}
+                      src={toRelativeSrc(getMediaUrl(c3.imageContent.url).toString()) as string}
                       alt={c3.imageContent.alt || 'Illustration'}
                       width={2000}
                       height={2000}

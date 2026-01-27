@@ -30,10 +30,6 @@ function stripLocalePrefix(pathname: string): string {
   return pathname || '/'
 }
 
-/**
- * Convert absolute media URLs (https://stg.nb1.com/...) to relative (/cms/...)
- * so Next Image treats them as same-origin and doesn't require remotePatterns.
- */
 function toRelativeSrc(input?: string): string | undefined {
   if (!input) return undefined
 
