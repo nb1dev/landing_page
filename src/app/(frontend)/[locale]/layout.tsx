@@ -19,6 +19,8 @@ import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
+import Script from 'next/script'
+// import { KetchScriptLoader } from './KetchScriptLoader'
 
 // ✅ JSON-LD component
 import { JsonLd } from '@/components/JsonLd'
@@ -26,6 +28,7 @@ import { JsonLd } from '@/components/JsonLd'
 // ✅ Payload local API access
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { KetchScriptLoader } from './KetchScriptLoader'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -76,6 +79,11 @@ export default async function RootLayout({
     >
       <head>
         <InitTheme />
+        <Script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js" />
+        <Script
+          src="https://files.bpcontent.cloud/2025/11/19/08/20251119085549-S157I4GF.js"
+          defer
+        />
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
 
@@ -83,6 +91,7 @@ export default async function RootLayout({
         <JsonLd data={organizationJsonLd} />
       </head>
       <body>
+        <KetchScriptLoader />
         <Providers>
           <AdminBar
             adminBarProps={{
