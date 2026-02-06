@@ -113,7 +113,7 @@ export default async function RootLayout({
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   title: {
-    default: 'NB1 - One gut, One plan',
+    default: 'NB1 - One gut one plan',
     template: '%s | NB1',
   },
   openGraph: mergeOpenGraph(),
