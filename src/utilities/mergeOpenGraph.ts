@@ -9,8 +9,8 @@ const defaultOpenGraph: Metadata['openGraph'] = {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'NB1 - One gut, one plan',
-  title: 'NB1 - One gut, one plan',
+  siteName: 'NB1 - One gut one plan',
+  title: 'NB1 - One gut one plan',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

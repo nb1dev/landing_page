@@ -90,6 +90,44 @@ export default async function RootLayout({
         {/* ✅ Site-wide Organization JSON-LD */}
         <JsonLd data={organizationJsonLd} />
       </head>
+
+      <Script
+        src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
+        strategy="afterInteractive"
+        async
+      />
+
+      <Script id="klaviyo-init" strategy="afterInteractive">
+        {`
+          !function(){if(!window.klaviyo){
+            window._klOnsite=window._klOnsite||[];
+            try{
+              window.klaviyo=new Proxy({},{
+                get:function(n,i){
+                  return i==="push"
+                    ? function(){var n;(n=window._klOnsite).push.apply(n,arguments)}
+                    : function(){
+                        for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];
+                        var t=typeof o[o.length-1]=="function"?o.pop():void 0;
+                        var e=new Promise(function(n){
+                          window._klOnsite.push([i].concat(o,[function(i){
+                            t&&t(i);n(i)
+                          }]))
+                        });
+                        return e
+                      }
+                }
+              })
+            }catch(n){
+              window.klaviyo=window.klaviyo||[];
+              window.klaviyo.push=function(){
+                var n;(n=window._klOnsite).push.apply(n,arguments)
+              }
+            }
+          }}();
+        `}
+      </Script>
+
       <body>
         <KetchScriptLoader />
         <Providers>
@@ -113,7 +151,7 @@ export default async function RootLayout({
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
   title: {
-    default: 'NB1 - One gut, One plan',
+    default: 'NB1 - One gut one plan',
     template: '%s | NB1',
   },
   openGraph: mergeOpenGraph(),
