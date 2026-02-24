@@ -37,18 +37,16 @@ export const generatePreviewPath = ({ collection, slug, req }: Props) => {
   const prefix = collectionPrefixMap[collection] ?? ''
   const locale = getLocale(req)
 
-  // ✅ localized frontend path: /en/home, /de/home
   const path = `/${locale}${prefix}/${cleanSlug}`.replace(/\/+/g, '/')
 
   const params = new URLSearchParams({
     slug: cleanSlug,
     collection,
     path, // keep unencoded; URLSearchParams encodes safely
+    previewSecret: process.env.PREVIEW_SECRET || '',
   })
 
   const frontendURL = getFrontendURL()
 
-  // ✅ absolute URL so iframe doesn't default to localhost
-  console.log('Generated preview URL:', `${frontendURL}/next/preview?${params.toString()}`)
-  return `${frontendURL}/next/preview?${params.toString()}`
+  return `${frontendURL}/cms/next/preview?${params.toString()}`
 }
