@@ -13,6 +13,7 @@ import { DetailsBanner } from '@/blocks/DetailsBanner/config'
 import { MissionBanner } from '@/blocks/MissionBanner/config'
 import { FormCustom } from '@/blocks/FormCostom/config'
 import { hero } from '@/heros/config'
+import { BoxCardBlock } from '@/blocks/landingBlocks/BoxCard/config'
 
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -21,6 +22,12 @@ import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { MetaImageField, OverviewField, PreviewField } from '@payloadcms/plugin-seo/fields'
 
 import { costomSlugField } from '@/fields/slug'
+import { FormulaCardBlock } from '@/blocks/landingBlocks/FormulaCard/config'
+import { ResultsCardBlock } from '@/blocks/landingBlocks/ResultsCard/config'
+import { ReviewCardBlock } from '@/blocks/landingBlocks/ReviewCard/config'
+import { StepsCardBlock } from '@/blocks/landingBlocks/StepsCard/config'
+import { SymptomsCardBlock } from '@/blocks/landingBlocks/SymptomsCard/config'
+import { VideoCardBlock } from '@/blocks/landingBlocks/VideoCard/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -94,6 +101,13 @@ export const Pages: CollectionConfig<'pages'> = {
                 DetailsBanner,
                 MissionBanner,
                 FormCustom,
+                BoxCardBlock,
+                FormulaCardBlock,
+                ResultsCardBlock,
+                ReviewCardBlock,
+                StepsCardBlock,
+                SymptomsCardBlock,
+                VideoCardBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

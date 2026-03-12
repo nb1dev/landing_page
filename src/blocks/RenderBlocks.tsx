@@ -11,6 +11,13 @@ import { WelcomeBannerBlock } from '@/blocks/WelcomeBanner/Component'
 import { DetailsBannerBlock } from '@/blocks/DetailsBanner/Component'
 import { MissionBannerBlock } from '@/blocks/MissionBanner/Component'
 import { FormCustomBlock } from '@/blocks/FormCostom/Component'
+import { BoxCardBlock } from '@/blocks/landingBlocks/BoxCard/Component'
+import { FormulaCardBlock } from './landingBlocks/FormulaCard/Component'
+import { ResultsCardBlock } from './landingBlocks/ResultsCard/Component'
+import { ReviewCardBlock } from './landingBlocks/ReviewCard/Component'
+import { StepsCardBlock } from './landingBlocks/StepsCard/Component'
+import { SymptomsCardBlock } from './landingBlocks/SymptomsCard/Component'
+import { VideoCardBlock } from './landingBlocks/VideoCard/Component'
 
 // ✅ Keys MUST match Payload block slug (= blockType)
 const blockComponents: Record<string, React.FC<any>> = {
@@ -23,6 +30,13 @@ const blockComponents: Record<string, React.FC<any>> = {
   'details-banner': DetailsBannerBlock,
   'mission-banner': MissionBannerBlock,
   'form-custom': FormCustomBlock,
+  'box-card': BoxCardBlock,
+  'formula-card': FormulaCardBlock,
+  'results-card': ResultsCardBlock,
+  'review-card': ReviewCardBlock,
+  'steps-card': StepsCardBlock,
+  'symptoms-card': SymptomsCardBlock,
+  'video-card': VideoCardBlock,
 }
 
 export const RenderBlocks: React.FC<{
