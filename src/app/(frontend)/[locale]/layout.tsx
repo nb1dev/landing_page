@@ -20,32 +20,24 @@ import '@fontsource/inter/500.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
 import Script from 'next/script'
-// import { KetchScriptLoader } from './KetchScriptLoader'
 
-// ✅ JSON-LD component
 import { JsonLd } from '@/components/JsonLd'
-
-// ✅ Payload local API access
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { KetchScriptLoader } from './KetchScriptLoader'
-
-const LOCALES = ['en', 'de'] as const
-type AppLocale = (typeof LOCALES)[number]
-
-function isAppLocale(v: string): v is AppLocale {
-  return (LOCALES as readonly string[]).includes(v)
-}
+import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
 
 export function generateStaticParams() {
-  return LOCALES.map((locale) => ({ locale }))
+  return appLocales.map((locale) => ({ locale }))
 }
 
-// ✅ Cache global fetch
-const getSiteSettings = cache(async () => {
+const getSiteSettings = cache(async (locale: AppLocale) => {
   const payload = await getPayload({ config })
+
   return payload.findGlobal({
     slug: 'site-settings',
+    locale,
+    fallbackLocale: defaultLocale,
   })
 })
 
@@ -54,18 +46,16 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode
-  // ✅ Next wants params awaited in this environment
   params: Promise<{ locale: string }>
 }) {
   const { isEnabled } = await draftMode()
 
   const resolved = await params
-  const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : 'en'
+  const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
-  // ✅ Fetch Organization JSON-LD
   let organizationJsonLd: unknown = null
   try {
-    const site = await getSiteSettings()
+    const site = await getSiteSettings(locale)
     organizationJsonLd = (site as any)?.organizationJsonLd ?? null
   } catch {
     organizationJsonLd = null
@@ -86,8 +76,6 @@ export default async function RootLayout({
         />
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
-
-        {/* ✅ Site-wide Organization JSON-LD */}
         <JsonLd data={organizationJsonLd} />
       </head>
 

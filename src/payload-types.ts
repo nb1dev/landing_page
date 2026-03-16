@@ -227,6 +227,11 @@ export interface Page {
     | StepsCardBlock
     | SymptomsCardBlock
     | VideoCardBlock
+    | KeyTakeawaysBlock
+    | FAQBlock
+    | DataTableBlock
+    | CtaBlock
+    | BulletListBlock
   )[];
   meta?: {
     /**
@@ -1379,6 +1384,112 @@ export interface VideoCardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KeyTakeawaysBlock".
+ */
+export interface KeyTakeawaysBlock {
+  items: {
+    /**
+     * Bold lead-in phrase, e.g. "Your microbiome filters everything you swallow."
+     */
+    leadIn: string;
+    /**
+     * Normal-weight explanation text, ideally 1–2 sentences.
+     */
+    explanation: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'keyTakeaways';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  items: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DataTableBlock".
+ */
+export interface DataTableBlock {
+  sectionTitle?: string | null;
+  variant: 'glossary' | 'comparison';
+  columnHeaders?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  rows: {
+    cells: {
+      value: string;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  /**
+   * Zero-based column index to visually emphasize. Used only for comparison tables.
+   */
+  highlightColumn?: number | null;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'dataTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock".
+ */
+export interface CtaBlock {
+  /**
+   * 1–3 sentences connecting the article topic to the NB1 kit. This is the only editable content.
+   */
+  body: string;
+  buttonUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulletListBlock".
+ */
+export interface BulletListBlock {
+  sectionTitle?: string | null;
+  items: {
+    leadIn: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bulletList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1756,6 +1867,11 @@ export interface PagesSelect<T extends boolean = true> {
         'steps-card'?: T | StepsCardBlockSelect<T>;
         'symptoms-card'?: T | SymptomsCardBlockSelect<T>;
         'video-card'?: T | VideoCardBlockSelect<T>;
+        keyTakeaways?: T | KeyTakeawaysBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
+        dataTable?: T | DataTableBlockSelect<T>;
+        ctaBlock?: T | CtaBlockSelect<T>;
+        bulletList?: T | BulletListBlockSelect<T>;
       };
   meta?:
     | T
@@ -2118,6 +2234,91 @@ export interface VideoCardBlockSelect<T extends boolean = true> {
     | {
         right?: T;
         left?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KeyTakeawaysBlock_select".
+ */
+export interface KeyTakeawaysBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        leadIn?: T;
+        explanation?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DataTableBlock_select".
+ */
+export interface DataTableBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  variant?: T;
+  columnHeaders?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  rows?:
+    | T
+    | {
+        cells?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  highlightColumn?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock_select".
+ */
+export interface CtaBlockSelect<T extends boolean = true> {
+  body?: T;
+  buttonUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulletListBlock_select".
+ */
+export interface BulletListBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  items?:
+    | T
+    | {
+        leadIn?: T;
+        body?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;

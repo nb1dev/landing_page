@@ -28,6 +28,11 @@ import { ReviewCardBlock } from '@/blocks/landingBlocks/ReviewCard/config'
 import { StepsCardBlock } from '@/blocks/landingBlocks/StepsCard/config'
 import { SymptomsCardBlock } from '@/blocks/landingBlocks/SymptomsCard/config'
 import { VideoCardBlock } from '@/blocks/landingBlocks/VideoCard/config'
+import { KeyTakeaways } from '@/blocks/KeyTakeways/config'
+import { FAQBlock } from '@/blocks/FAQ/config'
+import { DataTableBlock } from '@/blocks/DataTable/config'
+import { CtaBlock } from '@/blocks/CTA/config'
+import { BulletListBlock } from '@/blocks/BulletList/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -75,7 +80,7 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
-      localized: true, // ✅ EN/DE unique titles
+      localized: true,
     },
 
     {
@@ -108,6 +113,11 @@ export const Pages: CollectionConfig<'pages'> = {
                 StepsCardBlock,
                 SymptomsCardBlock,
                 VideoCardBlock,
+                KeyTakeaways,
+                FAQBlock,
+                DataTableBlock,
+                CtaBlock,
+                BulletListBlock,
               ],
               required: true,
               admin: { initCollapsed: true },
@@ -120,14 +130,11 @@ export const Pages: CollectionConfig<'pages'> = {
           name: 'meta',
           label: 'SEO',
           fields: [
-            // ✅ Nice overview card
             OverviewField({
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
               imagePath: 'meta.image',
             }),
-
-            // ✅ Your own localized fields (reliable + meets requirement)
             {
               name: 'title',
               label: 'Title Tag',
@@ -150,13 +157,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 description: 'Custom meta description per page. If empty, uses a fallback.',
               },
             },
-
-            // ✅ Meta image (social fallback)
             MetaImageField({
               relationTo: 'media',
             }),
-
-            // ✅ Robots Tag
             {
               name: 'robots',
               label: 'Robots Tag',
@@ -170,8 +173,6 @@ export const Pages: CollectionConfig<'pages'> = {
               ],
               admin: { description: 'Controls indexing & link following.' },
             },
-
-            // ✅ Canonical override
             {
               name: 'canonicalURL',
               label: 'Canonical URL',
@@ -190,8 +191,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 }
               },
             },
-
-            // ✅ Open Graph overrides (localized text)
             {
               name: 'ogTitle',
               label: 'OG Title',
@@ -215,8 +214,6 @@ export const Pages: CollectionConfig<'pages'> = {
               relationTo: 'media',
               admin: { description: 'Optional. Defaults to Meta Image if empty.' },
             },
-
-            // ✅ Preview card in admin
             PreviewField({
               hasGenerateFn: true,
               titlePath: 'meta.title',
@@ -233,7 +230,6 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: { position: 'sidebar' },
     },
 
-    // ✅ slug should not be localized in your /[locale]/[slug] setup
     costomSlugField(),
   ],
 
@@ -244,15 +240,9 @@ export const Pages: CollectionConfig<'pages'> = {
 
         data.meta = data.meta || {}
 
-        // ✅ Fallback rules (per-locale automatically because fields are localized)
-        // If meta.title not set, use page title
         data.meta.title = data.meta.title || data.title
-
-        // If OG fields empty, inherit meta fields
         data.meta.ogTitle = data.meta.ogTitle || data.meta.title || data.title
         data.meta.ogDescription = data.meta.ogDescription || data.meta.description
-
-        // Prefer explicit ogImage, else fallback to meta image
         data.meta.ogImage = data.meta.ogImage || data.meta.image
 
         return data

@@ -1,7 +1,7 @@
-// src/app/(frontend)/[locale]/[slug]/page.tsx
 import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { JsonLd } from '@/components/JsonLd/index'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
@@ -11,6 +11,7 @@ import { homeStatic } from '@/endpoints/seed/home-static'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { buildPageJsonLd } from '@/utilities/buildPageJsonLd'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
@@ -24,7 +25,6 @@ function isAppLocale(v: string): v is AppLocale {
   return (LOCALES as readonly string[]).includes(v)
 }
 
-// ✅ include locale in params
 type Args = {
   params: Promise<{
     locale: string
@@ -32,7 +32,6 @@ type Args = {
   }>
 }
 
-// ✅ include locale permutations
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const pages = await payload.find({
@@ -44,7 +43,6 @@ export async function generateStaticParams() {
     select: { slug: true },
   })
 
-  // Exclude "home" from [slug] SSG because /[locale] is handled by /[locale]/page.tsx
   const slugs = pages.docs?.filter((doc) => doc.slug !== 'home').map((d) => d.slug) ?? []
 
   return slugs.flatMap((slug) =>
@@ -60,11 +58,8 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { slug = 'home', locale: localeParam } = await paramsPromise
 
   const locale: AppLocale = isAppLocale(localeParam) ? localeParam : 'en'
-
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
 
-  // ✅ localized URL for redirects
   const url =
     `/${locale}/${decodedSlug === 'home' ? '' : decodedSlug}`.replace(/\/+$/, '') || `/${locale}`
 
@@ -75,7 +70,6 @@ export default async function Page({ params: paramsPromise }: Args) {
     locale,
   })
 
-  // Remove this code once your website is seeded
   if (!page && decodedSlug === 'home') {
     page = homeStatic as any
   }
@@ -86,25 +80,36 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page as any
 
+  const absoluteUrl =
+    decodedSlug === 'home'
+      ? new URL(`/${locale}`, getServerSideURL()).toString()
+      : new URL(`/${locale}/${encodeURIComponent(decodedSlug)}`, getServerSideURL()).toString()
+
+  const pageJsonLd = buildPageJsonLd(page, absoluteUrl)
+
   return (
-    <article
-      style={{
-        backgroundColor: '#1D1D1D',
-        maxWidth: '1440px',
-        marginRight: 'auto',
-        marginLeft: 'auto',
-      }}
-    >
-      <PageClient />
+    <>
+      <JsonLd data={pageJsonLd} />
 
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
+      <article
+        style={{
+          backgroundColor: '#1D1D1D',
+          maxWidth: '1440px',
+          width: '100%',
+          marginRight: 'auto',
+          marginLeft: 'auto',
+        }}
+      >
+        <PageClient />
 
-      {draft && <LivePreviewListener />}
+        <PayloadRedirects disableNotFound url={url} />
 
-      {hero ? <RenderHero {...hero} /> : null}
-      <RenderBlocks blocks={layout || []} />
-    </article>
+        {draft && <LivePreviewListener />}
+
+        {hero ? <RenderHero {...hero} /> : null}
+        <RenderBlocks blocks={layout || []} locale={locale} />
+      </article>
+    </>
   )
 }
 
@@ -118,14 +123,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     locale,
   })
 
-  // If missing, still allow redirects/404 elsewhere
   if (!page && decodedSlug !== 'home') return {}
 
   const siteURL = getServerSideURL()
 
-  // ✅ Canonical:
-  // - if page.meta.canonicalURL exists, use it
-  // - else computed based on locale + slug
   const metaCanonical = (page as any)?.meta?.canonicalURL as string | undefined
   const computedCanonical =
     decodedSlug === 'home'
@@ -134,9 +135,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
   const canonical = metaCanonical || computedCanonical
 
-  // ✅ Hreflang per your requirement:
-  // de-DE, de-AT, de-CH => same /de/ URL
-  // en + x-default => /en/ URL
   const alternates =
     decodedSlug === 'home'
       ? {
@@ -155,7 +153,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
           trailingSlash: false,
         })
 
-  // ✅ Robots meta (optional override)
   const robotsValue = (page as any)?.meta?.robots as string | undefined
   const robots =
     robotsValue && typeof robotsValue === 'string'
@@ -190,7 +187,6 @@ const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: A
         equals: slug,
       },
     },
-    // ✅ Localization
     locale,
     fallbackLocale: 'en',
     depth: 2,
