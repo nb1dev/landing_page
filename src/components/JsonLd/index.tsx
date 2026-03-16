@@ -1,6 +1,10 @@
 import React from 'react'
 
-type JsonLdValue = Record<string, unknown> | Array<Record<string, unknown>> | null | undefined
+export type JsonLdValue =
+  | Record<string, unknown>
+  | Array<Record<string, unknown>>
+  | null
+  | undefined
 
 type Props = {
   data: JsonLdValue

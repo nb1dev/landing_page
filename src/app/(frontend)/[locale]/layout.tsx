@@ -21,7 +21,7 @@ import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
 import Script from 'next/script'
 
-import { JsonLd } from '@/components/JsonLd'
+import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { KetchScriptLoader } from './KetchScriptLoader'
@@ -53,10 +53,11 @@ export default async function RootLayout({
   const resolved = await params
   const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
-  let organizationJsonLd: unknown = null
+  let organizationJsonLd: JsonLdValue = null
+
   try {
     const site = await getSiteSettings(locale)
-    organizationJsonLd = (site as any)?.organizationJsonLd ?? null
+    organizationJsonLd = ((site as any)?.organizationJsonLd ?? null) as JsonLdValue
   } catch {
     organizationJsonLd = null
   }
