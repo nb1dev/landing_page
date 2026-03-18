@@ -70,6 +70,17 @@ export default async function RootLayout({
     >
       <head>
         <InitTheme />
+        {/* Google Tag Manager */}
+        <Script id="gtm-head" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KQBDCQ9B');
+          `}
+        </Script>
+        {/* End Google Tag Manager */}
         <Script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js" />
         <Script
           src="https://files.bpcontent.cloud/2025/11/19/08/20251119085549-S157I4GF.js"
@@ -118,6 +129,16 @@ export default async function RootLayout({
       </Script>
 
       <body>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KQBDCQ9B"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <KetchScriptLoader />
         <Providers>
           <AdminBar
