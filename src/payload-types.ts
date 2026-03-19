@@ -282,8 +282,30 @@ export interface Page {
  */
 export interface Post {
   id: number;
+  /**
+   * Max 70 characters (recommended for SEO)
+   */
   title: string;
+  subtitle?: string | null;
   heroImage?: (number | null) | Media;
+  /**
+   * Write 2–3 introductory paragraphs. This appears before all content blocks.
+   */
+  intro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   content: {
     root: {
       type: string;
@@ -313,16 +335,26 @@ export interface Post {
         }[]
       | null;
   };
-  relatedPosts?: (number | Post)[] | null;
+  relatedArticles?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
-  meta?: {
-    title?: string | null;
+  meta: {
+    /**
+     * SEO title tag. Max 60 characters. " | NB1" is added automatically.
+     */
+    title: string;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
-    description?: string | null;
+    /**
+     * SEO meta description. Max 155 characters.
+     */
+    description: string;
   };
+  /**
+   * Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.
+   */
+  focusKeyword?: string | null;
   publishedAt?: string | null;
   authors?: (number | Author)[] | null;
   populatedAuthors?:
@@ -2329,7 +2361,9 @@ export interface BulletListBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   heroImage?: T;
+  intro?: T;
   content?: T;
   schemaMarkup?:
     | T
@@ -2344,7 +2378,7 @@ export interface PostsSelect<T extends boolean = true> {
               id?: T;
             };
       };
-  relatedPosts?: T;
+  relatedArticles?: T;
   categories?: T;
   meta?:
     | T
@@ -2353,6 +2387,7 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  focusKeyword?: T;
   publishedAt?: T;
   authors?: T;
   populatedAuthors?:

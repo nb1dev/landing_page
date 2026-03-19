@@ -9,7 +9,7 @@ import { formatAuthors } from '@/utilities/formatAuthors'
 export const PostHero: React.FC<{
   post: Post
 }> = ({ post }) => {
-  const { categories, heroImage, populatedAuthors, publishedAt, title } = post
+  const { categories, heroImage, populatedAuthors, publishedAt, title, subtitle } = post
 
   const hasAuthors =
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
@@ -41,6 +41,8 @@ export const PostHero: React.FC<{
           <div className="">
             <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
           </div>
+
+          {subtitle && <p className="flex flex-col md:flex-row gap-4 md:gap-16">{subtitle}</p>}
 
           <div className="flex flex-col md:flex-row gap-4 md:gap-16">
             {hasAuthors && (
