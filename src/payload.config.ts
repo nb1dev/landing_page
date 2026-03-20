@@ -31,6 +31,7 @@ export default buildConfig({
     },
     importMap: {
       baseDir: path.resolve(dirname),
+      importMapFile: path.resolve(dirname, 'app', 'cms', '(payload)', 'admin', 'importMap.js'),
     },
     user: Users.slug,
     livePreview: {
@@ -45,19 +46,16 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      ssl: { rejectUnauthorized: false }, // Always use SSL with self-signed cert
-      max: 5, // Reduced to avoid exhausting DB connections during build
-      min: 1, // Minimum number of connections
-      idleTimeoutMillis: 20000, // Close idle connections after 20 seconds
-      connectionTimeoutMillis: 10000, // Timeout after 10 seconds if can't connect
+      ssl: { rejectUnauthorized: false },
+      max: 5,
+      min: 1,
+      idleTimeoutMillis: 20000,
+      connectionTimeoutMillis: 10000,
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, Authors],
   cors: [getServerSideURL()].filter(Boolean),
-
-  // ✅ UPDATED
   globals: [Header, Footer, Navigation, SiteSettings, FAQ],
-
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
@@ -78,6 +76,7 @@ export default buildConfig({
     locales: [
       { code: 'en', label: 'English (EU)' },
       { code: 'de', label: 'German' },
+      { code: 'fr', label: 'French' },
     ],
     defaultLocale: 'en',
     fallback: true,

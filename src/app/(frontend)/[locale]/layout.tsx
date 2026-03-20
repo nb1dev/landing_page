@@ -20,32 +20,25 @@ import '@fontsource/inter/500.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
 import Script from 'next/script'
-// import { KetchScriptLoader } from './KetchScriptLoader'
 
-// ✅ JSON-LD component
-import { JsonLd } from '@/components/JsonLd'
-
-// ✅ Payload local API access
+import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
+import { ChatwootWidget } from '@/components/ChatwootWidget'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { KetchScriptLoader } from './KetchScriptLoader'
-
-const LOCALES = ['en', 'de'] as const
-type AppLocale = (typeof LOCALES)[number]
-
-function isAppLocale(v: string): v is AppLocale {
-  return (LOCALES as readonly string[]).includes(v)
-}
+import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
+import { ConditionalGoogleTagManager } from '@/components/ConditionalGoogleTagManager'
 
 export function generateStaticParams() {
-  return LOCALES.map((locale) => ({ locale }))
+  return appLocales.map((locale) => ({ locale }))
 }
 
-// ✅ Cache global fetch
-const getSiteSettings = cache(async () => {
+const getSiteSettings = cache(async (locale: AppLocale) => {
   const payload = await getPayload({ config })
+
   return payload.findGlobal({
     slug: 'site-settings',
+    locale,
+    fallbackLocale: defaultLocale,
   })
 })
 
@@ -54,19 +47,18 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode
-  // ✅ Next wants params awaited in this environment
   params: Promise<{ locale: string }>
 }) {
   const { isEnabled } = await draftMode()
 
   const resolved = await params
-  const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : 'en'
+  const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
-  // ✅ Fetch Organization JSON-LD
-  let organizationJsonLd: unknown = null
+  let organizationJsonLd: JsonLdValue = null
+
   try {
-    const site = await getSiteSettings()
-    organizationJsonLd = (site as any)?.organizationJsonLd ?? null
+    const site = await getSiteSettings(locale)
+    organizationJsonLd = ((site as any)?.organizationJsonLd ?? null) as JsonLdValue
   } catch {
     organizationJsonLd = null
   }
@@ -79,57 +71,59 @@ export default async function RootLayout({
     >
       <head>
         <InitTheme />
-        <Script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js" />
+
+        {/* Google Tag Manager (manual - DISABLED because using ConditionalGoogleTagManager) */}
+        {/*
+        <Script id="gtm-head" strategy="beforeInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-KQBDCQ9B');
+          `}
+        </Script>
+        */}
+        {/* End Google Tag Manager */}
+
         <Script
-          src="https://files.bpcontent.cloud/2025/11/19/08/20251119085549-S157I4GF.js"
-          defer
+          src="https://global.ketchcdn.com/web/v3/config/nb1_health/website_smart_tag/boot.js"
+          strategy="beforeInteractive"
         />
+
+        <Script id="gtm-consent-mode" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('consent', 'default', {
+              'ad_storage': 'denied',
+              'ad_user_data': 'denied',
+              'ad_personalization': 'denied',
+              'analytics_storage': 'denied',
+              'wait_for_update': 500
+            });
+          `}
+        </Script>
+
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
-
-        {/* ✅ Site-wide Organization JSON-LD */}
         <JsonLd data={organizationJsonLd} />
       </head>
 
-      <Script
-        src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
-        strategy="afterInteractive"
-        async
-      />
-
-      <Script id="klaviyo-init" strategy="afterInteractive">
-        {`
-          !function(){if(!window.klaviyo){
-            window._klOnsite=window._klOnsite||[];
-            try{
-              window.klaviyo=new Proxy({},{
-                get:function(n,i){
-                  return i==="push"
-                    ? function(){var n;(n=window._klOnsite).push.apply(n,arguments)}
-                    : function(){
-                        for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];
-                        var t=typeof o[o.length-1]=="function"?o.pop():void 0;
-                        var e=new Promise(function(n){
-                          window._klOnsite.push([i].concat(o,[function(i){
-                            t&&t(i);n(i)
-                          }]))
-                        });
-                        return e
-                      }
-                }
-              })
-            }catch(n){
-              window.klaviyo=window.klaviyo||[];
-              window.klaviyo.push=function(){
-                var n;(n=window._klOnsite).push.apply(n,arguments)
-              }
-            }
-          }}();
-        `}
-      </Script>
-
       <body>
-        <KetchScriptLoader />
+        {/* Google Tag Manager (noscript - DISABLED because using ConditionalGoogleTagManager) */}
+        {/*
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KQBDCQ9B"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        */}
+        {/* End Google Tag Manager (noscript) */}
+
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -140,6 +134,47 @@ export default async function RootLayout({
           <Header locale={locale} />
 
           {children}
+
+          <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
+
+          <ChatwootWidget locale={locale} />
+
+          <Script
+            src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
+            strategy="afterInteractive"
+            async
+          />
+
+          <Script id="klaviyo-init" strategy="afterInteractive">
+            {`
+              !function(){if(!window.klaviyo){
+                window._klOnsite=window._klOnsite||[];
+                try{
+                  window.klaviyo=new Proxy({},{
+                    get:function(n,i){
+                      return i==="push"
+                        ? function(){var n;(n=window._klOnsite).push.apply(n,arguments)}
+                        : function(){
+                            for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];
+                            var t=typeof o[o.length-1]=="function"?o.pop():void 0;
+                            var e=new Promise(function(n){
+                              window._klOnsite.push([i].concat(o,[function(i){
+                                t&&t(i);n(i)
+                              }]))
+                            });
+                            return e
+                          }
+                    }
+                  })
+                }catch(n){
+                  window.klaviyo=window.klaviyo||[];
+                  window.klaviyo.push=function(){
+                    var n;(n=window._klOnsite).push.apply(n,arguments)
+                  }
+                }
+              }}();
+            `}
+          </Script>
 
           {/* <Footer /> */}
         </Providers>

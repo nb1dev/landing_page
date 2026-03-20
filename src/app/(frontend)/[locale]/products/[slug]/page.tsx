@@ -2,7 +2,7 @@ import React from 'react'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { JsonLd } from '@/components/JsonLd'
+import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -22,10 +22,12 @@ export default async function ProductPage({ params }: Props) {
   const product = res.docs?.[0]
   if (!product) return notFound()
 
+  const productJsonLd: JsonLdValue = ((product as any)?.jsonLd ?? null) as JsonLdValue
+
   return (
     <>
       {/* ✅ Per-product JSON-LD */}
-      <JsonLd data={product.jsonLd ?? null} />
+      <JsonLd data={productJsonLd} />
 
       <main style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
         <h1>{product.name}</h1>

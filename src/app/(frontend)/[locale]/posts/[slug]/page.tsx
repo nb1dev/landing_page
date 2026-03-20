@@ -17,11 +17,7 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { JsonLd } from '@/components/JsonLd'
 import { buildPostSchema } from '@/utilities/buildSchema'
 import { getServerSideURL } from '@/utilities/getURL'
-
-// ✅ add this
 import { extractHeadingsFromLexical } from '@/utilities/extractHeadingsFromLexical'
-
-// ✅ add hreflang helper
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 
 const LOCALES = ['en', 'de'] as const
@@ -45,7 +41,6 @@ export async function generateStaticParams() {
     },
   })
 
-  // ✅ create locale+slug permutations
   return posts.docs.flatMap(({ slug }) =>
     LOCALES.map((locale) => ({
       locale,
@@ -66,59 +61,54 @@ export default async function PostPage({ params: paramsPromise }: Args) {
   const { slug = '', locale: localeParam } = await paramsPromise
 
   const locale: AppLocale = isAppLocale(localeParam) ? localeParam : 'en'
-
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-
-  // ✅ localized URL used by PayloadRedirects
   const url = `/${locale}/posts/${decodedSlug}`
 
-  // ✅ pass locale so localized fields + structured data match language
   const post = await queryPostBySlug({ slug: decodedSlug, locale })
 
-  // If post doesn't exist, let PayloadRedirects handle redirects (or 404)
   if (!post) return <PayloadRedirects url={url} />
 
-  // ✅ Schema.org JSON-LD
   const siteURL = getServerSideURL()
   const jsonLd = buildPostSchema({ post, siteURL, locale })
-
-  // ✅ headings for Table of Contents (H2/H3)
   const headings = extractHeadingsFromLexical(post.content as any, 'h3')
-
-  // ✅ author box data (from your populateAuthors hook)
   const populatedAuthors = (post as any).populatedAuthors || []
 
   return (
     <article className="pt-16 pb-16">
       <PageClient />
 
-      {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
       {draft && <LivePreviewListener />}
 
-      {/* ✅ Structured data */}
       <JsonLd data={jsonLd} />
 
       <PostHero post={post} />
 
       <div className="flex flex-col items-center gap-4 pt-8">
         <div className="container">
+          {post.intro ? (
+            <RichText
+              className="max-w-[48rem] mx-auto mb-8"
+              data={post.intro}
+              enableGutter={false}
+              locale={locale}
+            />
+          ) : null}
+
           <RichText
             className="max-w-[48rem] mx-auto"
             data={post.content}
             enableGutter={false}
-            // ✅ NEW props for modules
             locale={locale}
             headings={headings}
             populatedAuthors={populatedAuthors}
           />
 
-          {post.relatedPosts && post.relatedPosts.length > 0 && (
+          {post.relatedArticles && post.relatedArticles.length > 0 && (
             <RelatedPosts
               className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
-              docs={post.relatedPosts.filter((p) => typeof p === 'object')}
+              docs={post.relatedArticles.filter((p) => typeof p === 'object')}
             />
           )}
         </div>
@@ -134,17 +124,10 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const decodedSlug = decodeURIComponent(slug)
   const post = await queryPostBySlug({ slug: decodedSlug, locale })
 
-  // If post doesn't exist, return empty; redirects/404 handled elsewhere
   if (!post) return {}
 
   const siteURL = getServerSideURL()
 
-  // ✅ Hreflang mapping per your requirement:
-  // de-DE, de-AT, de-CH => same /de/ URL
-  // en + x-default => /en/ URL
-  //
-  // This helper assumes slugs are shared between locales.
-  // If you localize slugs later, tell me and I’ll adjust to fetch per-locale slugs.
   const alternates = buildHreflangForSharedSlug({
     siteURL,
     basePath: 'posts',
@@ -176,10 +159,8 @@ const queryPostBySlug = cache(async ({ slug, locale }: { slug: string; locale: A
         equals: slug,
       },
     },
-    // ✅ Localization
     locale,
     fallbackLocale: 'en',
-    // ✅ Optional but helpful for blocks like expertQuote relationship
     depth: 2,
   })
 

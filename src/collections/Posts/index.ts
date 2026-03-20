@@ -24,14 +24,7 @@ import { Citation } from '../../blocks/Citation/config'
 import { ExpertQuote } from '../../blocks/ExpertQuote/config'
 import { ComparisonTable } from '../../blocks/ComparisonTable/config'
 
-import {
-  MetaDescriptionField,
-  MetaImageField,
-  MetaTitleField,
-  OverviewField,
-  PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { slugField } from 'payload'
+import { MetaImageField, OverviewField, PreviewField } from '@payloadcms/plugin-seo/fields'
 import { costomSlugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
@@ -42,9 +35,6 @@ export const Posts: CollectionConfig<'posts'> = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
-  // This config controls what's populated by default when a post is referenced
-  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
-  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'posts'>
   defaultPopulate: {
     title: true,
     slug: true,
@@ -77,6 +67,39 @@ export const Posts: CollectionConfig<'posts'> = {
       name: 'title',
       type: 'text',
       required: true,
+      maxLength: 70,
+      admin: {
+        description: 'Max 70 characters (recommended for SEO)',
+        components: {
+          afterInput: [
+            {
+              path: '/components/Payload/fields/RemainingCharacterCounter',
+              exportName: 'RemainingCharacterCounter',
+              clientProps: {
+                path: 'title',
+                maxLength: 70,
+              },
+            },
+          ],
+        },
+      },
+    },
+    {
+      name: 'subtitle',
+      type: 'text',
+      required: false,
+    },
+    {
+      name: 'focusKeywordReference',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: {
+            path: '/components/Payload/fields/FocusKeywordPanel',
+            exportName: 'FocusKeywordPanel',
+          },
+        },
+      },
     },
     {
       type: 'tabs',
@@ -87,6 +110,26 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'heroImage',
               type: 'upload',
               relationTo: 'media',
+            },
+            {
+              name: 'intro',
+              type: 'richText',
+              required: true,
+              label: 'Intro (2–3 paragraphs)',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                  ]
+                },
+              }),
+              admin: {
+                description:
+                  'Write 2–3 introductory paragraphs. This appears before all content blocks.',
+              },
             },
             {
               name: 'content',
@@ -142,8 +185,6 @@ export const Posts: CollectionConfig<'posts'> = {
                     description: 'Optional. If empty, the post title will be used.',
                   },
                 },
-
-                // FAQ items only when type = FAQPage
                 {
                   name: 'faqItems',
                   type: 'array',
@@ -163,7 +204,7 @@ export const Posts: CollectionConfig<'posts'> = {
         {
           fields: [
             {
-              name: 'relatedPosts',
+              name: 'relatedArticles',
               type: 'relationship',
               admin: {
                 position: 'sidebar',
@@ -199,25 +240,72 @@ export const Posts: CollectionConfig<'posts'> = {
               descriptionPath: 'meta.description',
               imagePath: 'meta.image',
             }),
-            MetaTitleField({
-              hasGenerateFn: true,
-            }),
+            {
+              name: 'title',
+              label: 'Meta title',
+              type: 'text',
+              required: true,
+              maxLength: 60,
+              admin: {
+                description: 'SEO title tag. Max 60 characters. " | NB1" is added automatically.',
+                components: {
+                  afterInput: [
+                    {
+                      path: '/components/Payload/fields/RemainingCharacterCounter',
+                      exportName: 'RemainingCharacterCounter',
+                      clientProps: {
+                        path: 'meta.title',
+                        maxLength: 60,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
             MetaImageField({
               relationTo: 'media',
             }),
-
-            MetaDescriptionField({}),
+            {
+              name: 'description',
+              label: 'Meta description',
+              type: 'textarea',
+              required: true,
+              maxLength: 155,
+              admin: {
+                description: 'SEO meta description. Max 155 characters.',
+                components: {
+                  afterInput: [
+                    {
+                      path: '/components/Payload/fields/RemainingCharacterCounter',
+                      exportName: 'RemainingCharacterCounter',
+                      clientProps: {
+                        path: 'meta.description',
+                        maxLength: 155,
+                      },
+                    },
+                  ],
+                },
+              },
+            },
             PreviewField({
-              // if the `generateUrl` function is configured
               hasGenerateFn: true,
-
-              // field paths to match the target field for data
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
           ],
         },
       ],
+    },
+    {
+      name: 'focusKeyword',
+      type: 'text',
+      maxLength: 100,
+      admin: {
+        position: 'sidebar',
+        placeholder: 'e.g. gut health test',
+        description:
+          'Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.',
+      },
     },
     {
       name: 'publishedAt',
@@ -246,9 +334,6 @@ export const Posts: CollectionConfig<'posts'> = {
       hasMany: true,
       relationTo: 'authors',
     },
-    // This field is only used to populate the user data via the `populateAuthors` hook
-    // This is because the `user` collection has access control locked to protect user privacy
-    // GraphQL will also not return mutated user data that differs from the underlying schema
     {
       name: 'populatedAuthors',
       type: 'array',
@@ -277,7 +362,7 @@ export const Posts: CollectionConfig<'posts'> = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 100,
       },
       schedulePublish: true,
     },
