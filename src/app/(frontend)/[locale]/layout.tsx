@@ -22,6 +22,7 @@ import '@fontsource/instrument-sans/400.css'
 import Script from 'next/script'
 
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
+import { ChatwootWidget } from '@/components/ChatwootWidget'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
@@ -104,11 +105,6 @@ export default async function RootLayout({
           `}
         </Script>
 
-        <Script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js" />
-        <Script
-          src="https://files.bpcontent.cloud/2025/11/19/08/20251119085549-S157I4GF.js"
-          defer
-        />
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
         <JsonLd data={organizationJsonLd} />
@@ -140,6 +136,8 @@ export default async function RootLayout({
           {children}
 
           <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
+
+          <ChatwootWidget locale={locale} />
 
           <Script
             src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
