@@ -19,10 +19,15 @@ import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
 import { TableOfContents } from '../../blocks/TableOfContents/config'
 import { AuthorBox } from '../../blocks/AuthorBox/config'
-import { FAQAccordion } from '../../blocks/FAQAccordion/config'
+// import { FAQAccordion } from '../../blocks/FAQAccordion/config'
 import { Citation } from '../../blocks/Citation/config'
 import { ExpertQuote } from '../../blocks/ExpertQuote/config'
 import { ComparisonTable } from '../../blocks/ComparisonTable/config'
+import { KeyTakeaways } from '@/blocks/KeyTakeways/config'
+import { FAQBlock } from '@/blocks/FAQ/config'
+import { DataTableBlock } from '@/blocks/DataTable/config'
+import { CtaBlock } from '@/blocks/CTA/config'
+import { BulletListBlock } from '@/blocks/BulletList/config'
 
 import { MetaImageField, OverviewField, PreviewField } from '@payloadcms/plugin-seo/fields'
 import { costomSlugField } from '@/fields/slug'
@@ -66,6 +71,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
       maxLength: 70,
       admin: {
@@ -87,6 +93,7 @@ export const Posts: CollectionConfig<'posts'> = {
     {
       name: 'subtitle',
       type: 'text',
+      localized: true,
       required: false,
     },
     {
@@ -115,6 +122,7 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'intro',
               type: 'richText',
               required: true,
+              localized: true,
               label: 'Intro (2–3 paragraphs)',
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
@@ -134,6 +142,7 @@ export const Posts: CollectionConfig<'posts'> = {
             {
               name: 'content',
               type: 'richText',
+              localized: true,
               editor: lexicalEditor({
                 features: ({ rootFeatures }) => {
                   return [
@@ -146,10 +155,15 @@ export const Posts: CollectionConfig<'posts'> = {
                         MediaBlock,
                         TableOfContents,
                         AuthorBox,
-                        FAQAccordion,
+                        // FAQAccordion,
                         Citation,
                         ExpertQuote,
                         ComparisonTable,
+                        KeyTakeaways,
+                        FAQBlock,
+                        DataTableBlock,
+                        CtaBlock,
+                        BulletListBlock,
                       ],
                     }),
                     FixedToolbarFeature(),
