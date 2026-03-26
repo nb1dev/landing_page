@@ -19,9 +19,9 @@ export function ComparisonTableComponent({
         <table className="min-w-[720px] w-full text-left">
           <thead>
             <tr className="border-b">
-              <th className="p-3">Product</th>
+              <th className="p-3 text-base">Product</th>
               {columns.map((c) => (
-                <th key={c.key} className="p-3">
+                <th key={c.key} className="p-3 text-base">
                   {c.label}
                 </th>
               ))}

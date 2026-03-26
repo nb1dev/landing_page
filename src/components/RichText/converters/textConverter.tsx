@@ -2,27 +2,13 @@ import React from 'react'
 import type { JSXConverters } from '@payloadcms/richtext-lexical/react'
 import type { SerializedTextNode } from '@payloadcms/richtext-lexical'
 
-import { defaultColors } from '@payloadcms/richtext-lexical/client'
+import { brandColors } from '@/fields/brandColors'
 
 /**
- * We avoid importing TextStateFeatureProps because it's not exported
- * in some @payloadcms/richtext-lexical versions.
- *
- * Payload stores textState under node.$ (e.g. { color: "red", underline: "dashed", ... }).
+ * Payload stores textState under node.$ (e.g. { color: "text-brand" }).
  */
 export const colorState = {
-  color: {
-    ...defaultColors.text,
-    ...defaultColors.background,
-  },
-  underline: {
-    dashed: {
-      label: 'Dashed',
-      css: {
-        textDecoration: 'underline dashed',
-      },
-    },
-  },
+  color: brandColors,
 } as const
 
 type ColorState = typeof colorState

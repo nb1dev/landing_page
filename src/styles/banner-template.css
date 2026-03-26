@@ -1,0 +1,536 @@
+/* =============================================================================
+   Banner Block — CSS Template
+   Based on: MissionBanner, WelcomeBanner, DetailsBanner
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Design Tokens
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Colors */
+  --banner-bg-dark: #1d1d1d;
+  --banner-bg-black: #000000;
+  --banner-bg-white: #ffffff;
+  --banner-bg-blue: #138df1;
+  --banner-bg-teal: #008498;
+
+  --banner-text-primary-dark: #ffffff;
+  --banner-text-primary-light: #292929;
+  --banner-text-muted: #a6a6a6;
+  --banner-text-muted-alt: #8b8a8a;
+  --banner-text-copyright: #646464;
+
+  /* Typography — Headings */
+  --banner-font-heading: 'Instrument Sans', sans-serif;
+  --banner-heading-weight: 500;
+  --banner-heading-size-desktop: 50px;       /* MissionBanner / DetailsBanner */
+  --banner-heading-size-desktop-xl: 70px;    /* WelcomeBanner */
+  --banner-heading-size-mobile: 38px;
+  --banner-heading-size-mobile-sm: 42px;     /* MissionBanner mobile */
+  --banner-heading-line-height-desktop: 74px;
+  --banner-heading-line-height-mobile: 42px;
+
+  /* Typography — Card Titles */
+  --banner-card-title-weight: 400;
+  --banner-card-title-size-desktop: 32px;
+  --banner-card-title-size-mobile: 24px;
+  --banner-card-title-line-height-desktop: 38px;
+  --banner-card-title-line-height-mobile: 32px;
+
+  /* Typography — Body / Description */
+  --banner-font-body: 'Inter', sans-serif;
+  --banner-body-weight: 400;
+  --banner-body-size-desktop: 18px;          /* MissionBanner */
+  --banner-body-size-desktop-lg: 24px;       /* WelcomeBanner */
+  --banner-body-size-desktop-sm: 16px;       /* DetailsBanner cards */
+  --banner-body-size-mobile: 15px;
+  --banner-body-size-mobile-lg: 20px;        /* WelcomeBanner mobile */
+  --banner-body-line-height-desktop: 24px;
+  --banner-body-line-height-desktop-lg: 34px;
+  --banner-body-line-height-mobile: 22px;
+
+  /* Typography — Copyright / Meta */
+  --banner-meta-size-desktop: 14px;
+  --banner-meta-size-mobile: 12px;
+  --banner-meta-line-height: 34px;
+
+  /* Spacing */
+  --banner-outer-padding-desktop: 20px 40px; /* pt-5 pr-10 pb-5 pl-10 */
+  --banner-outer-padding-mobile: 20px;
+  --banner-inner-padding-desktop: 32px 40px;
+  --banner-inner-padding-mobile: 24px;
+  --banner-border-radius: 20px;
+
+  /* Layout */
+  --banner-gap-columns: 24px;
+  --banner-gap-columns-wide: 80px;           /* MissionBanner desktop */
+  --banner-gap-rows: 24px;
+  --banner-card-min-height: 300px;
+}
+
+/* ---------------------------------------------------------------------------
+   Outer Wrapper
+   Applied to the root element of every banner block.
+   --------------------------------------------------------------------------- */
+
+.banner-wrapper {
+  padding: var(--banner-outer-padding-desktop);
+}
+
+@media (max-width: 768px) {
+  .banner-wrapper {
+    padding: var(--banner-outer-padding-mobile);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Inner Container
+   The rounded card that holds the banner content.
+   --------------------------------------------------------------------------- */
+
+.banner-container {
+  width: 100%;
+  border-radius: var(--banner-border-radius);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Dark variant (MissionBanner, DetailsBanner) */
+.banner-container--dark {
+  background-color: var(--banner-bg-dark);
+  padding-bottom: 20px;
+}
+
+/* Light / white variant (WelcomeBanner) */
+.banner-container--light {
+  background-color: var(--banner-bg-white);
+  min-height: 640px;
+}
+
+@media (max-width: 768px) {
+  .banner-container--light {
+    min-height: 620px;
+  }
+}
+
+/* Background image fills the container */
+.banner-container .banner-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* ---------------------------------------------------------------------------
+   Two-Column Layout
+   --------------------------------------------------------------------------- */
+
+.banner-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: var(--banner-gap-columns);
+}
+
+.banner-row--wide-gap {
+  gap: var(--banner-gap-columns-wide);
+}
+
+@media (max-width: 768px) {
+  .banner-row {
+    flex-direction: column;
+    gap: var(--banner-gap-columns);
+  }
+}
+
+.banner-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner-col--half {
+  width: 50%;
+}
+
+.banner-col--full-mobile {
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .banner-col--half,
+  .banner-col--full-mobile {
+    width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Typography — Headings
+   --------------------------------------------------------------------------- */
+
+.banner-heading {
+  font-family: var(--banner-font-heading);
+  font-weight: var(--banner-heading-weight);
+  font-size: var(--banner-heading-size-desktop);
+  line-height: var(--banner-heading-line-height-desktop);
+  margin-bottom: 16px;
+}
+
+.banner-heading--xl {
+  font-size: var(--banner-heading-size-desktop-xl);
+}
+
+@media (max-width: 768px) {
+  .banner-heading {
+    font-size: var(--banner-heading-size-mobile);
+    line-height: var(--banner-heading-line-height-mobile);
+  }
+}
+
+.banner-heading--on-dark {
+  color: var(--banner-text-primary-dark);
+}
+
+.banner-heading--on-light {
+  color: var(--banner-text-primary-light);
+}
+
+/* ---------------------------------------------------------------------------
+   Typography — Body / Description
+   --------------------------------------------------------------------------- */
+
+.banner-description {
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-body-size-desktop);
+  line-height: var(--banner-body-line-height-desktop);
+  margin-bottom: 16px;
+}
+
+.banner-description--lg {
+  font-size: var(--banner-body-size-desktop-lg);
+  line-height: var(--banner-body-line-height-desktop-lg);
+}
+
+@media (max-width: 768px) {
+  .banner-description {
+    font-size: var(--banner-body-size-mobile);
+    line-height: var(--banner-body-line-height-mobile);
+  }
+
+  .banner-description--lg {
+    font-size: var(--banner-body-size-mobile-lg);
+    line-height: 26px;
+  }
+}
+
+.banner-description--on-dark {
+  color: var(--banner-text-primary-dark);
+  opacity: 0.9;
+}
+
+.banner-description--on-light {
+  color: var(--banner-text-primary-light);
+}
+
+.banner-description--muted {
+  color: var(--banner-text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+   Typography — Copyright / Meta text
+   --------------------------------------------------------------------------- */
+
+.banner-meta {
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-meta-size-desktop);
+  line-height: var(--banner-meta-line-height);
+  color: var(--banner-text-copyright);
+}
+
+@media (max-width: 768px) {
+  .banner-meta {
+    font-size: var(--banner-meta-size-mobile);
+  }
+}
+
+.banner-copyright {
+  color: var(--banner-text-muted-alt);
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-meta-size-desktop);
+}
+
+@media (max-width: 768px) {
+  .banner-copyright {
+    font-size: var(--banner-meta-size-mobile);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Detail Cards (DetailsBanner grid cards)
+   --------------------------------------------------------------------------- */
+
+/* Four-card grid — all cards in the same row always match height */
+.banner-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--banner-gap-rows);
+}
+
+@media (max-width: 768px) {
+  .banner-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.banner-card {
+  border-radius: var(--banner-border-radius);
+  position: relative;
+  overflow: hidden;
+  padding: var(--banner-inner-padding-desktop);
+  min-height: var(--banner-card-min-height);
+}
+
+@media (max-width: 768px) {
+  .banner-card {
+    padding: var(--banner-inner-padding-mobile);
+    width: 100%;
+    min-height: unset;
+  }
+}
+
+.banner-card--dark {
+  background-color: var(--banner-bg-black);
+}
+
+.banner-card--blue {
+  background-color: var(--banner-bg-blue);
+  padding: 32px 0 32px 40px;
+}
+
+.banner-card--teal {
+  background-color: var(--banner-bg-teal);
+  padding: 32px 0 32px 40px;
+}
+
+@media (max-width: 768px) {
+  .banner-card--blue,
+  .banner-card--teal {
+    padding: 24px;
+  }
+}
+
+/* Card content sits above background image */
+.banner-card__content {
+  position: relative;
+  z-index: 10;
+}
+
+.banner-card__title {
+  font-family: var(--banner-font-heading);
+  font-weight: var(--banner-card-title-weight);
+  font-size: var(--banner-card-title-size-desktop);
+  line-height: var(--banner-card-title-line-height-desktop);
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .banner-card__title {
+    font-size: var(--banner-card-title-size-mobile);
+    line-height: var(--banner-card-title-line-height-mobile);
+    margin-bottom: 16px;
+  }
+}
+
+.banner-card__title--on-dark {
+  color: var(--banner-text-primary-dark);
+}
+
+.banner-card__title--on-light {
+  color: var(--banner-text-primary-light);
+}
+
+.banner-card__description {
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-body-size-desktop-sm);
+  line-height: var(--banner-body-line-height-desktop);
+}
+
+@media (max-width: 768px) {
+  .banner-card__description {
+    font-size: var(--banner-body-size-mobile);
+  }
+}
+
+.banner-card__description--on-dark {
+  color: var(--banner-text-primary-dark);
+  opacity: 0.8;
+}
+
+.banner-card__description--on-light {
+  color: var(--banner-text-primary-light);
+}
+
+/* Card with inline image (cards 3 & 4 in DetailsBanner) */
+.banner-card__inner-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .banner-card__inner-row {
+    flex-direction: column-reverse;
+  }
+}
+
+.banner-card__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------
+   Utility — line text (WelcomeBanner bottom strip)
+   --------------------------------------------------------------------------- */
+
+.banner-line-text {
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-body-size-desktop);
+  line-height: 30px;
+  color: var(--banner-text-muted);
+  margin-top: 80px;
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .banner-line-text {
+    font-size: var(--banner-body-size-mobile);
+    line-height: var(--banner-body-line-height-mobile);
+    margin-top: 32px;
+    width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FormCustom Block
+   --------------------------------------------------------------------------- */
+
+:root {
+  --form-heading-size-desktop: 72px;
+  --form-content-padding-desktop: 64px;
+  --form-content-padding-mobile: 40px 24px;
+  --form-description-mb-desktop: 60px;
+  --form-description-mb-mobile: 24px;
+  --form-submit-height: 60px;
+  --form-submit-font-size-desktop: 20px;
+  --form-submit-font-size-mobile: 18px;
+}
+
+/* White rounded container */
+.form-wrapper {
+  width: 100%;
+  border-radius: var(--banner-border-radius);
+  background: var(--banner-bg-white);
+  display: flex;
+  flex-direction: row;
+}
+
+/* Inner padded area */
+.form-content {
+  display: flex;
+  width: 100%;
+  padding: var(--form-content-padding-desktop);
+}
+
+@media (max-width: 768px) {
+  .form-content {
+    padding: var(--form-content-padding-mobile);
+  }
+}
+
+/* Centered content column */
+.form-col {
+  margin-right: auto;
+  margin-left: auto;
+  width: 50%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .form-col {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Heading */
+.form-heading {
+  font-family: var(--banner-font-heading);
+  font-weight: var(--banner-heading-weight);
+  font-size: var(--form-heading-size-desktop);
+  line-height: var(--banner-heading-line-height-desktop);
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .form-heading {
+    font-size: var(--banner-heading-size-mobile);
+    line-height: var(--banner-heading-line-height-mobile);
+  }
+}
+
+/* Description */
+.form-description {
+  font-family: var(--banner-font-body);
+  font-weight: var(--banner-body-weight);
+  font-size: var(--banner-body-size-desktop-lg);
+  line-height: var(--banner-body-line-height-desktop);
+  color: var(--banner-bg-black);
+  margin-bottom: var(--form-description-mb-desktop);
+}
+
+@media (max-width: 768px) {
+  .form-description {
+    font-size: var(--banner-body-size-mobile-lg);
+    line-height: 28px;
+    margin-bottom: var(--form-description-mb-mobile);
+  }
+}
+
+/* Individual field wrapper */
+.form-field {
+  margin-bottom: 24px;
+  color: var(--banner-bg-black);
+}
+
+.form-field:last-child {
+  margin-bottom: 0;
+}
+
+/* Submit button */
+.form-submit {
+  border-radius: 100px;
+  margin-top: 24px;
+  color: var(--banner-bg-white) !important;
+  background-color: var(--banner-bg-black) !important;
+  height: var(--form-submit-height);
+  font-family: var(--banner-font-heading);
+  font-weight: var(--banner-heading-weight);
+  font-size: var(--form-submit-font-size-desktop);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .form-submit {
+    font-size: var(--form-submit-font-size-mobile);
+  }
+}

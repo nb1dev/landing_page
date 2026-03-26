@@ -10,6 +10,7 @@ import type {
   SerializedEditorState,
   SerializedLexicalNode,
 } from '@payloadcms/richtext-lexical/lexical'
+import '../landing-template.css'
 
 type RichTextValue = SerializedEditorState<SerializedLexicalNode> | null | undefined
 
@@ -30,12 +31,8 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
 
   return (
     <div
-      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
-      style={{
-        padding: isMobile ? '0 20px 20px' : undefined,
-        margin: isMobile ? '0' : '0 80px 0 80px',
-        backgroundColor: 'white',
-      }}
+      className="lc-wrapper"
+      style={{ margin: isMobile ? '0' : '0 80px 0 80px' }}
     >
       <div
         className="flex"
@@ -56,39 +53,17 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
             maxWidth: isMobile ? '100%' : '720px',
           }}
         >
-          <div
-            className="flex flex-col"
-            style={{
-              gap: '12px',
-            }}
-          >
+          <div className="flex flex-col" style={{ gap: '12px' }}>
             {title && (
-              <div
-                style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  fontWeight: 500,
-                  fontStyle: 'Medium',
-                  fontSize: isMobile ? '40px' : '64px',
-                  lineHeight: isMobile ? '44px' : '70px',
-                  letterSpacing: '-3%',
-                  textAlign: isMobile ? 'center' : 'left',
-                }}
-              >
+              <div className="lc-title lc-title--center-mobile">
                 <RichText data={title} enableGutter={false} enableProse={false} />
               </div>
             )}
 
             {description && (
               <div
-                style={{
-                  color: 'rgba(0, 0, 0, 1)',
-                  maxWidth: isMobile ? '100%' : '660px',
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 400,
-                  fontStyle: 'Regular',
-                  fontSize: '16px',
-                  lineHeight: '28px',
-                }}
+                className="lc-description"
+                style={{ maxWidth: isMobile ? '100%' : '660px', lineHeight: '28px' }}
               >
                 <RichText data={description} enableGutter={false} enableProse={false} />
               </div>
@@ -96,22 +71,10 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
           </div>
 
           {isMobile && (
-            <div
-              style={{
-                width: isMobile ? '100%' : 'min(39vw, 500px)',
-                maxWidth: isMobile ? '100%' : '500px',
-                flexShrink: 0,
-              }}
-            >
+            <div className="lc-col--panel">
               <div
-                style={{
-                  width: '100%',
-                  borderRadius: isMobile ? '24px' : '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                }}
+                className="lc-panel lc-panel--bg"
+                style={{ borderRadius: '24px' }}
               >
                 {!!imageUrl && (
                   <img
@@ -123,12 +86,7 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
                         ? (props.kitImage.alt as string) || 'Kit image'
                         : 'Kit image'
                     }
-                    style={{
-                      width: '50%',
-                      height: 'auto',
-                      objectFit: 'contain',
-                      display: 'block',
-                    }}
+                    style={{ width: '50%', height: 'auto', objectFit: 'contain', display: 'block' }}
                   />
                 )}
               </div>
@@ -136,90 +94,32 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
           )}
 
           {items.length > 0 && (
-            <div
-              className="flex flex-col"
-              style={{
-                width: '100%',
-              }}
-            >
+            <div className="lc-table">
               {items.map((item, index) => {
                 const label1 = item?.textLabel1 as RichTextValue
                 const label2 = item?.textLabel2 as RichTextValue
                 const label3 = item?.textLabel3 as RichTextValue
 
                 return (
-                  <div
-                    key={index}
-                    style={{
-                      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-                      padding: isMobile ? '18px 0' : '18px 0',
-                    }}
-                  >
-                    <div
-                      className="flex"
-                      style={{
-                        flexDirection: isMobile ? 'column' : 'row',
-                        justifyContent: 'space-between',
-                        alignItems: isMobile ? 'flex-start' : 'flex-start',
-                        gap: isMobile ? '10px' : '20px',
-                        width: '100%',
-                      }}
-                    >
-                      <div
-                        className="flex flex-col"
-                        style={{
-                          flex: 1,
-                          minWidth: 0,
-                          gap: label2 ? '6px' : '0px',
-                        }}
-                      >
-                        {label1 && (
-                          <div
-                            style={{
-                              color: 'rgba(0, 0, 0, 1)',
-                              fontFamily: 'Inter',
-                              fontSize: '16px',
-                              lineHeight: '24px',
-                              fontWeight: 700,
-                            }}
-                          >
-                            <RichText data={label1} enableGutter={false} enableProse={false} />
-                          </div>
-                        )}
-
-                        {label2 && (
-                          <div
-                            style={{
-                              color: 'rgba(0, 0, 0, 0.9)',
-                              fontFamily: 'Inter, sans-serif',
-                              fontSize: '16px',
-                              lineHeight: '24px',
-                              fontWeight: 400,
-                            }}
-                          >
-                            <RichText data={label2} enableGutter={false} enableProse={false} />
-                          </div>
-                        )}
-                      </div>
-
-                      {label3 && (
-                        <div
-                          style={{
-                            flexShrink: 0,
-                            minWidth: isMobile ? 'auto' : '120px',
-                            color: 'rgba(0, 0, 0, 1)',
-                            fontFamily: 'Inter, sans-serif',
-                            fontSize: '16px',
-                            lineHeight: '24px',
-                            fontWeight: 700,
-                            textAlign: isMobile ? 'left' : 'right',
-                            alignSelf: isMobile ? 'flex-start' : 'center',
-                          }}
-                        >
-                          <RichText data={label3} enableGutter={false} enableProse={false} />
+                  <div key={index} className="lc-table__row">
+                    <div className="lc-table__cell" style={{ gap: label2 ? '6px' : '0px' }}>
+                      {label1 && (
+                        <div className="lc-table__label">
+                          <RichText data={label1} enableGutter={false} enableProse={false} />
+                        </div>
+                      )}
+                      {label2 && (
+                        <div className="lc-table__sublabel">
+                          <RichText data={label2} enableGutter={false} enableProse={false} />
                         </div>
                       )}
                     </div>
+
+                    {label3 && (
+                      <div className="lc-table__value">
+                        <RichText data={label3} enableGutter={false} enableProse={false} />
+                      </div>
+                    )}
                   </div>
                 )
               })}
@@ -228,49 +128,19 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
 
           {(buttonText || note) && (
             <div
-              className={`flex flex-col ${isMobile ? 'mr-auto ml-auto' : ''}`}
+              className={`lc-cta ${isMobile ? 'mr-auto ml-auto' : ''}`}
               style={{
-                gap: '14px',
                 paddingTop: isMobile ? '6px' : '10px',
                 width: isMobile ? 'fit-content' : '100%',
               }}
             >
               {buttonText && (
-                <a
-                  href={buttonLink || '#'}
-                  style={{
-                    width: '100%',
-                    minHeight: isMobile ? '56px' : '58px',
-                    borderRadius: '999px',
-                    backgroundColor: 'rgba(0, 0, 0, 1)',
-                    color: 'rgba(255, 255, 255, 1)',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: isMobile ? '16px 20px' : '16px 32px',
-                    fontSize: isMobile ? '18px' : '20px',
-                    lineHeight: isMobile ? '24px' : '28px',
-                    fontWeight: 500,
-                    fontFamily: 'Instrument Sans',
-                  }}
-                >
+                <a href={buttonLink || '#'} className="lc-btn lc-btn--full">
                   {buttonText}
                 </a>
               )}
-
               {note && (
-                <div
-                  style={{
-                    width: '100%',
-                    textAlign: 'center',
-                    color: 'rgba(0, 0, 0, 0.8)',
-                    fontFamily: 'Inter',
-                    fontSize: '13px',
-                    lineHeight: '20px',
-                    fontWeight: 400,
-                  }}
-                >
+                <div className="lc-note" style={{ width: '100%' }}>
                   {note}
                 </div>
               )}
@@ -279,23 +149,10 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
         </div>
 
         {!isMobile && (
-          <div
-            style={{
-              width: isMobile ? '100%' : 'min(39vw, 500px)',
-              maxWidth: isMobile ? '100%' : '500px',
-              flexShrink: 0,
-            }}
-          >
+          <div className="lc-col--panel">
             <div
-              style={{
-                width: '100%',
-                backgroundColor: 'rgba(239, 239, 239, 1)',
-                borderRadius: isMobile ? '24px' : '24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-              }}
+              className="lc-panel lc-panel--bg"
+              style={{ borderRadius: '24px' }}
             >
               {!!imageUrl && (
                 <img
@@ -307,12 +164,7 @@ export const FormulaCardBlock: React.FC<FormulaCardBlockProps> = (props) => {
                       ? (props.kitImage.alt as string) || 'Kit image'
                       : 'Kit image'
                   }
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'contain',
-                    display: 'block',
-                  }}
+                  className="lc-panel__img lc-panel__img--contain"
                 />
               )}
             </div>

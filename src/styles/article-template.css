@@ -1,0 +1,655 @@
+/* =============================================================================
+   Article Blocks — CSS Template
+   Used by: Banner, Code, MediaBlock, AuthorBox, Citation, ExpertQuote,
+            KeyTakeaways, FAQBlock, DataTableBlock, CtaBlock, BulletListBlock
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Design Tokens
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Backgrounds */
+  --art-card-bg:         rgba(242, 242, 242, 1);
+  --art-dark-bg:         rgba(29, 29, 29, 1);
+  --art-code-bg:         rgba(24, 24, 24, 1);
+  --art-code-header-bg:  rgba(18, 18, 18, 1);
+
+  /* Accent */
+  --art-accent:          rgba(0, 194, 224, 1);
+  --art-accent-faint:    rgba(0, 194, 224, 0.09);
+  --art-brand:           rgb(0, 168, 194);
+
+  /* Text */
+  --art-heading-color:   rgba(38, 38, 38, 1);
+  --art-body-color:      rgba(36, 39, 43, 1);
+  --art-muted-color:     rgba(0, 0, 0, 0.5);
+  --art-white:           rgba(255, 255, 255, 1);
+  --art-on-dark:         rgba(255, 255, 255, 0.85);
+  --art-on-dark-muted:   rgba(255, 255, 255, 0.55);
+  --art-avatar-bg:       rgba(220, 228, 232, 1);
+  --art-btn-light-bg:    rgba(255, 249, 249, 1);
+
+  /* Typography */
+  --art-font-heading:    'Instrument Sans', sans-serif;
+  --art-font-body:       'Inter', sans-serif;
+  --art-font-mono:       'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
+
+  /* Scale */
+  --art-section-size:    22px;
+  --art-section-lh:      28px;
+  --art-section-weight:  500;
+  --art-section-ls:      -0.03em;
+  --art-body-size:       16px;
+  --art-body-lh:         24px;
+  --art-body-size-sm:    14px;
+  --art-meta-size:       13px;
+  --art-meta-lh:         20px;
+
+  /* Spacing */
+  --art-block-mb:        32px;
+  --art-card-pad:        28px 32px;
+  --art-card-pad-sm:     20px 24px;
+
+  /* Shape */
+  --art-radius:          20px;
+  --art-radius-sm:       16px;
+  --art-radius-pill:     999px;
+  --art-radius-btn:      100px;
+
+  /* Divider */
+  --art-divider:         rgba(0, 0, 0, 0.1);
+
+  /* Bullets */
+  --art-bullet-size:     8px;
+}
+
+/* ---------------------------------------------------------------------------
+   Shared Card Container
+   --------------------------------------------------------------------------- */
+
+.art-card {
+  width: 100%;
+  background-color: var(--art-card-bg);
+  border-radius: var(--art-radius);
+  padding: var(--art-card-pad);
+  margin-bottom: var(--art-block-mb);
+  box-sizing: border-box;
+}
+
+.art-card--dark {
+  background-color: var(--art-dark-bg);
+}
+
+/* ---------------------------------------------------------------------------
+   Section Heading (h2 inside cards)
+   --------------------------------------------------------------------------- */
+
+.art-heading {
+  font-family: var(--art-font-heading);
+  font-weight: var(--art-section-weight);
+  font-size: var(--art-section-size);
+  line-height: var(--art-section-lh);
+  letter-spacing: var(--art-section-ls);
+  color: var(--art-heading-color);
+  margin: 0 0 24px 0;
+}
+
+.art-heading--on-dark {
+  color: var(--art-white);
+  margin-bottom: 12px;
+}
+
+.art-heading--label {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--art-muted-color);
+  margin-bottom: 16px;
+}
+
+/* ---------------------------------------------------------------------------
+   Body / Meta Text
+   --------------------------------------------------------------------------- */
+
+.art-body {
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+  margin: 0;
+}
+
+.art-body--on-dark {
+  color: var(--art-on-dark);
+}
+
+.art-meta {
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-size: var(--art-meta-size);
+  line-height: var(--art-meta-lh);
+  color: var(--art-muted-color);
+  margin: 0;
+}
+
+.art-meta--italic {
+  font-style: italic;
+}
+
+/* ---------------------------------------------------------------------------
+   Bullet List (shared by KeyTakeaways + BulletList)
+   --------------------------------------------------------------------------- */
+
+.art-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.art-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.art-list__dot {
+  width: var(--art-bullet-size);
+  height: var(--art-bullet-size);
+  min-width: var(--art-bullet-size);
+  border-radius: 50%;
+  background-color: var(--art-accent);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+
+.art-list__text {
+  font-family: var(--art-font-body);
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+  margin: 0;
+}
+
+.art-list__lead {
+  font-weight: 700;
+}
+
+.art-list__body {
+  font-weight: 400;
+}
+
+/* ---------------------------------------------------------------------------
+   Disclaimer / footnote
+   --------------------------------------------------------------------------- */
+
+.art-disclaimer {
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-size: var(--art-meta-size);
+  line-height: var(--art-meta-lh);
+  font-style: italic;
+  color: var(--art-muted-color);
+  margin: 20px 0 0;
+}
+
+/* ---------------------------------------------------------------------------
+   FAQ Accordion
+   --------------------------------------------------------------------------- */
+
+.art-faq__item {
+  border-bottom: 1px solid var(--art-divider);
+  padding: 18px 0;
+}
+
+.art-faq__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.art-faq__question {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  font-family: var(--art-font-heading);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 24px;
+  letter-spacing: var(--art-section-ls);
+  color: var(--art-heading-color);
+  gap: 12px;
+}
+
+.art-faq__icon {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--art-accent);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  display: block;
+  font-style: normal;
+}
+
+.art-faq__icon--open {
+  transform: rotate(45deg);
+}
+
+.art-faq__answer {
+  margin-top: 12px;
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+}
+
+/* ---------------------------------------------------------------------------
+   Data Table
+   --------------------------------------------------------------------------- */
+
+.art-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.art-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--art-radius-sm);
+  overflow: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.art-table th {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--art-divider);
+  font-family: var(--art-font-heading);
+  font-weight: 500;
+  font-size: var(--art-body-size);
+  line-height: 20px;
+  letter-spacing: var(--art-section-ls);
+  color: var(--art-heading-color);
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.art-table th.art-th--accent {
+  background-color: var(--art-accent-faint);
+}
+
+.art-table td {
+  padding: 12px 16px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--art-divider);
+  font-family: var(--art-font-body);
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+.art-table tr:last-child td {
+  border-bottom: none;
+}
+
+.art-table td.art-td--accent {
+  background-color: rgba(0, 194, 224, 0.04);
+}
+
+.art-table td.art-td--bold {
+  font-weight: 700;
+}
+
+.art-caption {
+  font-family: var(--art-font-body);
+  font-size: var(--art-meta-size);
+  line-height: var(--art-meta-lh);
+  color: var(--art-muted-color);
+  margin: 14px 0 0;
+}
+
+/* ---------------------------------------------------------------------------
+   CTA Button
+   --------------------------------------------------------------------------- */
+
+.art-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: 56px;
+  padding: 14px 28px;
+  border-radius: var(--art-radius-btn);
+  border: none;
+  cursor: pointer;
+  font-family: var(--art-font-heading);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.art-btn:hover { opacity: 0.88; }
+
+.art-btn--light {
+  background-color: var(--art-btn-light-bg);
+  color: rgba(0, 0, 0, 1);
+}
+
+.art-btn--brand {
+  background-color: var(--art-brand);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Citation Blockquote
+   --------------------------------------------------------------------------- */
+
+.art-citation {
+  border-left: 3px solid var(--art-accent);
+  border-radius: 0 var(--art-radius-sm) var(--art-radius-sm) 0;
+  background-color: var(--art-card-bg);
+  padding: var(--art-card-pad-sm);
+  margin: 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.art-citation__quote {
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+  margin: 0;
+}
+
+.art-citation__source {
+  font-family: var(--art-font-body);
+  font-size: var(--art-meta-size);
+  line-height: var(--art-meta-lh);
+  color: var(--art-muted-color);
+}
+
+.art-citation__link {
+  color: var(--art-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Expert Quote
+   --------------------------------------------------------------------------- */
+
+.art-expert-quote {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.art-expert-quote__icon {
+  flex-shrink: 0;
+  opacity: 0.2;
+}
+
+.art-expert-quote__text {
+  font-family: var(--art-font-heading);
+  font-weight: 400;
+  font-size: clamp(18px, 2.5vw, 24px);
+  line-height: 1.45;
+  letter-spacing: var(--art-section-ls);
+  color: var(--art-heading-color);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Author Row (AuthorBox + ExpertQuote)
+   --------------------------------------------------------------------------- */
+
+.art-author-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.art-author-row + .art-author-row {
+  padding-top: 14px;
+  border-top: 1px solid var(--art-divider);
+}
+
+.art-author-row__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+
+.art-author-row__avatar--lg {
+  width: 48px;
+  height: 48px;
+}
+
+.art-author-row__avatar--placeholder {
+  background-color: var(--art-avatar-bg);
+}
+
+.art-author-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.art-author-row__name {
+  font-family: var(--art-font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--art-heading-color);
+}
+
+.art-author-row__name--lg {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.art-author-row__name a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.22);
+  text-underline-offset: 2px;
+}
+
+.art-author-row__creds {
+  font-family: var(--art-font-body);
+  font-weight: 400;
+  font-size: var(--art-body-size-sm);
+  line-height: 20px;
+  color: var(--art-muted-color);
+}
+
+/* ---------------------------------------------------------------------------
+   Callout / Banner
+   --------------------------------------------------------------------------- */
+
+.art-callout {
+  border-left: 3px solid currentColor;
+  border-radius: 0 var(--art-radius-sm) var(--art-radius-sm) 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-family: var(--art-font-body);
+  font-size: var(--art-body-size);
+  line-height: var(--art-body-lh);
+  color: var(--art-body-color);
+}
+
+.art-callout--info    { color: var(--art-accent);           background-color: rgba(0,   194, 224, 0.07); border-left-color: var(--art-accent); }
+.art-callout--success { color: var(--art-body-color);       background-color: rgba(34,  197, 94,  0.07); border-left-color: rgba(34,  197, 94,  1); }
+.art-callout--warning { color: var(--art-body-color);       background-color: rgba(234, 179, 8,   0.07); border-left-color: rgba(234, 179, 8,   1); }
+.art-callout--error   { color: var(--art-body-color);       background-color: rgba(239, 68,  68,  0.07); border-left-color: rgba(239, 68,  68,  1); }
+
+/* Reset text color for callout body (override currentColor) */
+.art-callout--info .art-callout__body,
+.art-callout--success .art-callout__body,
+.art-callout--warning .art-callout__body,
+.art-callout--error .art-callout__body {
+  color: var(--art-body-color);
+}
+
+/* ---------------------------------------------------------------------------
+   Code Block
+   --------------------------------------------------------------------------- */
+
+.art-code-wrap {
+  position: relative;
+  background-color: var(--art-code-bg);
+  border-radius: var(--art-radius);
+  overflow: hidden;
+  margin: 32px 0;
+}
+
+.art-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: var(--art-code-header-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.art-code-header__lang {
+  font-family: var(--art-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.art-code-pre {
+  margin: 0;
+  padding: 18px 0 20px;
+  overflow-x: auto;
+  font-family: var(--art-font-mono);
+  font-size: 13px;
+  line-height: 1.75;
+  background: transparent !important;
+  border: none;
+  color: inherit;
+}
+
+.art-code-line {
+  display: table-row;
+}
+
+.art-code-line__num {
+  display: table-cell;
+  width: 44px;
+  padding: 0 16px 0 20px;
+  text-align: right;
+  user-select: none;
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 12px;
+}
+
+.art-code-line__content {
+  display: table-cell;
+  padding-right: 24px;
+}
+
+/* ---------------------------------------------------------------------------
+   Media Block (image + caption)
+   --------------------------------------------------------------------------- */
+
+.art-media {
+  margin: 32px 0;
+}
+
+.art-media__img {
+  width: 100%;
+  border-radius: var(--art-radius);
+  display: block;
+}
+
+.art-media__caption {
+  font-family: var(--art-font-body);
+  font-size: var(--art-body-size-sm);
+  line-height: var(--art-meta-lh);
+  color: var(--art-muted-color);
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .art-card {
+    padding: 22px 20px;
+  }
+
+  .art-heading {
+    font-size: 20px;
+    line-height: 26px;
+    margin-bottom: 20px;
+  }
+
+  .art-faq__question {
+    font-size: 15px;
+  }
+
+  .art-expert-quote__text {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .art-code-wrap {
+    border-radius: var(--art-radius-sm);
+    margin: 24px 0;
+  }
+
+  .art-media {
+    margin: 24px 0;
+  }
+
+  .art-media__img {
+    border-radius: var(--art-radius-sm);
+  }
+
+  .art-citation {
+    margin: 24px 0;
+  }
+
+  .art-btn {
+    font-size: 16px;
+    height: 50px;
+    padding: 12px 24px;
+  }
+
+  .art-table th,
+  .art-table td {
+    padding: 10px 12px;
+  }
+}

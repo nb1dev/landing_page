@@ -1,4 +1,5 @@
 import React from 'react'
+import '@/styles/article-template.css'
 
 export function CitationComponent({
   quote,
@@ -10,13 +11,22 @@ export function CitationComponent({
   sourceUrl: string
 }) {
   return (
-    <blockquote className="border-l-4 pl-4 py-2 my-8 opacity-90">
-      <p className="italic">“{quote}”</p>
-      <div className="mt-2 text-sm">
-        —{' '}
-        <a className="underline" href={sourceUrl} target="_blank" rel="noreferrer">
-          {sourceName}
-        </a>
+    <blockquote className="art-citation">
+      <p className="art-citation__quote">&ldquo;{quote}&rdquo;</p>
+      <div className="art-citation__source">
+        &mdash;{' '}
+        {sourceUrl ? (
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="art-citation__link"
+          >
+            {sourceName}
+          </a>
+        ) : (
+          <span>{sourceName}</span>
+        )}
       </div>
     </blockquote>
   )

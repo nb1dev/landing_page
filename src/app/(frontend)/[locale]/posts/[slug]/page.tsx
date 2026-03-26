@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import '@/styles/banner-template.css'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts/Component'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
@@ -74,7 +75,7 @@ export default async function PostPage({ params: paramsPromise }: Args) {
   const populatedAuthors = (post as any).populatedAuthors || []
 
   return (
-    <article className="pt-16 pb-16">
+    <article className="pt-16 mr-auto ml-auto bg-white" style={{ maxWidth: '1440px' }}>
       <PageClient />
 
       <PayloadRedirects disableNotFound url={url} />
@@ -85,19 +86,13 @@ export default async function PostPage({ params: paramsPromise }: Args) {
 
       <PostHero post={post} />
 
-      <div className="flex flex-col items-center gap-4 pt-8">
-        <div className="container">
+      <div className="banner-wrapper" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
+        <div className="w-full mx-auto">
           {post.intro ? (
-            <RichText
-              className="max-w-[48rem] mx-auto mb-8"
-              data={post.intro}
-              enableGutter={false}
-              locale={locale}
-            />
+            <RichText className="mb-8" data={post.intro} enableGutter={false} locale={locale} />
           ) : null}
 
           <RichText
-            className="max-w-[48rem] mx-auto"
             data={post.content}
             enableGutter={false}
             locale={locale}
@@ -107,7 +102,7 @@ export default async function PostPage({ params: paramsPromise }: Args) {
 
           {post.relatedArticles && post.relatedArticles.length > 0 && (
             <RelatedPosts
-              className="mt-12 max-w-[52rem] lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[2fr]"
+              className="mt-12"
               docs={post.relatedArticles.filter((p) => typeof p === 'object')}
             />
           )}

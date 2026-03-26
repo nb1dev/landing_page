@@ -1,6 +1,6 @@
 'use client'
 
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -8,9 +8,8 @@ import { useRouter } from 'next/navigation'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
-import { useIsMobile } from '@/hooks/useIsMobile'
-import { getClientSideURL } from '@/utilities/getURL'
 import type { Media } from '@/payload-types'
+import '@/styles/banner-template.css'
 
 import { fields } from '../Form/fields'
 
@@ -53,7 +52,6 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 
   const router = useRouter()
-  const isMobile = useIsMobile()
 
   const onSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -117,50 +115,15 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
   const submitLabel = useMemo(() => submitButtonLabel || 'Submit', [submitButtonLabel])
 
   return (
-    <div
-      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
-      style={{ padding: isMobile ? '20px' : '' }}
-    >
-      <div
-        className="flex flex-row"
-        style={{
-          width: '100%',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          borderRadius: '20px',
-          background: 'white',
-        }}
-      >
-        <div
-          className={`flex w-full ${isMobile ? '' : 'p-16'}`}
-          style={{ padding: isMobile ? '40px 24px' : undefined }}
-        >
-          <div className={`${isMobile ? 'w-full' : 'w-1/2 text-center'} mr-auto ml-auto`}>
-            <div
-              style={{
-                fontSize: isMobile ? '38px' : '72px',
-                marginBottom: '24px',
-                fontFamily: 'Instrument Sans',
-                fontWeight: '500',
-                lineHeight: isMobile ? '42px' : '74px',
-              }}
-            >
+    <div className="banner-wrapper">
+      <div className="form-wrapper">
+        <div className="form-content">
+          <div className="form-col">
+            <div className="form-heading">
               <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
             </div>
 
-            <div
-              style={{
-                fontSize: isMobile ? '20px' : '24px',
-                marginBottom: isMobile ? '24px' : '60px',
-                color: 'black',
-                fontFamily: 'Inter',
-                fontWeight: '400',
-                lineHeight: isMobile ? '28px' : '24px',
-              }}
-            >
-              {props.description}
-            </div>
+            <div className="form-description">{props.description}</div>
 
             {props.enableIntro && props.introContent ? (
               <div className="mb-6" style={{ color: 'black' }}>
@@ -191,7 +154,7 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
                       if (!Field) return null
 
                       return (
-                        <div className="mb-6 last:mb-0" key={index} style={{ color: 'black' }}>
+                        <div className="form-field" key={index}>
                           <Field
                             form={formFromProps}
                             {...field}
@@ -209,17 +172,7 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
                     form={String(formID)}
                     type="submit"
                     variant="default"
-                    style={{
-                      borderRadius: '100px',
-                      marginTop: '24px',
-                      color: 'white',
-                      backgroundColor: 'black',
-                      height: '60px',
-                      fontFamily: 'Instrument Sans',
-                      fontWeight: '500',
-                      fontSize: isMobile ? '18px' : '20px',
-                    }}
-                    className="w-full"
+                    className="form-submit"
                   >
                     {submitLabel}
                   </Button>

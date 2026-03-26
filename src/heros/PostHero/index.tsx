@@ -5,6 +5,8 @@ import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { formatAuthors } from '@/utilities/formatAuthors'
+import '../../styles/banner-template.css'
+import '../../blocks/landingBlocks/landing-template.css'
 
 export const PostHero: React.FC<{
   post: Post
@@ -15,60 +17,117 @@ export const PostHero: React.FC<{
     populatedAuthors && populatedAuthors.length > 0 && formatAuthors(populatedAuthors) !== ''
 
   return (
-    <div className="relative -mt-[10.4rem] flex items-end">
-      <div className="container z-10 relative lg:grid lg:grid-cols-[1fr_48rem_1fr] text-white pb-8">
-        <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
-          <div className="uppercase text-sm mb-6">
-            {categories?.map((category, index) => {
-              if (typeof category === 'object' && category !== null) {
-                const { title: categoryTitle } = category
-
-                const titleToUse = categoryTitle || 'Untitled category'
-
-                const isLast = index === categories.length - 1
-
-                return (
-                  <React.Fragment key={index}>
-                    {titleToUse}
-                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
-                  </React.Fragment>
-                )
-              }
-              return null
-            })}
-          </div>
-
-          <div className="">
-            <h1 className="mb-6 text-3xl md:text-5xl lg:text-6xl">{title}</h1>
-          </div>
-
-          {subtitle && <p className="flex flex-col md:flex-row gap-4 md:gap-16">{subtitle}</p>}
-
-          <div className="flex flex-col md:flex-row gap-4 md:gap-16">
-            {hasAuthors && (
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm">Author</p>
-
-                  <p>{formatAuthors(populatedAuthors)}</p>
-                </div>
-              </div>
-            )}
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="min-h-[80vh] select-none">
+    <div className="banner-wrapper">
+      <div
+        className="banner-container"
+        style={{
+          backgroundColor: 'var(--banner-bg-dark)',
+          minHeight: '420px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}
+      >
+        {/* Background image */}
         {heroImage && typeof heroImage !== 'string' && (
-          <Media fill priority imgClassName="-z-10 object-cover" resource={heroImage} />
+          <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+            <Media
+              fill
+              priority
+              imgClassName="object-cover"
+              resource={heroImage}
+            />
+          </div>
         )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+
+        {/* Gradient overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 55%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
+
+        {/* Content */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            padding: '40px',
+            maxWidth: '860px',
+          }}
+        >
+          {/* Category tags */}
+          {categories && categories.length > 0 && (
+            <div className="lc-tags" style={{ marginBottom: '16px' }}>
+              {categories.map((category, index) => {
+                if (typeof category === 'object' && category !== null) {
+                  return (
+                    <span
+                      key={index}
+                      className="lc-tag"
+                      style={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(4px)',
+                      }}
+                    >
+                      {category.title || 'Untitled category'}
+                    </span>
+                  )
+                }
+                return null
+              })}
+            </div>
+          )}
+
+          {/* Title */}
+          <h1
+            className="banner-heading banner-heading--on-dark"
+            style={{ fontSize: 'clamp(32px, 4.5vw, 64px)', lineHeight: '1.1', marginBottom: subtitle ? '16px' : '24px' }}
+          >
+            {title}
+          </h1>
+
+          {/* Subtitle */}
+          {subtitle && (
+            <p
+              className="banner-description banner-description--on-dark"
+              style={{ marginBottom: '24px', maxWidth: '640px' }}
+            >
+              {subtitle}
+            </p>
+          )}
+
+          {/* Author + Date */}
+          {(hasAuthors || publishedAt) && (
+            <div
+              style={{ display: 'flex', flexDirection: 'row', gap: '24px', flexWrap: 'wrap' }}
+            >
+              {hasAuthors && (
+                <span
+                  className="banner-meta"
+                  style={{ color: 'rgba(255,255,255,0.75)' }}
+                >
+                  {formatAuthors(populatedAuthors)}
+                </span>
+              )}
+              {publishedAt && (
+                <time
+                  className="banner-meta"
+                  dateTime={publishedAt}
+                  style={{ color: 'rgba(255,255,255,0.6)' }}
+                >
+                  {formatDateTime(publishedAt)}
+                </time>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
