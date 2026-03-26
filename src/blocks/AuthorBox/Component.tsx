@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
+import '@/styles/article-template.css'
 
 export function AuthorBoxComponent({
   title,
@@ -12,32 +14,38 @@ export function AuthorBoxComponent({
   if (!authors?.length) return null
 
   return (
-    <section className="border rounded-xl p-4 mt-10">
-      <div className="font-semibold mb-3">{title || 'About the author'}</div>
+    <section className="art-card" style={{ marginTop: '40px' }}>
+      <div className="art-heading--label">{title || 'About the author'}</div>
 
-      <div className="grid gap-4">
-        {authors.map((a, i) => (
-          <div key={i} className="flex gap-3 items-start">
-            {a.avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={a.avatarUrl} alt={a.name} className="w-12 h-12 rounded-full object-cover" />
+      {authors.map((a, i) => (
+        <div key={i} className="art-author-row">
+          {a.avatarUrl ? (
+            <img
+              src={a.avatarUrl}
+              alt={a.name}
+              className="art-author-row__avatar art-author-row__avatar--lg"
+            />
+          ) : (
+            <div className="art-author-row__avatar art-author-row__avatar--lg art-author-row__avatar--placeholder" />
+          )}
+
+          <div className="art-author-row__info">
+            {a.slug ? (
+              <a
+                href={`/${locale}/authors/${a.slug}`}
+                className="art-author-row__name art-author-row__name--lg"
+              >
+                {a.name}
+              </a>
             ) : (
-              <div className="w-12 h-12 rounded-full bg-gray-200" />
+              <div className="art-author-row__name art-author-row__name--lg">{a.name}</div>
             )}
-
-            <div>
-              {a.slug ? (
-                <a className="font-semibold underline" href={`/${locale}/authors/${a.slug}`}>
-                  {a.name}
-                </a>
-              ) : (
-                <div className="font-semibold">{a.name}</div>
-              )}
-              {a.credentials ? <div className="text-sm opacity-80">{a.credentials}</div> : null}
-            </div>
+            {a.credentials && (
+              <div className="art-author-row__creds">{a.credentials}</div>
+            )}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </section>
   )
 }

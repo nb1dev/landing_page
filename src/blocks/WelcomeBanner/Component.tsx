@@ -8,6 +8,7 @@ import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-ty
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import RichText from '@/components/RichText'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import '@/styles/banner-template.css'
 
 import { CarouselBanner } from './CarouselBanner'
 
@@ -93,20 +94,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
       : null
 
   return (
-    <div
-      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
-      style={{ padding: isMobile ? '20px' : '' }}
-    >
-      <div
-        className={`relative flex ${isMobile ? 'flex-col' : 'flex-row gap-2'}`}
-        style={{
-          width: '100%',
-          minHeight: isMobile ? '620px' : '640px',
-          backgroundColor: 'white',
-          borderRadius: '20px',
-          overflow: 'hidden',
-        }}
-      >
+    <div className="banner-wrapper">
+      <div className="banner-container banner-container--light">
         {(isMobile ? bgMobile : bgDesktop)?.src && (
           <Image
             src={(isMobile ? bgMobile : bgDesktop)!.src as string}
@@ -146,15 +135,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
               <div className={`flex ${isMobile ? 'w-full' : ''} flex-col gap-8`}>
                 <div className={`${isMobile ? 'mb-4 pt-4 mt-8' : 'mb-16'}`}>
                   <div
-                    style={{
-                      fontSize: isMobile ? '38px' : '70px',
-                      fontFamily: 'Instrument Sans',
-                      fontWeight: '500',
-                      lineHeight: isMobile ? '42px' : '74px',
-                      marginBottom: '24px',
-                      width: isMobile ? '85%' : '100%',
-                    }}
-                    className="mb-6"
+                    className={`banner-heading banner-heading--xl banner-heading--on-light mb-6`}
+                    style={{ width: isMobile ? '85%' : '100%' }}
                   >
                     <RichText
                       data={props.heading as any}
@@ -164,14 +146,8 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
                   </div>
 
                   <div
-                    style={{
-                      fontSize: isMobile ? '20px' : '24px',
-                      color: '#292929',
-                      fontWeight: '400',
-                      fontFamily: 'Inter',
-                      lineHeight: isMobile ? '26px' : '34px',
-                      width: isMobile ? '85%' : '100%',
-                    }}
+                    className="banner-description banner-description--lg banner-description--on-light"
+                    style={{ width: isMobile ? '85%' : '100%' }}
                   >
                     {props.description}
                   </div>
@@ -183,19 +159,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
           <div className={`${isMobile ? 'w-full' : 'w-1/2 ml-auto'}`}>
             {!isMobile && (
               <div className="w-full">
-                <div
-                  className="ml-auto"
-                  style={{
-                    width: 'fit-content',
-                    marginRight: '22px',
-                    marginTop: '22px',
-                    fontSize: '14px',
-                    fontFamily: 'Inter',
-                    fontWeight: '400',
-                    lineHeight: '34px',
-                    color: '#646464',
-                  }}
-                >
+                <div className="banner-meta ml-auto" style={{ width: 'fit-content', marginRight: '22px', marginTop: '22px' }}>
                   {props.copyrightText}
                 </div>
               </div>
@@ -208,17 +172,7 @@ export const WelcomeBannerBlock: React.FC<WelcomeBannerBlockProps> = (props) => 
         </div>
       </div>
 
-      <div
-        className={`${isMobile ? 'w-full' : 'w-1/2'}`}
-        style={{
-          fontSize: isMobile ? '15px' : '18px',
-          marginTop: isMobile ? '32px' : '80px',
-          color: '#a6a6a6',
-          fontFamily: 'Inter',
-          fontWeight: '400',
-          lineHeight: isMobile ? '22px' : '30px',
-        }}
-      >
+      <div className={`banner-line-text ${isMobile ? 'w-full' : ''}`}>
         {props.lineText}
       </div>
     </div>

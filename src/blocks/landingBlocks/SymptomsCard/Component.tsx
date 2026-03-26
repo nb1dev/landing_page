@@ -8,6 +8,7 @@ import React, { useMemo, useState } from 'react'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import '../landing-template.css'
 
 export const SymptomsCardBlock: React.FC<SymptomsCardBlockProps> = (props) => {
   const isMobile = useIsMobile()
@@ -24,65 +25,21 @@ export const SymptomsCardBlock: React.FC<SymptomsCardBlockProps> = (props) => {
   const hasMoreSymptoms = symptoms.length > visibleCount
 
   return (
-    <div
-      className={`${!isMobile ? 'pr-10 pl-10 pt-5 pb-5' : ''}`}
-      style={{ padding: isMobile ? '0 20px 20px' : undefined, backgroundColor: 'white' }}
-    >
+    <div className="lc-wrapper">
       <div
         className={`flex ${!isMobile ? 'flex-row' : 'flex-col'}`}
-        style={{
-          gap: '20px',
-          alignItems: 'stretch', // important
-        }}
+        style={{ gap: '20px', alignItems: 'stretch' }}
       >
         {/* LEFT */}
-        <div
-          className="flex flex-col"
-          style={{
-            gap: '24px',
-            minWidth: 0,
-            width: '100%',
-            flex: 1,
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'Instrument Sans',
-              fontWeight: 500,
-              fontSize: isMobile ? '40px' : '64px',
-              lineHeight: isMobile ? '44px' : '70px',
-              letterSpacing: '-0.03em',
-              textAlign: isMobile ? 'center' : 'left',
-            }}
-          >
+        <div className="lc-col" style={{ gap: '24px' }}>
+          <div className="lc-title lc-title--center-mobile">
             <RichText data={props?.title as any} enableGutter={false} enableProse={false} />
           </div>
 
           <div className="flex flex-col" style={{ gap: '16px' }}>
-            <div
-              className="flex flex-wrap"
-              style={{
-                gap: '8px',
-              }}
-            >
+            <div className="lc-tags">
               {visibleSymptoms.map((item, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '4px 10px',
-                    borderRadius: '999px',
-                    backgroundColor: 'rgba(255, 244, 221, 1)',
-                    fontFamily: 'Inter',
-                    fontWeight: 400,
-                    fontSize: '14px',
-                    lineHeight: '30px',
-                    color: 'rgba(36, 39, 43, 1)',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <div key={index} className="lc-tag">
                   {item?.symptom}
                 </div>
               ))}
@@ -92,25 +49,10 @@ export const SymptomsCardBlock: React.FC<SymptomsCardBlockProps> = (props) => {
               <button
                 type="button"
                 onClick={() => setShowAllSymptoms(true)}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '4px 10px',
-                  borderRadius: '999px',
-                  backgroundColor: 'rgba(248, 248, 248, 1)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  width: 'fit-content',
-                  fontFamily: 'Inter',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '30px',
-                  color: 'rgba(36, 39, 43, 1)',
-                }}
+                className="lc-tag lc-tag--more"
+                style={{ width: 'fit-content' }}
               >
                 {props?.moreButton || 'And more'}
-
                 <svg
                   width="16"
                   height="16"
@@ -131,49 +73,19 @@ export const SymptomsCardBlock: React.FC<SymptomsCardBlockProps> = (props) => {
           </div>
 
           {isMobile && (
-            <div
-              style={{
-                borderRadius: '20px',
-                overflow: 'hidden',
-                width: isMobile ? '100%' : '500px',
-                minWidth: isMobile ? '100%' : '500px',
-                alignSelf: 'stretch',
-              }}
-            >
+            <div className="lc-panel">
               <img
                 src={getMediaUrl(
                   typeof props.symptomsImage === 'object' ? props.symptomsImage?.url : '',
                 )}
                 alt="Symptoms Image"
-                style={{
-                  width: '100%',
-                  height: '307px',
-                  display: 'block',
-                  objectFit: 'cover',
-                }}
+                className="lc-panel__img lc-panel__img--fixed-h"
               />
             </div>
           )}
 
-          <div
-            className="flex flex-col"
-            style={{
-              padding: '0',
-              backgroundColor: 'white',
-              borderRadius: '16px',
-              gap: '24px',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'Inter',
-                fontWeight: 400,
-                fontSize: '16px',
-                lineHeight: '24px',
-                letterSpacing: '-0.03em',
-                color: 'rgba(0, 0, 0, 1)',
-              }}
-            >
+          <div className="flex flex-col" style={{ gap: '24px' }}>
+            <div className="lc-description" style={{ letterSpacing: 0 }}>
               {props?.description}
             </div>
 
@@ -202,26 +114,18 @@ export const SymptomsCardBlock: React.FC<SymptomsCardBlockProps> = (props) => {
         {/* RIGHT */}
         {!isMobile && (
           <div
-            style={{
-              borderRadius: '20px',
-              overflow: 'hidden',
-              width: isMobile ? '100%' : '500px',
-              minWidth: isMobile ? '100%' : '500px',
-              alignSelf: 'stretch',
-            }}
+            className="lc-col--panel"
+            style={{ alignSelf: 'stretch' }}
           >
-            <img
-              src={getMediaUrl(
-                typeof props.symptomsImage === 'object' ? props.symptomsImage?.url : '',
-              )}
-              alt="Symptoms Image"
-              style={{
-                width: '100%',
-                height: '100%',
-                display: 'block',
-                objectFit: 'cover',
-              }}
-            />
+            <div className="lc-panel" style={{ height: '100%' }}>
+              <img
+                src={getMediaUrl(
+                  typeof props.symptomsImage === 'object' ? props.symptomsImage?.url : '',
+                )}
+                alt="Symptoms Image"
+                className="lc-panel__img"
+              />
+            </div>
           </div>
         )}
       </div>

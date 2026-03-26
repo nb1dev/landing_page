@@ -10,13 +10,13 @@ import { LinkJSXConverter } from '@payloadcms/richtext-lexical/react'
 
 import { textConverter } from './textConverter'
 
-// your existing blocks
+// existing blocks
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { CodeBlock } from '@/blocks/Code/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 
-// your “modules”
+// existing modules
 import { TableOfContentsComponent } from '@/blocks/TableOfContents/Component'
 import { AuthorBoxComponent } from '@/blocks/AuthorBox/Component'
 import { FAQAccordionComponent } from '@/blocks/FAQAccordion/Component'
@@ -24,7 +24,13 @@ import { CitationComponent } from '@/blocks/Citation/Component'
 import { ExpertQuoteComponent } from '@/blocks/ExpertQuote/Component'
 import { ComparisonTableComponent } from '@/blocks/ComparisonTable/Component'
 
-// Keep typing flexible to avoid maintaining unions when blocks change
+// newly added blocks/modules
+import { KeyTakeawaysBlock } from '@/blocks/KeyTakeways/Component'
+import { FAQBlockComponent } from '@/blocks/FAQ/Component'
+import { DataTableBlockComponent } from '@/blocks/DataTable/Component'
+import { CtaBlockComponent } from '@/blocks/CTA/Component'
+import { BulletListBlockComponent } from '@/blocks/BulletList/Component'
+
 type NodeTypes = DefaultNodeTypes | SerializedBlockNode<any>
 
 export type HeadingItem = { id: string; depth: 2 | 3; text: string }
@@ -59,9 +65,6 @@ function isHeadingTag(tag: any): tag is HeadingTag {
   )
 }
 
-/**
- * ✅ This replaces a static `jsxConverter` with a factory so you can still pass locale/headings/authors.
- */
 export function createJSXConverter({
   locale,
   headings,
@@ -87,14 +90,9 @@ export function createJSXConverter({
 
   return ({ defaultConverters }) => ({
     ...defaultConverters,
-
-    // ✅ your custom text styling support
     ...textConverter,
-
-    // ✅ localized internal links
     ...LinkJSXConverter({ internalDocToHref }),
 
-    // ✅ Add IDs to H2/H3 so TOC can anchor-link
     heading: ({ node, children }: any) => {
       const rawTag = node?.tag
       const tag: HeadingTag = isHeadingTag(rawTag) ? rawTag : 'h2'
@@ -108,8 +106,8 @@ export function createJSXConverter({
     },
 
     blocks: {
-      // existing blocks
       banner: ({ node }: any) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+
       mediaBlock: ({ node }: any) => (
         <MediaBlock
           className="col-start-1 col-span-3"
@@ -120,10 +118,11 @@ export function createJSXConverter({
           disableInnerContainer={true}
         />
       ),
+
       code: ({ node }: any) => <CodeBlock className="col-start-2" {...node.fields} />,
+
       cta: ({ node }: any) => <CallToActionBlock {...node.fields} />,
 
-      // new modules
       tableOfContents: ({ node }: any) => {
         const title = node.fields?.title
         const maxDepth = node.fields?.maxDepth === 'h2' ? 2 : 3
@@ -169,6 +168,20 @@ export function createJSXConverter({
           columns={Array.isArray(node.fields?.columns) ? node.fields.columns : []}
           rows={Array.isArray(node.fields?.rows) ? node.fields.rows : []}
         />
+      ),
+
+      keyTakeaways: ({ node }: any) => <KeyTakeawaysBlock {...node.fields} locale={safeLocale} />,
+
+      faq: ({ node }: any) => <FAQBlockComponent {...node.fields} locale={safeLocale} />,
+
+      dataTable: ({ node }: any) => (
+        <DataTableBlockComponent {...node.fields} locale={safeLocale} />
+      ),
+
+      ctaBlock: ({ node }: any) => <CtaBlockComponent {...node.fields} locale={safeLocale} />,
+
+      bulletList: ({ node }: any) => (
+        <BulletListBlockComponent {...node.fields} locale={safeLocale} />
       ),
     },
   })

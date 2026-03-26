@@ -50,7 +50,7 @@ export default buildConfig({
       max: 5,
       min: 1,
       idleTimeoutMillis: 20000,
-      connectionTimeoutMillis: 10000,
+      connectionTimeoutMillis: 50000,
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, Authors],

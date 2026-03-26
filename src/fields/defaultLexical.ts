@@ -6,8 +6,12 @@ import {
   ParagraphFeature,
   lexicalEditor,
   UnderlineFeature,
+  TextStateFeature,
   type LinkFields,
 } from '@payloadcms/richtext-lexical'
+
+import { brandColors } from './brandColors'
+export { brandColors } from './brandColors'
 
 export const defaultLexical = lexicalEditor({
   features: [
@@ -15,6 +19,11 @@ export const defaultLexical = lexicalEditor({
     UnderlineFeature(),
     BoldFeature(),
     ItalicFeature(),
+    TextStateFeature({
+      state: {
+        color: brandColors,
+      },
+    }),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
       fields: ({ defaultFields }) => {
