@@ -232,6 +232,9 @@ export interface Page {
     | DataTableBlock
     | CtaBlock
     | BulletListBlock
+    | ContactFormBlock
+    | ContactInfoBlock
+    | ContactSectionBlock
   )[];
   meta?: {
     /**
@@ -1522,6 +1525,121 @@ export interface BulletListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock".
+ */
+export interface ContactFormBlock {
+  title?: string | null;
+  description?: string | null;
+  formTitle?: string | null;
+  formDescription?: string | null;
+  labels?: {
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    message?: string | null;
+  };
+  placeholders?: {
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    message?: string | null;
+  };
+  submitLabel?: string | null;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  /**
+   * Email address where form submissions will be sent.
+   */
+  recipientEmail?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-form';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactInfoBlock".
+ */
+export interface ContactInfoBlock {
+  title?: string | null;
+  description?: string | null;
+  phone?: string | null;
+  phoneLabel?: string | null;
+  email?: string | null;
+  emailLabel?: string | null;
+  address?: string | null;
+  addressLabel?: string | null;
+  hours?: string | null;
+  hoursLabel?: string | null;
+  socialLinks?:
+    | {
+        platform: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  socialsLabel?: string | null;
+  backgroundImage?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-info';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactSectionBlock".
+ */
+export interface ContactSectionBlock {
+  form?: {
+    title?: string | null;
+    description?: string | null;
+    formTitle?: string | null;
+    formDescription?: string | null;
+    labels?: {
+      firstName?: string | null;
+      lastName?: string | null;
+      email?: string | null;
+      message?: string | null;
+    };
+    placeholders?: {
+      firstName?: string | null;
+      lastName?: string | null;
+      email?: string | null;
+      message?: string | null;
+    };
+    submitLabel?: string | null;
+    successMessage?: string | null;
+    errorMessage?: string | null;
+    /**
+     * Email address where form submissions will be sent.
+     */
+    recipientEmail?: string | null;
+  };
+  info?: {
+    title?: string | null;
+    description?: string | null;
+    phone?: string | null;
+    phoneLabel?: string | null;
+    email?: string | null;
+    emailLabel?: string | null;
+    address?: string | null;
+    addressLabel?: string | null;
+    hours?: string | null;
+    hoursLabel?: string | null;
+    socialLinks?:
+      | {
+          platform: string;
+          url: string;
+          id?: string | null;
+        }[]
+      | null;
+    socialsLabel?: string | null;
+    backgroundImage?: (number | null) | Media;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-section';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1904,6 +2022,9 @@ export interface PagesSelect<T extends boolean = true> {
         dataTable?: T | DataTableBlockSelect<T>;
         ctaBlock?: T | CtaBlockSelect<T>;
         bulletList?: T | BulletListBlockSelect<T>;
+        'contact-form'?: T | ContactFormBlockSelect<T>;
+        'contact-info'?: T | ContactInfoBlockSelect<T>;
+        'contact-section'?: T | ContactSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -2351,6 +2472,124 @@ export interface BulletListBlockSelect<T extends boolean = true> {
         leadIn?: T;
         body?: T;
         id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock_select".
+ */
+export interface ContactFormBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  formTitle?: T;
+  formDescription?: T;
+  labels?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        message?: T;
+      };
+  placeholders?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        message?: T;
+      };
+  submitLabel?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  recipientEmail?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactInfoBlock_select".
+ */
+export interface ContactInfoBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  phone?: T;
+  phoneLabel?: T;
+  email?: T;
+  emailLabel?: T;
+  address?: T;
+  addressLabel?: T;
+  hours?: T;
+  hoursLabel?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  socialsLabel?: T;
+  backgroundImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactSectionBlock_select".
+ */
+export interface ContactSectionBlockSelect<T extends boolean = true> {
+  form?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        formTitle?: T;
+        formDescription?: T;
+        labels?:
+          | T
+          | {
+              firstName?: T;
+              lastName?: T;
+              email?: T;
+              message?: T;
+            };
+        placeholders?:
+          | T
+          | {
+              firstName?: T;
+              lastName?: T;
+              email?: T;
+              message?: T;
+            };
+        submitLabel?: T;
+        successMessage?: T;
+        errorMessage?: T;
+        recipientEmail?: T;
+      };
+  info?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        phone?: T;
+        phoneLabel?: T;
+        email?: T;
+        emailLabel?: T;
+        address?: T;
+        addressLabel?: T;
+        hours?: T;
+        hoursLabel?: T;
+        socialLinks?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              id?: T;
+            };
+        socialsLabel?: T;
+        backgroundImage?: T;
       };
   id?: T;
   blockName?: T;

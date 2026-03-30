@@ -24,6 +24,9 @@ import { FAQBlockComponent } from './FAQ/Component'
 import { DataTableBlockComponent } from '@/blocks/DataTable/Component'
 import { CtaBlockComponent } from '@/blocks/CTA/Component'
 import { BulletListBlockComponent } from '@/blocks/BulletList/Component'
+import { ContactFormBlock } from '@/blocks/contactBlocks/ContactForm/Component'
+import { ContactInfoBlock } from '@/blocks/contactBlocks/ContactInfo/Component'
+import { ContactSectionBlock } from '@/blocks/contactBlocks/ContactSection/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -47,6 +50,9 @@ const blockComponents: Record<string, React.FC<any>> = {
   dataTable: DataTableBlockComponent,
   ctaBlock: CtaBlockComponent,
   bulletList: BulletListBlockComponent,
+  'contact-form': ContactFormBlock,
+  'contact-info': ContactInfoBlock,
+  'contact-section': ContactSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -1,0 +1,509 @@
+/* =============================================================================
+   Contact Page Blocks — CSS Template
+   Tokens aligned with: landing-template.css, banner-template.css, article-template.css
+   Blocks: ContactForm, ContactInfo
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   Design Tokens
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Colors */
+  --ct-bg-white:        #ffffff;
+  --ct-bg-dark:         rgba(29, 29, 29, 1);
+  --ct-bg-gray:         rgba(242, 242, 242, 1);
+  --ct-bg-gray-alt:     rgba(239, 239, 239, 1);
+  --ct-bg-black:        rgba(0, 0, 0, 1);
+  --ct-accent:          rgba(0, 194, 224, 1);
+  --ct-brand:           rgb(0, 168, 194);
+
+  --ct-text-primary:    rgba(0, 0, 0, 1);
+  --ct-text-dark:       rgba(36, 39, 43, 1);
+  --ct-text-white:      rgba(255, 255, 255, 1);
+  --ct-text-muted:      rgba(0, 0, 0, 0.5);
+  --ct-text-on-dark:    rgba(255, 255, 255, 0.85);
+  --ct-border:          rgba(0, 0, 0, 0.12);
+  --ct-input-border:    rgba(0, 0, 0, 0.2);
+  --ct-input-focus:     rgba(0, 194, 224, 1);
+  --ct-error:           rgba(239, 68, 68, 1);
+
+  /* Typography */
+  --ct-font-heading:    'Instrument Sans', sans-serif;
+  --ct-font-body:       'Inter', sans-serif;
+  --ct-heading-weight:  500;
+  --ct-body-weight:     400;
+
+  --ct-title-size:      64px;
+  --ct-title-size-mob:  40px;
+  --ct-title-lh:        70px;
+  --ct-title-lh-mob:    44px;
+  --ct-title-ls:        -0.03em;
+
+  --ct-label-size:      14px;
+  --ct-label-lh:        20px;
+  --ct-body-size:       16px;
+  --ct-body-size-lg:    20px;
+  --ct-body-lh:         24px;
+  --ct-meta-size:       13px;
+  --ct-meta-lh:         20px;
+
+  /* Spacing */
+  --ct-outer-padding:       20px 40px;
+  --ct-outer-padding-mob:   20px;
+  --ct-gap:                 24px;
+  --ct-gap-lg:              56px;
+
+  /* Shape */
+  --ct-radius:      20px;
+  --ct-radius-sm:   16px;
+  --ct-radius-pill: 999px;
+  --ct-radius-btn:  100px;
+
+  /* Inputs */
+  --ct-input-height:    56px;
+  --ct-input-pad:       14px 20px;
+  --ct-textarea-height: 160px;
+
+  /* Button */
+  --ct-btn-height:      60px;
+  --ct-btn-pad:         15px 30px;
+  --ct-btn-size:        20px;
+  --ct-btn-size-mob:    16px;
+
+  /* Info card */
+  --ct-info-icon-size:  24px;
+}
+
+/* ---------------------------------------------------------------------------
+   Outer Wrapper (shared)
+   --------------------------------------------------------------------------- */
+
+.ct-wrapper {
+  padding: var(--ct-outer-padding);
+}
+
+@media (max-width: 768px) {
+  .ct-wrapper {
+    padding: var(--ct-outer-padding-mob);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Two-Column Row
+   --------------------------------------------------------------------------- */
+
+.ct-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--ct-gap-lg);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ct-row {
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+
+.ct-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Narrower intro column (left side of ContactForm) */
+.ct-col--intro {
+  flex: 0 0 38%;
+  max-width: 38%;
+}
+
+@media (max-width: 768px) {
+  .ct-col--intro {
+    flex: unset;
+    max-width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Section Title
+   --------------------------------------------------------------------------- */
+
+.ct-title {
+  font-family: var(--ct-font-heading);
+  font-weight: var(--ct-heading-weight);
+  font-size: var(--ct-title-size);
+  line-height: var(--ct-title-lh);
+  letter-spacing: var(--ct-title-ls);
+  color: var(--ct-text-primary);
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .ct-title {
+    font-size: var(--ct-title-size-mob);
+    line-height: var(--ct-title-lh-mob);
+  }
+}
+
+.ct-title--on-dark {
+  color: var(--ct-text-white);
+}
+
+/* ---------------------------------------------------------------------------
+   Form Section Sub-title (right column heading)
+   --------------------------------------------------------------------------- */
+
+.ct-subtitle {
+  font-family: var(--ct-font-heading);
+  font-weight: var(--ct-heading-weight);
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: var(--ct-title-ls);
+  color: var(--ct-text-primary);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .ct-subtitle {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Description
+   --------------------------------------------------------------------------- */
+
+.ct-description {
+  font-family: var(--ct-font-body);
+  font-weight: var(--ct-body-weight);
+  font-size: var(--ct-body-size-lg);
+  line-height: var(--ct-body-lh);
+  color: var(--ct-text-muted);
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .ct-description {
+    font-size: var(--ct-body-size);
+    margin-bottom: 28px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Form Card
+   --------------------------------------------------------------------------- */
+
+.ct-form-card {
+  background-color: var(--ct-bg-white);
+  border-radius: var(--ct-radius);
+  padding: 48px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .ct-form-card {
+    padding: 28px 20px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Form Fields
+   --------------------------------------------------------------------------- */
+
+.ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.ct-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .ct-form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.ct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ct-label {
+  font-family: var(--ct-font-body);
+  font-weight: 500;
+  font-size: var(--ct-label-size);
+  line-height: var(--ct-label-lh);
+  color: var(--ct-text-dark);
+}
+
+.ct-input {
+  width: 100%;
+  height: var(--ct-input-height);
+  padding: var(--ct-input-pad);
+  border: 1.5px solid var(--ct-input-border);
+  border-radius: var(--ct-radius-sm);
+  background-color: var(--ct-bg-white);
+  font-family: var(--ct-font-body);
+  font-weight: var(--ct-body-weight);
+  font-size: var(--ct-body-size);
+  line-height: var(--ct-body-lh);
+  color: var(--ct-text-dark);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.ct-input:focus {
+  border-color: var(--ct-input-focus);
+}
+
+.ct-input--textarea {
+  height: var(--ct-textarea-height);
+  resize: vertical;
+  padding-top: 16px;
+}
+
+.ct-input--error {
+  border-color: var(--ct-error);
+}
+
+.ct-error-msg {
+  font-family: var(--ct-font-body);
+  font-size: var(--ct-meta-size);
+  line-height: var(--ct-meta-lh);
+  color: var(--ct-error);
+}
+
+/* ---------------------------------------------------------------------------
+   Submit Button
+   --------------------------------------------------------------------------- */
+
+.ct-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ct-radius-btn);
+  background-color: var(--ct-bg-black);
+  color: var(--ct-text-white);
+  height: var(--ct-btn-height);
+  padding: var(--ct-btn-pad);
+  font-family: var(--ct-font-heading);
+  font-weight: var(--ct-heading-weight);
+  font-size: var(--ct-btn-size);
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+  margin-top: 8px;
+}
+
+.ct-btn:hover {
+  opacity: 0.88;
+}
+
+.ct-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .ct-btn {
+    font-size: var(--ct-btn-size-mob);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Form Status Messages
+   --------------------------------------------------------------------------- */
+
+.ct-status {
+  text-align: center;
+  padding: 20px;
+  border-radius: var(--ct-radius-sm);
+  font-family: var(--ct-font-body);
+  font-size: var(--ct-body-size);
+  line-height: var(--ct-body-lh);
+}
+
+.ct-status--success {
+  background-color: rgba(34, 197, 94, 0.08);
+  color: rgba(21, 128, 61, 1);
+}
+
+.ct-status--error {
+  background-color: rgba(239, 68, 68, 0.08);
+  color: var(--ct-error);
+}
+
+/* ---------------------------------------------------------------------------
+   Contact Info Card
+   --------------------------------------------------------------------------- */
+
+.ct-info-card {
+  background-color: var(--ct-bg-dark);
+  border-radius: var(--ct-radius);
+  padding: 48px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .ct-info-card {
+    padding: 36px 24px;
+    gap: 32px;
+  }
+}
+
+.ct-info-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.ct-info-card__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ---------------------------------------------------------------------------
+   Info Item (icon + text row)
+   --------------------------------------------------------------------------- */
+
+.ct-info-items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ct-info-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ct-info-item__icon {
+  width: var(--ct-info-icon-size);
+  height: var(--ct-info-icon-size);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ct-info-item__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ct-info-item__label {
+  font-family: var(--ct-font-body);
+  font-weight: 500;
+  font-size: var(--ct-meta-size);
+  line-height: var(--ct-meta-lh);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ct-accent);
+}
+
+.ct-info-item__value {
+  font-family: var(--ct-font-body);
+  font-weight: var(--ct-body-weight);
+  font-size: var(--ct-body-size);
+  line-height: var(--ct-body-lh);
+  color: var(--ct-text-on-dark);
+}
+
+.ct-info-item__value a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.ct-info-item__value a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Divider
+   --------------------------------------------------------------------------- */
+
+.ct-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------------------------------------------------------------------------
+   Social Links
+   --------------------------------------------------------------------------- */
+
+.ct-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ct-socials__label {
+  font-family: var(--ct-font-body);
+  font-weight: 500;
+  font-size: var(--ct-meta-size);
+  line-height: var(--ct-meta-lh);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ct-accent);
+}
+
+.ct-socials__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ct-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--ct-radius-pill);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  background-color: rgba(255, 255, 255, 0.06);
+  font-family: var(--ct-font-body);
+  font-weight: var(--ct-body-weight);
+  font-size: var(--ct-label-size);
+  line-height: var(--ct-label-lh);
+  color: var(--ct-text-on-dark);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.ct-social-link:hover {
+  border-color: var(--ct-accent);
+  background-color: rgba(0, 194, 224, 0.1);
+}
