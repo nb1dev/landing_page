@@ -93,7 +93,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
       <article
         style={{
-          backgroundColor: '#1D1D1D',
+          backgroundColor: 'rgba(241, 245, 249, 1)',
           maxWidth: '1440px',
           width: '100%',
           marginRight: 'auto',

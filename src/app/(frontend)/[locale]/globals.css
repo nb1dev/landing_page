@@ -92,7 +92,7 @@
   }
   body {
     @apply text-foreground min-h-[100vh] flex flex-col;
-    background-color: #1D1D1D
+    background-color: rgba(241, 245, 249, 1);
   }
 }
 

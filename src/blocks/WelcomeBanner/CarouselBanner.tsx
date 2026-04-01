@@ -2,17 +2,15 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-types'
 
 type Props = Pick<WelcomeBannerBlockProps, 'bannerLabels'>
 
 export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   const isMobile = useIsMobile()
-  const pathname = usePathname() || '/'
 
-  const [yPositions, setYPositions] = useState([0, 100, 200, 300])
-  const [yPositionsMobile, setYPositionsMobile] = useState([0, 60, 120, 180])
+  const [yPositions, setYPositions] = useState([0, 100, 200])
+  const [yPositionsMobile, setYPositionsMobile] = useState([0, 60, 120])
 
   // ✅ Create interval once (desktop)
   useEffect(() => {
@@ -56,8 +54,8 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       fontFamily: 'Inter',
       fontWeight: '700',
       fontSize: '6rem',
-      color: yPositions[index] === 200 ? '#00a8c2' : 'white',
-      opacity: yPositions[index] === 200 ? '1' : '0.5',
+      color: yPositions[index] === 200 ? '#00889E' : '#0098AF80',
+      opacity: '1',
     } as const
   }
 
@@ -75,8 +73,8 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       fontFamily: 'Inter',
       fontWeight: '700',
       fontSize: '3rem',
-      color: yPositionsMobile[index] === 120 ? '#00a8c2' : 'white',
-      opacity: yPositionsMobile[index] === 120 ? '1' : '0.5',
+      color: yPositionsMobile[index] === 120 ? '#00889E' : '#0098AF80',
+      opacity: '1',
     } as const
   }
 
