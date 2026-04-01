@@ -18,4 +18,7 @@ export const de = {
     heading: 'Optimieren Sie Ihre Biologie',
     buttonText: 'Bestellen Sie Ihr NB1 Mikrobiom-Test',
   },
+  forms: {
+    thankYouRegistering: 'Vielen Dank für Ihre Registrierung!',
+  },
 }

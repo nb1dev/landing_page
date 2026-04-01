@@ -4,11 +4,12 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import { fields } from '@/blocks/Form/fields'
+import { getDictionary } from '@/i18n/getDictionary'
 
 export type AccessBannerBlockType = {
   blockName?: string
@@ -35,7 +36,6 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
     form: formFromProps,
     form: {
       id: formID,
-      confirmationMessage,
       confirmationType,
       redirect,
       submitButtonLabel,
@@ -58,6 +58,8 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 
   const router = useRouter()
+  const pathname = usePathname()
+  const dict = getDictionary(pathname?.split('/')?.[1] === 'de' ? 'de' : 'en')
 
   const onSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -97,14 +99,6 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
 
           if (confirmationType === 'redirect' && redirect?.url) {
             router.push(redirect.url)
-            return
-          }
-
-          const emailEntry = dataToSend.find((d) => d.field === 'email')
-          const emailValue = emailEntry?.value
-
-          if (typeof emailValue === 'string' && emailValue) {
-            router.push(`/login?email=${encodeURIComponent(emailValue)}`)
           }
         } catch (err) {
           console.warn(err)
@@ -155,9 +149,9 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
           ) : null}
 
           <FormProvider {...formMethods}>
-            {!isLoading && hasSubmitted && confirmationType === 'message' && (
+            {!isLoading && hasSubmitted && (
               <div className="text-white">
-                <RichText data={confirmationMessage as any} />
+                <p>{dict.forms.thankYouRegistering}</p>
               </div>
             )}
 

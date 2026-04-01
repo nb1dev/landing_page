@@ -14,6 +14,7 @@ import type { Media } from '@/payload-types'
 import { fields } from '@/blocks/Form/fields'
 import { CarouselBanner } from '@/blocks/WelcomeBanner/CarouselBanner'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher'
+import { getDictionary } from '@/i18n/getDictionary'
 
 export type ProductBannerBlockType = {
   blockName?: string
@@ -65,7 +66,6 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
     form: formFromProps,
     form: {
       id: formID,
-      confirmationMessage,
       confirmationType,
       redirect,
       submitButtonLabel,
@@ -90,6 +90,7 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
   const router = useRouter()
   const pathname = usePathname()
   const isGerman = pathname?.split('/')?.[1] === 'de'
+  const dict = getDictionary(isGerman ? 'de' : 'en')
 
   const bgMedia = isMedia(bannerBackground) ? bannerBackground : null
   const mobileBgMedia = isMedia(mobileBannerBackground) ? mobileBannerBackground : null
@@ -134,14 +135,6 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
 
           if (confirmationType === 'redirect' && redirect?.url) {
             router.push(redirect.url)
-            return
-          }
-
-          const emailEntry = dataToSend.find((d) => d.field === 'email')
-          const emailValue = emailEntry?.value
-
-          if (typeof emailValue === 'string' && emailValue) {
-            router.push(`/login?email=${encodeURIComponent(emailValue)}`)
           }
         } catch (err) {
           console.warn(err)
@@ -275,9 +268,9 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
                 ) : null}
 
                 <FormProvider {...formMethods}>
-                  {!isLoading && hasSubmitted && confirmationType === 'message' && (
+                  {!isLoading && hasSubmitted && (
                     <div className="text-[#111111]">
-                      <RichText data={confirmationMessage as any} />
+                      <p>{dict.forms.thankYouRegistering}</p>
                     </div>
                   )}
 

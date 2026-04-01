@@ -18,4 +18,7 @@ export const en = {
     heading: 'Elevate Your Biology',
     buttonText: 'Order Your NB1 Microbiome Discovery Kit',
   },
+  forms: {
+    thankYouRegistering: 'Thank you for registering!',
+  },
 }
