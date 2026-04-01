@@ -76,6 +76,8 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       fontFamily: 'Inter',
       fontWeight: '700',
       fontSize: '3rem',
+      lineHeight: '100%',
+      letterSpacing: '-0.03em',
       color: yPositionsMobile[index] === 120 ? '#00889E' : '#0098AF80',
       opacity: '1',
     } as const

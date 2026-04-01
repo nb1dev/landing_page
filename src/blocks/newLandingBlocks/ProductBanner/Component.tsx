@@ -294,7 +294,7 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
                   {!hasSubmitted && (
                     <form id={`product-banner-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex flex-col gap-3 lg:flex-row lg:items-start">
-                        <div className="flex-1 space-y-4 [&_input]:text-black [&_input]:placeholder:text-black/50">
+                        <div className="flex-1 space-y-4 [&_input]:text-black [&_input]:placeholder:text-black [&_label]:text-black">
                           {(formFromProps as any)?.fields?.map((field: any, index: number) => {
                             const Field: React.FC<any> =
                               fields?.[field.blockType as keyof typeof fields]

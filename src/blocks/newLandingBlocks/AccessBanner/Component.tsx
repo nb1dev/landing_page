@@ -143,7 +143,7 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
         {/* Right: quote + form */}
         <div>
           {quote ? (
-            <p className="mb-[44px] lg:mb-[14px] text-center font-['Inter'] text-[24px] font-normal leading-[34px] tracking-[-0.03em] text-[#D9D9D9] lg:text-left">
+            <p className="mb-[60px] lg:mb-[14px] text-center font-['Inter'] text-[24px] font-normal leading-[34px] tracking-[-0.03em] text-[#D9D9D9] lg:text-left">
               &ldquo;{quote}&rdquo;
             </p>
           ) : null}
