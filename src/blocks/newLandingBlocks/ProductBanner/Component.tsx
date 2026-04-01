@@ -4,7 +4,7 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -88,6 +88,8 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
   const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 
   const router = useRouter()
+  const pathname = usePathname()
+  const isGerman = pathname?.split('/')?.[1] === 'de'
 
   const bgMedia = isMedia(bannerBackground) ? bannerBackground : null
   const mobileBgMedia = isMedia(mobileBannerBackground) ? mobileBannerBackground : null
@@ -160,7 +162,9 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
   const imageCarousel = (
     <div className="relative">
       {carouselText?.length ? (
-        <div className="absolute inset-0 z-0 translate-x-[20px] translate-y-[120px] lg:translate-x-[110px] lg:translate-y-[155px]">
+        <div
+            className={`absolute inset-0 z-0 ${isGerman ? 'translate-x-[-20px] translate-y-[120px] lg:translate-x-[-35px] lg:translate-y-[190px]' : 'translate-x-[20px] translate-y-[120px] lg:translate-x-[110px] lg:translate-y-[155px]'}`}
+          >
           <CarouselBanner
             bannerLabels={carouselText.map((item) => ({
               id: item.id,

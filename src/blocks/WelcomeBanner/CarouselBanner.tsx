@@ -2,12 +2,15 @@
 
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-types'
 
 type Props = Pick<WelcomeBannerBlockProps, 'bannerLabels'>
 
 export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   const isMobile = useIsMobile()
+  const pathname = usePathname()
+  const isGerman = pathname?.split('/')?.[1] === 'de'
 
   const [yPositions, setYPositions] = useState([0, 100, 200])
   const [yPositionsMobile, setYPositionsMobile] = useState([0, 60, 120])
@@ -53,7 +56,7 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       width: 'max-content',
       fontFamily: 'Inter',
       fontWeight: '700',
-      fontSize: '6rem',
+      fontSize: isGerman ? '5.5rem' : '6rem',
       color: yPositions[index] === 200 ? '#00889E' : '#0098AF80',
       opacity: '1',
     } as const
