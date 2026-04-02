@@ -10,6 +10,18 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
+      name: 'logo',
+      label: 'Logo',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'copyrightText',
+      label: 'Copyright Text',
+      type: 'text',
+      localized: true,
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [

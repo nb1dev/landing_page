@@ -9,10 +9,11 @@ type Props = Pick<WelcomeBannerBlockProps, 'bannerLabels'>
 
 export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   const isMobile = useIsMobile()
-  const pathname = usePathname() || '/'
+  const pathname = usePathname()
+  const isGerman = pathname?.split('/')?.[1] === 'de'
 
-  const [yPositions, setYPositions] = useState([0, 100, 200, 300])
-  const [yPositionsMobile, setYPositionsMobile] = useState([0, 60, 120, 180])
+  const [yPositions, setYPositions] = useState([0, 100, 200])
+  const [yPositionsMobile, setYPositionsMobile] = useState([0, 60, 120])
 
   // ✅ Create interval once (desktop)
   useEffect(() => {
@@ -55,9 +56,9 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       width: 'max-content',
       fontFamily: 'Inter',
       fontWeight: '700',
-      fontSize: '6rem',
-      color: yPositions[index] === 200 ? '#00a8c2' : 'white',
-      opacity: yPositions[index] === 200 ? '1' : '0.5',
+      fontSize: isGerman ? '5.5rem' : '6rem',
+      color: yPositions[index] === 200 ? '#00889E' : '#0098AF80',
+      opacity: '1',
     } as const
   }
 
@@ -75,8 +76,10 @@ export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
       fontFamily: 'Inter',
       fontWeight: '700',
       fontSize: '3rem',
-      color: yPositionsMobile[index] === 120 ? '#00a8c2' : 'white',
-      opacity: yPositionsMobile[index] === 120 ? '1' : '0.5',
+      lineHeight: '100%',
+      letterSpacing: '-0.03em',
+      color: yPositionsMobile[index] === 120 ? '#00889E' : '#0098AF80',
+      opacity: '1',
     } as const
   }
 

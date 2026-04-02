@@ -24,6 +24,13 @@ import { FAQBlockComponent } from './FAQ/Component'
 import { DataTableBlockComponent } from '@/blocks/DataTable/Component'
 import { CtaBlockComponent } from '@/blocks/CTA/Component'
 import { BulletListBlockComponent } from '@/blocks/BulletList/Component'
+import { ContactFormBlock } from '@/blocks/contactBlocks/ContactForm/Component'
+import { ContactInfoBlock } from '@/blocks/contactBlocks/ContactInfo/Component'
+import { ContactSectionBlock } from '@/blocks/contactBlocks/ContactSection/Component'
+import { BenefitsBannerComponent } from './newLandingBlocks/BenefitsBanner/Component'
+import { StepsBannerComponent } from './newLandingBlocks/StepsBanner/Component'
+import { ProductBannerComponent } from './newLandingBlocks/ProductBanner/Component'
+import { AccessBannerComponent } from './newLandingBlocks/AccessBanner/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -47,6 +54,13 @@ const blockComponents: Record<string, React.FC<any>> = {
   dataTable: DataTableBlockComponent,
   ctaBlock: CtaBlockComponent,
   bulletList: BulletListBlockComponent,
+  'contact-form': ContactFormBlock,
+  'contact-info': ContactInfoBlock,
+  'contact-section': ContactSectionBlock,
+  benefitsBanner: BenefitsBannerComponent,
+  stepsBanner: StepsBannerComponent,
+  productBanner: ProductBannerComponent,
+  accessBanner: AccessBannerComponent,
 }
 
 export const RenderBlocks: React.FC<{

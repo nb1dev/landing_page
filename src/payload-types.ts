@@ -232,6 +232,13 @@ export interface Page {
     | DataTableBlock
     | CtaBlock
     | BulletListBlock
+    | ContactFormBlock
+    | ContactInfoBlock
+    | ContactSectionBlock
+    | BenefitsBannerBlock
+    | StepsBannerBlock
+    | ProductBannerBlock
+    | AccessBannerBlock
   )[];
   meta?: {
     /**
@@ -1522,6 +1529,272 @@ export interface BulletListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock".
+ */
+export interface ContactFormBlock {
+  title?: string | null;
+  description?: string | null;
+  formTitle?: string | null;
+  formDescription?: string | null;
+  labels?: {
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    message?: string | null;
+  };
+  placeholders?: {
+    firstName?: string | null;
+    lastName?: string | null;
+    email?: string | null;
+    message?: string | null;
+  };
+  submitLabel?: string | null;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  /**
+   * Email address where form submissions will be sent.
+   */
+  recipientEmail?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-form';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactInfoBlock".
+ */
+export interface ContactInfoBlock {
+  title?: string | null;
+  description?: string | null;
+  phone?: string | null;
+  phoneLabel?: string | null;
+  email?: string | null;
+  emailLabel?: string | null;
+  address?: string | null;
+  addressLabel?: string | null;
+  hours?: string | null;
+  hoursLabel?: string | null;
+  socialLinks?:
+    | {
+        platform: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  socialsLabel?: string | null;
+  backgroundImage?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-info';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactSectionBlock".
+ */
+export interface ContactSectionBlock {
+  form?: {
+    title?: string | null;
+    description?: string | null;
+    formTitle?: string | null;
+    formDescription?: string | null;
+    labels?: {
+      firstName?: string | null;
+      lastName?: string | null;
+      email?: string | null;
+      message?: string | null;
+    };
+    placeholders?: {
+      firstName?: string | null;
+      lastName?: string | null;
+      email?: string | null;
+      message?: string | null;
+    };
+    submitLabel?: string | null;
+    successMessage?: string | null;
+    errorMessage?: string | null;
+    /**
+     * Email address where form submissions will be sent.
+     */
+    recipientEmail?: string | null;
+  };
+  info?: {
+    title?: string | null;
+    description?: string | null;
+    phone?: string | null;
+    phoneLabel?: string | null;
+    email?: string | null;
+    emailLabel?: string | null;
+    address?: string | null;
+    addressLabel?: string | null;
+    hours?: string | null;
+    hoursLabel?: string | null;
+    socialLinks?:
+      | {
+          platform: string;
+          url: string;
+          id?: string | null;
+        }[]
+      | null;
+    socialsLabel?: string | null;
+    backgroundImage?: (number | null) | Media;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact-section';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsBannerBlock".
+ */
+export interface BenefitsBannerBlock {
+  items: {
+    title: string;
+    icon: number | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'benefitsBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBannerBlock".
+ */
+export interface StepsBannerBlock {
+  title: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  subtitle?: string | null;
+  /**
+   * Single shared arrow used between all steps. On mobile it will be rotated 90 degrees.
+   */
+  arrowIcon?: (number | null) | Media;
+  steps: {
+    label: string;
+    icon: number | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stepsBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductBannerBlock".
+ */
+export interface ProductBannerBlock {
+  title: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  subtitle?: string | null;
+  formText?: string | null;
+  /**
+   * Optional override for the submit button label. If empty, the selected form submit label will be used.
+   */
+  buttonText?: string | null;
+  /**
+   * Select the Form Builder form to submit.
+   */
+  form: number | Form;
+  enableIntro?: boolean | null;
+  introContent?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  carouselText?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  bannerImage?: (number | null) | Media;
+  bannerBackground?: (number | null) | Media;
+  mobileBannerBackground?: (number | null) | Media;
+  /**
+   * Optional logo displayed above the title.
+   */
+  logo?: (number | null) | Media;
+  loginButton?: {
+    show?: boolean | null;
+    label?: string | null;
+    url?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccessBannerBlock".
+ */
+export interface AccessBannerBlock {
+  title: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  subtitle?: string | null;
+  quote?: string | null;
+  formText?: string | null;
+  /**
+   * Optional override for the submit button label. If empty, the selected form submit label will be used.
+   */
+  buttonText?: string | null;
+  /**
+   * Select the Form Builder form to submit.
+   */
+  form: number | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accessBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1904,6 +2177,13 @@ export interface PagesSelect<T extends boolean = true> {
         dataTable?: T | DataTableBlockSelect<T>;
         ctaBlock?: T | CtaBlockSelect<T>;
         bulletList?: T | BulletListBlockSelect<T>;
+        'contact-form'?: T | ContactFormBlockSelect<T>;
+        'contact-info'?: T | ContactInfoBlockSelect<T>;
+        'contact-section'?: T | ContactSectionBlockSelect<T>;
+        benefitsBanner?: T | BenefitsBannerBlockSelect<T>;
+        stepsBanner?: T | StepsBannerBlockSelect<T>;
+        productBanner?: T | ProductBannerBlockSelect<T>;
+        accessBanner?: T | AccessBannerBlockSelect<T>;
       };
   meta?:
     | T
@@ -2352,6 +2632,203 @@ export interface BulletListBlockSelect<T extends boolean = true> {
         body?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock_select".
+ */
+export interface ContactFormBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  formTitle?: T;
+  formDescription?: T;
+  labels?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        message?: T;
+      };
+  placeholders?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        message?: T;
+      };
+  submitLabel?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  recipientEmail?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactInfoBlock_select".
+ */
+export interface ContactInfoBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  phone?: T;
+  phoneLabel?: T;
+  email?: T;
+  emailLabel?: T;
+  address?: T;
+  addressLabel?: T;
+  hours?: T;
+  hoursLabel?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  socialsLabel?: T;
+  backgroundImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactSectionBlock_select".
+ */
+export interface ContactSectionBlockSelect<T extends boolean = true> {
+  form?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        formTitle?: T;
+        formDescription?: T;
+        labels?:
+          | T
+          | {
+              firstName?: T;
+              lastName?: T;
+              email?: T;
+              message?: T;
+            };
+        placeholders?:
+          | T
+          | {
+              firstName?: T;
+              lastName?: T;
+              email?: T;
+              message?: T;
+            };
+        submitLabel?: T;
+        successMessage?: T;
+        errorMessage?: T;
+        recipientEmail?: T;
+      };
+  info?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        phone?: T;
+        phoneLabel?: T;
+        email?: T;
+        emailLabel?: T;
+        address?: T;
+        addressLabel?: T;
+        hours?: T;
+        hoursLabel?: T;
+        socialLinks?:
+          | T
+          | {
+              platform?: T;
+              url?: T;
+              id?: T;
+            };
+        socialsLabel?: T;
+        backgroundImage?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsBannerBlock_select".
+ */
+export interface BenefitsBannerBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        title?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBannerBlock_select".
+ */
+export interface StepsBannerBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  arrowIcon?: T;
+  steps?:
+    | T
+    | {
+        label?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductBannerBlock_select".
+ */
+export interface ProductBannerBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  formText?: T;
+  buttonText?: T;
+  form?: T;
+  enableIntro?: T;
+  introContent?: T;
+  carouselText?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  bannerImage?: T;
+  bannerBackground?: T;
+  mobileBannerBackground?: T;
+  logo?: T;
+  loginButton?:
+    | T
+    | {
+        show?: T;
+        label?: T;
+        url?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccessBannerBlock_select".
+ */
+export interface AccessBannerBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  quote?: T;
+  formText?: T;
+  buttonText?: T;
+  form?: T;
   id?: T;
   blockName?: T;
 }
@@ -2881,6 +3358,8 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  logo?: (number | null) | Media;
+  copyrightText?: string | null;
   navItems?:
     | {
         link: {
@@ -3002,6 +3481,8 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  logo?: T;
+  copyrightText?: T;
   navItems?:
     | T
     | {

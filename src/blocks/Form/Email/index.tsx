@@ -33,10 +33,12 @@ export const Email: React.FC<
         style={{
           borderRadius: '100px',
           backgroundColor: 'white',
-          fontFamily: 'Inter',
+          fontFamily: 'Instrument Sans',
           fontWeight: '400',
           height: '60px',
-          fontSize: '1.25rem',
+          fontSize: '20px',
+          lineHeight: '30px',
+          letterSpacing: '0',
           paddingLeft: '24px',
         }}
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}

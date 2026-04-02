@@ -33,6 +33,13 @@ import { FAQBlock } from '@/blocks/FAQ/config'
 import { DataTableBlock } from '@/blocks/DataTable/config'
 import { CtaBlock } from '@/blocks/CTA/config'
 import { BulletListBlock } from '@/blocks/BulletList/config'
+import { ContactFormBlock } from '@/blocks/contactBlocks/ContactForm/config'
+import { ContactInfoBlock } from '@/blocks/contactBlocks/ContactInfo/config'
+import { ContactSectionBlock } from '@/blocks/contactBlocks/ContactSection/config'
+import { BenefitsBanner } from '@/blocks/newLandingBlocks/BenefitsBanner/config'
+import { StepsBanner } from '@/blocks/newLandingBlocks/StepsBanner/config'
+import { ProductBanner } from '@/blocks/newLandingBlocks/ProductBanner/config'
+import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -118,6 +125,13 @@ export const Pages: CollectionConfig<'pages'> = {
                 DataTableBlock,
                 CtaBlock,
                 BulletListBlock,
+                ContactFormBlock,
+                ContactInfoBlock,
+                ContactSectionBlock,
+                BenefitsBanner,
+                StepsBanner,
+                ProductBanner,
+                AccessBanner,
               ],
               required: true,
               admin: { initCollapsed: true },
