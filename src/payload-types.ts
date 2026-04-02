@@ -201,6 +201,10 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
+             * Optional translated label. If empty, the default label will be used.
+             */
+            localizedLabel?: string | null;
+            /**
              * Choose how the link should be rendered.
              */
             appearance?: ('default' | 'outline') | null;
@@ -592,6 +596,10 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+          /**
            * Choose how the link should be rendered.
            */
           appearance?: ('default' | 'outline') | null;
@@ -641,6 +649,10 @@ export interface ContentBlock {
               } | null);
           url?: string | null;
           label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
           /**
            * Choose how the link should be rendered.
            */
@@ -2147,6 +2159,7 @@ export interface PagesSelect<T extends boolean = true> {
                     reference?: T;
                     url?: T;
                     label?: T;
+                    localizedLabel?: T;
                     appearance?: T;
                   };
               id?: T;
@@ -2220,6 +2233,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              localizedLabel?: T;
               appearance?: T;
             };
         id?: T;
@@ -2246,6 +2260,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              localizedLabel?: T;
               appearance?: T;
             };
         id?: T;
@@ -3345,6 +3360,10 @@ export interface Header {
               } | null);
           url?: string | null;
           label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
         };
         id?: string | null;
       }[]
@@ -3376,6 +3395,10 @@ export interface Footer {
               } | null);
           url?: string | null;
           label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
         };
         id?: string | null;
       }[]
@@ -3469,6 +3492,7 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              localizedLabel?: T;
             };
         id?: T;
       };
@@ -3494,6 +3518,7 @@ export interface FooterSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              localizedLabel?: T;
             };
         id?: T;
       };
