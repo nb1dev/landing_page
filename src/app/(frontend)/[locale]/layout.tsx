@@ -202,7 +202,7 @@ export default async function RootLayout({
             `}
           </Script>
 
-          <Footer />
+          <Footer locale={locale} />
         </Providers>
       </body>
     </html>

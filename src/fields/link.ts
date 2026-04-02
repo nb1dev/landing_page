@@ -90,14 +90,6 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
   ]
 
   if (!disableLabel) {
-    linkTypes.map((linkType) => ({
-      ...linkType,
-      admin: {
-        ...linkType.admin,
-        width: '50%',
-      },
-    }))
-
     linkResult.fields.push({
       type: 'row',
       fields: [
@@ -110,6 +102,23 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           },
           label: 'Label',
           required: true,
+        },
+      ],
+    })
+
+    linkResult.fields.push({
+      type: 'row',
+      fields: [
+        {
+          name: 'localizedLabel',
+          type: 'text',
+          localized: true,
+          required: false,
+          label: 'Localized Label',
+          admin: {
+            width: '50%',
+            description: 'Optional translated label. If empty, the default label will be used.',
+          },
         },
       ],
     })
