@@ -243,6 +243,7 @@ export interface Page {
     | StepsBannerBlock
     | ProductBannerBlock
     | AccessBannerBlock
+    | ProductShowcaseBlock
   )[];
   meta?: {
     /**
@@ -1807,6 +1808,87 @@ export interface AccessBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock".
+ */
+export interface ProductShowcaseBlock {
+  title: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  badge?: string | null;
+  productPanel: {
+    title: string;
+    subtitle?: string | null;
+    features?:
+      | {
+          label: string;
+          icon?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+    mainImage?: (number | null) | Media;
+    thumbnails?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Each card represents a plan (e.g. Core, Complete).
+   */
+  plans?:
+    | {
+        badgeLabel?: string | null;
+        badgeHighlighted?: boolean | null;
+        cardTitle: string;
+        features?:
+          | {
+              text: string;
+              highlighted?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        prices?:
+          | {
+              durationLabel: string;
+              price: string;
+              perDay?: string | null;
+              saveBadge?: string | null;
+              discountAmount?: string | null;
+              isDefault?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        buttonLabel?: string | null;
+        buttonLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqItems?:
+    | {
+        question: string;
+        answer?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -2197,6 +2279,7 @@ export interface PagesSelect<T extends boolean = true> {
         stepsBanner?: T | StepsBannerBlockSelect<T>;
         productBanner?: T | ProductBannerBlockSelect<T>;
         accessBanner?: T | AccessBannerBlockSelect<T>;
+        productShowcase?: T | ProductShowcaseBlockSelect<T>;
       };
   meta?:
     | T
@@ -2844,6 +2927,71 @@ export interface AccessBannerBlockSelect<T extends boolean = true> {
   formText?: T;
   buttonText?: T;
   form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock_select".
+ */
+export interface ProductShowcaseBlockSelect<T extends boolean = true> {
+  title?: T;
+  badge?: T;
+  productPanel?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        features?:
+          | T
+          | {
+              label?: T;
+              icon?: T;
+              id?: T;
+            };
+        mainImage?: T;
+        thumbnails?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  plans?:
+    | T
+    | {
+        badgeLabel?: T;
+        badgeHighlighted?: T;
+        cardTitle?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              highlighted?: T;
+              id?: T;
+            };
+        prices?:
+          | T
+          | {
+              durationLabel?: T;
+              price?: T;
+              perDay?: T;
+              saveBadge?: T;
+              discountAmount?: T;
+              isDefault?: T;
+              id?: T;
+            };
+        buttonLabel?: T;
+        buttonLink?: T;
+        id?: T;
+      };
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

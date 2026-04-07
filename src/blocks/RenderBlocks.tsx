@@ -31,6 +31,7 @@ import { BenefitsBannerComponent } from './newLandingBlocks/BenefitsBanner/Compo
 import { StepsBannerComponent } from './newLandingBlocks/StepsBanner/Component'
 import { ProductBannerComponent } from './newLandingBlocks/ProductBanner/Component'
 import { AccessBannerComponent } from './newLandingBlocks/AccessBanner/Component'
+import { ProductShowcaseComponent } from './newLandingBlocks/ProductShowcase/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -61,6 +62,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   stepsBanner: StepsBannerComponent,
   productBanner: ProductBannerComponent,
   accessBanner: AccessBannerComponent,
+  productShowcase: ProductShowcaseComponent,
 }
 
 export const RenderBlocks: React.FC<{

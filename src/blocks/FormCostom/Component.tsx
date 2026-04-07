@@ -1,6 +1,6 @@
 'use client'
 
-import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
+import type { Form as FormType, FormFieldBlock } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -25,19 +25,18 @@ export type FormCustomBlockType = {
 }
 
 export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = (props) => {
-  const {
-    form: formFromProps,
-    form: {
-      id: formID,
-      confirmationMessage,
-      confirmationType,
-      redirect,
-      submitButtonLabel,
-    } = {} as any,
-  } = props
+  const { form: formFromProps } = props
 
-  const formMethods = useForm({
-    defaultValues: (formFromProps as any)?.fields || {},
+  const {
+    id: formID,
+    confirmationMessage,
+    confirmationType,
+    redirect,
+    submitButtonLabel,
+  } = (formFromProps ?? {}) as Partial<FormType>
+
+  const formMethods = useForm<Record<string, unknown>>({
+    defaultValues: {},
   })
 
   const {
@@ -120,21 +119,21 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
         <div className="form-content">
           <div className="form-col">
             <div className="form-heading">
-              <RichText data={props.heading as any} enableGutter={false} enableProse={false} />
+              <RichText data={props.heading} enableGutter={false} enableProse={false} />
             </div>
 
             <div className="form-description">{props.description}</div>
 
             {props.enableIntro && props.introContent ? (
               <div className="mb-6" style={{ color: 'black' }}>
-                <RichText data={props.introContent as any} enableGutter={false} />
+                <RichText data={props.introContent} enableGutter={false} />
               </div>
             ) : null}
 
             <FormProvider {...formMethods}>
               {!isLoading && hasSubmitted && confirmationType === 'message' && (
                 <div className="text-center" style={{ color: 'black' }}>
-                  <RichText data={confirmationMessage as any} />
+                  <RichText data={confirmationMessage} />
                 </div>
               )}
 
@@ -149,7 +148,8 @@ export const FormCustomBlock: React.FC<{ id?: string } & FormCustomBlockType> = 
               {!hasSubmitted && (
                 <form id={String(formID)} onSubmit={handleSubmit(onSubmit)}>
                   <div className="mb-4 last:mb-0">
-                    {(formFromProps as any)?.fields?.map((field: any, index: number) => {
+                    {formFromProps?.fields?.map((field: FormFieldBlock, index: number) => {
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                       if (!Field) return null
 
