@@ -1827,17 +1827,7 @@ export interface ProductShowcaseBlock {
     [k: string]: unknown;
   };
   badge?: string | null;
-  productPanel: {
-    title: string;
-    subtitle?: string | null;
-    features?:
-      | {
-          label: string;
-          icon?: (number | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-    mainImage?: (number | null) | Media;
+  panel?: {
     thumbnails?:
       | {
           image: number | Media;
@@ -1863,10 +1853,8 @@ export interface ProductShowcaseBlock {
         prices?:
           | {
               durationLabel: string;
-              price: string;
-              perDay?: string | null;
-              saveBadge?: string | null;
-              discountAmount?: string | null;
+              priceLabel: string;
+              perDayLabel?: string | null;
               isDefault?: boolean | null;
               id?: string | null;
             }[]
@@ -2937,19 +2925,9 @@ export interface AccessBannerBlockSelect<T extends boolean = true> {
 export interface ProductShowcaseBlockSelect<T extends boolean = true> {
   title?: T;
   badge?: T;
-  productPanel?:
+  panel?:
     | T
     | {
-        title?: T;
-        subtitle?: T;
-        features?:
-          | T
-          | {
-              label?: T;
-              icon?: T;
-              id?: T;
-            };
-        mainImage?: T;
         thumbnails?:
           | T
           | {
@@ -2974,10 +2952,8 @@ export interface ProductShowcaseBlockSelect<T extends boolean = true> {
           | T
           | {
               durationLabel?: T;
-              price?: T;
-              perDay?: T;
-              saveBadge?: T;
-              discountAmount?: T;
+              priceLabel?: T;
+              perDayLabel?: T;
               isDefault?: T;
               id?: T;
             };

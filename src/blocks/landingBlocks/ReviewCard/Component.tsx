@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { ReviewCardBlock as ReviewCardBlockProps } from 'src/payload-types'
+import type { ReviewCardBlock as ReviewCardBlockProps } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import React, { useEffect, useRef, useState } from 'react'

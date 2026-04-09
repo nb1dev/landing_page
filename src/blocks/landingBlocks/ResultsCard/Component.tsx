@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { ResultsCardBlock as ResultsCardBlockProps } from 'src/payload-types'
+import type { ResultsCardBlock as ResultsCardBlockProps } from '@/payload-types'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { FormulaCardBlock as FormulaCardBlockProps } from 'src/payload-types'
+import type { FormulaCardBlock as FormulaCardBlockProps } from '@/payload-types'
 import React from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'
