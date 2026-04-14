@@ -17,6 +17,7 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
+import { parseApiContent } from './hooks/parseApiContent'
 import { TableOfContents } from '../../blocks/TableOfContents/config'
 import { AuthorBox } from '../../blocks/AuthorBox/config'
 // import { FAQAccordion } from '../../blocks/FAQAccordion/config'
@@ -134,6 +135,11 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
+              validate: (value: unknown, { data }: { data?: Record<string, unknown> }) => {
+                if (data?.source === 'api') return true
+                if (!value) return 'This field is required.'
+                return true
+              },
               admin: {
                 description:
                   'Write 2–3 introductory paragraphs. This appears before all content blocks.',
@@ -174,6 +180,11 @@ export const Posts: CollectionConfig<'posts'> = {
                 },
               }),
               required: true,
+              validate: (value: unknown, { data }: { data?: Record<string, unknown> }) => {
+                if (data?.source === 'api') return true
+                if (!value) return 'This field is required.'
+                return true
+              },
             },
             {
               name: 'schemaMarkup',
@@ -367,8 +378,31 @@ export const Posts: CollectionConfig<'posts'> = {
       ],
     },
     costomSlugField(),
+    {
+      name: 'source',
+      type: 'select',
+      defaultValue: 'manual',
+      options: [
+        { label: 'Manual', value: 'manual' },
+        { label: 'API', value: 'api' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'How this article was created.',
+      },
+    },
+    {
+      name: 'htmlContent',
+      type: 'textarea',
+      admin: {
+        position: 'sidebar',
+        description: 'Raw HTML from the content pipeline. Parsed automatically on save.',
+        condition: (_, siblingData) => siblingData?.source === 'api',
+      },
+    },
   ],
   hooks: {
+    beforeChange: [parseApiContent],
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
