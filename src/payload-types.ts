@@ -382,14 +382,6 @@ export interface Post {
    * Auto-formatted: lowercase + hyphens only. Max 70 characters.
    */
   slug: string;
-  /**
-   * How this article was created.
-   */
-  source?: ('manual' | 'api') | null;
-  /**
-   * Raw HTML from the content pipeline. Parsed automatically on save.
-   */
-  htmlContent?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1892,9 +1884,6 @@ export interface User {
   name?: string | null;
   updatedAt: string;
   createdAt: string;
-  enableAPIKey?: boolean | null;
-  apiKey?: string | null;
-  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -3027,8 +3016,6 @@ export interface PostsSelect<T extends boolean = true> {
         avatarUrl?: T;
       };
   slug?: T;
-  source?: T;
-  htmlContent?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -3154,9 +3141,6 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   updatedAt?: T;
   createdAt?: T;
-  enableAPIKey?: T;
-  apiKey?: T;
-  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
