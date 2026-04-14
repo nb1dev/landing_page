@@ -135,8 +135,8 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
-              validate: (value: unknown, { data }: { data?: Record<string, unknown> }) => {
-                if (data?.source === 'api') return true
+              validate: (value: unknown, options: { data?: Record<string, unknown> }) => {
+                if (options?.data?.source === 'api') return true
                 if (!value) return 'This field is required.'
                 return true
               },
@@ -180,8 +180,8 @@ export const Posts: CollectionConfig<'posts'> = {
                 },
               }),
               required: true,
-              validate: (value: unknown, { data }: { data?: Record<string, unknown> }) => {
-                if (data?.source === 'api') return true
+              validate: (value: unknown, options: { data?: Record<string, unknown> }) => {
+                if (options?.data?.source === 'api') return true
                 if (!value) return 'This field is required.'
                 return true
               },
