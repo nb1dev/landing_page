@@ -7,6 +7,7 @@ node_modules
 .vercel
 .vscode
 pnpm-lock.yaml
+package-lock.json
 
 # Payload default media upload directory
 # public/media/
