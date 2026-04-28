@@ -244,6 +244,7 @@ export interface Page {
     | ProductBannerBlock
     | AccessBannerBlock
     | ProductShowcaseBlock
+    | EarlyAccessBlock
   )[];
   meta?: {
     /**
@@ -1885,6 +1886,63 @@ export interface ProductShowcaseBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EarlyAccessBlock".
+ */
+export interface EarlyAccessBlock {
+  /**
+   * Main heading shown by default.
+   */
+  title: string;
+  /**
+   * Supporting text below the title.
+   */
+  subtitle?: string | null;
+  /**
+   * Small eyebrow label displayed above the title.
+   */
+  headline?: string | null;
+  /**
+   * Optional. Overrides the submit button label from the selected form.
+   */
+  buttonText?: string | null;
+  /**
+   * Select the Form Builder form to render.
+   */
+  form: number | Form;
+  /**
+   * Each entry overrides content when ?variant=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * URL param value matched against ?variant=. Example: "existence"
+         */
+        variantKey: string;
+        /**
+         * Replaces the default title for this variant.
+         */
+        title?: string | null;
+        /**
+         * Replaces the default subtitle for this variant.
+         */
+        subtitle?: string | null;
+        /**
+         * Replaces the default headline for this variant.
+         */
+        headline?: string | null;
+        /**
+         * Replaces the default button text for this variant.
+         */
+        buttonText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'earlyAccess';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -2279,6 +2337,7 @@ export interface PagesSelect<T extends boolean = true> {
         productBanner?: T | ProductBannerBlockSelect<T>;
         accessBanner?: T | AccessBannerBlockSelect<T>;
         productShowcase?: T | ProductShowcaseBlockSelect<T>;
+        earlyAccess?: T | EarlyAccessBlockSelect<T>;
       };
   meta?:
     | T
@@ -2977,6 +3036,29 @@ export interface ProductShowcaseBlockSelect<T extends boolean = true> {
     | {
         question?: T;
         answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EarlyAccessBlock_select".
+ */
+export interface EarlyAccessBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  headline?: T;
+  buttonText?: T;
+  form?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        title?: T;
+        subtitle?: T;
+        headline?: T;
+        buttonText?: T;
         id?: T;
       };
   id?: T;
