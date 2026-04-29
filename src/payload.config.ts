@@ -47,12 +47,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
-      max: 5,
-      min: 1,
+      max: 3,
+      min: 0,
       idleTimeoutMillis: 20000,
       connectionTimeoutMillis: 50000,
-      // Explicitly set search_path so PgBouncer transaction-mode pooling works correctly
-      options: '-c search_path=public',
     },
     push: false,
   }),
