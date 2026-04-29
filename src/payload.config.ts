@@ -46,12 +46,13 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      ssl: { rejectUnauthorized: false },
+      ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
       max: 5,
       min: 1,
       idleTimeoutMillis: 20000,
       connectionTimeoutMillis: 50000,
     },
+    push: false,
   }),
   collections: [Pages, Posts, Media, Categories, Users, Products, Authors],
   cors: [getServerSideURL()].filter(Boolean),

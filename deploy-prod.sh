@@ -19,6 +19,9 @@ npm install --legacy-peer-deps
 echo ">>> Use .env.prod"
 cp .env.prod .env
 
+echo ">>> Run DB migrations (safe - applies only pending)"
+npm run migrate
+
 echo ">>> Build Next.js"
 npm run build
 
