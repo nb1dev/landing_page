@@ -93,16 +93,17 @@ export function createJSXConverter({
     ...textConverter,
     ...LinkJSXConverter({ internalDocToHref }),
 
-    heading: ({ node, children }: any) => {
+    heading: ({ node, nodesToJSX }: any) => {
       const rawTag = node?.tag
       const tag: HeadingTag = isHeadingTag(rawTag) ? rawTag : 'h2'
+      const children = nodesToJSX({ nodes: node.children })
       const isTocHeading = tag === 'h2' || tag === 'h3'
 
-      if (!isTocHeading) return React.createElement(tag, null, children)
+      if (!isTocHeading) return React.createElement(tag, null, ...children)
 
       const text = getNodeText(node).trim()
       const id = slugify(text)
-      return React.createElement(tag, { id }, children)
+      return React.createElement(tag, { id }, ...children)
     },
 
     blocks: {

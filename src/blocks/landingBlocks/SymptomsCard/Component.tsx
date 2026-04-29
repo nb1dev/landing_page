@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { SymptomsCardBlock as SymptomsCardBlockProps } from 'src/payload-types'
+import type { SymptomsCardBlock as SymptomsCardBlockProps } from '@/payload-types'
 import React, { useMemo, useState } from 'react'
 import { useIsMobile } from '@/hooks/useIsMobile'
 import RichText from '@/components/RichText'

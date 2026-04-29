@@ -30,7 +30,6 @@ const nextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
-  trailingSlash: true,
   redirects,
 }
 

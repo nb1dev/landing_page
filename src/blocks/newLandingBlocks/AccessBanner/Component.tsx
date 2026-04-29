@@ -27,20 +27,9 @@ type Props = {
 } & AccessBannerBlockType
 
 export const AccessBannerComponent: React.FC<Props> = (props) => {
-  const {
-    title,
-    subtitle,
-    quote,
-    formText,
-    buttonText,
-    form: formFromProps,
-    form: {
-      id: formID,
-      confirmationType,
-      redirect,
-      submitButtonLabel,
-    } = {} as any,
-  } = props
+  const { title, subtitle, quote, formText, buttonText, form: formFromProps } = props
+
+  const { id: formID, confirmationType, redirect, submitButtonLabel } = (formFromProps ?? {}) as any
 
   const formMethods = useForm({
     defaultValues: (formFromProps as any)?.fields || {},
@@ -117,9 +106,7 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
   }, [buttonText, submitButtonLabel])
 
   return (
-    <section
-      className="my-12 mx-[1rem] lg:mx-[40px] overflow-hidden rounded-[20px] bg-[#222E3E] p-[2rem] lg:px-[64px] lg:py-[95px]"
-    >
+    <section className="my-12 mx-[1rem] lg:mx-[40px] overflow-hidden rounded-[20px] bg-[#222E3E] p-[2rem] lg:px-[64px] lg:py-[95px]">
       <div className="grid items-center gap-[60px] lg:gap-12 lg:grid-cols-2">
         {/* Left: title + subtitle */}
         <div>

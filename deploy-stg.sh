@@ -22,6 +22,9 @@ npm install --legacy-peer-deps
 echo ">>> Use .env.stg"
 cp .env.stg .env
 
+echo ">>> Run DB migrations (safe - applies only pending)"
+npm run migrate
+
 echo ">>> Build Next.js"
 npm run build
 

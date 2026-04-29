@@ -243,6 +243,8 @@ export interface Page {
     | StepsBannerBlock
     | ProductBannerBlock
     | AccessBannerBlock
+    | ProductShowcaseBlock
+    | EarlyAccessBlock
   )[];
   meta?: {
     /**
@@ -381,6 +383,14 @@ export interface Post {
    * Auto-formatted: lowercase + hyphens only. Max 70 characters.
    */
   slug: string;
+  /**
+   * How this article was created.
+   */
+  source?: ('manual' | 'api') | null;
+  /**
+   * Raw HTML from the content pipeline. Parsed automatically on save.
+   */
+  htmlContent?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -1807,6 +1817,132 @@ export interface AccessBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock".
+ */
+export interface ProductShowcaseBlock {
+  title: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  badge?: string | null;
+  panel?: {
+    thumbnails?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Each card represents a plan (e.g. Core, Complete).
+   */
+  plans?:
+    | {
+        badgeLabel?: string | null;
+        badgeHighlighted?: boolean | null;
+        cardTitle: string;
+        features?:
+          | {
+              text: string;
+              highlighted?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        prices?:
+          | {
+              durationLabel: string;
+              priceLabel: string;
+              perDayLabel?: string | null;
+              isDefault?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        buttonLabel?: string | null;
+        buttonLink?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faqItems?:
+    | {
+        question: string;
+        answer?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EarlyAccessBlock".
+ */
+export interface EarlyAccessBlock {
+  /**
+   * Main heading shown by default.
+   */
+  title: string;
+  /**
+   * Supporting text below the title.
+   */
+  subtitle?: string | null;
+  /**
+   * Small eyebrow label displayed above the title.
+   */
+  headline?: string | null;
+  /**
+   * Optional. Overrides the submit button label from the selected form.
+   */
+  buttonText?: string | null;
+  /**
+   * Select the Form Builder form to render.
+   */
+  form: number | Form;
+  /**
+   * Each entry overrides content when ?variant=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * URL param value matched against ?variant=. Example: "existence"
+         */
+        variantKey: string;
+        /**
+         * Replaces the default title for this variant.
+         */
+        title?: string | null;
+        /**
+         * Replaces the default subtitle for this variant.
+         */
+        subtitle?: string | null;
+        /**
+         * Replaces the default headline for this variant.
+         */
+        headline?: string | null;
+        /**
+         * Replaces the default button text for this variant.
+         */
+        buttonText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'earlyAccess';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -1814,6 +1950,9 @@ export interface User {
   name?: string | null;
   updatedAt: string;
   createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
   email: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
@@ -2197,6 +2336,8 @@ export interface PagesSelect<T extends boolean = true> {
         stepsBanner?: T | StepsBannerBlockSelect<T>;
         productBanner?: T | ProductBannerBlockSelect<T>;
         accessBanner?: T | AccessBannerBlockSelect<T>;
+        productShowcase?: T | ProductShowcaseBlockSelect<T>;
+        earlyAccess?: T | EarlyAccessBlockSelect<T>;
       };
   meta?:
     | T
@@ -2849,6 +2990,82 @@ export interface AccessBannerBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductShowcaseBlock_select".
+ */
+export interface ProductShowcaseBlockSelect<T extends boolean = true> {
+  title?: T;
+  badge?: T;
+  panel?:
+    | T
+    | {
+        thumbnails?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  plans?:
+    | T
+    | {
+        badgeLabel?: T;
+        badgeHighlighted?: T;
+        cardTitle?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              highlighted?: T;
+              id?: T;
+            };
+        prices?:
+          | T
+          | {
+              durationLabel?: T;
+              priceLabel?: T;
+              perDayLabel?: T;
+              isDefault?: T;
+              id?: T;
+            };
+        buttonLabel?: T;
+        buttonLink?: T;
+        id?: T;
+      };
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EarlyAccessBlock_select".
+ */
+export interface EarlyAccessBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  headline?: T;
+  buttonText?: T;
+  form?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        title?: T;
+        subtitle?: T;
+        headline?: T;
+        buttonText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -2892,6 +3109,8 @@ export interface PostsSelect<T extends boolean = true> {
         avatarUrl?: T;
       };
   slug?: T;
+  source?: T;
+  htmlContent?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -3017,6 +3236,9 @@ export interface UsersSelect<T extends boolean = true> {
   name?: T;
   updatedAt?: T;
   createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
   email?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;

@@ -40,6 +40,8 @@ import { BenefitsBanner } from '@/blocks/newLandingBlocks/BenefitsBanner/config'
 import { StepsBanner } from '@/blocks/newLandingBlocks/StepsBanner/config'
 import { ProductBanner } from '@/blocks/newLandingBlocks/ProductBanner/config'
 import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
+import { ProductShowcase } from '@/blocks/ProductShowcase/config'
+import { EarlyAccessBlock } from '@/blocks/EarlyAccessBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -132,6 +134,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 StepsBanner,
                 ProductBanner,
                 AccessBanner,
+                ProductShowcase,
+                EarlyAccessBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

@@ -78,16 +78,18 @@ function stripLocalePrefix(pathname: string) {
   return pathname
 }
 
+const GLOBAL_ALLOWED_QUERY_KEYS = ['v']
+
 function allowedKeysForPath(pathname: string) {
   const pathNoLocale = stripLocalePrefix(pathname)
 
   for (const [prefix, keys] of ALLOWED_QUERY_BY_PREFIX) {
     if (pathNoLocale === prefix || pathNoLocale.startsWith(`${prefix}/`)) {
-      return keys
+      return [...GLOBAL_ALLOWED_QUERY_KEYS, ...keys]
     }
   }
 
-  return []
+  return GLOBAL_ALLOWED_QUERY_KEYS
 }
 
 function stripDisallowedQuery(req: NextRequest) {
@@ -161,7 +163,7 @@ export async function middleware(req: NextRequest) {
   const stripped = stripDisallowedQuery(req)
   if (stripped) {
     stripped.pathname = normalizedPath
-    return NextResponse.redirect(stripped, 301)
+    return NextResponse.redirect(stripped, 302)
   }
 
   const siteURLRaw =

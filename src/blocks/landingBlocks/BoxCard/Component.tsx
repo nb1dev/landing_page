@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { BoxCardBlock as BoxCardBlockProps } from 'src/payload-types'
+import type { BoxCardBlock as BoxCardBlockProps } from '@/payload-types'
 import React from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'

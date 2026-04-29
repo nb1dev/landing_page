@@ -64,13 +64,9 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
     logo,
     loginButton,
     form: formFromProps,
-    form: {
-      id: formID,
-      confirmationType,
-      redirect,
-      submitButtonLabel,
-    } = {} as any,
   } = props
+
+  const { id: formID, confirmationType, redirect, submitButtonLabel } = (formFromProps ?? {}) as any
 
   const formMethods = useForm({
     defaultValues: (formFromProps as any)?.fields || {},
@@ -156,8 +152,8 @@ export const ProductBannerComponent: React.FC<Props> = (props) => {
     <div className="relative">
       {carouselText?.length ? (
         <div
-            className={`absolute inset-0 z-0 ${isGerman ? 'translate-x-[-20px] translate-y-[120px] lg:translate-x-[-35px] lg:translate-y-[190px]' : 'translate-x-[20px] translate-y-[120px] lg:translate-x-[110px] lg:translate-y-[155px]'}`}
-          >
+          className={`absolute inset-0 z-0 ${isGerman ? 'translate-x-[-20px] translate-y-[120px] lg:translate-x-[-35px] lg:translate-y-[190px]' : 'translate-x-[20px] translate-y-[120px] lg:translate-x-[110px] lg:translate-y-[155px]'}`}
+        >
           <CarouselBanner
             bannerLabels={carouselText.map((item) => ({
               id: item.id,

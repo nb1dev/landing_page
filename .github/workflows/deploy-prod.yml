@@ -38,5 +38,16 @@ jobs:
             set -e
             cd /var/www/landing_page
             git fetch origin prod
-            git merge origin/prod --no-edit
+            git reset --hard origin/prod
+
+            echo ">>> Sync date STG → PROD"
+            STG_DB=$(grep "^DATABASE_URL=" .env.stg | cut -d'=' -f2-)
+            PROD_DB=$(grep "^DATABASE_URL=" .env.prod | cut -d'=' -f2-)
+            DUMP_FILE="/tmp/stg_to_prod_$(date +%Y%m%d_%H%M%S).sql"
+            pg_dump "${STG_DB}?sslmode=require" --no-owner --no-privileges -f "$DUMP_FILE"
+            psql "${PROD_DB}?sslmode=require" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO CURRENT_USER;" > /dev/null
+            psql "${PROD_DB}?sslmode=require" < "$DUMP_FILE" 2>&1 | grep "^ERROR" || true
+            rm -f "$DUMP_FILE"
+            echo ">>> Sync gata: $(psql ${PROD_DB}?sslmode=require -t -c 'SELECT COUNT(*) FROM pages;' | tr -d ' ') pagini pe PROD"
+
             bash deploy-prod.sh

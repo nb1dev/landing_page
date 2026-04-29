@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import type { VideoCardBlock as VideoCardBlockProps } from 'src/payload-types'
+import type { VideoCardBlock as VideoCardBlockProps } from '@/payload-types'
 import React, { useEffect, useRef, useState } from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { useIsMobile } from '@/hooks/useIsMobile'
