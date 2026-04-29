@@ -13,19 +13,27 @@ echo ">>> Deploy START ($(date))"
 
 cd "$APP_DIR"
 
-echo ">>> Install deps"
+echo ">>> Install deps (clean install to ensure patches apply correctly)"
+rm -rf node_modules
 npm install --legacy-peer-deps
 
 echo ">>> Use .env.prod"
 cp .env.prod .env
+# Source env vars so DATABASE_URL_DIRECT is available for migrations
+set -o allexport
+source .env.prod
+set +o allexport
 
-echo ">>> Run DB migrations (safe - applies only pending)"
-npm run migrate
+echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
+DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
+
+echo ">>> Stop PM2 (free DB connections before build)"
+pm2 stop "$APP_NAME" 2>/dev/null || true
 
 echo ">>> Build Next.js"
 npm run build
 
-echo ">>> Restart PM2"
+echo ">>> Start/Restart PM2"
 if pm2 list | grep -q "$APP_NAME"; then
   pm2 restart "$APP_NAME" --update-env
 else

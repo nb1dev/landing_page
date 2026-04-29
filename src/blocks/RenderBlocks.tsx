@@ -33,6 +33,7 @@ import { ProductBannerComponent } from './newLandingBlocks/ProductBanner/Compone
 import { AccessBannerComponent } from './newLandingBlocks/AccessBanner/Component'
 import { ProductShowcaseComponent } from './ProductShowcase/Component'
 import { EarlyAccessBlockComponent } from './EarlyAccessBlock/Component'
+import { EvolutionBandBlockComponent } from './EvolutionBandBlock/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -65,6 +66,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   accessBanner: AccessBannerComponent,
   productShowcase: ProductShowcaseComponent,
   earlyAccess: EarlyAccessBlockComponent,
+  evolutionBand: EvolutionBandBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

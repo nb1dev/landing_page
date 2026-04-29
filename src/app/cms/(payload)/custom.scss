@@ -1,0 +1,11 @@
+// Hide the default rainbow color palette in the lexical text-color picker
+// (only brand swatches + hex input are shown)
+.color-picker-basic-color {
+  display: none !important;
+}
+
+// Ensure the picker wrapper has a minimum width
+.color-picker-wrapper {
+  min-width: 220px;
+  padding: 4px;
+}
