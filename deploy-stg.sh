@@ -21,9 +21,15 @@ npm install --legacy-peer-deps
 
 echo ">>> Use .env.stg"
 cp .env.stg .env
+# Source env vars so DATABASE_URL_DIRECT is available for migrations
+set -o allexport
+source .env.stg
+set +o allexport
 
-echo ">>> Run DB migrations (safe - applies only pending)"
-npm run migrate
+echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
+# PgBouncer (connection pool) blocks session-level DDL used by migrations.
+# DATABASE_URL_DIRECT points to port 25060 (direct, non-pooled).
+DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
 
 echo ">>> Build Next.js"
 npm run build

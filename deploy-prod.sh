@@ -18,9 +18,13 @@ npm install --legacy-peer-deps
 
 echo ">>> Use .env.prod"
 cp .env.prod .env
+# Source env vars so DATABASE_URL_DIRECT is available for migrations
+set -o allexport
+source .env.prod
+set +o allexport
 
-echo ">>> Run DB migrations (safe - applies only pending)"
-npm run migrate
+echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
+DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
 
 echo ">>> Build Next.js"
 npm run build
