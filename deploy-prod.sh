@@ -13,7 +13,8 @@ echo ">>> Deploy START ($(date))"
 
 cd "$APP_DIR"
 
-echo ">>> Install deps"
+echo ">>> Install deps (clean install to ensure patches apply correctly)"
+rm -rf node_modules
 npm install --legacy-peer-deps
 
 echo ">>> Use .env.prod"
