@@ -27,14 +27,15 @@ source .env.stg
 set +o allexport
 
 echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
-# PgBouncer (connection pool) blocks session-level DDL used by migrations.
-# DATABASE_URL_DIRECT points to port 25060 (direct, non-pooled).
 DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
+
+echo ">>> Stop PM2 (free DB connections before build)"
+pm2 stop "$APP_NAME" 2>/dev/null || true
 
 echo ">>> Build Next.js"
 npm run build
 
-echo ">>> Restart PM2"
+echo ">>> Start/Restart PM2"
 if pm2 list | grep -q "$APP_NAME"; then
   pm2 restart "$APP_NAME" --update-env
 else
