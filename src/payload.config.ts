@@ -51,6 +51,8 @@ export default buildConfig({
       min: 1,
       idleTimeoutMillis: 20000,
       connectionTimeoutMillis: 50000,
+      // Explicitly set search_path so PgBouncer transaction-mode pooling works correctly
+      options: '-c search_path=public',
     },
     push: false,
   }),
