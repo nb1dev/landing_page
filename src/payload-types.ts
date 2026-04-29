@@ -245,6 +245,7 @@ export interface Page {
     | AccessBannerBlock
     | ProductShowcaseBlock
     | EarlyAccessBlock
+    | EvolutionBandBlock
   )[];
   meta?: {
     /**
@@ -1943,6 +1944,199 @@ export interface EarlyAccessBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EvolutionBandBlock".
+ */
+export interface EvolutionBandBlock {
+  /**
+   * Small label above the heading. E.g. "Your formula evolves".
+   */
+  eyebrow?: string | null;
+  /**
+   * Main heading. Use teal color for italic highlight spans.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Supporting paragraph below the heading.
+   */
+  subtext?: string | null;
+  /**
+   * Tab label. E.g. "Cycle 01".
+   */
+  cycle1Tag?: string | null;
+  /**
+   * Sub-label under the tab. E.g. "Baseline".
+   */
+  cycle1Version?: string | null;
+  /**
+   * Card title. E.g. "Your starting formula".
+   */
+  cycle1Name?: string | null;
+  cycle1Items?:
+    | {
+        name?: string | null;
+        /**
+         * Small text next to name. E.g. "5 strains" or "EPA + DHA".
+         */
+        detail?: string | null;
+        /**
+         * Teal benefit label. E.g. "Calmer digestion".
+         */
+        benefit?: string | null;
+        /**
+         * E.g. "50B CFU".
+         */
+        dose?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * E.g. "3 of 6 teams flagged. Protocol targets the gaps.".
+   */
+  cycle1Footer?: string | null;
+  /**
+   * Tab label. E.g. "Cycle 02".
+   */
+  cycle2Tag?: string | null;
+  /**
+   * Sub-label under the tab. E.g. "Re-formulated".
+   */
+  cycle2Version?: string | null;
+  /**
+   * Card title. E.g. "Your formula, updated".
+   */
+  cycle2Name?: string | null;
+  /**
+   * Each group has its own eyebrow label and a set of delta rows shown inside the Cycle 2 card.
+   */
+  biologyGroups?:
+    | {
+        /**
+         * E.g. "Your biology shifted".
+         */
+        eyebrow?: string | null;
+        rows?:
+          | {
+              label?: string | null;
+              /**
+               * E.g. "+22%", "−9%", "New".
+               */
+              delta?: string | null;
+              direction?: ('up' | 'down' | 'new') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  cycle2Items?:
+    | {
+        name?: string | null;
+        /**
+         * Reason note. E.g. "sleep markers shifted".
+         */
+        detail?: string | null;
+        dose?: string | null;
+        status?: ('unchanged' | 'up' | 'down' | 'removed' | 'added') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * E.g. "Same protocol size. Different composition. Your biology moved.".
+   */
+  cycle2Footer?: string | null;
+  /**
+   * Each entry overrides content when ?v=<key> is present in the URL. Variant 1 can be light mode, Variant 2 dark mode, etc. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * URL param value matched against ?v=. Example: "dark"
+         */
+        variantKey: string;
+        eyebrow?: string | null;
+        heading?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        subtext?: string | null;
+        cycle1Tag?: string | null;
+        cycle1Version?: string | null;
+        cycle1Name?: string | null;
+        cycle1Footer?: string | null;
+        cycle2Tag?: string | null;
+        cycle2Version?: string | null;
+        cycle2Name?: string | null;
+        cycle2Footer?: string | null;
+        /**
+         * Enable dark (navy) background for this variant.
+         */
+        darkMode?: boolean | null;
+        cycle1Items?:
+          | {
+              name?: string | null;
+              detail?: string | null;
+              benefit?: string | null;
+              dose?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        biologyGroups?:
+          | {
+              eyebrow?: string | null;
+              rows?:
+                | {
+                    label?: string | null;
+                    delta?: string | null;
+                    direction?: ('up' | 'down' | 'new') | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        cycle2Items?:
+          | {
+              name?: string | null;
+              detail?: string | null;
+              dose?: string | null;
+              status?: ('unchanged' | 'up' | 'down' | 'removed' | 'added') | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'evolutionBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -2338,6 +2532,7 @@ export interface PagesSelect<T extends boolean = true> {
         accessBanner?: T | AccessBannerBlockSelect<T>;
         productShowcase?: T | ProductShowcaseBlockSelect<T>;
         earlyAccess?: T | EarlyAccessBlockSelect<T>;
+        evolutionBand?: T | EvolutionBandBlockSelect<T>;
       };
   meta?:
     | T
@@ -3059,6 +3254,107 @@ export interface EarlyAccessBlockSelect<T extends boolean = true> {
         subtitle?: T;
         headline?: T;
         buttonText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EvolutionBandBlock_select".
+ */
+export interface EvolutionBandBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtext?: T;
+  cycle1Tag?: T;
+  cycle1Version?: T;
+  cycle1Name?: T;
+  cycle1Items?:
+    | T
+    | {
+        name?: T;
+        detail?: T;
+        benefit?: T;
+        dose?: T;
+        id?: T;
+      };
+  cycle1Footer?: T;
+  cycle2Tag?: T;
+  cycle2Version?: T;
+  cycle2Name?: T;
+  biologyGroups?:
+    | T
+    | {
+        eyebrow?: T;
+        rows?:
+          | T
+          | {
+              label?: T;
+              delta?: T;
+              direction?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  cycle2Items?:
+    | T
+    | {
+        name?: T;
+        detail?: T;
+        dose?: T;
+        status?: T;
+        id?: T;
+      };
+  cycle2Footer?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        eyebrow?: T;
+        heading?: T;
+        subtext?: T;
+        cycle1Tag?: T;
+        cycle1Version?: T;
+        cycle1Name?: T;
+        cycle1Footer?: T;
+        cycle2Tag?: T;
+        cycle2Version?: T;
+        cycle2Name?: T;
+        cycle2Footer?: T;
+        darkMode?: T;
+        cycle1Items?:
+          | T
+          | {
+              name?: T;
+              detail?: T;
+              benefit?: T;
+              dose?: T;
+              id?: T;
+            };
+        biologyGroups?:
+          | T
+          | {
+              eyebrow?: T;
+              rows?:
+                | T
+                | {
+                    label?: T;
+                    delta?: T;
+                    direction?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        cycle2Items?:
+          | T
+          | {
+              name?: T;
+              detail?: T;
+              dose?: T;
+              status?: T;
+              id?: T;
+            };
         id?: T;
       };
   id?: T;

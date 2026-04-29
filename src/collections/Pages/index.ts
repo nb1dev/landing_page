@@ -42,6 +42,7 @@ import { ProductBanner } from '@/blocks/newLandingBlocks/ProductBanner/config'
 import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
 import { ProductShowcase } from '@/blocks/ProductShowcase/config'
 import { EarlyAccessBlock } from '@/blocks/EarlyAccessBlock/config'
+import { EvolutionBandBlock } from '@/blocks/EvolutionBandBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -136,6 +137,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 AccessBanner,
                 ProductShowcase,
                 EarlyAccessBlock,
+                EvolutionBandBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

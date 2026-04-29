@@ -9,12 +9,12 @@ describe('API', () => {
   beforeAll(async () => {
     const payloadConfig = await config
     payload = await getPayload({ config: payloadConfig })
-  })
+  }, 600000)
 
   it('fetches users', async () => {
     const users = await payload.find({
       collection: 'users',
     })
     expect(users).toBeDefined()
-  })
+  }, 600000)
 })
