@@ -38,5 +38,5 @@ jobs:
             set -e
             cd /var/www/landing_page
             git fetch origin stg
-            git merge origin/stg --no-edit
+            git reset --hard origin/stg
             bash deploy-stg.sh

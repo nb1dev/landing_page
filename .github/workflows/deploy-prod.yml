@@ -38,5 +38,5 @@ jobs:
             set -e
             cd /var/www/landing_page
             git fetch origin prod
-            git merge origin/prod --no-edit
+            git reset --hard origin/prod
             bash deploy-prod.sh

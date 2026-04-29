@@ -84,11 +84,6 @@ log "Fac dump din STG (poate dura 1-2 minute)..."
 LINES=$(wc -l < "$DUMP_FILE")
 success "Dump complet: $LINES linii → $DUMP_FILE"
 
-# ---- Patch dump pentru compatibilitate PG16 ----
-log "Aplic patch pentru compatibilitate PostgreSQL 16..."
-sed -i '' 's/SET transaction_timeout = 0;//g' "$DUMP_FILE"
-success "Patch aplicat"
-
 # ---- Reset baza locală ----
 log "Curăț baza de date locală..."
 docker exec "$LOCAL_CONTAINER" psql -U "$LOCAL_USER" -d "$LOCAL_DB" -c \
