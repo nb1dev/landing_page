@@ -21,10 +21,10 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "_bio_groups_v" (
       "_order"     integer NOT NULL,
-      "_parent_id" integer NOT NULL
-        REFERENCES "_pages_v_blocks_evolution_band" ("id") ON DELETE CASCADE,
+      "_parent_id" integer NOT NULL,
       "id"         serial PRIMARY KEY
     );
+    -- FK to _pages_v_blocks_evolution_band is added by migration 20260430_074534
     CREATE INDEX IF NOT EXISTS "_bio_groups_v_order_idx"
       ON "_bio_groups_v" ("_order");
     CREATE INDEX IF NOT EXISTS "_bio_groups_v_parent_idx"
