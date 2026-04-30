@@ -43,6 +43,10 @@ import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
 import { ProductShowcase } from '@/blocks/ProductShowcase/config'
 import { EarlyAccessBlock } from '@/blocks/EarlyAccessBlock/config'
 import { EvolutionBandBlock } from '@/blocks/EvolutionBandBlock/config'
+import { HeroBannerBlock } from '@/blocks/newLandingBlocks/HeroBanner/config'
+import { OutcomesSectionBlock } from '@/blocks/newLandingBlocks/OutcomesSection/config'
+import { ProcessDiagramBlock } from '@/blocks/newLandingBlocks/ProcessDiagram/config'
+import { StatBreakBlock } from '@/blocks/newLandingBlocks/StatBreak/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -138,6 +142,10 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProductShowcase,
                 EarlyAccessBlock,
                 EvolutionBandBlock,
+                HeroBannerBlock,
+                OutcomesSectionBlock,
+                ProcessDiagramBlock,
+                StatBreakBlock,
               ],
               required: true,
               admin: { initCollapsed: true },
