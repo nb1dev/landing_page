@@ -8,14 +8,11 @@ import * as migration_20260429_bio_groups_uuid from './20260429_bio_groups_uuid'
 import * as migration_20260429_biology_groups from './20260429_biology_groups';
 import * as migration_20260429_fix_bio_groups_v from './20260429_fix_bio_groups_v';
 import * as migration_20260429_variant_full_fields from './20260429_variant_full_fields';
-<<<<<<< Updated upstream
 import * as migration_20260430_074534 from './20260430_074534';
 import * as migration_20260430_092252 from './20260430_092252';
 import * as migration_20260510_heading_richtext from './20260510_heading_richtext';
-=======
 import * as migration_20260429_price_break_block from './20260429_price_break_block';
 import * as migration_20260430_price_break_update from './20260430_price_break_update';
->>>>>>> Stashed changes
 
 export const migrations = [
   {
@@ -73,8 +70,6 @@ export const migrations = [
     down: migration_20260510_heading_richtext.down,
     name: '20260510_heading_richtext'
   },
-<<<<<<< Updated upstream
-=======
   {
     up: migration_20260429_biology_groups.up,
     down: migration_20260429_biology_groups.down,
@@ -115,5 +110,4 @@ export const migrations = [
     down: migration_20260430_science_board_fix_name.down,
     name: '20260430_science_board_fix_name'
   },
->>>>>>> Stashed changes
 ];
