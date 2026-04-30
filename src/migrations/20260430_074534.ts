@@ -28,14 +28,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DO $$ BEGIN CREATE TYPE "public"."enum__pages_v_blocks_stat_break_background_color" AS ENUM('dark', 'darkNavy', 'teal', 'white', 'cream', 'custom'); EXCEPTION WHEN duplicate_object THEN null; END $$;
   DO $$ BEGIN CREATE TYPE "public"."enum_posts_source" AS ENUM('manual', 'api'); EXCEPTION WHEN duplicate_object THEN null; END $$;
   DO $$ BEGIN CREATE TYPE "public"."enum__posts_v_version_source" AS ENUM('manual', 'api'); EXCEPTION WHEN duplicate_object THEN null; END $$;
-  CREATE TABLE "pages_blocks_early_access_variants" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_early_access_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"variant_key" varchar
   );
   
-  CREATE TABLE "pages_blocks_early_access_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_early_access_variants_locales" (
   	"title" varchar,
   	"subtitle" varchar,
   	"headline" varchar,
@@ -45,7 +45,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_early_access" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_early_access" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -54,7 +54,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_early_access_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_early_access_locales" (
   	"title" varchar,
   	"subtitle" varchar,
   	"headline" varchar,
@@ -64,14 +64,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_cycle1_items" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_cycle1_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"dose" varchar
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_cycle1_items_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_cycle1_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"benefit" varchar,
@@ -80,7 +80,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "bio_groups_rows" (
+  CREATE TABLE IF NOT EXISTS "bio_groups_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -88,27 +88,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"direction" "enum_bio_groups_rows_direction"
   );
   
-  CREATE TABLE "bio_groups_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "bio_groups_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "bio_groups" (
+  CREATE TABLE IF NOT EXISTS "bio_groups" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL
   );
   
-  CREATE TABLE "bio_groups_locales" (
+  CREATE TABLE IF NOT EXISTS "bio_groups_locales" (
   	"eyebrow" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_cycle2_items" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_cycle2_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -116,7 +116,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"status" "enum_pages_blocks_evolution_band_cycle2_items_status" DEFAULT 'unchanged'
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_cycle2_items_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_cycle2_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -124,14 +124,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_variants_cycle1_items" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"dose" varchar
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_variants_cycle1_items_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"benefit" varchar,
@@ -140,7 +140,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "var_bio_groups_rows" (
+  CREATE TABLE IF NOT EXISTS "var_bio_groups_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -148,27 +148,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"direction" "enum_var_bio_groups_rows_direction"
   );
   
-  CREATE TABLE "var_bio_groups_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "var_bio_groups_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "var_bio_groups" (
+  CREATE TABLE IF NOT EXISTS "var_bio_groups" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL
   );
   
-  CREATE TABLE "var_bio_groups_locales" (
+  CREATE TABLE IF NOT EXISTS "var_bio_groups_locales" (
   	"eyebrow" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "var_cycle2_items" (
+  CREATE TABLE IF NOT EXISTS "var_cycle2_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -176,7 +176,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"status" "enum_var_cycle2_items_status" DEFAULT 'unchanged'
   );
   
-  CREATE TABLE "var_cycle2_items_locales" (
+  CREATE TABLE IF NOT EXISTS "var_cycle2_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -184,7 +184,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_variants" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -196,7 +196,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"dark_mode" boolean DEFAULT false
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_variants_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"subtext" varchar,
@@ -209,7 +209,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_evolution_band" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -221,7 +221,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_evolution_band_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"subtext" varchar,
@@ -234,27 +234,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_trust_items" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_trust_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_trust_items_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_trust_items_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_outcomes" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_outcomes" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"icon_id" integer
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_outcomes_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_outcomes_locales" (
   	"claim" varchar,
   	"anchor" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -262,7 +262,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_variants" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -271,7 +271,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"background_color_custom" varchar
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_variants_locales" (
   	"pill_text" jsonb,
   	"heading" jsonb,
   	"description" jsonb,
@@ -281,7 +281,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_hero_banner" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -293,7 +293,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_hero_banner_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_banner_locales" (
   	"pill_text" jsonb,
   	"heading" jsonb,
   	"price_prefix" varchar,
@@ -310,14 +310,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_outcomes_section_outcome_cards" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"image_id" integer
   );
   
-  CREATE TABLE "pages_blocks_outcomes_section_outcome_cards_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards_locales" (
   	"front_name" varchar,
   	"back_eyebrow" varchar,
   	"back_title" varchar,
@@ -328,7 +328,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_outcomes_section" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_outcomes_section" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -338,7 +338,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_outcomes_section_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_outcomes_section_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"sub_text" varchar,
@@ -347,7 +347,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_mock_rows" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_mock_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -355,21 +355,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"status" "enum_pages_blocks_process_diagram_steps_mock_rows_status" DEFAULT 'ok'
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_mock_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_mock_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_list_items" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_list_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
   	"marker" varchar
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_list_items_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_list_items_locales" (
   	"text" varchar,
   	"dose" varchar,
   	"benefit" varchar,
@@ -378,20 +378,20 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_pills" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_pills" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_pills_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_pills_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -401,7 +401,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"image_url" varchar
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_steps_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_steps_locales" (
   	"timeline_eyebrow" varchar,
   	"timeline_name" varchar,
   	"panel_tag" varchar,
@@ -416,7 +416,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_variants" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" varchar NOT NULL,
   	"id" varchar PRIMARY KEY NOT NULL,
@@ -425,7 +425,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"background_color_custom" varchar
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_variants_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -433,7 +433,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_process_diagram" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -443,7 +443,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_process_diagram_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_process_diagram_locales" (
   	"eyebrow" varchar DEFAULT 'How NB¹ works',
   	"heading" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -451,7 +451,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "pages_blocks_stat_break" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_stat_break" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -461,7 +461,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "pages_blocks_stat_break_locales" (
+  CREATE TABLE IF NOT EXISTS "pages_blocks_stat_break_locales" (
   	"stat_number" varchar,
   	"stat_suffix" varchar,
   	"heading_line1" varchar,
@@ -473,7 +473,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" varchar NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_early_access_variants" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_early_access_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -481,7 +481,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_early_access_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_early_access_variants_locales" (
   	"title" varchar,
   	"subtitle" varchar,
   	"headline" varchar,
@@ -491,7 +491,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_early_access" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_early_access" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -501,7 +501,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_early_access_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_early_access_locales" (
   	"title" varchar,
   	"subtitle" varchar,
   	"headline" varchar,
@@ -511,7 +511,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_cycle1_items" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle1_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -519,7 +519,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_cycle1_items_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle1_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"benefit" varchar,
@@ -528,7 +528,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_bio_groups_v_rows" (
+  CREATE TABLE IF NOT EXISTS "_bio_groups_v_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -537,28 +537,28 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_bio_groups_v_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "_bio_groups_v_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_bio_groups_v" (
+  CREATE TABLE IF NOT EXISTS "_bio_groups_v" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_bio_groups_v_locales" (
+  CREATE TABLE IF NOT EXISTS "_bio_groups_v_locales" (
   	"eyebrow" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_cycle2_items" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle2_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -567,7 +567,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_cycle2_items_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle2_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -575,7 +575,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -583,7 +583,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"benefit" varchar,
@@ -592,7 +592,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_var_bio_groups_v_rows" (
+  CREATE TABLE IF NOT EXISTS "_var_bio_groups_v_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -601,28 +601,28 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_var_bio_groups_v_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "_var_bio_groups_v_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_var_bio_groups_v" (
+  CREATE TABLE IF NOT EXISTS "_var_bio_groups_v" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_var_bio_groups_v_locales" (
+  CREATE TABLE IF NOT EXISTS "_var_bio_groups_v_locales" (
   	"eyebrow" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_var_cycle2_items_v" (
+  CREATE TABLE IF NOT EXISTS "_var_cycle2_items_v" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -631,7 +631,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_var_cycle2_items_v_locales" (
+  CREATE TABLE IF NOT EXISTS "_var_cycle2_items_v_locales" (
   	"name" varchar,
   	"detail" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -639,7 +639,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_variants" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -652,7 +652,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"subtext" varchar,
@@ -665,7 +665,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -678,7 +678,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_evolution_band_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"subtext" varchar,
@@ -691,21 +691,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_trust_items" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_trust_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_trust_items_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_trust_items_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_outcomes" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -713,7 +713,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_outcomes_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes_locales" (
   	"claim" varchar,
   	"anchor" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -721,7 +721,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_variants" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -731,7 +731,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_variants_locales" (
   	"pill_text" jsonb,
   	"heading" jsonb,
   	"description" jsonb,
@@ -741,7 +741,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -754,7 +754,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_hero_banner_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_banner_locales" (
   	"pill_text" jsonb,
   	"heading" jsonb,
   	"price_prefix" varchar,
@@ -771,7 +771,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_outcomes_section_outcome_cards" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -779,7 +779,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_outcomes_section_outcome_cards_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards_locales" (
   	"front_name" varchar,
   	"back_eyebrow" varchar,
   	"back_title" varchar,
@@ -790,7 +790,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_outcomes_section" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_outcomes_section" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -801,7 +801,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_outcomes_section_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_outcomes_section_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"sub_text" varchar,
@@ -810,7 +810,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_mock_rows" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_mock_rows" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -819,14 +819,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_mock_rows_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_mock_rows_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_list_items" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_list_items" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -834,7 +834,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_list_items_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_list_items_locales" (
   	"text" varchar,
   	"dose" varchar,
   	"benefit" varchar,
@@ -843,21 +843,21 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_pills" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_pills" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_pills_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_pills_locales" (
   	"label" varchar,
   	"id" serial PRIMARY KEY NOT NULL,
   	"_locale" "_locales" NOT NULL,
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -868,7 +868,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_steps_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_locales" (
   	"timeline_eyebrow" varchar,
   	"timeline_name" varchar,
   	"panel_tag" varchar,
@@ -883,7 +883,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_variants" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_variants" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -893,7 +893,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_uuid" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_variants_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_variants_locales" (
   	"eyebrow" varchar,
   	"heading" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -901,7 +901,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -912,7 +912,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_process_diagram_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_process_diagram_locales" (
   	"eyebrow" varchar DEFAULT 'How NB¹ works',
   	"heading" jsonb,
   	"id" serial PRIMARY KEY NOT NULL,
@@ -920,7 +920,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  CREATE TABLE "_pages_v_blocks_stat_break" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_stat_break" (
   	"_order" integer NOT NULL,
   	"_parent_id" integer NOT NULL,
   	"_path" text NOT NULL,
@@ -931,7 +931,7 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"block_name" varchar
   );
   
-  CREATE TABLE "_pages_v_blocks_stat_break_locales" (
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_stat_break_locales" (
   	"stat_number" varchar,
   	"stat_suffix" varchar,
   	"heading_line1" varchar,
@@ -943,16 +943,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id";
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk";
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image";
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk";
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  DROP INDEX "pages_blocks_product_showcase_panel_thumbnails_locales_local";
-  DROP INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo";
+  DROP INDEX IF EXISTS "pages_blocks_product_showcase_panel_thumbnails_locales_local";
+  DROP INDEX IF EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo";
   ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "source" "enum_posts_source" DEFAULT 'manual';
   ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "html_content" varchar;
   ALTER TABLE "_posts_v" ADD COLUMN IF NOT EXISTS "version_source" "enum__posts_v_version_source" DEFAULT 'manual';
@@ -960,292 +960,292 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "enable_a_p_i_key" boolean;
   ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "api_key" varchar;
   ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "api_key_index" varchar;
-  ALTER TABLE "pages_blocks_early_access_variants" ADD CONSTRAINT "pages_blocks_early_access_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_early_access_variants_locales" ADD CONSTRAINT "pages_blocks_early_access_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_early_access" ADD CONSTRAINT "pages_blocks_early_access_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_early_access" ADD CONSTRAINT "pages_blocks_early_access_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_early_access_locales" ADD CONSTRAINT "pages_blocks_early_access_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_cycle1_items" ADD CONSTRAINT "pages_blocks_evolution_band_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_cycle1_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_cycle1_items_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_cycle1_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "bio_groups_rows" ADD CONSTRAINT "bio_groups_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "bio_groups_rows_locales" ADD CONSTRAINT "bio_groups_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "bio_groups" ADD CONSTRAINT "bio_groups_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "bio_groups_locales" ADD CONSTRAINT "bio_groups_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_cycle2_items" ADD CONSTRAINT "pages_blocks_evolution_band_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_cycle2_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_cycle2_items_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_cycle2_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_variants_cycle1_items" ADD CONSTRAINT "pages_blocks_evolution_band_variants_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_variants_cycle1_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_variants_cycle1_items_locales_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants_cycle1_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_bio_groups_rows" ADD CONSTRAINT "var_bio_groups_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_bio_groups_rows_locales" ADD CONSTRAINT "var_bio_groups_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_bio_groups" ADD CONSTRAINT "var_bio_groups_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_bio_groups_locales" ADD CONSTRAINT "var_bio_groups_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_cycle2_items" ADD CONSTRAINT "var_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "var_cycle2_items_locales" ADD CONSTRAINT "var_cycle2_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_cycle2_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_variants" ADD CONSTRAINT "pages_blocks_evolution_band_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_variants_locales" ADD CONSTRAINT "pages_blocks_evolution_band_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band" ADD CONSTRAINT "pages_blocks_evolution_band_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_evolution_band_locales" ADD CONSTRAINT "pages_blocks_evolution_band_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_trust_items" ADD CONSTRAINT "pages_blocks_hero_banner_trust_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_trust_items_locales" ADD CONSTRAINT "pages_blocks_hero_banner_trust_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_trust_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_outcomes" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_outcomes" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_outcomes_locales" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_outcomes"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_variants" ADD CONSTRAINT "pages_blocks_hero_banner_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_variants_locales" ADD CONSTRAINT "pages_blocks_hero_banner_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner" ADD CONSTRAINT "pages_blocks_hero_banner_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner" ADD CONSTRAINT "pages_blocks_hero_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_hero_banner_locales" ADD CONSTRAINT "pages_blocks_hero_banner_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_outcomes_section_outcome_cards_locales" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section_outcome_cards"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_outcomes_section" ADD CONSTRAINT "pages_blocks_outcomes_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_outcomes_section_locales" ADD CONSTRAINT "pages_blocks_outcomes_section_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_mock_rows" ADD CONSTRAINT "pages_blocks_process_diagram_steps_mock_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_mock_rows_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_mock_rows_locales_pare_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_mock_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_list_items" ADD CONSTRAINT "pages_blocks_process_diagram_steps_list_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_list_items_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_list_items_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_list_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_pills" ADD CONSTRAINT "pages_blocks_process_diagram_steps_pills_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_pills_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_pills_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_pills"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps" ADD CONSTRAINT "pages_blocks_process_diagram_steps_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps" ADD CONSTRAINT "pages_blocks_process_diagram_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_steps_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_variants" ADD CONSTRAINT "pages_blocks_process_diagram_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_variants_locales" ADD CONSTRAINT "pages_blocks_process_diagram_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram" ADD CONSTRAINT "pages_blocks_process_diagram_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_process_diagram_locales" ADD CONSTRAINT "pages_blocks_process_diagram_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_stat_break" ADD CONSTRAINT "pages_blocks_stat_break_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "pages_blocks_stat_break_locales" ADD CONSTRAINT "pages_blocks_stat_break_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_stat_break"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_early_access_variants" ADD CONSTRAINT "_pages_v_blocks_early_access_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_early_access_variants_locales" ADD CONSTRAINT "_pages_v_blocks_early_access_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_early_access" ADD CONSTRAINT "_pages_v_blocks_early_access_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_early_access" ADD CONSTRAINT "_pages_v_blocks_early_access_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_early_access_locales" ADD CONSTRAINT "_pages_v_blocks_early_access_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_cycle1_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_cycle1_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle1_items_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_cycle1_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_bio_groups_v_rows" ADD CONSTRAINT "_bio_groups_v_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_bio_groups_v_rows_locales" ADD CONSTRAINT "_bio_groups_v_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_bio_groups_v" ADD CONSTRAINT "_bio_groups_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_bio_groups_v_locales" ADD CONSTRAINT "_bio_groups_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_cycle2_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_cycle2_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle2_items_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_cycle2_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_cycle1_items_loca_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants_cycle1_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_bio_groups_v_rows" ADD CONSTRAINT "_var_bio_groups_v_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_bio_groups_v_rows_locales" ADD CONSTRAINT "_var_bio_groups_v_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_bio_groups_v" ADD CONSTRAINT "_var_bio_groups_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_bio_groups_v_locales" ADD CONSTRAINT "_var_bio_groups_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_cycle2_items_v" ADD CONSTRAINT "_var_cycle2_items_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_var_cycle2_items_v_locales" ADD CONSTRAINT "_var_cycle2_items_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_cycle2_items_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_variants" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_variants_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band" ADD CONSTRAINT "_pages_v_blocks_evolution_band_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_evolution_band_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_trust_items" ADD CONSTRAINT "_pages_v_blocks_hero_banner_trust_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_trust_items_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_trust_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_trust_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_outcomes" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_outcomes" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_outcomes_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_outcomes"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_variants" ADD CONSTRAINT "_pages_v_blocks_hero_banner_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_variants_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner" ADD CONSTRAINT "_pages_v_blocks_hero_banner_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner" ADD CONSTRAINT "_pages_v_blocks_hero_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_hero_banner_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards_locales" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_locales_pa_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section_outcome_cards"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_outcomes_section" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_outcomes_section_locales" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_mock_rows" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_mock_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_mock_rows_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_mock_rows_locales_p_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_mock_rows"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_list_items" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_list_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_list_items_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_list_items_locales__fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_list_items"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_pills" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_pills_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_pills_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_pills_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_pills"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_steps_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_variants" ADD CONSTRAINT "_pages_v_blocks_process_diagram_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_variants_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_variants_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_variants"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram" ADD CONSTRAINT "_pages_v_blocks_process_diagram_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_process_diagram_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_stat_break" ADD CONSTRAINT "_pages_v_blocks_stat_break_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_stat_break_locales" ADD CONSTRAINT "_pages_v_blocks_stat_break_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_stat_break"("id") ON DELETE cascade ON UPDATE no action;
-  CREATE INDEX "pages_blocks_early_access_variants_order_idx" ON "pages_blocks_early_access_variants" USING btree ("_order");
-  CREATE INDEX "pages_blocks_early_access_variants_parent_id_idx" ON "pages_blocks_early_access_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_early_access_variants_locales_locale_parent_id_" ON "pages_blocks_early_access_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_early_access_order_idx" ON "pages_blocks_early_access" USING btree ("_order");
-  CREATE INDEX "pages_blocks_early_access_parent_id_idx" ON "pages_blocks_early_access" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_early_access_path_idx" ON "pages_blocks_early_access" USING btree ("_path");
-  CREATE INDEX "pages_blocks_early_access_form_idx" ON "pages_blocks_early_access" USING btree ("form_id");
-  CREATE UNIQUE INDEX "pages_blocks_early_access_locales_locale_parent_id_unique" ON "pages_blocks_early_access_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_cycle1_items_order_idx" ON "pages_blocks_evolution_band_cycle1_items" USING btree ("_order");
-  CREATE INDEX "pages_blocks_evolution_band_cycle1_items_parent_id_idx" ON "pages_blocks_evolution_band_cycle1_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_evolution_band_cycle1_items_locales_locale_pare" ON "pages_blocks_evolution_band_cycle1_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "bio_groups_rows_order_idx" ON "bio_groups_rows" USING btree ("_order");
-  CREATE INDEX "bio_groups_rows_parent_id_idx" ON "bio_groups_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "bio_groups_rows_locales_locale_parent_id_unique" ON "bio_groups_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "bio_groups_order_idx" ON "bio_groups" USING btree ("_order");
-  CREATE INDEX "bio_groups_parent_id_idx" ON "bio_groups" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "bio_groups_locales_locale_parent_id_unique" ON "bio_groups_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_cycle2_items_order_idx" ON "pages_blocks_evolution_band_cycle2_items" USING btree ("_order");
-  CREATE INDEX "pages_blocks_evolution_band_cycle2_items_parent_id_idx" ON "pages_blocks_evolution_band_cycle2_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_evolution_band_cycle2_items_locales_locale_pare" ON "pages_blocks_evolution_band_cycle2_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_variants_cycle1_items_order_idx" ON "pages_blocks_evolution_band_variants_cycle1_items" USING btree ("_order");
-  CREATE INDEX "pages_blocks_evolution_band_variants_cycle1_items_parent_id_idx" ON "pages_blocks_evolution_band_variants_cycle1_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_evolution_band_variants_cycle1_items_locales_lo" ON "pages_blocks_evolution_band_variants_cycle1_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "var_bio_groups_rows_order_idx" ON "var_bio_groups_rows" USING btree ("_order");
-  CREATE INDEX "var_bio_groups_rows_parent_id_idx" ON "var_bio_groups_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "var_bio_groups_rows_locales_locale_parent_id_unique" ON "var_bio_groups_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "var_bio_groups_order_idx" ON "var_bio_groups" USING btree ("_order");
-  CREATE INDEX "var_bio_groups_parent_id_idx" ON "var_bio_groups" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "var_bio_groups_locales_locale_parent_id_unique" ON "var_bio_groups_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "var_cycle2_items_order_idx" ON "var_cycle2_items" USING btree ("_order");
-  CREATE INDEX "var_cycle2_items_parent_id_idx" ON "var_cycle2_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "var_cycle2_items_locales_locale_parent_id_unique" ON "var_cycle2_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_variants_order_idx" ON "pages_blocks_evolution_band_variants" USING btree ("_order");
-  CREATE INDEX "pages_blocks_evolution_band_variants_parent_id_idx" ON "pages_blocks_evolution_band_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_evolution_band_variants_locales_locale_parent_i" ON "pages_blocks_evolution_band_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_order_idx" ON "pages_blocks_evolution_band" USING btree ("_order");
-  CREATE INDEX "pages_blocks_evolution_band_parent_id_idx" ON "pages_blocks_evolution_band" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_evolution_band_path_idx" ON "pages_blocks_evolution_band" USING btree ("_path");
-  CREATE UNIQUE INDEX "pages_blocks_evolution_band_locales_locale_parent_id_unique" ON "pages_blocks_evolution_band_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_trust_items_order_idx" ON "pages_blocks_hero_banner_trust_items" USING btree ("_order");
-  CREATE INDEX "pages_blocks_hero_banner_trust_items_parent_id_idx" ON "pages_blocks_hero_banner_trust_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_hero_banner_trust_items_locales_locale_parent_i" ON "pages_blocks_hero_banner_trust_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_outcomes_order_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("_order");
-  CREATE INDEX "pages_blocks_hero_banner_outcomes_parent_id_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_outcomes_icon_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("icon_id");
-  CREATE UNIQUE INDEX "pages_blocks_hero_banner_outcomes_locales_locale_parent_id_u" ON "pages_blocks_hero_banner_outcomes_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_variants_order_idx" ON "pages_blocks_hero_banner_variants" USING btree ("_order");
-  CREATE INDEX "pages_blocks_hero_banner_variants_parent_id_idx" ON "pages_blocks_hero_banner_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_hero_banner_variants_locales_locale_parent_id_u" ON "pages_blocks_hero_banner_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_order_idx" ON "pages_blocks_hero_banner" USING btree ("_order");
-  CREATE INDEX "pages_blocks_hero_banner_parent_id_idx" ON "pages_blocks_hero_banner" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_hero_banner_path_idx" ON "pages_blocks_hero_banner" USING btree ("_path");
-  CREATE INDEX "pages_blocks_hero_banner_form_idx" ON "pages_blocks_hero_banner" USING btree ("form_id");
-  CREATE UNIQUE INDEX "pages_blocks_hero_banner_locales_locale_parent_id_unique" ON "pages_blocks_hero_banner_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_outcomes_section_outcome_cards_order_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("_order");
-  CREATE INDEX "pages_blocks_outcomes_section_outcome_cards_parent_id_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_outcomes_section_outcome_cards_image_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("image_id");
-  CREATE UNIQUE INDEX "pages_blocks_outcomes_section_outcome_cards_locales_locale_p" ON "pages_blocks_outcomes_section_outcome_cards_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_outcomes_section_order_idx" ON "pages_blocks_outcomes_section" USING btree ("_order");
-  CREATE INDEX "pages_blocks_outcomes_section_parent_id_idx" ON "pages_blocks_outcomes_section" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_outcomes_section_path_idx" ON "pages_blocks_outcomes_section" USING btree ("_path");
-  CREATE UNIQUE INDEX "pages_blocks_outcomes_section_locales_locale_parent_id_uniqu" ON "pages_blocks_outcomes_section_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_steps_mock_rows_order_idx" ON "pages_blocks_process_diagram_steps_mock_rows" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_steps_mock_rows_parent_id_idx" ON "pages_blocks_process_diagram_steps_mock_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_steps_mock_rows_locales_locale_" ON "pages_blocks_process_diagram_steps_mock_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_steps_list_items_order_idx" ON "pages_blocks_process_diagram_steps_list_items" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_steps_list_items_parent_id_idx" ON "pages_blocks_process_diagram_steps_list_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_steps_list_items_locales_locale" ON "pages_blocks_process_diagram_steps_list_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_steps_pills_order_idx" ON "pages_blocks_process_diagram_steps_pills" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_steps_pills_parent_id_idx" ON "pages_blocks_process_diagram_steps_pills" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_steps_pills_locales_locale_pare" ON "pages_blocks_process_diagram_steps_pills_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_steps_order_idx" ON "pages_blocks_process_diagram_steps" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_steps_parent_id_idx" ON "pages_blocks_process_diagram_steps" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_steps_image_idx" ON "pages_blocks_process_diagram_steps" USING btree ("image_id");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_steps_locales_locale_parent_id_" ON "pages_blocks_process_diagram_steps_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_variants_order_idx" ON "pages_blocks_process_diagram_variants" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_variants_parent_id_idx" ON "pages_blocks_process_diagram_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_variants_locales_locale_parent_" ON "pages_blocks_process_diagram_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_order_idx" ON "pages_blocks_process_diagram" USING btree ("_order");
-  CREATE INDEX "pages_blocks_process_diagram_parent_id_idx" ON "pages_blocks_process_diagram" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_process_diagram_path_idx" ON "pages_blocks_process_diagram" USING btree ("_path");
-  CREATE UNIQUE INDEX "pages_blocks_process_diagram_locales_locale_parent_id_unique" ON "pages_blocks_process_diagram_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "pages_blocks_stat_break_order_idx" ON "pages_blocks_stat_break" USING btree ("_order");
-  CREATE INDEX "pages_blocks_stat_break_parent_id_idx" ON "pages_blocks_stat_break" USING btree ("_parent_id");
-  CREATE INDEX "pages_blocks_stat_break_path_idx" ON "pages_blocks_stat_break" USING btree ("_path");
-  CREATE UNIQUE INDEX "pages_blocks_stat_break_locales_locale_parent_id_unique" ON "pages_blocks_stat_break_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_early_access_variants_order_idx" ON "_pages_v_blocks_early_access_variants" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_early_access_variants_parent_id_idx" ON "_pages_v_blocks_early_access_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_early_access_variants_locales_locale_parent_" ON "_pages_v_blocks_early_access_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_early_access_order_idx" ON "_pages_v_blocks_early_access" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_early_access_parent_id_idx" ON "_pages_v_blocks_early_access" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_early_access_path_idx" ON "_pages_v_blocks_early_access" USING btree ("_path");
-  CREATE INDEX "_pages_v_blocks_early_access_form_idx" ON "_pages_v_blocks_early_access" USING btree ("form_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_early_access_locales_locale_parent_id_unique" ON "_pages_v_blocks_early_access_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_cycle1_items_order_idx" ON "_pages_v_blocks_evolution_band_cycle1_items" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_evolution_band_cycle1_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_cycle1_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_evolution_band_cycle1_items_locales_locale_p" ON "_pages_v_blocks_evolution_band_cycle1_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_bio_groups_v_rows_order_idx" ON "_bio_groups_v_rows" USING btree ("_order");
-  CREATE INDEX "_bio_groups_v_rows_parent_id_idx" ON "_bio_groups_v_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_bio_groups_v_rows_locales_locale_parent_id_unique" ON "_bio_groups_v_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_bio_groups_v_order_idx" ON "_bio_groups_v" USING btree ("_order");
-  CREATE INDEX "_bio_groups_v_parent_id_idx" ON "_bio_groups_v" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_bio_groups_v_locales_locale_parent_id_unique" ON "_bio_groups_v_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_cycle2_items_order_idx" ON "_pages_v_blocks_evolution_band_cycle2_items" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_evolution_band_cycle2_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_cycle2_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_evolution_band_cycle2_items_locales_locale_p" ON "_pages_v_blocks_evolution_band_cycle2_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_variants_cycle1_items_order_idx" ON "_pages_v_blocks_evolution_band_variants_cycle1_items" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_evolution_band_variants_cycle1_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_variants_cycle1_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_evolution_band_variants_cycle1_items_local_1" ON "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_var_bio_groups_v_rows_order_idx" ON "_var_bio_groups_v_rows" USING btree ("_order");
-  CREATE INDEX "_var_bio_groups_v_rows_parent_id_idx" ON "_var_bio_groups_v_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_var_bio_groups_v_rows_locales_locale_parent_id_unique" ON "_var_bio_groups_v_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_var_bio_groups_v_order_idx" ON "_var_bio_groups_v" USING btree ("_order");
-  CREATE INDEX "_var_bio_groups_v_parent_id_idx" ON "_var_bio_groups_v" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_var_bio_groups_v_locales_locale_parent_id_unique" ON "_var_bio_groups_v_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_var_cycle2_items_v_order_idx" ON "_var_cycle2_items_v" USING btree ("_order");
-  CREATE INDEX "_var_cycle2_items_v_parent_id_idx" ON "_var_cycle2_items_v" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_var_cycle2_items_v_locales_locale_parent_id_unique" ON "_var_cycle2_items_v_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_variants_order_idx" ON "_pages_v_blocks_evolution_band_variants" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_evolution_band_variants_parent_id_idx" ON "_pages_v_blocks_evolution_band_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_evolution_band_variants_locales_locale_paren" ON "_pages_v_blocks_evolution_band_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_order_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_evolution_band_parent_id_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_evolution_band_path_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_path");
-  CREATE UNIQUE INDEX "_pages_v_blocks_evolution_band_locales_locale_parent_id_uniq" ON "_pages_v_blocks_evolution_band_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_trust_items_order_idx" ON "_pages_v_blocks_hero_banner_trust_items" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_hero_banner_trust_items_parent_id_idx" ON "_pages_v_blocks_hero_banner_trust_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_hero_banner_trust_items_locales_locale_paren" ON "_pages_v_blocks_hero_banner_trust_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_outcomes_order_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_hero_banner_outcomes_parent_id_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_outcomes_icon_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("icon_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_hero_banner_outcomes_locales_locale_parent_i" ON "_pages_v_blocks_hero_banner_outcomes_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_variants_order_idx" ON "_pages_v_blocks_hero_banner_variants" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_hero_banner_variants_parent_id_idx" ON "_pages_v_blocks_hero_banner_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_hero_banner_variants_locales_locale_parent_i" ON "_pages_v_blocks_hero_banner_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_order_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_hero_banner_parent_id_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_hero_banner_path_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_path");
-  CREATE INDEX "_pages_v_blocks_hero_banner_form_idx" ON "_pages_v_blocks_hero_banner" USING btree ("form_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_hero_banner_locales_locale_parent_id_unique" ON "_pages_v_blocks_hero_banner_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_outcome_cards_order_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_outcome_cards_parent_id_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_outcome_cards_image_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("image_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_outcomes_section_outcome_cards_locales_local" ON "_pages_v_blocks_outcomes_section_outcome_cards_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_order_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_parent_id_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_outcomes_section_path_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_path");
-  CREATE UNIQUE INDEX "_pages_v_blocks_outcomes_section_locales_locale_parent_id_un" ON "_pages_v_blocks_outcomes_section_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_mock_rows_order_idx" ON "_pages_v_blocks_process_diagram_steps_mock_rows" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_mock_rows_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_mock_rows" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_steps_mock_rows_locales_loca" ON "_pages_v_blocks_process_diagram_steps_mock_rows_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_list_items_order_idx" ON "_pages_v_blocks_process_diagram_steps_list_items" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_list_items_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_list_items" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_steps_list_items_locales_loc" ON "_pages_v_blocks_process_diagram_steps_list_items_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_pills_order_idx" ON "_pages_v_blocks_process_diagram_steps_pills" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_pills_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_pills" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_steps_pills_locales_locale_p" ON "_pages_v_blocks_process_diagram_steps_pills_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_order_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_steps_image_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("image_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_steps_locales_locale_parent_" ON "_pages_v_blocks_process_diagram_steps_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_variants_order_idx" ON "_pages_v_blocks_process_diagram_variants" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_variants_parent_id_idx" ON "_pages_v_blocks_process_diagram_variants" USING btree ("_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_variants_locales_locale_pare" ON "_pages_v_blocks_process_diagram_variants_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_order_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_process_diagram_parent_id_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_process_diagram_path_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_path");
-  CREATE UNIQUE INDEX "_pages_v_blocks_process_diagram_locales_locale_parent_id_uni" ON "_pages_v_blocks_process_diagram_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_stat_break_order_idx" ON "_pages_v_blocks_stat_break" USING btree ("_order");
-  CREATE INDEX "_pages_v_blocks_stat_break_parent_id_idx" ON "_pages_v_blocks_stat_break" USING btree ("_parent_id");
-  CREATE INDEX "_pages_v_blocks_stat_break_path_idx" ON "_pages_v_blocks_stat_break" USING btree ("_path");
-  CREATE UNIQUE INDEX "_pages_v_blocks_stat_break_locales_locale_parent_id_unique" ON "_pages_v_blocks_stat_break_locales" USING btree ("_locale","_parent_id");
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_early_access_variants" ADD CONSTRAINT "pages_blocks_early_access_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_early_access_variants_locales" ADD CONSTRAINT "pages_blocks_early_access_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_early_access" ADD CONSTRAINT "pages_blocks_early_access_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_early_access" ADD CONSTRAINT "pages_blocks_early_access_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_early_access_locales" ADD CONSTRAINT "pages_blocks_early_access_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_cycle1_items" ADD CONSTRAINT "pages_blocks_evolution_band_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_cycle1_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_cycle1_items_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_cycle1_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "bio_groups_rows" ADD CONSTRAINT "bio_groups_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "bio_groups_rows_locales" ADD CONSTRAINT "bio_groups_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "bio_groups" ADD CONSTRAINT "bio_groups_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "bio_groups_locales" ADD CONSTRAINT "bio_groups_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."bio_groups"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_cycle2_items" ADD CONSTRAINT "pages_blocks_evolution_band_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_cycle2_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_cycle2_items_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_cycle2_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_variants_cycle1_items" ADD CONSTRAINT "pages_blocks_evolution_band_variants_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_variants_cycle1_items_locales" ADD CONSTRAINT "pages_blocks_evolution_band_variants_cycle1_items_locales_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants_cycle1_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_bio_groups_rows" ADD CONSTRAINT "var_bio_groups_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_bio_groups_rows_locales" ADD CONSTRAINT "var_bio_groups_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_bio_groups" ADD CONSTRAINT "var_bio_groups_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_bio_groups_locales" ADD CONSTRAINT "var_bio_groups_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_bio_groups"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_cycle2_items" ADD CONSTRAINT "var_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "var_cycle2_items_locales" ADD CONSTRAINT "var_cycle2_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."var_cycle2_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_variants" ADD CONSTRAINT "pages_blocks_evolution_band_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_variants_locales" ADD CONSTRAINT "pages_blocks_evolution_band_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band" ADD CONSTRAINT "pages_blocks_evolution_band_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_evolution_band_locales" ADD CONSTRAINT "pages_blocks_evolution_band_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_trust_items" ADD CONSTRAINT "pages_blocks_hero_banner_trust_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_trust_items_locales" ADD CONSTRAINT "pages_blocks_hero_banner_trust_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_trust_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_outcomes" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_outcomes" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_outcomes_locales" ADD CONSTRAINT "pages_blocks_hero_banner_outcomes_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_outcomes"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_variants" ADD CONSTRAINT "pages_blocks_hero_banner_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_variants_locales" ADD CONSTRAINT "pages_blocks_hero_banner_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner" ADD CONSTRAINT "pages_blocks_hero_banner_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner" ADD CONSTRAINT "pages_blocks_hero_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_hero_banner_locales" ADD CONSTRAINT "pages_blocks_hero_banner_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_outcomes_section_outcome_cards_locales" ADD CONSTRAINT "pages_blocks_outcomes_section_outcome_cards_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section_outcome_cards"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_outcomes_section" ADD CONSTRAINT "pages_blocks_outcomes_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_outcomes_section_locales" ADD CONSTRAINT "pages_blocks_outcomes_section_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_mock_rows" ADD CONSTRAINT "pages_blocks_process_diagram_steps_mock_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_mock_rows_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_mock_rows_locales_pare_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_mock_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_list_items" ADD CONSTRAINT "pages_blocks_process_diagram_steps_list_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_list_items_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_list_items_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_list_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_pills" ADD CONSTRAINT "pages_blocks_process_diagram_steps_pills_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_pills_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_pills_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps_pills"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps" ADD CONSTRAINT "pages_blocks_process_diagram_steps_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps" ADD CONSTRAINT "pages_blocks_process_diagram_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_steps_locales" ADD CONSTRAINT "pages_blocks_process_diagram_steps_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_variants" ADD CONSTRAINT "pages_blocks_process_diagram_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_variants_locales" ADD CONSTRAINT "pages_blocks_process_diagram_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram" ADD CONSTRAINT "pages_blocks_process_diagram_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_process_diagram_locales" ADD CONSTRAINT "pages_blocks_process_diagram_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_stat_break" ADD CONSTRAINT "pages_blocks_stat_break_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_stat_break_locales" ADD CONSTRAINT "pages_blocks_stat_break_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_stat_break"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_early_access_variants" ADD CONSTRAINT "_pages_v_blocks_early_access_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_early_access_variants_locales" ADD CONSTRAINT "_pages_v_blocks_early_access_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_early_access" ADD CONSTRAINT "_pages_v_blocks_early_access_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_early_access" ADD CONSTRAINT "_pages_v_blocks_early_access_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_early_access_locales" ADD CONSTRAINT "_pages_v_blocks_early_access_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_cycle1_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_cycle1_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle1_items_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_cycle1_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_bio_groups_v_rows" ADD CONSTRAINT "_bio_groups_v_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_bio_groups_v_rows_locales" ADD CONSTRAINT "_bio_groups_v_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_bio_groups_v" ADD CONSTRAINT "_bio_groups_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_bio_groups_v_locales" ADD CONSTRAINT "_bio_groups_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_cycle2_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle2_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_cycle2_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_cycle2_items_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_cycle2_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_cycle1_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_cycle1_items_loca_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants_cycle1_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_bio_groups_v_rows" ADD CONSTRAINT "_var_bio_groups_v_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_bio_groups_v_rows_locales" ADD CONSTRAINT "_var_bio_groups_v_rows_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_bio_groups_v" ADD CONSTRAINT "_var_bio_groups_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_bio_groups_v_locales" ADD CONSTRAINT "_var_bio_groups_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_bio_groups_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_cycle2_items_v" ADD CONSTRAINT "_var_cycle2_items_v_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_var_cycle2_items_v_locales" ADD CONSTRAINT "_var_cycle2_items_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_var_cycle2_items_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_variants" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_variants_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band" ADD CONSTRAINT "_pages_v_blocks_evolution_band_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_evolution_band_locales" ADD CONSTRAINT "_pages_v_blocks_evolution_band_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_evolution_band"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_trust_items" ADD CONSTRAINT "_pages_v_blocks_hero_banner_trust_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_trust_items_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_trust_items_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_trust_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_outcomes" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_outcomes" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_outcomes_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_outcomes_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_outcomes"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_variants" ADD CONSTRAINT "_pages_v_blocks_hero_banner_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_variants_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner" ADD CONSTRAINT "_pages_v_blocks_hero_banner_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner" ADD CONSTRAINT "_pages_v_blocks_hero_banner_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_hero_banner_locales" ADD CONSTRAINT "_pages_v_blocks_hero_banner_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero_banner"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_outcomes_section_outcome_cards_locales" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_outcome_cards_locales_pa_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section_outcome_cards"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_outcomes_section" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_outcomes_section_locales" ADD CONSTRAINT "_pages_v_blocks_outcomes_section_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_outcomes_section"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_mock_rows" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_mock_rows_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_mock_rows_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_mock_rows_locales_p_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_mock_rows"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_list_items" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_list_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_list_items_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_list_items_locales__fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_list_items"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_pills" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_pills_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_pills_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_pills_locales_paren_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps_pills"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_steps_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_steps_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_steps"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_variants" ADD CONSTRAINT "_pages_v_blocks_process_diagram_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_variants_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_variants_locales_parent_i_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram_variants"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram" ADD CONSTRAINT "_pages_v_blocks_process_diagram_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_process_diagram_locales" ADD CONSTRAINT "_pages_v_blocks_process_diagram_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_process_diagram"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_stat_break" ADD CONSTRAINT "_pages_v_blocks_stat_break_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_stat_break_locales" ADD CONSTRAINT "_pages_v_blocks_stat_break_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_stat_break"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_variants_order_idx" ON "pages_blocks_early_access_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_variants_parent_id_idx" ON "pages_blocks_early_access_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_early_access_variants_locales_locale_parent_id_" ON "pages_blocks_early_access_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_order_idx" ON "pages_blocks_early_access" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_parent_id_idx" ON "pages_blocks_early_access" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_path_idx" ON "pages_blocks_early_access" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_early_access_form_idx" ON "pages_blocks_early_access" USING btree ("form_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_early_access_locales_locale_parent_id_unique" ON "pages_blocks_early_access_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle1_items_order_idx" ON "pages_blocks_evolution_band_cycle1_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle1_items_parent_id_idx" ON "pages_blocks_evolution_band_cycle1_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle1_items_locales_locale_pare" ON "pages_blocks_evolution_band_cycle1_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "bio_groups_rows_order_idx" ON "bio_groups_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "bio_groups_rows_parent_id_idx" ON "bio_groups_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "bio_groups_rows_locales_locale_parent_id_unique" ON "bio_groups_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "bio_groups_order_idx" ON "bio_groups" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "bio_groups_parent_id_idx" ON "bio_groups" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "bio_groups_locales_locale_parent_id_unique" ON "bio_groups_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle2_items_order_idx" ON "pages_blocks_evolution_band_cycle2_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle2_items_parent_id_idx" ON "pages_blocks_evolution_band_cycle2_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_evolution_band_cycle2_items_locales_locale_pare" ON "pages_blocks_evolution_band_cycle2_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items_order_idx" ON "pages_blocks_evolution_band_variants_cycle1_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items_parent_id_idx" ON "pages_blocks_evolution_band_variants_cycle1_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items_locales_lo" ON "pages_blocks_evolution_band_variants_cycle1_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "var_bio_groups_rows_order_idx" ON "var_bio_groups_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "var_bio_groups_rows_parent_id_idx" ON "var_bio_groups_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "var_bio_groups_rows_locales_locale_parent_id_unique" ON "var_bio_groups_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "var_bio_groups_order_idx" ON "var_bio_groups" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "var_bio_groups_parent_id_idx" ON "var_bio_groups" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "var_bio_groups_locales_locale_parent_id_unique" ON "var_bio_groups_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "var_cycle2_items_order_idx" ON "var_cycle2_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "var_cycle2_items_parent_id_idx" ON "var_cycle2_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "var_cycle2_items_locales_locale_parent_id_unique" ON "var_cycle2_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_order_idx" ON "pages_blocks_evolution_band_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_parent_id_idx" ON "pages_blocks_evolution_band_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_evolution_band_variants_locales_locale_parent_i" ON "pages_blocks_evolution_band_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_order_idx" ON "pages_blocks_evolution_band" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_parent_id_idx" ON "pages_blocks_evolution_band" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_evolution_band_path_idx" ON "pages_blocks_evolution_band" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_evolution_band_locales_locale_parent_id_unique" ON "pages_blocks_evolution_band_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_trust_items_order_idx" ON "pages_blocks_hero_banner_trust_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_trust_items_parent_id_idx" ON "pages_blocks_hero_banner_trust_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_hero_banner_trust_items_locales_locale_parent_i" ON "pages_blocks_hero_banner_trust_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_outcomes_order_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_outcomes_parent_id_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_outcomes_icon_idx" ON "pages_blocks_hero_banner_outcomes" USING btree ("icon_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_hero_banner_outcomes_locales_locale_parent_id_u" ON "pages_blocks_hero_banner_outcomes_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_variants_order_idx" ON "pages_blocks_hero_banner_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_variants_parent_id_idx" ON "pages_blocks_hero_banner_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_hero_banner_variants_locales_locale_parent_id_u" ON "pages_blocks_hero_banner_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_order_idx" ON "pages_blocks_hero_banner" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_parent_id_idx" ON "pages_blocks_hero_banner" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_path_idx" ON "pages_blocks_hero_banner" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_banner_form_idx" ON "pages_blocks_hero_banner" USING btree ("form_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_hero_banner_locales_locale_parent_id_unique" ON "pages_blocks_hero_banner_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards_order_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards_parent_id_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards_image_idx" ON "pages_blocks_outcomes_section_outcome_cards" USING btree ("image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_outcome_cards_locales_locale_p" ON "pages_blocks_outcomes_section_outcome_cards_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_order_idx" ON "pages_blocks_outcomes_section" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_parent_id_idx" ON "pages_blocks_outcomes_section" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_path_idx" ON "pages_blocks_outcomes_section" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_outcomes_section_locales_locale_parent_id_uniqu" ON "pages_blocks_outcomes_section_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_mock_rows_order_idx" ON "pages_blocks_process_diagram_steps_mock_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_mock_rows_parent_id_idx" ON "pages_blocks_process_diagram_steps_mock_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_mock_rows_locales_locale_" ON "pages_blocks_process_diagram_steps_mock_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_list_items_order_idx" ON "pages_blocks_process_diagram_steps_list_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_list_items_parent_id_idx" ON "pages_blocks_process_diagram_steps_list_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_list_items_locales_locale" ON "pages_blocks_process_diagram_steps_list_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_pills_order_idx" ON "pages_blocks_process_diagram_steps_pills" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_pills_parent_id_idx" ON "pages_blocks_process_diagram_steps_pills" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_pills_locales_locale_pare" ON "pages_blocks_process_diagram_steps_pills_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_order_idx" ON "pages_blocks_process_diagram_steps" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_parent_id_idx" ON "pages_blocks_process_diagram_steps" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_image_idx" ON "pages_blocks_process_diagram_steps" USING btree ("image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_steps_locales_locale_parent_id_" ON "pages_blocks_process_diagram_steps_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_variants_order_idx" ON "pages_blocks_process_diagram_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_variants_parent_id_idx" ON "pages_blocks_process_diagram_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_variants_locales_locale_parent_" ON "pages_blocks_process_diagram_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_order_idx" ON "pages_blocks_process_diagram" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_parent_id_idx" ON "pages_blocks_process_diagram" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_process_diagram_path_idx" ON "pages_blocks_process_diagram" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_process_diagram_locales_locale_parent_id_unique" ON "pages_blocks_process_diagram_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_stat_break_order_idx" ON "pages_blocks_stat_break" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_stat_break_parent_id_idx" ON "pages_blocks_stat_break" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_stat_break_path_idx" ON "pages_blocks_stat_break" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_stat_break_locales_locale_parent_id_unique" ON "pages_blocks_stat_break_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_variants_order_idx" ON "_pages_v_blocks_early_access_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_variants_parent_id_idx" ON "_pages_v_blocks_early_access_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_variants_locales_locale_parent_" ON "_pages_v_blocks_early_access_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_order_idx" ON "_pages_v_blocks_early_access" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_parent_id_idx" ON "_pages_v_blocks_early_access" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_path_idx" ON "_pages_v_blocks_early_access" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_form_idx" ON "_pages_v_blocks_early_access" USING btree ("form_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_early_access_locales_locale_parent_id_unique" ON "_pages_v_blocks_early_access_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle1_items_order_idx" ON "_pages_v_blocks_evolution_band_cycle1_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle1_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_cycle1_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle1_items_locales_locale_p" ON "_pages_v_blocks_evolution_band_cycle1_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_bio_groups_v_rows_order_idx" ON "_bio_groups_v_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_bio_groups_v_rows_parent_id_idx" ON "_bio_groups_v_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_bio_groups_v_rows_locales_locale_parent_id_unique" ON "_bio_groups_v_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_bio_groups_v_order_idx" ON "_bio_groups_v" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_bio_groups_v_parent_id_idx" ON "_bio_groups_v" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_bio_groups_v_locales_locale_parent_id_unique" ON "_bio_groups_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle2_items_order_idx" ON "_pages_v_blocks_evolution_band_cycle2_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle2_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_cycle2_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_cycle2_items_locales_locale_p" ON "_pages_v_blocks_evolution_band_cycle2_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items_order_idx" ON "_pages_v_blocks_evolution_band_variants_cycle1_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items_parent_id_idx" ON "_pages_v_blocks_evolution_band_variants_cycle1_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items_local_1" ON "_pages_v_blocks_evolution_band_variants_cycle1_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_var_bio_groups_v_rows_order_idx" ON "_var_bio_groups_v_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_var_bio_groups_v_rows_parent_id_idx" ON "_var_bio_groups_v_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_var_bio_groups_v_rows_locales_locale_parent_id_unique" ON "_var_bio_groups_v_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_var_bio_groups_v_order_idx" ON "_var_bio_groups_v" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_var_bio_groups_v_parent_id_idx" ON "_var_bio_groups_v" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_var_bio_groups_v_locales_locale_parent_id_unique" ON "_var_bio_groups_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_var_cycle2_items_v_order_idx" ON "_var_cycle2_items_v" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_var_cycle2_items_v_parent_id_idx" ON "_var_cycle2_items_v" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_var_cycle2_items_v_locales_locale_parent_id_unique" ON "_var_cycle2_items_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_order_idx" ON "_pages_v_blocks_evolution_band_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_parent_id_idx" ON "_pages_v_blocks_evolution_band_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_locales_locale_paren" ON "_pages_v_blocks_evolution_band_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_order_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_parent_id_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_path_idx" ON "_pages_v_blocks_evolution_band" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_evolution_band_locales_locale_parent_id_uniq" ON "_pages_v_blocks_evolution_band_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_trust_items_order_idx" ON "_pages_v_blocks_hero_banner_trust_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_trust_items_parent_id_idx" ON "_pages_v_blocks_hero_banner_trust_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_trust_items_locales_locale_paren" ON "_pages_v_blocks_hero_banner_trust_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes_order_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes_parent_id_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes_icon_idx" ON "_pages_v_blocks_hero_banner_outcomes" USING btree ("icon_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_outcomes_locales_locale_parent_i" ON "_pages_v_blocks_hero_banner_outcomes_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_variants_order_idx" ON "_pages_v_blocks_hero_banner_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_variants_parent_id_idx" ON "_pages_v_blocks_hero_banner_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_variants_locales_locale_parent_i" ON "_pages_v_blocks_hero_banner_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_order_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_parent_id_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_path_idx" ON "_pages_v_blocks_hero_banner" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_form_idx" ON "_pages_v_blocks_hero_banner" USING btree ("form_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_hero_banner_locales_locale_parent_id_unique" ON "_pages_v_blocks_hero_banner_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards_order_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards_parent_id_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards_image_idx" ON "_pages_v_blocks_outcomes_section_outcome_cards" USING btree ("image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_outcome_cards_locales_local" ON "_pages_v_blocks_outcomes_section_outcome_cards_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_order_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_parent_id_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_path_idx" ON "_pages_v_blocks_outcomes_section" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_outcomes_section_locales_locale_parent_id_un" ON "_pages_v_blocks_outcomes_section_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_mock_rows_order_idx" ON "_pages_v_blocks_process_diagram_steps_mock_rows" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_mock_rows_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_mock_rows" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_mock_rows_locales_loca" ON "_pages_v_blocks_process_diagram_steps_mock_rows_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_list_items_order_idx" ON "_pages_v_blocks_process_diagram_steps_list_items" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_list_items_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_list_items" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_list_items_locales_loc" ON "_pages_v_blocks_process_diagram_steps_list_items_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_pills_order_idx" ON "_pages_v_blocks_process_diagram_steps_pills" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_pills_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps_pills" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_pills_locales_locale_p" ON "_pages_v_blocks_process_diagram_steps_pills_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_order_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_parent_id_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_image_idx" ON "_pages_v_blocks_process_diagram_steps" USING btree ("image_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_steps_locales_locale_parent_" ON "_pages_v_blocks_process_diagram_steps_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_variants_order_idx" ON "_pages_v_blocks_process_diagram_variants" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_variants_parent_id_idx" ON "_pages_v_blocks_process_diagram_variants" USING btree ("_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_variants_locales_locale_pare" ON "_pages_v_blocks_process_diagram_variants_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_order_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_parent_id_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_path_idx" ON "_pages_v_blocks_process_diagram" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_process_diagram_locales_locale_parent_id_uni" ON "_pages_v_blocks_process_diagram_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_stat_break_order_idx" ON "_pages_v_blocks_stat_break" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_stat_break_parent_id_idx" ON "_pages_v_blocks_stat_break" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_stat_break_path_idx" ON "_pages_v_blocks_stat_break" USING btree ("_path");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_stat_break_locales_locale_parent_id_unique" ON "_pages_v_blocks_stat_break_locales" USING btree ("_locale","_parent_id");
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
   CREATE INDEX IF NOT EXISTS "pages_blocks_product_showcase_panel_thumbnails_image_idx" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
   CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_product_showcase_panel_thumbnails_locales_local" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
   CREATE INDEX IF NOT EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_image_idx" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
@@ -1454,24 +1454,24 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "_pages_v_blocks_process_diagram_locales" CASCADE;
   DROP TABLE "_pages_v_blocks_stat_break" CASCADE;
   DROP TABLE "_pages_v_blocks_stat_break_locales" CASCADE;
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk";
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk";
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk";
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk";
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk"; EXCEPTION WHEN undefined_object THEN null; END $$;
   
-  DROP INDEX "pages_blocks_product_showcase_panel_thumbnails_image_idx";
-  DROP INDEX "pages_blocks_product_showcase_panel_thumbnails_locales_local";
-  DROP INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_image_idx";
-  DROP INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo";
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_image_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
-  CREATE UNIQUE INDEX "psc_panel_thumbs_locales_locale_parent_unique" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
-  CREATE UNIQUE INDEX "_pages_v_psc_panel_thumbs_locales_locale_parent_unique" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
+  DROP INDEX IF EXISTS "pages_blocks_product_showcase_panel_thumbnails_image_idx";
+  DROP INDEX IF EXISTS "pages_blocks_product_showcase_panel_thumbnails_locales_local";
+  DROP INDEX IF EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_image_idx";
+  DROP INDEX IF EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo";
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_image_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  DO $$ BEGIN ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_par_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action; EXCEPTION WHEN duplicate_object THEN null; END $$;
+  CREATE UNIQUE INDEX IF NOT EXISTS "psc_panel_thumbs_locales_locale_parent_unique" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_psc_panel_thumbs_locales_locale_parent_unique" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
   ALTER TABLE "posts" DROP COLUMN "source";
   ALTER TABLE "posts" DROP COLUMN "html_content";
   ALTER TABLE "_posts_v" DROP COLUMN "version_source";
