@@ -943,23 +943,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"_parent_id" integer NOT NULL
   );
   
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_fk";
+  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_image_id";
   
-  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_par_fk";
+  ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk";
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_image_fk";
+  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image";
   
-  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_psc_panel_thumbnails_locales_par_fk";
+  ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" DROP CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk";
   
-  DROP INDEX "psc_panel_thumbs_locales_locale_parent_unique";
-  DROP INDEX "_pages_v_psc_panel_thumbs_locales_locale_parent_unique";
-  ALTER TABLE "posts" ADD COLUMN "source" "enum_posts_source" DEFAULT 'manual';
-  ALTER TABLE "posts" ADD COLUMN "html_content" varchar;
-  ALTER TABLE "_posts_v" ADD COLUMN "version_source" "enum__posts_v_version_source" DEFAULT 'manual';
-  ALTER TABLE "_posts_v" ADD COLUMN "version_html_content" varchar;
-  ALTER TABLE "users" ADD COLUMN "enable_a_p_i_key" boolean;
-  ALTER TABLE "users" ADD COLUMN "api_key" varchar;
-  ALTER TABLE "users" ADD COLUMN "api_key_index" varchar;
+  DROP INDEX "pages_blocks_product_showcase_panel_thumbnails_locales_local";
+  DROP INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo";
+  ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "source" "enum_posts_source" DEFAULT 'manual';
+  ALTER TABLE "posts" ADD COLUMN IF NOT EXISTS "html_content" varchar;
+  ALTER TABLE "_posts_v" ADD COLUMN IF NOT EXISTS "version_source" "enum__posts_v_version_source" DEFAULT 'manual';
+  ALTER TABLE "_posts_v" ADD COLUMN IF NOT EXISTS "version_html_content" varchar;
+  ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "enable_a_p_i_key" boolean;
+  ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "api_key" varchar;
+  ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "api_key_index" varchar;
   ALTER TABLE "pages_blocks_early_access_variants" ADD CONSTRAINT "pages_blocks_early_access_variants_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_early_access_variants_locales" ADD CONSTRAINT "pages_blocks_early_access_variants_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_early_access_variants"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "pages_blocks_early_access" ADD CONSTRAINT "pages_blocks_early_access_form_id_forms_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."forms"("id") ON DELETE set null ON UPDATE no action;
@@ -1246,10 +1246,10 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "pages_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "pages_blocks_product_showcase_panel_thumbnails_locales_pa_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_image_id_media_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "_pages_v_blocks_product_showcase_panel_thumbnails_locales" ADD CONSTRAINT "_pages_v_blocks_product_showcase_panel_thumbnails_locales_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_product_showcase_panel_thumbnails"("id") ON DELETE cascade ON UPDATE no action;
-  CREATE INDEX "pages_blocks_product_showcase_panel_thumbnails_image_idx" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
-  CREATE UNIQUE INDEX "pages_blocks_product_showcase_panel_thumbnails_locales_local" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
-  CREATE INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_image_idx" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
-  CREATE UNIQUE INDEX "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");`)
+  CREATE INDEX IF NOT EXISTS "pages_blocks_product_showcase_panel_thumbnails_image_idx" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_blocks_product_showcase_panel_thumbnails_locales_local" ON "pages_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_image_idx" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("image_id","_locale");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_blocks_product_showcase_panel_thumbnails_locales_lo" ON "_pages_v_blocks_product_showcase_panel_thumbnails_locales" USING btree ("_locale","_parent_id");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
