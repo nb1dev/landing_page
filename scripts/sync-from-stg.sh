@@ -105,6 +105,24 @@ UNION ALL SELECT '  pages:    ' || COUNT(*) FROM pages
 UNION ALL SELECT '  media:    ' || COUNT(*) FROM media
 UNION ALL SELECT '  migrations:' || COUNT(*) FROM payload_migrations;"
 
+# ---- Marchează migrările locale ca ran ----
+# Sync-ul importă schema STG (care are toate tabelele), dar payload_migrations local
+# poate să nu conțină toate migrările din src/migrations/. Le marcăm pe toate ca ran
+# ca să evităm eroarea "table already exists" la npm run migrate.
+log "Marchez toate migrările din src/migrations/ ca ran în DB local..."
+BATCH=99
+for mig_file in src/migrations/*.ts; do
+  # Extrage numele fără extensie
+  mig_name=$(basename "$mig_file" .ts)
+  # Ignoră index.ts
+  [ "$mig_name" = "index" ] && continue
+  # Insert doar dacă nu există deja
+  docker exec "$LOCAL_CONTAINER" psql -U "$LOCAL_USER" -d "$LOCAL_DB" -c \
+    "INSERT INTO payload_migrations (name, batch) VALUES ('$mig_name', $BATCH) ON CONFLICT DO NOTHING;" \
+    > /dev/null 2>&1
+done
+success "Migrări marcate ca ran"
+
 # ---- Curăță dump temporar ----
 rm -f "$DUMP_FILE"
 log "Fișier dump temporar șters"
