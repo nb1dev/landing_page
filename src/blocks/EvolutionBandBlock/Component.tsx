@@ -75,8 +75,7 @@ const IS_UNDERLINE = 8
 
 function renderLexicalNode(node: any, key: string): React.ReactNode {
   if (node.type === 'text') {
-    const colorMatch =
-      typeof node.style === 'string' ? node.style.match(/color:\s*([^;]+)/) : null
+    const colorMatch = typeof node.style === 'string' ? node.style.match(/color:\s*([^;]+)/) : null
     const color = colorMatch ? colorMatch[1].trim() : undefined
 
     let el: React.ReactNode = node.text as string
@@ -170,9 +169,13 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
   const resolvedCycle2Version = activeVariant?.cycle2Version ?? cycle2Version
   const resolvedCycle2Name = activeVariant?.cycle2Name ?? cycle2Name
   const resolvedCycle2Footer = activeVariant?.cycle2Footer ?? cycle2Footer
-  const resolvedCycle1Items = (activeVariant?.cycle1Items?.length ? activeVariant.cycle1Items : cycle1Items) ?? []
-  const resolvedBiologyGroups = activeVariant?.biologyGroups?.length ? activeVariant.biologyGroups : biologyGroups
-  const resolvedCycle2Items = (activeVariant?.cycle2Items?.length ? activeVariant.cycle2Items : cycle2Items) ?? []
+  const resolvedCycle1Items =
+    (activeVariant?.cycle1Items?.length ? activeVariant.cycle1Items : cycle1Items) ?? []
+  const resolvedBiologyGroups = activeVariant?.biologyGroups?.length
+    ? activeVariant.biologyGroups
+    : biologyGroups
+  const resolvedCycle2Items =
+    (activeVariant?.cycle2Items?.length ? activeVariant.cycle2Items : cycle2Items) ?? []
 
   // ── Design tokens ──────────────────────────────────────────────────────────
   const teal = '#0a8fb0'
@@ -266,7 +269,9 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
         />
         {tag}
       </div>
-      <div style={{ fontSize: '.62rem', fontWeight: 400, color: evoDkMuted, letterSpacing: '.04em' }}>
+      <div
+        style={{ fontSize: '.62rem', fontWeight: 400, color: evoDkMuted, letterSpacing: '.04em' }}
+      >
         {version}
       </div>
     </div>
@@ -338,9 +343,25 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
               fontFamily: "'Instrument Sans', -apple-system, sans-serif",
             }}
           >
-            <span style={{ width: 24, height: 1, background: teal, display: 'inline-block', flexShrink: 0 }} />
+            <span
+              style={{
+                width: 24,
+                height: 1,
+                background: teal,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
             {resolvedEyebrow}
-            <span style={{ width: 24, height: 1, background: teal, display: 'inline-block', flexShrink: 0 }} />
+            <span
+              style={{
+                width: 24,
+                height: 1,
+                background: teal,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
           </div>
         )}
 
@@ -414,9 +435,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
         />
         {([1, 2] as const).map((cycleNum) => {
           const tag =
-            cycleNum === 1
-              ? resolvedCycle1Tag || 'Cycle 01'
-              : resolvedCycle2Tag || 'Cycle 02'
+            cycleNum === 1 ? resolvedCycle1Tag || 'Cycle 01' : resolvedCycle2Tag || 'Cycle 02'
           const version =
             cycleNum === 1
               ? resolvedCycle1Version || 'Baseline'
@@ -467,7 +486,6 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
 
       {/* Cycle stage */}
       <div style={{ maxWidth: 680, margin: '0 auto' }}>
-
         {/* ── Cycle 1 ── */}
         {activeCycle === 1 && (
           <article className="evo-cycle-card" style={cardStyle}>
@@ -484,7 +502,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                 marginBottom: '1.25rem',
               }}
             >
-              {(resolvedCycle1Items).map((item, i) => (
+              {resolvedCycle1Items.map((item, i) => (
                 <div
                   key={i}
                   style={{
@@ -573,16 +591,19 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
 
             {/* Biology groups */}
             {resolvedBiologyGroups && resolvedBiologyGroups.length > 0 && (
-              <div style={{
-                marginBottom: '1rem',
-                background: 'linear-gradient(135deg,rgba(10,143,176,0.07) 0%,rgba(10,143,176,0.03) 100%)',
-                border: '1px solid rgba(10,143,176,0.18)',
-                borderRadius: 10,
-                padding: '.8rem .9rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '.6rem',
-              }}>
+              <div
+                style={{
+                  marginBottom: '1rem',
+                  background:
+                    'linear-gradient(135deg,rgba(10,143,176,0.07) 0%,rgba(10,143,176,0.03) 100%)',
+                  border: '1px solid rgba(10,143,176,0.18)',
+                  borderRadius: 10,
+                  padding: '.8rem .9rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '.6rem',
+                }}
+              >
                 {resolvedBiologyGroups.map((group, gi) => (
                   <div key={gi} style={{ display: 'flex', flexDirection: 'column', gap: '.55rem' }}>
                     {/* Eyebrow — sits outside the card */}
@@ -605,7 +626,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                             height: 6,
                             borderRadius: '50%',
                             background: teal,
-                            boxShadow: '0 0 0 3px rgba(10,143,176,0.18),0 0 12px rgba(10,143,176,0.5)',
+                            boxShadow:
+                              '0 0 0 3px rgba(10,143,176,0.18),0 0 12px rgba(10,143,176,0.5)',
                             display: 'inline-block',
                             flexShrink: 0,
                           }}
@@ -694,7 +716,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                 marginBottom: '1.25rem',
               }}
             >
-              {(resolvedCycle2Items).map((item, i) => {
+              {resolvedCycle2Items.map((item, i) => {
                 const isRemoved = item.status === 'removed'
                 const isAdded = item.status === 'added'
                 const mark = STATUS_MARK[item.status ?? ''] ?? ''
@@ -779,7 +801,6 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
           </article>
         )}
       </div>
-
     </section>
   )
 }

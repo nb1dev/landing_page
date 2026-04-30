@@ -11,8 +11,7 @@ const IS_UNDERLINE = 8
 
 function renderLexicalNode(node: any, key: string): React.ReactNode {
   if (node.type === 'text') {
-    const colorMatch =
-      typeof node.style === 'string' ? node.style.match(/color:\s*([^;]+)/) : null
+    const colorMatch = typeof node.style === 'string' ? node.style.match(/color:\s*([^;]+)/) : null
     const color = colorMatch ? colorMatch[1].trim() : undefined
 
     let el: React.ReactNode = node.text as string
@@ -79,6 +78,7 @@ export type PriceBreakBlockType = {
 const TEAL = '#0A8FB0'
 const NAVY = '#12314d'
 const WHITE = '#ffffff'
+const BLACK = '#000000'
 
 export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) => {
   const { priceNumber, priceUnit, headingLine1, headingLine2, variants } = props
@@ -102,7 +102,7 @@ export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) =
   // Price-break section is always dark navy per HTML reference
   // (both light and dark page variants use .price-break{background:var(--navy)})
   const sectionStyle: React.CSSProperties = {
-    background: NAVY,
+    background: isDark ? 'linear-gradient(180deg, #FAF8F2 0%, #F2EFE7 100%);' : NAVY,
     padding: 'clamp(4rem, 6vw, 6rem) 1.5rem',
     color: WHITE,
   }
@@ -149,7 +149,7 @@ export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) =
               fontWeight: 500,
               letterSpacing: '-.025em',
               lineHeight: 1.25,
-              color: WHITE,
+              color: isDark ? BLACK : WHITE,
               maxWidth: '880px',
               margin: '0 auto',
             }}
@@ -167,5 +167,3 @@ export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) =
     </section>
   )
 }
-
-
