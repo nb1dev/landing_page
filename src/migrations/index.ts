@@ -7,6 +7,7 @@ import * as migration_20260429_biology_groups from './20260429_biology_groups';
 import * as migration_20260429_fix_bio_groups_v from './20260429_fix_bio_groups_v';
 import * as migration_20260429_variant_full_fields from './20260429_variant_full_fields';
 import * as migration_20260430_074534 from './20260430_074534';
+import * as migration_20260430_092252 from './20260430_092252';
 import * as migration_20260510_heading_richtext from './20260510_heading_richtext';
 
 export const migrations = [
@@ -54,6 +55,11 @@ export const migrations = [
     up: migration_20260430_074534.up,
     down: migration_20260430_074534.down,
     name: '20260430_074534',
+  },
+  {
+    up: migration_20260430_092252.up,
+    down: migration_20260430_092252.down,
+    name: '20260430_092252',
   },
   {
     up: migration_20260510_heading_richtext.up,

@@ -250,6 +250,8 @@ export interface Page {
     | OutcomesSectionBlock
     | ProcessDiagramBlock
     | StatBreakBlock
+    | ReserveCtaBlock
+    | AthleteBannerBlock
   )[];
   meta?: {
     /**
@@ -2507,6 +2509,226 @@ export interface StatBreakBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReserveCtaBlock".
+ */
+export interface ReserveCtaBlock {
+  /**
+   * "White" → light version (form appears in a teal card). "Cream Gradient" → dark version (no form card, white form row).
+   */
+  backgroundColor?: ('white' | 'creamGradient' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  /**
+   * Animated badge above the heading. e.g. "Phase 1 · 1,000 kits".
+   */
+  pillText?: string | null;
+  /**
+   * Main heading. Use teal text color for italic highlighted spans.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Body text under the heading. e.g. "Phase 1 closes when 1,000 are claimed."
+   */
+  subText?: string | null;
+  /**
+   * Select the Form Builder form to render (typically email-only).
+   */
+  form: number | Form;
+  /**
+   * Submit button label. e.g. "Reserve my kit →".
+   */
+  ctaButtonText?: string | null;
+  /**
+   * Plain portion of the form footer. e.g. "From €99/month".
+   */
+  footNoteText?: string | null;
+  /**
+   * Teal-highlighted portion (shown after "·"). e.g. "Diagnostic included."
+   */
+  footNoteHighlight?: string | null;
+  /**
+   * Body of the success message after submission. Default: "Your kit ships two weeks before public launch."
+   */
+  successMessage?: string | null;
+  /**
+   * Checkmark items shown below the form. e.g. "Diagnostic included".
+   */
+  recapItems?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each entry overrides content when ?v=<key> is in the URL. Leave fields empty to fall back to defaults.
+   */
+  variants?:
+    | {
+        /**
+         * Matched against ?v=. Example: "b".
+         */
+        variantKey: string;
+        backgroundColor?: ('white' | 'creamGradient' | 'custom') | null;
+        backgroundColorCustom?: string | null;
+        pillText?: string | null;
+        heading?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        subText?: string | null;
+        ctaButtonText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reserveCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthleteBannerBlock".
+ */
+export interface AthleteBannerBlock {
+  /**
+   * "Cream" matches the light HTML; "Cream Gradient" matches the dark HTML. USP strip background is derived automatically.
+   */
+  backgroundColor?: ('cream' | 'creamGradient' | 'white' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  /**
+   * Small uppercase label above the heading.
+   */
+  eyebrow?: string | null;
+  /**
+   * Main heading. Use the "ac" text-color class for italic teal highlights.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Hover/tap a card to reveal the quote. Max 6 cards.
+   */
+  athleteCards?:
+    | {
+        image?: (number | null) | Media;
+        /**
+         * e.g. "2025 World Champion"
+         */
+        tag?: string | null;
+        name: string;
+        /**
+         * e.g. "HYROX Men's Pro · NB¹ athlete"
+         */
+        title?: string | null;
+        quoteBody?: string | null;
+        /**
+         * e.g. "Tim Wenisch · 2025 HYROX World Champion"
+         */
+        quoteAttr?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Feature cells shown in the strip below the athlete cards. Max 5.
+   */
+  uspItems?:
+    | {
+        iconType?: ('checkCircle' | 'pulse' | 'checkSquare' | 'plus' | 'speechBubble') | null;
+        heading: string;
+        subtext?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each entry overrides content when ?v=<key> is in the URL. Leave fields empty to fall back to defaults.
+   */
+  variants?:
+    | {
+        /**
+         * Matched against ?v=. Example: "b".
+         */
+        variantKey: string;
+        backgroundColor?: ('cream' | 'creamGradient' | 'white' | 'custom') | null;
+        backgroundColorCustom?: string | null;
+        eyebrow?: string | null;
+        heading?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        athleteCards?:
+          | {
+              image?: (number | null) | Media;
+              tag?: string | null;
+              name: string;
+              title?: string | null;
+              quoteBody?: string | null;
+              quoteAttr?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        uspItems?:
+          | {
+              iconType?: ('checkCircle' | 'pulse' | 'checkSquare' | 'plus' | 'speechBubble') | null;
+              heading: string;
+              subtext?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'athleteBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -2907,6 +3129,8 @@ export interface PagesSelect<T extends boolean = true> {
         outcomesSection?: T | OutcomesSectionBlockSelect<T>;
         processDiagram?: T | ProcessDiagramBlockSelect<T>;
         statBreak?: T | StatBreakBlockSelect<T>;
+        reserveCta?: T | ReserveCtaBlockSelect<T>;
+        athleteBanner?: T | AthleteBannerBlockSelect<T>;
       };
   meta?:
     | T
@@ -3883,6 +4107,102 @@ export interface StatBreakBlockSelect<T extends boolean = true> {
   headingLine2?: T;
   highlightedWord?: T;
   headingAfter?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReserveCtaBlock_select".
+ */
+export interface ReserveCtaBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  pillText?: T;
+  heading?: T;
+  subText?: T;
+  form?: T;
+  ctaButtonText?: T;
+  footNoteText?: T;
+  footNoteHighlight?: T;
+  successMessage?: T;
+  recapItems?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        backgroundColor?: T;
+        backgroundColorCustom?: T;
+        pillText?: T;
+        heading?: T;
+        subText?: T;
+        ctaButtonText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthleteBannerBlock_select".
+ */
+export interface AthleteBannerBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  eyebrow?: T;
+  heading?: T;
+  athleteCards?:
+    | T
+    | {
+        image?: T;
+        tag?: T;
+        name?: T;
+        title?: T;
+        quoteBody?: T;
+        quoteAttr?: T;
+        id?: T;
+      };
+  uspItems?:
+    | T
+    | {
+        iconType?: T;
+        heading?: T;
+        subtext?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        backgroundColor?: T;
+        backgroundColorCustom?: T;
+        eyebrow?: T;
+        heading?: T;
+        athleteCards?:
+          | T
+          | {
+              image?: T;
+              tag?: T;
+              name?: T;
+              title?: T;
+              quoteBody?: T;
+              quoteAttr?: T;
+              id?: T;
+            };
+        uspItems?:
+          | T
+          | {
+              iconType?: T;
+              heading?: T;
+              subtext?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

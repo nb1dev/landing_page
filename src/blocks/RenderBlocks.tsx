@@ -38,6 +38,8 @@ import { HeroBannerComponent } from './newLandingBlocks/HeroBanner/Component'
 import { OutcomesSectionComponent } from './newLandingBlocks/OutcomesSection/Component'
 import { ProcessDiagramComponent } from './newLandingBlocks/ProcessDiagram/Component'
 import { StatBreakComponent } from './newLandingBlocks/StatBreak/Component'
+import { ReserveCtaComponent } from './newLandingBlocks/ReserveCta/Component'
+import { AthleteBannerComponent } from './newLandingBlocks/AthleteBanner/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -75,6 +77,8 @@ const blockComponents: Record<string, React.FC<any>> = {
   outcomesSection: OutcomesSectionComponent,
   processDiagram: ProcessDiagramComponent,
   statBreak: StatBreakComponent,
+  athleteBanner: AthleteBannerComponent,
+  reserveCta: ReserveCtaComponent,
 }
 
 export const RenderBlocks: React.FC<{

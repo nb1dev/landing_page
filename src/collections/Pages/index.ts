@@ -47,6 +47,8 @@ import { HeroBannerBlock } from '@/blocks/newLandingBlocks/HeroBanner/config'
 import { OutcomesSectionBlock } from '@/blocks/newLandingBlocks/OutcomesSection/config'
 import { ProcessDiagramBlock } from '@/blocks/newLandingBlocks/ProcessDiagram/config'
 import { StatBreakBlock } from '@/blocks/newLandingBlocks/StatBreak/config'
+import { ReserveCtaBlock } from '@/blocks/newLandingBlocks/ReserveCta/config'
+import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -146,6 +148,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 OutcomesSectionBlock,
                 ProcessDiagramBlock,
                 StatBreakBlock,
+                ReserveCtaBlock,
+                AthleteBannerBlock,
               ],
               required: true,
               admin: { initCollapsed: true },
