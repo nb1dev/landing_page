@@ -34,12 +34,17 @@ import { AccessBannerComponent } from './newLandingBlocks/AccessBanner/Component
 import { ProductShowcaseComponent } from './ProductShowcase/Component'
 import { EarlyAccessBlockComponent } from './EarlyAccessBlock/Component'
 import { EvolutionBandBlockComponent } from './EvolutionBandBlock/Component'
+<<<<<<< Updated upstream
 import { HeroBannerComponent } from './newLandingBlocks/HeroBanner/Component'
 import { OutcomesSectionComponent } from './newLandingBlocks/OutcomesSection/Component'
 import { ProcessDiagramComponent } from './newLandingBlocks/ProcessDiagram/Component'
 import { StatBreakComponent } from './newLandingBlocks/StatBreak/Component'
 import { ReserveCtaComponent } from './newLandingBlocks/ReserveCta/Component'
 import { AthleteBannerComponent } from './newLandingBlocks/AthleteBanner/Component'
+=======
+import { PriceBreakBlockComponent } from './PriceBreakBlock/Component'
+import { ScienceBoardBlockComponent } from './ScienceBoardBlock/Component'
+>>>>>>> Stashed changes
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -73,12 +78,17 @@ const blockComponents: Record<string, React.FC<any>> = {
   productShowcase: ProductShowcaseComponent,
   earlyAccess: EarlyAccessBlockComponent,
   evolutionBand: EvolutionBandBlockComponent,
+<<<<<<< Updated upstream
   heroBanner: HeroBannerComponent,
   outcomesSection: OutcomesSectionComponent,
   processDiagram: ProcessDiagramComponent,
   statBreak: StatBreakComponent,
   athleteBanner: AthleteBannerComponent,
   reserveCta: ReserveCtaComponent,
+=======
+  priceBreak: PriceBreakBlockComponent,
+  scienceBoard: ScienceBoardBlockComponent,
+>>>>>>> Stashed changes
 }
 
 export const RenderBlocks: React.FC<{

@@ -49,6 +49,8 @@ import { ProcessDiagramBlock } from '@/blocks/newLandingBlocks/ProcessDiagram/co
 import { StatBreakBlock } from '@/blocks/newLandingBlocks/StatBreak/config'
 import { ReserveCtaBlock } from '@/blocks/newLandingBlocks/ReserveCta/config'
 import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/config'
+import { PriceBreakBlock } from '@/blocks/PriceBreakBlock/config'
+import { ScienceBoardBlock } from '@/blocks/ScienceBoardBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -150,6 +152,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 StatBreakBlock,
                 ReserveCtaBlock,
                 AthleteBannerBlock,
+                PriceBreakBlock,
+                ScienceBoardBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

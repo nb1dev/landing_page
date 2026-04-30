@@ -252,6 +252,8 @@ export interface Page {
     | StatBreakBlock
     | ReserveCtaBlock
     | AthleteBannerBlock
+    | PriceBreakBlock
+    | ScienceBoardBlock
   )[];
   meta?: {
     /**
@@ -2729,6 +2731,203 @@ export interface AthleteBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceBreakBlock".
+ */
+export interface PriceBreakBlock {
+  priceNumber: string;
+  /**
+   * Shown after "/" automatically. E.g. "month" → displays as "€99/month".
+   */
+  priceUnit?: string | null;
+  headingLine1?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  headingLine2?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Each variant overrides content when ?v=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * URL param value matched against ?v=. E.g. "v1" or "dark".
+         */
+        variantKey: string;
+        darkMode?: boolean | null;
+        priceNumber?: string | null;
+        /**
+         * E.g. "month" → displays as "€99/month".
+         */
+        priceUnit?: string | null;
+        headingLine1?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        headingLine2?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'priceBreak';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardBlock".
+ */
+export interface ScienceBoardBlock {
+  eyebrow?: string | null;
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subLead?: string | null;
+  subCredits?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  members?:
+    | {
+        photo?: (number | null) | Media;
+        /**
+         * Used if no uploaded photo. E.g. https://i.ibb.co/...
+         */
+        photoUrl?: string | null;
+        name: string;
+        role?: string | null;
+        meta?: string | null;
+        /**
+         * E.g. "Chief Scientific Officer" or "Science Board"
+         */
+        tag?: string | null;
+        institution?: string | null;
+        bio?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  stats?:
+    | {
+        target: number;
+        /**
+         * E.g. "+" or leave empty
+         */
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Enable navy background. Default is white (light).
+   */
+  darkMode?: boolean | null;
+  /**
+   * Each variant overrides darkMode when ?v=<key> is present in the URL.
+   */
+  variants?:
+    | {
+        /**
+         * URL param value matched against ?v=. E.g. "dark".
+         */
+        variantKey: string;
+        /**
+         * Enable navy background for this variant.
+         */
+        darkMode?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scienceBoard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -3131,6 +3330,8 @@ export interface PagesSelect<T extends boolean = true> {
         statBreak?: T | StatBreakBlockSelect<T>;
         reserveCta?: T | ReserveCtaBlockSelect<T>;
         athleteBanner?: T | AthleteBannerBlockSelect<T>;
+        priceBreak?: T | PriceBreakBlockSelect<T>;
+        scienceBoard?: T | ScienceBoardBlockSelect<T>;
       };
   meta?:
     | T
@@ -4201,6 +4402,70 @@ export interface AthleteBannerBlockSelect<T extends boolean = true> {
               subtext?: T;
               id?: T;
             };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PriceBreakBlock_select".
+ */
+export interface PriceBreakBlockSelect<T extends boolean = true> {
+  priceNumber?: T;
+  priceUnit?: T;
+  headingLine1?: T;
+  headingLine2?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        darkMode?: T;
+        priceNumber?: T;
+        priceUnit?: T;
+        headingLine1?: T;
+        headingLine2?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardBlock_select".
+ */
+export interface ScienceBoardBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subLead?: T;
+  subCredits?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        photoUrl?: T;
+        name?: T;
+        role?: T;
+        meta?: T;
+        tag?: T;
+        institution?: T;
+        bio?: T;
+        id?: T;
+      };
+  stats?:
+    | T
+    | {
+        target?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  darkMode?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        darkMode?: T;
         id?: T;
       };
   id?: T;

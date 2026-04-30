@@ -1,25 +1,22 @@
 import type { Block, Field } from 'payload'
 import {
-  BoldFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
-  ItalicFeature,
   lexicalEditor,
-  LinkFeature,
-  ParagraphFeature,
-  StrikethroughFeature,
-  SubscriptFeature,
-  SuperscriptFeature,
-  UnderlineFeature,
 } from '@payloadcms/richtext-lexical'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-const brandColorSwatches = [
-  { type: 'button' as const, color: '#00a8c2', label: 'Brand Teal' },
-  { type: 'button' as const, color: '#000000', label: 'Black' },
-  { type: 'button' as const, color: '#ffffff', label: 'White' },
-]
+const makeEditor = () =>
+  lexicalEditor({
+    features: ({ rootFeatures }) => [
+      ...rootFeatures,
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+      TextColorFeature(),
+      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+    ],
+  })
 
 const overrideFields: Field[] = [
   {
@@ -33,22 +30,7 @@ const overrideFields: Field[] = [
     label: 'Heading Override',
     type: 'richText',
     localized: true,
-    editor: lexicalEditor({
-      features: [
-        ParagraphFeature(),
-        HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-        BoldFeature(),
-        ItalicFeature(),
-        UnderlineFeature(),
-        StrikethroughFeature(),
-        SubscriptFeature(),
-        SuperscriptFeature(),
-        LinkFeature({ enabledCollections: ['pages', 'posts'] }),
-        TextColorFeature({ colors: brandColorSwatches }),
-        FixedToolbarFeature(),
-        InlineToolbarFeature(),
-      ],
-    }),
+    editor: makeEditor(),
   },
   {
     name: 'subtext',
@@ -194,22 +176,7 @@ export const EvolutionBandBlock: Block = {
       label: 'Heading',
       type: 'richText',
       localized: true,
-      editor: lexicalEditor({
-        features: [
-          ParagraphFeature(),
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-          BoldFeature(),
-          ItalicFeature(),
-          UnderlineFeature(),
-          StrikethroughFeature(),
-          SubscriptFeature(),
-          SuperscriptFeature(),
-          LinkFeature({ enabledCollections: ['pages', 'posts'] }),
-          TextColorFeature({ colors: brandColorSwatches }),
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-        ],
-      }),
+      editor: makeEditor(),
       admin: { description: 'Main heading. Use teal color for italic highlight spans.' },
     },
     {
