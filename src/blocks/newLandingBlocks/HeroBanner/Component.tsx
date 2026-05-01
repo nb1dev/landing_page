@@ -11,6 +11,9 @@ import { fields } from '@/blocks/Form/fields'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type BgColorPreset = 'light' | 'dark' | 'darkNavy' | 'teal' | 'white' | 'custom'
+type BgType = 'color' | 'image'
+
+type MediaRef = { url?: string | null; alt?: string | null } | null
 
 const DARK_BG: Record<'dark' | 'darkNavy' | 'teal', string> = {
   dark: '#0a1e35',
@@ -44,6 +47,8 @@ type HeroBannerVariant = {
   variantKey: string
   backgroundColor?: BgColorPreset | null
   backgroundColorCustom?: string | null
+  backgroundType?: BgType | null
+  backgroundImage?: MediaRef
   pillText?: DefaultTypedEditorState | null
   heading?: DefaultTypedEditorState | null
   description?: DefaultTypedEditorState | null
@@ -55,6 +60,8 @@ export type HeroBannerBlockType = {
   blockType?: 'heroBanner'
   backgroundColor?: BgColorPreset | null
   backgroundColorCustom?: string | null
+  backgroundType?: BgType | null
+  backgroundImage?: MediaRef
   pillText?: DefaultTypedEditorState | null
   heading: DefaultTypedEditorState
   pricePrefix?: string | null
@@ -77,6 +84,8 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
   const {
     backgroundColor,
     backgroundColorCustom,
+    backgroundType,
+    backgroundImage,
     pillText,
     heading,
     pricePrefix,
@@ -108,9 +117,22 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
   const effectiveBgPreset = activeVariant?.backgroundColor ?? backgroundColor
   const effectiveBgCustom = activeVariant?.backgroundColorCustom ?? backgroundColorCustom
+  const effectiveBgType = activeVariant?.backgroundType ?? backgroundType ?? 'color'
+  const effectiveBgImage = activeVariant?.backgroundImage ?? backgroundImage
 
-  const isDark = isDarkPreset(effectiveBgPreset)
+  const isImageMode = effectiveBgType === 'image'
+  const isDark = isImageMode || isDarkPreset(effectiveBgPreset)
   const resolvedBg = resolveBg(effectiveBgPreset, effectiveBgCustom)
+
+  const sectionBgStyle =
+    isImageMode && effectiveBgImage?.url
+      ? {
+          background: `linear-gradient(90deg,#0a1e35 0%,rgba(10,30,53,0.72) 50%,transparent 100%), url('${getMediaUrl(effectiveBgImage.url)}')`,
+          backgroundSize: 'cover, cover' as const,
+          backgroundPosition: 'left center, right center' as const,
+          backgroundRepeat: 'no-repeat, no-repeat' as const,
+        }
+      : undefined
 
   const resolvedPillText = activeVariant?.pillText ?? pillText
   const resolvedHeading = (activeVariant?.heading ?? heading) as DefaultTypedEditorState
@@ -825,7 +847,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         }
       `}</style>
 
-      <section className={`hero ${isDark ? 'hero--dark' : 'hero--light'}`}>
+      <section className={`hero ${isDark ? 'hero--dark' : 'hero--light'}`} style={sectionBgStyle}>
         <div style={!isDark ? { background: resolvedBg } : undefined} className="hero-inner">
           <div className="hero-left">
             {resolvedPillText && (

@@ -2157,6 +2157,14 @@ export interface HeroBannerBlock {
    */
   backgroundColorCustom?: string | null;
   /**
+   * Choose whether the hero uses a color/gradient or a background image.
+   */
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Image shown behind the hero. A dark gradient overlay is applied automatically.
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
    * Badge above the heading — supports text color (e.g. "Phase 1 · Limited to 1,000 kits").
    */
   pillText?: {
@@ -2272,6 +2280,8 @@ export interface HeroBannerBlock {
         variantKey: string;
         backgroundColor?: ('light' | 'dark' | 'darkNavy' | 'teal' | 'white' | 'custom') | null;
         backgroundColorCustom?: string | null;
+        backgroundType?: ('color' | 'image') | null;
+        backgroundImage?: (number | null) | Media;
         pillText?: {
           root: {
             type: string;
@@ -2369,6 +2379,37 @@ export interface OutcomesSectionBlock {
          * ← arrow is prepended automatically.
          */
         backFoot?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Each entry overrides content when ?v=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * Value matched against ?v=. Example: "dark".
+         */
+        variantKey: string;
+        backgroundColor?: ('dark' | 'darkNavy' | 'teal' | 'white' | 'cream' | 'custom') | null;
+        backgroundColorCustom?: string | null;
+        eyebrow?: string | null;
+        heading?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        subText?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2505,6 +2546,26 @@ export interface StatBreakBlock {
    * Optional punctuation or text after the word, e.g. ".".
    */
   headingAfter?: string | null;
+  /**
+   * Each entry overrides content when ?v=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
+   */
+  variants?:
+    | {
+        /**
+         * Value matched against ?v=. Example: "dark".
+         */
+        variantKey: string;
+        backgroundColor?: ('dark' | 'darkNavy' | 'teal' | 'white' | 'cream' | 'custom') | null;
+        backgroundColorCustom?: string | null;
+        statNumber?: string | null;
+        statSuffix?: string | null;
+        headingLine1?: string | null;
+        headingLine2?: string | null;
+        highlightedWord?: string | null;
+        headingAfter?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'statBreak';
@@ -4166,6 +4227,8 @@ export interface EvolutionBandBlockSelect<T extends boolean = true> {
 export interface HeroBannerBlockSelect<T extends boolean = true> {
   backgroundColor?: T;
   backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
   pillText?: T;
   heading?: T;
   pricePrefix?: T;
@@ -4199,6 +4262,8 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
         variantKey?: T;
         backgroundColor?: T;
         backgroundColorCustom?: T;
+        backgroundType?: T;
+        backgroundImage?: T;
         pillText?: T;
         heading?: T;
         description?: T;
@@ -4227,6 +4292,17 @@ export interface OutcomesSectionBlockSelect<T extends boolean = true> {
         backTitle?: T;
         backBody?: T;
         backFoot?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        backgroundColor?: T;
+        backgroundColorCustom?: T;
+        eyebrow?: T;
+        heading?: T;
+        subText?: T;
         id?: T;
       };
   id?: T;
@@ -4308,6 +4384,20 @@ export interface StatBreakBlockSelect<T extends boolean = true> {
   headingLine2?: T;
   highlightedWord?: T;
   headingAfter?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        backgroundColor?: T;
+        backgroundColorCustom?: T;
+        statNumber?: T;
+        statSuffix?: T;
+        headingLine1?: T;
+        headingLine2?: T;
+        highlightedWord?: T;
+        headingAfter?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

@@ -84,5 +84,82 @@ export const StatBreakBlock: Block = {
       localized: true,
       admin: { description: 'Optional punctuation or text after the word, e.g. ".".' },
     },
+    // ── A/B testing variants ──────────────────────────────────────────────────
+    {
+      name: 'variants',
+      label: 'A/B Variants',
+      type: 'array',
+      admin: {
+        description:
+          'Each entry overrides content when ?v=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.',
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'variantKey',
+          label: 'Variant Key',
+          type: 'text',
+          required: true,
+          admin: { description: 'Value matched against ?v=. Example: "dark".' },
+        },
+        {
+          name: 'backgroundColor',
+          label: 'Background Color Override',
+          type: 'select',
+          options: [
+            { label: 'Dark Navy (#12314D)', value: 'dark' },
+            { label: 'Deeper Navy (#0e2640)', value: 'darkNavy' },
+            { label: 'Teal', value: 'teal' },
+            { label: 'White', value: 'white' },
+            { label: 'Cream (warm off-white)', value: 'cream' },
+            { label: 'Custom', value: 'custom' },
+          ],
+        },
+        {
+          name: 'backgroundColorCustom',
+          label: 'Custom Background Color Override (hex)',
+          type: 'text',
+          admin: {
+            condition: (_, siblingData) => siblingData?.backgroundColor === 'custom',
+          },
+        },
+        {
+          name: 'statNumber',
+          label: 'Stat Number Override',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'statSuffix',
+          label: 'Stat Suffix Override',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'headingLine1',
+          label: 'Heading Line 1 Override',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'headingLine2',
+          label: 'Heading Line 2 Override',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'highlightedWord',
+          label: 'Highlighted Word Override',
+          type: 'text',
+          localized: true,
+        },
+        {
+          name: 'headingAfter',
+          label: 'Text After Highlighted Word Override',
+          type: 'text',
+          localized: true,
+        },
+      ],
+    },
   ],
 }

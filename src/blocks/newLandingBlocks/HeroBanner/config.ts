@@ -16,7 +16,6 @@ const headingEditor = lexicalEditor({
     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
   ],
 })
-
 const inlineEditor = lexicalEditor({
   features: ({ rootFeatures }) => [
     ...rootFeatures,
@@ -61,6 +60,30 @@ export const HeroBannerBlock: Block = {
         condition: (_, siblingData) => siblingData?.backgroundColor === 'custom',
       },
     },
+    {
+      name: 'backgroundType',
+      label: 'Background Type',
+      type: 'select',
+      defaultValue: 'color',
+      admin: {
+        description: 'Choose whether the hero uses a color/gradient or a background image.',
+      },
+      options: [
+        { label: 'Color / Gradient', value: 'color' },
+        { label: 'Image', value: 'image' },
+      ],
+    },
+    {
+      name: 'backgroundImage',
+      label: 'Background Image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description:
+          'Image shown behind the hero. A dark gradient overlay is applied automatically.',
+        condition: (_, siblingData) => siblingData?.backgroundType === 'image',
+      },
+    },
     // ── Hero section ──────────────────────────────────────────────────────────
     {
       name: 'pillText',
@@ -69,7 +92,8 @@ export const HeroBannerBlock: Block = {
       localized: true,
       editor: inlineEditor,
       admin: {
-        description: 'Badge above the heading — supports text color (e.g. "Phase 1 · Limited to 1,000 kits").',
+        description:
+          'Badge above the heading — supports text color (e.g. "Phase 1 · Limited to 1,000 kits").',
       },
     },
     {
@@ -239,6 +263,24 @@ export const HeroBannerBlock: Block = {
           type: 'text',
           admin: {
             condition: (_, siblingData) => siblingData?.backgroundColor === 'custom',
+          },
+        },
+        {
+          name: 'backgroundType',
+          label: 'Background Type Override',
+          type: 'select',
+          options: [
+            { label: 'Color / Gradient', value: 'color' },
+            { label: 'Image', value: 'image' },
+          ],
+        },
+        {
+          name: 'backgroundImage',
+          label: 'Background Image Override',
+          type: 'upload',
+          relationTo: 'media',
+          admin: {
+            condition: (_, siblingData) => siblingData?.backgroundType === 'image',
           },
         },
         {
