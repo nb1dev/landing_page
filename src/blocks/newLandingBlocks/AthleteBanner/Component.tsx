@@ -515,7 +515,7 @@ export const AthleteBannerComponent: React.FC<AthleteBannerBlockType> = (props) 
                       {card.title && <div className="ab-title">{card.title}</div>}
                     </div>
                     <div className="ab-quote">
-                      <div className="ab-quote-mark">&quot</div>
+                      <div className="ab-quote-mark">&quot;</div>
                       {card.quoteBody && <div className="ab-quote-body">{card.quoteBody}</div>}
                       {card.quoteAttr && <div className="ab-quote-attr">{card.quoteAttr}</div>}
                     </div>

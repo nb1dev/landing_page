@@ -325,7 +325,7 @@ export const OutcomesSectionComponent: React.FC<OutcomesSectionBlockType> = ({
         }
 
         .oc-back-foot::before {
-          content: '\\2190';
+          content: '←';
           color: #0a8fb0;
           font-size: 0.85rem;
         }
