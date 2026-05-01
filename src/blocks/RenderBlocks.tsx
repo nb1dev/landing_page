@@ -42,6 +42,7 @@ import { ReserveCtaComponent } from './newLandingBlocks/ReserveCta/Component'
 import { AthleteBannerComponent } from './newLandingBlocks/AthleteBanner/Component'
 import { PriceBreakBlockComponent } from './PriceBreakBlock/Component'
 import { ScienceBoardBlockComponent } from './ScienceBoardBlock/Component'
+import { FloatingCTABlockComponent } from './FloatingCTA/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -83,6 +84,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   reserveCta: ReserveCtaComponent,
   priceBreak: PriceBreakBlockComponent,
   scienceBoard: ScienceBoardBlockComponent,
+  floatingCTA: FloatingCTABlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

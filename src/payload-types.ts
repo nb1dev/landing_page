@@ -254,6 +254,7 @@ export interface Page {
     | AthleteBannerBlock
     | PriceBreakBlock
     | ScienceBoardBlock
+    | FloatingCTABlock
   )[];
   meta?: {
     /**
@@ -2995,6 +2996,39 @@ export interface ScienceBoardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FloatingCTABlock".
+ */
+export interface FloatingCTABlock {
+  /**
+   * e.g. "Get your kit" — plain text shown before the highlighted part.
+   */
+  text?: string | null;
+  /**
+   * e.g. "2 weeks before anyone else" — displayed in teal accent color.
+   */
+  highlightedText?: string | null;
+  /**
+   * e.g. "Reserve my kit →"
+   */
+  buttonText: string;
+  /**
+   * e.g. "#reserve" (in-page anchor) or "/early-access"
+   */
+  buttonHref: string;
+  /**
+   * e.g. ".hero" or "#hero" — bar appears after this element scrolls out of view.
+   */
+  heroSelector?: string | null;
+  /**
+   * e.g. "#reserve" or ".reserve-cta" — bar hides when this element comes into view.
+   */
+  reserveSelector?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'floatingCTA';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -3399,6 +3433,7 @@ export interface PagesSelect<T extends boolean = true> {
         athleteBanner?: T | AthleteBannerBlockSelect<T>;
         priceBreak?: T | PriceBreakBlockSelect<T>;
         scienceBoard?: T | ScienceBoardBlockSelect<T>;
+        floatingCTA?: T | FloatingCTABlockSelect<T>;
       };
   meta?:
     | T
@@ -4567,6 +4602,20 @@ export interface ScienceBoardBlockSelect<T extends boolean = true> {
         darkMode?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FloatingCTABlock_select".
+ */
+export interface FloatingCTABlockSelect<T extends boolean = true> {
+  text?: T;
+  highlightedText?: T;
+  buttonText?: T;
+  buttonHref?: T;
+  heroSelector?: T;
+  reserveSelector?: T;
   id?: T;
   blockName?: T;
 }

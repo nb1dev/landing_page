@@ -51,6 +51,7 @@ import { ReserveCtaBlock } from '@/blocks/newLandingBlocks/ReserveCta/config'
 import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/config'
 import { PriceBreakBlock } from '@/blocks/PriceBreakBlock/config'
 import { ScienceBoardBlock } from '@/blocks/ScienceBoardBlock/config'
+import { FloatingCTABlock } from '@/blocks/FloatingCTA/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -154,6 +155,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 AthleteBannerBlock,
                 PriceBreakBlock,
                 ScienceBoardBlock,
+                FloatingCTABlock,
               ],
               required: true,
               admin: { initCollapsed: true },
