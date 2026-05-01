@@ -3,6 +3,7 @@ import * as migration_20260430_science_board_block from './20260430_science_boar
 import * as migration_20260430_science_board_fix_name from './20260430_science_board_fix_name';
 import * as migration_20260501_hero_banner_bg_image from './20260501_hero_banner_bg_image';
 import * as migration_20260501_ab_variants_stat_break_outcomes from './20260501_ab_variants_stat_break_outcomes';
+import * as migration_20260501_price_break_bg_color from './20260501_price_break_bg_color';
 import * as migration_20260408_091809 from './20260408_091809';
 import * as migration_20260428_122159 from './20260428_122159';
 import * as migration_20260428_131604 from './20260428_131604';
@@ -121,5 +122,10 @@ export const migrations = [
     up: migration_20260501_ab_variants_stat_break_outcomes.up,
     down: migration_20260501_ab_variants_stat_break_outcomes.down,
     name: '20260501_ab_variants_stat_break_outcomes'
+  },
+  {
+    up: migration_20260501_price_break_bg_color.up,
+    down: migration_20260501_price_break_bg_color.down,
+    name: '20260501_price_break_bg_color'
   },
 ];

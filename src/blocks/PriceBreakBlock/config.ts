@@ -26,6 +26,31 @@ export const PriceBreakBlock: Block = {
     plural: 'Price Break Blocks',
   },
   fields: [
+    // ── Appearance ────────────────────────────────────────────────────────────
+    {
+      name: 'backgroundColor',
+      label: 'Background Color',
+      type: 'select',
+      defaultValue: 'dark',
+      admin: { description: 'Background colour for the section.' },
+      options: [
+        { label: 'Dark Navy (#12314D)', value: 'dark' },
+        { label: 'Deeper Navy (#0e2640)', value: 'darkNavy' },
+        { label: 'Teal', value: 'teal' },
+        { label: 'White', value: 'white' },
+        { label: 'Cream (warm off-white)', value: 'cream' },
+        { label: 'Custom', value: 'custom' },
+      ],
+    },
+    {
+      name: 'backgroundColorCustom',
+      label: 'Custom Background Color (hex)',
+      type: 'text',
+      admin: {
+        condition: (_, siblingData) => siblingData?.backgroundColor === 'custom',
+      },
+    },
+    // ── Content ───────────────────────────────────────────────────────────────
     {
       name: 'priceNumber',
       label: 'Price Number',
@@ -57,7 +82,7 @@ export const PriceBreakBlock: Block = {
       localized: true,
       editor: makeEditor(),
     },
-    // ── A/B Variants ────────────────────────────────────────────────────────
+    // ── A/B Variants ──────────────────────────────────────────────────────────
     {
       name: 'variants',
       label: 'A/B Variants',
@@ -73,15 +98,28 @@ export const PriceBreakBlock: Block = {
           label: 'Variant Key',
           type: 'text',
           required: true,
-          admin: {
-            description: 'URL param value matched against ?v=. E.g. "v1" or "dark".',
-          },
+          admin: { description: 'URL param value matched against ?v=. E.g. "dark".' },
         },
         {
-          name: 'darkMode',
-          label: 'Dark Mode',
-          type: 'checkbox',
-          defaultValue: true,
+          name: 'backgroundColor',
+          label: 'Background Color Override',
+          type: 'select',
+          options: [
+            { label: 'Dark Navy (#12314D)', value: 'dark' },
+            { label: 'Deeper Navy (#0e2640)', value: 'darkNavy' },
+            { label: 'Teal', value: 'teal' },
+            { label: 'White', value: 'white' },
+            { label: 'Cream (warm off-white)', value: 'cream' },
+            { label: 'Custom', value: 'custom' },
+          ],
+        },
+        {
+          name: 'backgroundColorCustom',
+          label: 'Custom Background Color Override (hex)',
+          type: 'text',
+          admin: {
+            condition: (_, siblingData) => siblingData?.backgroundColor === 'custom',
+          },
         },
         {
           name: 'priceNumber',
@@ -115,5 +153,3 @@ export const PriceBreakBlock: Block = {
     },
   ],
 }
-
-

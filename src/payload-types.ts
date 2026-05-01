@@ -2795,6 +2795,11 @@ export interface AthleteBannerBlock {
  * via the `definition` "PriceBreakBlock".
  */
 export interface PriceBreakBlock {
+  /**
+   * Background colour for the section.
+   */
+  backgroundColor?: ('dark' | 'darkNavy' | 'teal' | 'white' | 'cream' | 'custom') | null;
+  backgroundColorCustom?: string | null;
   priceNumber: string;
   /**
    * Shown after "/" automatically. E.g. "month" → displays as "€99/month".
@@ -2836,10 +2841,11 @@ export interface PriceBreakBlock {
   variants?:
     | {
         /**
-         * URL param value matched against ?v=. E.g. "v1" or "dark".
+         * URL param value matched against ?v=. E.g. "dark".
          */
         variantKey: string;
-        darkMode?: boolean | null;
+        backgroundColor?: ('dark' | 'darkNavy' | 'teal' | 'white' | 'cream' | 'custom') | null;
+        backgroundColorCustom?: string | null;
         priceNumber?: string | null;
         /**
          * E.g. "month" → displays as "€99/month".
@@ -4502,6 +4508,8 @@ export interface AthleteBannerBlockSelect<T extends boolean = true> {
  * via the `definition` "PriceBreakBlock_select".
  */
 export interface PriceBreakBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
   priceNumber?: T;
   priceUnit?: T;
   headingLine1?: T;
@@ -4510,7 +4518,8 @@ export interface PriceBreakBlockSelect<T extends boolean = true> {
     | T
     | {
         variantKey?: T;
-        darkMode?: T;
+        backgroundColor?: T;
+        backgroundColorCustom?: T;
         priceNumber?: T;
         priceUnit?: T;
         headingLine1?: T;

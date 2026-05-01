@@ -55,9 +55,25 @@ function RichTextInline({ content }: { content: any }): React.ReactElement {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+type BgColorPreset = 'dark' | 'darkNavy' | 'teal' | 'white' | 'cream' | 'custom'
+
+function resolveBg(preset?: BgColorPreset | null, custom?: string | null): string {
+  if (preset === 'darkNavy') return '#0e2640'
+  if (preset === 'teal') return '#008498'
+  if (preset === 'white') return '#FFFFFF'
+  if (preset === 'cream') return 'linear-gradient(180deg,#FAF8F2 0%,#F2EFE7 100%)'
+  if (preset === 'custom') return custom || '#12314D'
+  return '#12314D'
+}
+
+function isDarkBg(preset?: BgColorPreset | null): boolean {
+  return !preset || preset === 'dark' || preset === 'darkNavy' || preset === 'teal'
+}
+
 export type PriceBreakVariant = {
   variantKey: string
-  darkMode?: boolean | null
+  backgroundColor?: BgColorPreset | null
+  backgroundColorCustom?: string | null
   priceNumber?: string | null
   priceUnit?: string | null
   headingLine1?: any | null
@@ -67,6 +83,8 @@ export type PriceBreakVariant = {
 export type PriceBreakBlockType = {
   blockName?: string
   blockType?: 'priceBreak'
+  backgroundColor?: BgColorPreset | null
+  backgroundColorCustom?: string | null
   priceNumber: string
   priceUnit?: string | null
   headingLine1?: any | null
@@ -76,12 +94,18 @@ export type PriceBreakBlockType = {
 
 // ─── Design tokens ───────────────────────────────────────────────────────────
 const TEAL = '#0A8FB0'
-const NAVY = '#12314d'
 const WHITE = '#ffffff'
-const BLACK = '#000000'
 
 export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) => {
-  const { priceNumber, priceUnit, headingLine1, headingLine2, variants } = props
+  const {
+    backgroundColor,
+    backgroundColorCustom,
+    priceNumber,
+    priceUnit,
+    headingLine1,
+    headingLine2,
+    variants,
+  } = props
 
   const [variantKey, setVariantKey] = useState<string>('')
 
@@ -92,23 +116,21 @@ export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) =
 
   const activeVariant = variants?.find((v) => v.variantKey === variantKey) ?? null
 
-  // Resolve overrides — variant wins, else block defaults
-  const isDark = activeVariant ? (activeVariant.darkMode ?? true) : true
+  const resolvedBgPreset = activeVariant?.backgroundColor ?? backgroundColor
+  const resolvedBgCustom = activeVariant?.backgroundColorCustom ?? backgroundColorCustom
   const resolvedPrice = activeVariant?.priceNumber ?? priceNumber
   const resolvedUnit = activeVariant?.priceUnit ?? priceUnit
   const resolvedLine1 = activeVariant?.headingLine1 ?? headingLine1
   const resolvedLine2 = activeVariant?.headingLine2 ?? headingLine2
 
-  // Price-break section is always dark navy per HTML reference
-  // (both light and dark page variants use .price-break{background:var(--navy)})
-  const sectionStyle: React.CSSProperties = {
-    background: isDark ? 'linear-gradient(180deg, #FAF8F2 0%, #F2EFE7 100%);' : NAVY,
-    padding: 'clamp(4rem, 6vw, 6rem) 1.5rem',
-    color: WHITE,
-  }
+  const bg = resolveBg(resolvedBgPreset, resolvedBgCustom)
+  const dark = isDarkBg(resolvedBgPreset)
 
   return (
-    <section style={sectionStyle}>
+    <section
+      style={{ background: bg, padding: 'clamp(4rem, 6vw, 6rem) 1.5rem' }}
+      className={dark ? 'text-white' : 'text-[#12314D]'}
+    >
       <div style={{ maxWidth: '1080px', margin: '0 auto', textAlign: 'center' }}>
         {/* Price number */}
         <div
@@ -149,7 +171,7 @@ export const PriceBreakBlockComponent: React.FC<PriceBreakBlockType> = (props) =
               fontWeight: 500,
               letterSpacing: '-.025em',
               lineHeight: 1.25,
-              color: isDark ? BLACK : WHITE,
+              color: dark ? WHITE : '#12314D',
               maxWidth: '880px',
               margin: '0 auto',
             }}

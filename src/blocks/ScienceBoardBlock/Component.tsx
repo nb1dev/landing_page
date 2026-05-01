@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -529,7 +529,7 @@ let cssInjected = false
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function ScienceBoardBlockComponent(props: ScienceBoardBlockType) {
+function ScienceBoardBlockInner(props: ScienceBoardBlockType) {
   const searchParams = useSearchParams()
   const vParam = searchParams?.get('v') ?? null
 
@@ -852,5 +852,13 @@ export function ScienceBoardBlockComponent(props: ScienceBoardBlockType) {
         </div>
       </div>
     </>
+  )
+}
+
+export function ScienceBoardBlockComponent(props: ScienceBoardBlockType) {
+  return (
+    <Suspense fallback={null}>
+      <ScienceBoardBlockInner {...props} />
+    </Suspense>
   )
 }
