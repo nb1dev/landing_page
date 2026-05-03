@@ -701,9 +701,9 @@ function ScienceBoardBlockInner(props: ScienceBoardBlockType) {
                 </p>
               )}
               {props.subCredits && (
-                <p className="nb1sc-sub-credits" style={{ color: subCreditsColor }}>
+                <div className="nb1sc-sub-credits" style={{ color: subCreditsColor }}>
                   <RichTextInline content={props.subCredits} />
-                </p>
+                </div>
               )}
             </div>
           )}
