@@ -24,6 +24,7 @@ import Script from 'next/script'
 
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
 import { ChatwootWidget } from '@/components/ChatwootWidget'
+import StyledJsxRegistry from './registry'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
@@ -127,6 +128,7 @@ export default async function RootLayout({
       </head>
 
       <body>
+        <StyledJsxRegistry>
         <noscript>
           <img
             height="1"
@@ -204,6 +206,7 @@ export default async function RootLayout({
 
           <Footer locale={locale} />
         </Providers>
+        </StyledJsxRegistry>
       </body>
     </html>
   )
