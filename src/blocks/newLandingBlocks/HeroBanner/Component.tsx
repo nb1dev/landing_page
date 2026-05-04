@@ -638,12 +638,18 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         }
 
         .hero-trust {
-          display: flex;
-          justify-content: flex-start;
+          display: grid;
+          grid-template-columns: repeat(2, auto);
+          justify-content: center;
+          justify-items: start;
           align-items: center;
-          gap: 1.5rem;
+          gap: 0.65rem 1.5rem;
           margin-top: 1.5rem;
-          flex-wrap: wrap;
+        }
+
+        .hero-trust-cell:last-child:nth-child(odd) {
+          grid-column: 1 / -1;
+          justify-self: center;
         }
 
         .hero-trust-cell {
@@ -842,7 +848,8 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           }
 
           .hero-trust {
-            gap: 0.85rem;
+            grid-template-columns: repeat(2, auto);
+            gap: 0.55rem 1rem;
           }
         }
       `}</style>

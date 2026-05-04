@@ -3,7 +3,7 @@
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, FormProvider } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 
 import RichText from '@/components/RichText'
@@ -44,11 +44,7 @@ export type ReserveCtaBlockType = {
 }
 
 export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
-  const {
-    form: formFromProps,
-    recapItems,
-    variants,
-  } = props
+  const { form: formFromProps, recapItems, variants } = props
 
   const { id: formID, confirmationType, redirect, submitButtonLabel } = (formFromProps ?? {}) as any
 
@@ -70,7 +66,9 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
     const el = sectionRef.current
     if (!el) return
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setRevealed(true) },
+      ([entry]) => {
+        if (entry.isIntersecting) setRevealed(true)
+      },
       { threshold: 0.08 },
     )
     observer.observe(el)
@@ -101,7 +99,12 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
     defaultValues: (formFromProps as any)?.fields || {},
   })
 
-  const { control, formState: { errors }, handleSubmit, register } = formMethods
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = formMethods
 
   const onSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -118,7 +121,10 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           const res = await req.json()
           if (req.status >= 400) {
             setIsLoading(false)
-            setError({ message: res?.errors?.[0]?.message || 'Internal Server Error', status: String(res?.status || req.status) })
+            setError({
+              message: res?.errors?.[0]?.message || 'Internal Server Error',
+              status: String(res?.status || req.status),
+            })
             return
           }
           setIsLoading(false)
@@ -139,8 +145,13 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
     <section ref={sectionRef} style={{ background: sectionBg }} className="rc-section">
       <style jsx>{`
         @keyframes rcPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.35; }
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.35;
+          }
         }
 
         .rc-section {
@@ -152,12 +163,23 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         .rc-rev {
           opacity: 0;
           transform: translateY(34px);
-          transition: opacity 0.9s ease, transform 0.9s ease;
+          transition:
+            opacity 0.9s ease,
+            transform 0.9s ease;
         }
-        .rc-rev.in { opacity: 1; transform: translateY(0); }
-        .rc-d1 { transition-delay: 0.1s; }
-        .rc-d2 { transition-delay: 0.2s; }
-        .rc-d3 { transition-delay: 0.3s; }
+        .rc-rev.in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .rc-d1 {
+          transition-delay: 0.1s;
+        }
+        .rc-d2 {
+          transition-delay: 0.2s;
+        }
+        .rc-d3 {
+          transition-delay: 0.3s;
+        }
 
         .rc-inner {
           position: relative;
@@ -176,8 +198,8 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           letter-spacing: 0.16em;
           text-transform: uppercase;
           color: #008498;
-          background: rgba(10,143,176,0.08);
-          border: 1px solid rgba(10,143,176,0.28);
+          background: rgba(10, 143, 176, 0.08);
+          border: 1px solid rgba(10, 143, 176, 0.28);
           border-radius: 100px;
           padding: 0.45rem 1.1rem;
           margin-bottom: 1.75rem;
@@ -213,7 +235,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         .rc-sub {
           font-size: 1.05rem;
           font-weight: 300;
-          color: rgba(18,49,77,0.65);
+          color: rgba(18, 49, 77, 0.65);
           line-height: 1.65;
           max-width: 520px;
           margin: 0 auto 2.75rem;
@@ -221,7 +243,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
 
         .rc-sub.rc-dark-text,
         .rc-recap-cell.rc-dark-text {
-          color: rgba(18,49,77,0.78);
+          color: rgba(18, 49, 77, 0.78);
         }
 
         /* Form wrap */
@@ -240,14 +262,19 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           left: 0;
           right: 0;
           height: 1px;
-          background: linear-gradient(90deg, transparent 0%, rgba(10,143,176,0.28) 50%, transparent 100%);
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(10, 143, 176, 0.28) 50%,
+            transparent 100%
+          );
           border-radius: 18px 18px 0 0;
           z-index: 1;
         }
 
         /* Light version: teal gradient card wrapper */
         .rc-form-wrap.rc-card {
-          background: linear-gradient(180deg, #E2F0F2 0%, #EAF3F4 100%);
+          background: linear-gradient(180deg, #e2f0f2 0%, #eaf3f4 100%);
           border-radius: 18px;
           padding: 1.5rem;
         }
@@ -255,31 +282,36 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         .rc-form-row {
           display: flex;
           gap: 0.5rem;
-          background: #FFFFFF;
+          background: #ffffff;
           backdrop-filter: blur(24px) saturate(150%);
           -webkit-backdrop-filter: blur(24px) saturate(150%);
-          border: 1px solid rgba(18,49,77,0.1);
+          border: 1px solid rgba(18, 49, 77, 0.1);
           border-radius: 12px;
           padding: 6px;
-          transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+          transition:
+            border-color 0.25s,
+            background 0.25s,
+            box-shadow 0.25s;
           box-shadow:
-            0 1px 0 rgba(255,255,255,0.7) inset,
-            0 12px 30px -10px rgba(18,49,77,0.15);
+            0 1px 0 rgba(255, 255, 255, 0.7) inset,
+            0 12px 30px -10px rgba(18, 49, 77, 0.15);
         }
 
         .rc-form-row.rc-row-dark {
-          background: #FFFFFF !important;
-          border: 1px solid rgba(18,49,77,0.15) !important;
-          box-shadow: 0 1px 2px rgba(18,49,77,0.04), 0 8px 24px rgba(18,49,77,0.06);
+          background: #ffffff !important;
+          border: 1px solid rgba(18, 49, 77, 0.15) !important;
+          box-shadow:
+            0 1px 2px rgba(18, 49, 77, 0.04),
+            0 8px 24px rgba(18, 49, 77, 0.06);
         }
 
         .rc-form-row:focus-within {
-          border-color: rgba(10,143,176,0.5);
-          background: rgba(255,255,255,0.95);
+          border-color: rgba(10, 143, 176, 0.5);
+          background: rgba(255, 255, 255, 0.95);
           box-shadow:
-            0 1px 0 rgba(255,255,255,0.7) inset,
-            0 12px 30px -10px rgba(18,49,77,0.18),
-            0 0 0 4px rgba(10,143,176,0.12);
+            0 1px 0 rgba(255, 255, 255, 0.7) inset,
+            0 12px 30px -10px rgba(18, 49, 77, 0.18),
+            0 0 0 4px rgba(10, 143, 176, 0.12);
         }
 
         .rc-form-fields {
@@ -300,7 +332,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           width: 100%;
         }
         .rc-form-fields :global(input::placeholder) {
-          color: rgba(18,49,77,0.4);
+          color: rgba(18, 49, 77, 0.4);
         }
 
         .rc-form-btn {
@@ -318,14 +350,20 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           padding: 11px 22px;
           cursor: pointer;
           white-space: nowrap;
-          box-shadow: 0 1px 0 rgba(255,255,255,0.18) inset, 0 6px 18px rgba(10,143,176,0.35);
-          transition: background 0.2s, transform 0.15s;
+          box-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.18) inset,
+            0 6px 18px rgba(10, 143, 176, 0.35);
+          transition:
+            background 0.2s,
+            transform 0.15s;
           flex-shrink: 0;
           align-self: stretch;
         }
         .rc-form-btn:hover {
           background: linear-gradient(180deg, #13aece 0%, #0d99bd 100%);
-          box-shadow: 0 1px 0 rgba(255,255,255,0.22) inset, 0 8px 22px rgba(10,143,176,0.45);
+          box-shadow:
+            0 1px 0 rgba(255, 255, 255, 0.22) inset,
+            0 8px 22px rgba(10, 143, 176, 0.45);
           transform: translateY(-1px);
         }
         .rc-form-btn:disabled {
@@ -337,7 +375,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         .rc-form-foot {
           font-size: 0.85rem;
           font-weight: 300;
-          color: rgba(18,49,77,0.65);
+          color: rgba(18, 49, 77, 0.65);
           margin-top: 0.95rem;
           line-height: 1.55;
           text-align: center;
@@ -352,10 +390,10 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         }
 
         .rc-form-success {
-          background: rgba(10,143,176,0.1);
+          background: rgba(10, 143, 176, 0.1);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(10,143,176,0.28);
+          border: 1px solid rgba(10, 143, 176, 0.28);
           border-radius: 12px;
           padding: 18px 20px;
           font-size: 0.9rem;
@@ -383,7 +421,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           flex-wrap: wrap;
           margin: 2.5rem auto 0;
           padding-top: 2rem;
-          border-top: 1px solid rgba(18,49,77,0.06);
+          border-top: 1px solid rgba(18, 49, 77, 0.06);
           max-width: 880px;
         }
 
@@ -393,7 +431,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
           gap: 0.4rem;
           font-size: 0.78rem;
           font-weight: 500;
-          color: rgba(18,49,77,0.65);
+          color: rgba(18, 49, 77, 0.65);
           letter-spacing: 0.005em;
         }
 
@@ -441,17 +479,17 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
         )}
 
         {subText && (
-          <p className={['rc-sub rc-rev rc-d2', revealed ? 'in' : '', isDark ? 'rc-dark-text' : ''].filter(Boolean).join(' ')}>
+          <p
+            className={['rc-sub rc-rev rc-d2', revealed ? 'in' : '', isDark ? 'rc-dark-text' : '']
+              .filter(Boolean)
+              .join(' ')}
+          >
             {subText}
           </p>
         )}
 
         <div
-          className={[
-            'rc-form-wrap rc-rev rc-d3',
-            revealed ? 'in' : '',
-            isDark ? '' : 'rc-card',
-          ]
+          className={['rc-form-wrap rc-rev rc-d3', revealed ? 'in' : '', isDark ? '' : 'rc-card']
             .filter(Boolean)
             .join(' ')}
         >
@@ -463,39 +501,44 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
               {successMessage || 'Your kit ships two weeks before public launch.'}
             </div>
           ) : (
-            <form id={`reserve-cta-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
-              <div className={['rc-form-row', isDark ? 'rc-row-dark' : ''].filter(Boolean).join(' ')}>
-                <div className="rc-form-fields">
-                  {(formFromProps as any)?.fields?.map((field: any, index: number) => {
-                    const Field: React.FC<any> = formFields?.[field.blockType as keyof typeof formFields]
-                    if (!Field) return null
-                    return (
-                      <Field
-                        key={index}
-                        form={formFromProps}
-                        {...field}
-                        {...formMethods}
-                        control={control}
-                        errors={errors}
-                        register={register}
-                      />
-                    )
-                  })}
+            <FormProvider {...formMethods}>
+              <form id={`reserve-cta-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
+                <div
+                  className={['rc-form-row', isDark ? 'rc-row-dark' : ''].filter(Boolean).join(' ')}
+                >
+                  <div className="rc-form-fields">
+                    {(formFromProps as any)?.fields?.map((field: any, index: number) => {
+                      const Field: React.FC<any> =
+                        formFields?.[field.blockType as keyof typeof formFields]
+                      if (!Field) return null
+                      return (
+                        <Field
+                          key={index}
+                          form={formFromProps}
+                          {...field}
+                          {...formMethods}
+                          control={control}
+                          errors={errors}
+                          register={register}
+                        />
+                      )
+                    })}
+                  </div>
+
+                  <button type="submit" disabled={isLoading} className="rc-form-btn">
+                    {isLoading ? 'Please wait…' : resolvedButtonText}
+                  </button>
                 </div>
 
-                <button type="submit" disabled={isLoading} className="rc-form-btn">
-                  {isLoading ? 'Please wait…' : resolvedButtonText}
-                </button>
-              </div>
-
-              {(footNoteText || footNoteHighlight) && (
-                <p className="rc-form-foot">
-                  {footNoteText}
-                  {footNoteText && footNoteHighlight && ' · '}
-                  {footNoteHighlight && <span className="ac">{footNoteHighlight}</span>}
-                </p>
-              )}
-            </form>
+                {(footNoteText || footNoteHighlight) && (
+                  <p className="rc-form-foot">
+                    {footNoteText}
+                    {footNoteText && footNoteHighlight && ' · '}
+                    {footNoteHighlight && <span className="ac">{footNoteHighlight}</span>}
+                  </p>
+                )}
+              </form>
+            </FormProvider>
           )}
         </div>
       </div>
@@ -503,7 +546,10 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
       {recapItems && recapItems.length > 0 && (
         <div className="rc-recap">
           {recapItems.map((item, i) => (
-            <div key={i} className={['rc-recap-cell', isDark ? 'rc-dark-text' : ''].filter(Boolean).join(' ')}>
+            <div
+              key={i}
+              className={['rc-recap-cell', isDark ? 'rc-dark-text' : ''].filter(Boolean).join(' ')}
+            >
               <span className="rr-tick">✓</span>
               {item.label}
             </div>

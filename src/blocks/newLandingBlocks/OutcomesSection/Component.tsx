@@ -97,7 +97,10 @@ export const OutcomesSectionComponent: React.FC<OutcomesSectionBlockType> = ({
     <section
       ref={sectionRef}
       style={{ background: bg }}
-      className={['oc-section relative overflow-hidden', isDark ? 'text-white' : 'text-[#12314D]'].join(' ')}
+      className={[
+        'oc-section relative overflow-hidden',
+        isDark ? 'text-white' : 'text-[#12314D]',
+      ].join(' ')}
     >
       <style jsx>{`
         .oc-section {
@@ -107,7 +110,9 @@ export const OutcomesSectionComponent: React.FC<OutcomesSectionBlockType> = ({
         .os-rev {
           opacity: 0;
           transform: translateY(28px);
-          transition: opacity 0.75s ease, transform 0.75s ease;
+          transition:
+            opacity 0.75s ease,
+            transform 0.75s ease;
         }
         .os-rev.in {
           opacity: 1;
@@ -176,24 +181,6 @@ export const OutcomesSectionComponent: React.FC<OutcomesSectionBlockType> = ({
 
         .oc-card:hover .oc-front img {
           transform: scale(1.03);
-        }
-
-        .oc-front::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 42%;
-          background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.7) 30%,
-            rgba(255, 255, 255, 0.95) 65%,
-            #ffffff 100%
-          );
-          z-index: 1;
-          pointer-events: none;
         }
 
         .oc-flip-hint {
@@ -468,7 +455,11 @@ export const OutcomesSectionComponent: React.FC<OutcomesSectionBlockType> = ({
                         />
                       ) : (
                         <div
-                          style={{ position: 'absolute', inset: 0, background: 'rgba(10,143,176,0.08)' }}
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: 'rgba(10,143,176,0.08)',
+                          }}
                         />
                       )}
                       <div className="oc-flip-hint" aria-hidden="true">
