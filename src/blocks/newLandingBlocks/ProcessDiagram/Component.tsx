@@ -88,8 +88,12 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
   const { backgroundColor, backgroundColorCustom, eyebrow, heading, steps, variants } = props
 
   const rootRef = useRef<HTMLElement | null>(null)
+  const stepStartTimeRef = useRef<number>(Date.now())
+  const timeoutIdRef = useRef<number | null>(null)
+  const remainingRef = useRef<number>(5200)
   const [variantKey, setVariantKey] = useState('')
   const [activeStep, setActiveStep] = useState(1)
+  const [progressKey, setProgressKey] = useState(0)
   const [revealed, setRevealed] = useState(false)
 
   useEffect(() => {
@@ -110,27 +114,50 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
 
   useEffect(() => {
     const el = rootRef.current
-    if (!el) return
+    if (!el || !safeSteps.length) return
+
+    const advance = () => {
+      setActiveStep((current) => (current >= safeSteps.length ? 1 : current + 1))
+      stepStartTimeRef.current = Date.now()
+      remainingRef.current = 5200
+      timeoutIdRef.current = window.setTimeout(advance, 5200)
+    }
+
+    const pause = () => {
+      if (timeoutIdRef.current !== null) {
+        window.clearTimeout(timeoutIdRef.current)
+        timeoutIdRef.current = null
+        const elapsed = Date.now() - stepStartTimeRef.current
+        remainingRef.current = Math.max(200, 5200 - elapsed)
+      }
+    }
+
+    const resume = () => {
+      if (timeoutIdRef.current !== null) return
+      stepStartTimeRef.current = Date.now()
+      remainingRef.current = 5200
+      setProgressKey((k) => k + 1)
+      timeoutIdRef.current = window.setTimeout(advance, 5200)
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setRevealed(true)
+        if (entry.isIntersecting) {
+          setRevealed(true)
+          resume()
+        } else {
+          pause()
+        }
       },
       { threshold: 0.1, rootMargin: '-40px 0px -40px 0px' },
     )
 
     observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
 
-  useEffect(() => {
-    if (!safeSteps.length) return
-
-    const interval = window.setInterval(() => {
-      setActiveStep((current) => (current >= safeSteps.length ? 1 : current + 1))
-    }, 5200)
-
-    return () => window.clearInterval(interval)
+    return () => {
+      observer.disconnect()
+      pause()
+    }
   }, [safeSteps.length])
 
   if (!safeSteps.length) return null
@@ -899,7 +926,10 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
                     </div>
 
                     <div className="dx-step-progress">
-                      <span className="dx-step-progress-fill" />
+                      <span
+                        key={active ? progressKey : stepNumber}
+                        className="dx-step-progress-fill"
+                      />
                     </div>
                   </button>
                 </React.Fragment>
