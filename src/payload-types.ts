@@ -5121,6 +5121,24 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  logo?: (number | null) | Media;
+  /**
+   * Shown when theme is dark. Falls back to the light logo if empty.
+   */
+  logoDark?: (number | null) | Media;
+  /**
+   * Used when no A/B variant matches.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * e.g. "Login →"
+   */
+  loginText?: string | null;
+  loginUrl?: string | null;
+  /**
+   * CSS color override. Falls back to theme default if empty.
+   */
+  loginTextColor?: string | null;
   navItems?:
     | {
         link: {
@@ -5142,6 +5160,23 @@ export interface Header {
            */
           localizedLabel?: string | null;
         };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Override header appearance per A/B variant (?v= URL param).
+   */
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param. Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default login text color for this variant.
+         */
+        loginTextColor?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -5295,6 +5330,12 @@ export interface Faq {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  logoDark?: T;
+  theme?: T;
+  loginText?: T;
+  loginUrl?: T;
+  loginTextColor?: T;
   navItems?:
     | T
     | {
@@ -5308,6 +5349,14 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
               localizedLabel?: T;
             };
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        loginTextColor?: T;
         id?: T;
       };
   updatedAt?: T;

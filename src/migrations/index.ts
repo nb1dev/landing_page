@@ -21,6 +21,7 @@ import * as migration_20260504_footer_theme_variants from './20260504_footer_the
 import * as migration_20260504_footer_variants_link_color from './20260504_footer_variants_link_color'
 import * as migration_20260504_footer_link_color from './20260504_footer_link_color'
 import * as migration_20260504_footer_variants_logo from './20260504_footer_variants_logo'
+import * as migration_20260504_header_theme_variants from './20260504_header_theme_variants'
 
 export const migrations = [
   {
@@ -137,5 +138,10 @@ export const migrations = [
     up: migration_20260504_footer_variants_logo.up,
     down: migration_20260504_footer_variants_logo.down,
     name: '20260504_footer_variants_logo',
+  },
+  {
+    up: migration_20260504_header_theme_variants.up,
+    down: migration_20260504_header_theme_variants.down,
+    name: '20260504_header_theme_variants',
   },
 ]

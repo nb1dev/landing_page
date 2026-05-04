@@ -8,7 +8,7 @@ import React, { cache } from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
-// import { Header } from '@/Header/Component'
+import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -129,18 +129,18 @@ export default async function RootLayout({
 
       <body>
         <StyledJsxRegistry>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1392496046228330&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: 'none' }}
+              src="https://www.facebook.com/tr?id=1392496046228330&ev=PageView&noscript=1"
+              alt=""
+            />
+          </noscript>
 
-        {/* Google Tag Manager (noscript - DISABLED because using ConditionalGoogleTagManager) */}
-        {/*
+          {/* Google Tag Manager (noscript - DISABLED because using ConditionalGoogleTagManager) */}
+          {/*
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KQBDCQ9B"
@@ -150,31 +150,31 @@ export default async function RootLayout({
           />
         </noscript>
         */}
-        {/* End Google Tag Manager (noscript) */}
+          {/* End Google Tag Manager (noscript) */}
 
-        <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          <Providers>
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
 
-          {/* <Header locale={locale} /> */}
+            <Header locale={locale} />
 
-          {children}
+            {children}
 
-          <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
+            <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
 
-          <ChatwootWidget locale={locale} />
+            <ChatwootWidget locale={locale} />
 
-          <Script
-            src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
-            strategy="afterInteractive"
-            async
-          />
+            <Script
+              src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
+              strategy="afterInteractive"
+              async
+            />
 
-          <Script id="klaviyo-init" strategy="afterInteractive">
-            {`
+            <Script id="klaviyo-init" strategy="afterInteractive">
+              {`
               !function(){if(!window.klaviyo){
                 window._klOnsite=window._klOnsite||[];
                 try{
@@ -202,10 +202,10 @@ export default async function RootLayout({
                 }
               }}();
             `}
-          </Script>
+            </Script>
 
-          <Footer locale={locale} />
-        </Providers>
+            <Footer locale={locale} />
+          </Providers>
         </StyledJsxRegistry>
       </body>
     </html>

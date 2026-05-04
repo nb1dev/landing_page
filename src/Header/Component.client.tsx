@@ -1,70 +1,139 @@
 'use client'
 
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React from 'react'
 
-import type { Header } from '@/payload-types'
-import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
 import { LocaleSwitcher } from '@/components/LocaleSwitcher'
 
-interface HeaderClientProps {
-  data: Header
-  locale: string
+type Theme = 'light' | 'dark'
+
+type HeaderVariant = {
+  variantKey: string
+  theme: Theme
+  loginTextColor?: string | null
 }
 
-const SUPPORTED_LOCALES = ['en', 'de'] as const
-type AppLocale = (typeof SUPPORTED_LOCALES)[number]
+export interface HeaderClientProps {
+  locale: string
+  logo?: { url?: string | null; alt?: string | null } | null
+  logoDark?: { url?: string | null; alt?: string | null } | null
+  defaultTheme?: Theme
+  loginText?: string | null
+  loginUrl?: string | null
+  loginTextColor?: string | null
+  variants?: HeaderVariant[]
+}
 
-export const HeaderClient: React.FC<HeaderClientProps> = ({ data, locale }) => {
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
+export const HeaderClient: React.FC<HeaderClientProps> = ({
+  locale,
+  logo,
+  logoDark,
+  defaultTheme = 'light',
+  loginText,
+  loginUrl,
+  loginTextColor: defaultLoginTextColor,
+  variants = [],
+}) => {
+  const searchParams = useSearchParams()
+  const variantParam = searchParams.get('v')
 
-  const pathname = usePathname() || '/'
+  let theme: Theme = defaultTheme
+  let loginTextColor: string | null | undefined = defaultLoginTextColor
 
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  if (variantParam) {
+    const match = variants.find((v) => v.variantKey === variantParam)
+    if (match) {
+      theme = match.theme
+      if (match.loginTextColor) loginTextColor = match.loginTextColor
+    }
+  }
 
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
-
-  const activeLocale = useMemo<AppLocale>(() => {
-    return (SUPPORTED_LOCALES.includes(locale as AppLocale) ? locale : 'en') as AppLocale
-  }, [locale])
+  const isDark = theme === 'dark'
+  const activeLogo = isDark && logoDark?.url ? logoDark : logo
+  const resolvedLoginColor = loginTextColor || (isDark ? '#ffffff' : '#12314d')
 
   return (
-    <header className="container relative z-20" {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between items-center gap-4">
-        {/* <Link href={`/${activeLocale}`}>
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link> */}
+    <>
+      <style jsx>{`
+        .nb1-nav {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 200;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 2.5rem;
+          background: ${isDark ? 'rgba(10,30,53,0.92)' : 'rgba(255,255,255,0.92)'};
+          backdrop-filter: blur(20px) saturate(140%);
+          -webkit-backdrop-filter: blur(20px) saturate(140%);
+          border-bottom: 1px solid
+            ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(18,49,77,0.06)'};
+          box-sizing: border-box;
+        }
+        .nb1-nav-logo {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          flex-shrink: 0;
+        }
+        .nb1-nav-r {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+        }
+        :global(.nb1-nav-login) {
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: ${resolvedLoginColor};
+          text-decoration: none;
+          letter-spacing: -0.005em;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          padding: 0.4rem 0.65rem;
+          border-radius: 6px;
+          transition: color 0.2s, background 0.2s;
+        }
+        :global(.nb1-nav-login:hover) {
+          color: #008498;
+          background: rgba(10, 143, 176, 0.1);
+        }
+        @media (max-width: 880px) {
+          .nb1-nav {
+            padding: 0 1rem;
+          }
+          .nb1-nav-r {
+            gap: 0.75rem;
+          }
+        }
+      `}</style>
 
-        <div className="flex items-center gap-6 ml-auto">
-          {/* <HeaderNav data={data} locale={activeLocale} /> */}
+      <nav className="nb1-nav">
+        {activeLogo?.url && (
+          <Link href={`/${locale}`} className="nb1-nav-logo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={activeLogo.url}
+              alt={activeLogo.alt || 'Logo'}
+              style={{ width: 54, height: 32, objectFit: 'contain', display: 'block' }}
+            />
+          </Link>
+        )}
 
-          {/* ✅ Login + Locale switch */}
-          <div className="flex items-center">
-            {/* <div
-              className="mr-4"
-              style={{ color: 'white', cursor: 'pointer' }}
-              onClick={() => router.push('/login')} // ✅ no locale
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && router.push('/login')}
-            >
-              Login
-            </div> */}
+        <div className="nb1-nav-r">
+          <LocaleSwitcher locale={locale} isDark={isDark} />
 
-            <LocaleSwitcher locale={activeLocale} />
-          </div>
+          {loginText && loginUrl && (
+            <a href={loginUrl} className="nb1-nav-login">
+              {loginText}
+            </a>
+          )}
         </div>
-      </div>
-    </header>
+      </nav>
+    </>
   )
 }
