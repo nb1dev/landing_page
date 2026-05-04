@@ -5155,7 +5155,18 @@ export interface Header {
 export interface Footer {
   id: number;
   logo?: (number | null) | Media;
-  copyrightText?: string | null;
+  /**
+   * Used when no A/B variant matches. Light = white bg, Dark = navy bg.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * CSS color for nav links (e.g. "rgba(18,49,77,0.55)" or "#303438"). Falls back to theme default if empty.
+   */
+  linkColor?: string | null;
+  /**
+   * Short tagline shown next to logo, e.g. "Sequenced. Then yours."
+   */
+  tagline?: string | null;
   navItems?:
     | {
         link: {
@@ -5177,6 +5188,32 @@ export interface Footer {
            */
           localizedLabel?: string | null;
         };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Company address shown in the legal section.
+   */
+  address?: string | null;
+  copyrightText?: string | null;
+  /**
+   * Map URL variant keys to a footer theme. A visitor with ?v=<key> in the URL gets the matching theme.
+   */
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param (e.g. "dark-page", "eu-b"). Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default link color for this variant. Any CSS color value.
+         */
+        linkColor?: string | null;
+        /**
+         * Overrides the default logo for this variant.
+         */
+        logo?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -5283,7 +5320,9 @@ export interface HeaderSelect<T extends boolean = true> {
  */
 export interface FooterSelect<T extends boolean = true> {
   logo?: T;
-  copyrightText?: T;
+  theme?: T;
+  linkColor?: T;
+  tagline?: T;
   navItems?:
     | T
     | {
@@ -5297,6 +5336,17 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
               localizedLabel?: T;
             };
+        id?: T;
+      };
+  address?: T;
+  copyrightText?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        linkColor?: T;
+        logo?: T;
         id?: T;
       };
   updatedAt?: T;

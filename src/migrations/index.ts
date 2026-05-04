@@ -17,6 +17,10 @@ import * as migration_20260501_ab_variants_stat_break_outcomes from './20260501_
 import * as migration_20260501_hero_banner_bg_image from './20260501_hero_banner_bg_image'
 import * as migration_20260501_price_break_bg_color from './20260501_price_break_bg_color'
 import * as migration_20260510_heading_richtext from './20260510_heading_richtext'
+import * as migration_20260504_footer_theme_variants from './20260504_footer_theme_variants'
+import * as migration_20260504_footer_variants_link_color from './20260504_footer_variants_link_color'
+import * as migration_20260504_footer_link_color from './20260504_footer_link_color'
+import * as migration_20260504_footer_variants_logo from './20260504_footer_variants_logo'
 
 export const migrations = [
   {
@@ -113,5 +117,25 @@ export const migrations = [
     up: migration_20260510_heading_richtext.up,
     down: migration_20260510_heading_richtext.down,
     name: '20260510_heading_richtext',
+  },
+  {
+    up: migration_20260504_footer_theme_variants.up,
+    down: migration_20260504_footer_theme_variants.down,
+    name: '20260504_footer_theme_variants',
+  },
+  {
+    up: migration_20260504_footer_variants_link_color.up,
+    down: migration_20260504_footer_variants_link_color.down,
+    name: '20260504_footer_variants_link_color',
+  },
+  {
+    up: migration_20260504_footer_link_color.up,
+    down: migration_20260504_footer_link_color.down,
+    name: '20260504_footer_link_color',
+  },
+  {
+    up: migration_20260504_footer_variants_logo.up,
+    down: migration_20260504_footer_variants_logo.down,
+    name: '20260504_footer_variants_logo',
   },
 ]
