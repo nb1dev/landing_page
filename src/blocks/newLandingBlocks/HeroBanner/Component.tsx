@@ -250,7 +250,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           position: relative;
           z-index: 1;
           width: 100%;
-          padding: 5rem 4rem;
+          padding: 2.5rem 4rem;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
@@ -291,7 +291,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           text-transform: uppercase;
           border-radius: 100px;
           padding: 0.62rem 1.15rem 0.62rem 1.35rem;
-          margin-bottom: 2.5rem;
+          margin-bottom: 1.25rem;
           opacity: 0;
           animation: fu 0.8s 0.2s forwards;
           backdrop-filter: blur(20px) saturate(140%);
@@ -338,7 +338,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         }
 
         .hero-heading {
-          margin-bottom: 2rem;
+          margin-bottom: 1.25rem;
           opacity: 0;
           animation: fu 1.1s 0.4s forwards;
           max-width: 920px;
@@ -355,9 +355,9 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
             -apple-system,
             BlinkMacSystemFont,
             sans-serif;
-          font-size: clamp(2.6rem, 6vw, 5.4rem);
+          font-size: clamp(2.7rem, 5.5vw, 4.6rem);
           font-weight: 600;
-          line-height: 1.04;
+          line-height: 1.06;
           letter-spacing: -0.035em;
         }
 
@@ -412,7 +412,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           font-size: clamp(1rem, 1.5vw, 1.2rem);
           font-weight: 300;
           line-height: 1.6;
-          margin-bottom: 2.5rem;
+          margin-bottom: 1.25rem;
           max-width: 560px;
           opacity: 0;
           animation: fu 1.1s 0.6s forwards;
@@ -802,22 +802,26 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           }
 
           .hero-outcomes-inner {
-            grid-template-columns: 1fr;
-            gap: 1.5rem 0;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
           }
 
           .ho-cell {
-            padding: 0.85rem 0.5rem;
-            border-right: none;
-            border-bottom: 1px solid rgba(18, 49, 77, 0.1);
+            padding: 0.75rem 0.5rem;
           }
 
-          .hero-outcomes--dark .ho-cell {
-            border-bottom-color: rgba(255, 255, 255, 0.14);
+          .ho-icon {
+            width: 36px;
+            height: 36px;
+            margin-bottom: 0.5rem;
           }
 
-          .ho-cell:last-child {
-            border-bottom: none;
+          .ho-claim {
+            font-size: 0.85rem;
+          }
+
+          .ho-anchor {
+            font-size: 0.7rem;
           }
 
           .hero-outcomes-foot {
@@ -828,7 +832,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
         @media (max-width: 760px) {
           .hero-inner {
-            padding: 3.5rem 1.25rem;
+            padding: 1.5rem 1.25rem;
           }
 
           .hero-heading :global(h1),
@@ -836,7 +840,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           .hero-heading :global(h3),
           .hero-heading :global(h4),
           .hero-heading :global(p) {
-            font-size: clamp(2.25rem, 12vw, 3.5rem);
+            font-size: clamp(1.9rem, 9vw, 2.8rem);
           }
 
           .form-row {

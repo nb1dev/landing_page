@@ -90,7 +90,8 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
   const rootRef = useRef<HTMLElement | null>(null)
   const stepStartTimeRef = useRef<number>(Date.now())
   const timeoutIdRef = useRef<number | null>(null)
-  const remainingRef = useRef<number>(5200)
+  const remainingRef = useRef<number>(8000)
+  const manualRef = useRef(false)
   const [variantKey, setVariantKey] = useState('')
   const [activeStep, setActiveStep] = useState(1)
   const [progressKey, setProgressKey] = useState(0)
@@ -117,10 +118,11 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
     if (!el || !safeSteps.length) return
 
     const advance = () => {
+      if (manualRef.current) return
       setActiveStep((current) => (current >= safeSteps.length ? 1 : current + 1))
       stepStartTimeRef.current = Date.now()
-      remainingRef.current = 5200
-      timeoutIdRef.current = window.setTimeout(advance, 5200)
+      remainingRef.current = 8000
+      timeoutIdRef.current = window.setTimeout(advance, 8000)
     }
 
     const pause = () => {
@@ -128,16 +130,16 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
         window.clearTimeout(timeoutIdRef.current)
         timeoutIdRef.current = null
         const elapsed = Date.now() - stepStartTimeRef.current
-        remainingRef.current = Math.max(200, 5200 - elapsed)
+        remainingRef.current = Math.max(200, 8000 - elapsed)
       }
     }
 
     const resume = () => {
-      if (timeoutIdRef.current !== null) return
+      if (manualRef.current || timeoutIdRef.current !== null) return
       stepStartTimeRef.current = Date.now()
-      remainingRef.current = 5200
+      remainingRef.current = 8000
       setProgressKey((k) => k + 1)
-      timeoutIdRef.current = window.setTimeout(advance, 5200)
+      timeoutIdRef.current = window.setTimeout(advance, 8000)
     }
 
     const observer = new IntersectionObserver(
@@ -474,7 +476,7 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
         }
 
         .dx-step-active .dx-step-progress-fill {
-          animation: dxProgress 5.2s linear forwards;
+          animation: dxProgress 8s linear forwards;
         }
 
         /* ── Card ── */
@@ -913,7 +915,15 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
                     role="tab"
                     aria-selected={active}
                     aria-controls="dx-panel"
-                    onClick={() => setActiveStep(stepNumber)}
+                    onClick={() => {
+                      manualRef.current = true
+                      if (timeoutIdRef.current !== null) {
+                        window.clearTimeout(timeoutIdRef.current)
+                        timeoutIdRef.current = null
+                      }
+                      setActiveStep(stepNumber)
+                      setProgressKey((k) => k + 1)
+                    }}
                   >
                     <div className="dx-step-marker">
                       <span className="dx-step-num">{step.number || `0${stepNumber}`}</span>
