@@ -860,7 +860,10 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
       <section className={`hero ${isDark ? 'hero--dark' : 'hero--light'}`} style={sectionBgStyle}>
         <div style={!isDark ? { background: resolvedBg } : undefined} className="hero-inner">
-          <div className="hero-left">
+          <div
+            style={{ maxWidth: '1440px', margin: '0 auto', width: '100%' }}
+            className="hero-left"
+          >
             {resolvedPillText && (
               <div className="hero-pill">
                 <RichText data={resolvedPillText as any} enableGutter={false} enableProse={false} />

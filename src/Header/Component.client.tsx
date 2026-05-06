@@ -63,15 +63,21 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           right: 0;
           z-index: 200;
           height: 60px;
+          background: ${isDark ? 'rgba(10,30,53,0.92)' : 'rgba(255,255,255,0.92)'};
+          backdrop-filter: blur(20px) saturate(140%);
+          -webkit-backdrop-filter: blur(20px) saturate(140%);
+          border-bottom: 1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(18,49,77,0.06)'};
+          box-sizing: border-box;
+        }
+        .nb1-nav-inner {
+          max-width: 1440px;
+          margin: 0 auto;
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 0 2.5rem;
-          background: ${isDark ? 'rgba(10,30,53,0.92)' : 'rgba(255,255,255,0.92)'};
-          backdrop-filter: blur(20px) saturate(140%);
-          -webkit-backdrop-filter: blur(20px) saturate(140%);
-          border-bottom: 1px solid
-            ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(18,49,77,0.06)'};
           box-sizing: border-box;
         }
         .nb1-nav-logo {
@@ -96,14 +102,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           gap: 0.3rem;
           padding: 0.4rem 0.65rem;
           border-radius: 6px;
-          transition: color 0.2s, background 0.2s;
+          transition:
+            color 0.2s,
+            background 0.2s;
         }
         :global(.nb1-nav-login:hover) {
           color: #008498;
           background: rgba(10, 143, 176, 0.1);
         }
         @media (max-width: 880px) {
-          .nb1-nav {
+          .nb1-nav-inner {
             padding: 0 1rem;
           }
           .nb1-nav-r {
@@ -113,25 +121,27 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
       `}</style>
 
       <nav className="nb1-nav">
-        {activeLogo?.url && (
-          <Link href={`/${locale}`} className="nb1-nav-logo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={activeLogo.url}
-              alt={activeLogo.alt || 'Logo'}
-              style={{ width: 54, height: 32, objectFit: 'contain', display: 'block' }}
-            />
-          </Link>
-        )}
-
-        <div className="nb1-nav-r">
-          <LocaleSwitcher locale={locale} isDark={isDark} />
-
-          {loginText && loginUrl && (
-            <a href={loginUrl} className="nb1-nav-login">
-              {loginText}
-            </a>
+        <div className="nb1-nav-inner">
+          {activeLogo?.url && (
+            <Link href={`/${locale}`} className="nb1-nav-logo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={activeLogo.url}
+                alt={activeLogo.alt || 'Logo'}
+                style={{ width: 54, height: 32, objectFit: 'contain', display: 'block' }}
+              />
+            </Link>
           )}
+
+          <div className="nb1-nav-r">
+            <LocaleSwitcher locale={locale} isDark={isDark} />
+
+            {loginText && loginUrl && (
+              <a href={loginUrl} className="nb1-nav-login">
+                {loginText}
+              </a>
+            )}
+          </div>
         </div>
       </nav>
     </>
