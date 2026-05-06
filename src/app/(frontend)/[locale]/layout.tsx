@@ -124,6 +124,12 @@ export default async function RootLayout({
           `}
         </Script>
 
+        <Script
+          src="https://t.contentsquare.net/uxa/ea033811696e4.js"
+          strategy="afterInteractive"
+          async
+        />
+
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
         <JsonLd data={organizationJsonLd} />
