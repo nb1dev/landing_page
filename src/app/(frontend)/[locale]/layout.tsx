@@ -129,7 +129,7 @@ export default async function RootLayout({
         <JsonLd data={organizationJsonLd} />
       </head>
 
-      <body>
+      <body suppressHydrationWarning>
         <StyledJsxRegistry>
           <noscript>
             <img

@@ -40,8 +40,25 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
   } = props
 
   const [visible, setVisible] = useState(false)
+  const [rendered, setRendered] = useState(false)
+  const [shown, setShown] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [btnHovered, setBtnHovered] = useState(false)
+
+  // rendered: display:flex/none — shown: controls transform animation
+  useEffect(() => {
+    if (visible) {
+      setRendered(true)
+      const raf = requestAnimationFrame(() => {
+        setShown(true)
+      })
+      return () => cancelAnimationFrame(raf)
+    } else {
+      setShown(false)
+      const t = setTimeout(() => setRendered(false), 600)
+      return () => clearTimeout(t)
+    }
+  }, [visible])
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const sel = reserveSelector || '#reserve'
@@ -92,9 +109,7 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
 
   // ── Styles (all inline, matching HTML reference) ──────────────────────────
 
-  const translateY = visible
-    ? 'translateX(-50%) translateY(0)'
-    : 'translateX(-50%) translateY(140%)'
+  const translateY = shown ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(140%)'
 
   const containerStyle: React.CSSProperties = isMobile
     ? {
@@ -103,7 +118,7 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
         left: '50%',
         transform: translateY,
         zIndex: 100,
-        display: 'flex',
+        display: rendered ? 'flex' : 'none',
         alignItems: 'center',
         gap: 0,
         padding: 0,
@@ -119,7 +134,7 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
         left: '50%',
         transform: translateY,
         zIndex: 100,
-        display: 'flex',
+        display: rendered ? 'flex' : 'none',
         alignItems: 'center',
         gap: '.85rem',
         padding: '.5rem .5rem .5rem 1.35rem',
