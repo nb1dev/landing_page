@@ -273,6 +273,8 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+          gap: 0;
+          text-align: left;
         }
 
         .hero-pill {
@@ -291,7 +293,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           text-transform: uppercase;
           border-radius: 100px;
           padding: 0.62rem 1.15rem 0.62rem 1.35rem;
-          margin-bottom: 1.25rem;
+          margin-bottom: 1.6rem;
           opacity: 0;
           animation: fu 0.8s 0.2s forwards;
           backdrop-filter: blur(20px) saturate(140%);
@@ -338,7 +340,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         }
 
         .hero-heading {
-          margin-bottom: 1.25rem;
+          margin-bottom: 1.5rem;
           opacity: 0;
           animation: fu 1.1s 0.4s forwards;
           max-width: 920px;
@@ -355,10 +357,10 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
             -apple-system,
             BlinkMacSystemFont,
             sans-serif;
-          font-size: clamp(2.7rem, 5.5vw, 4.6rem);
+          font-size: clamp(2.6rem, 6vw, 5.4rem);
           font-weight: 600;
-          line-height: 1.06;
-          letter-spacing: -0.035em;
+          line-height: 1.04;
+          letter-spacing: -0.02em;
         }
 
         .hero--light .hero-heading {
@@ -372,6 +374,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         .hero-heading :global(.ac),
         .hero-heading :global(span[style*='color']) {
           font-weight: 500;
+          letter-spacing: -0.035em;
         }
 
         .hero-price {
@@ -384,7 +387,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           font-size: clamp(1rem, 1.5vw, 1.2rem);
           font-weight: 400;
           line-height: 1.5;
-          margin-bottom: 1.35rem;
+          margin-bottom: 0.5rem;
           opacity: 0;
           animation: fu 0.8s 0.35s forwards;
         }
@@ -412,8 +415,8 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           font-size: clamp(1rem, 1.5vw, 1.2rem);
           font-weight: 300;
           line-height: 1.6;
-          margin-bottom: 1.25rem;
-          max-width: 560px;
+          margin-bottom: 2rem;
+          max-width: none;
           opacity: 0;
           animation: fu 1.1s 0.6s forwards;
         }
@@ -574,11 +577,11 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
             BlinkMacSystemFont,
             'Segoe UI',
             sans-serif;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           font-weight: 300;
           margin-top: 0.95rem;
           line-height: 1.55;
-          text-align: center;
+          text-align: left;
         }
 
         .hero--light .form-foot {
@@ -830,11 +833,17 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           }
         }
 
-        @media (max-width: 760px) {
+        @media (max-width: 880px) {
           .hero-inner {
             padding: 1.5rem 1.25rem;
           }
 
+          .hero-left {
+            max-width: none;
+          }
+        }
+
+        @media (max-width: 760px) {
           .hero-heading :global(h1),
           .hero-heading :global(h2),
           .hero-heading :global(h3),
@@ -852,18 +861,20 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           }
 
           .hero-trust {
-            grid-template-columns: repeat(2, auto);
-            gap: 0.55rem 1rem;
+            grid-template-columns: 1fr;
+            gap: 0.55rem 0;
+          }
+
+          .hero-trust-cell:last-child:nth-child(odd) {
+            grid-column: auto;
+            justify-self: start;
           }
         }
       `}</style>
 
       <section className={`hero ${isDark ? 'hero--dark' : 'hero--light'}`} style={sectionBgStyle}>
         <div style={!isDark ? { background: resolvedBg } : undefined} className="hero-inner">
-          <div
-            style={{ maxWidth: '1440px', margin: '0 auto', width: '100%' }}
-            className="hero-left"
-          >
+          <div className="hero-left">
             {resolvedPillText && (
               <div className="hero-pill">
                 <RichText data={resolvedPillText as any} enableGutter={false} enableProse={false} />

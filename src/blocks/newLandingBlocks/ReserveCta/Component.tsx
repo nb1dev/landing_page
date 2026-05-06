@@ -142,7 +142,7 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
   )
 
   return (
-    <section ref={sectionRef} style={{ background: sectionBg }} className="rc-section">
+    <section id="reserve" ref={sectionRef} style={{ background: sectionBg }} className="rc-section">
       <style jsx>{`
         @keyframes rcPulse {
           0%,

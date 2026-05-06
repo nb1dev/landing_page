@@ -43,6 +43,15 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
   const [isMobile, setIsMobile] = useState(false)
   const [btnHovered, setBtnHovered] = useState(false)
 
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const sel = reserveSelector || '#reserve'
+    const target = document.querySelector(sel)
+    if (target) {
+      e.preventDefault()
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   // Detect mobile breakpoint (≤ 520px)
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 520px)')
@@ -145,7 +154,7 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
   const btnStyle: React.CSSProperties = isMobile
     ? {
         fontSize: '.85rem',
-        padding: '.85rem 1.55rem',
+        padding: '.75rem 1.4rem',
         borderRadius: '100px',
         background: btnHovered ? TEAL_D : TEAL,
         color: WHITE,
@@ -156,7 +165,8 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
         textDecoration: 'none',
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '.4rem',
+        whiteSpace: 'nowrap',
+        gap: '.35rem',
         transition: 'background .2s, transform .2s',
         boxShadow: '0 14px 36px rgba(10,143,176,0.45), 0 4px 12px rgba(8,23,41,0.25)',
       }
@@ -199,6 +209,7 @@ export function FloatingCTABlockComponent(props: FloatingCTABlockType) {
       <a
         href={buttonHref || '#reserve'}
         style={btnStyle}
+        onClick={handleClick}
         onMouseEnter={() => setBtnHovered(true)}
         onMouseLeave={() => setBtnHovered(false)}
       >

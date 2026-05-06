@@ -16,10 +16,12 @@ import { draftMode } from 'next/headers'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import '@fontsource/inter/300.css'
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
-import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/400.css'
+import '@fontsource/instrument-sans/500.css'
+import '@fontsource/instrument-sans/600.css'
 import Script from 'next/script'
 
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
