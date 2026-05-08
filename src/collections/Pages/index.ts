@@ -43,6 +43,15 @@ import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
 import { ProductShowcase } from '@/blocks/ProductShowcase/config'
 import { EarlyAccessBlock } from '@/blocks/EarlyAccessBlock/config'
 import { EvolutionBandBlock } from '@/blocks/EvolutionBandBlock/config'
+import { HeroBannerBlock } from '@/blocks/newLandingBlocks/HeroBanner/config'
+import { OutcomesSectionBlock } from '@/blocks/newLandingBlocks/OutcomesSection/config'
+import { ProcessDiagramBlock } from '@/blocks/newLandingBlocks/ProcessDiagram/config'
+import { StatBreakBlock } from '@/blocks/newLandingBlocks/StatBreak/config'
+import { ReserveCtaBlock } from '@/blocks/newLandingBlocks/ReserveCta/config'
+import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/config'
+import { PriceBreakBlock } from '@/blocks/PriceBreakBlock/config'
+import { ScienceBoardBlock } from '@/blocks/ScienceBoardBlock/config'
+import { FloatingCTABlock } from '@/blocks/FloatingCTA/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -138,6 +147,15 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProductShowcase,
                 EarlyAccessBlock,
                 EvolutionBandBlock,
+                HeroBannerBlock,
+                OutcomesSectionBlock,
+                ProcessDiagramBlock,
+                StatBreakBlock,
+                ReserveCtaBlock,
+                AthleteBannerBlock,
+                PriceBreakBlock,
+                ScienceBoardBlock,
+                FloatingCTABlock,
               ],
               required: true,
               admin: { initCollapsed: true },

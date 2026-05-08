@@ -93,6 +93,8 @@
   body {
     @apply text-foreground min-h-[100vh] flex flex-col;
     background-color: rgba(241, 245, 249, 1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 

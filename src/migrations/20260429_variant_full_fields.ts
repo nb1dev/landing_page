@@ -29,8 +29,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "pages_blocks_evolution_band_variants_cycle1_items" (
       "_order"     integer       NOT NULL,
-      "_parent_id" varchar       NOT NULL
-        REFERENCES "pages_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" varchar       NOT NULL,
+      -- FK to pages_blocks_evolution_band_variants added by 20260430_074534
       "id"         varchar       PRIMARY KEY NOT NULL,
       "_uuid"      varchar,
       "dose"       varchar
@@ -50,8 +50,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "var_cycle2_items" (
       "_order"     integer                            NOT NULL,
-      "_parent_id" varchar                            NOT NULL
-        REFERENCES "pages_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" varchar                            NOT NULL,
+      -- FK to pages_blocks_evolution_band_variants added by 20260430_074534
       "id"         varchar                            PRIMARY KEY NOT NULL,
       "_uuid"      varchar,
       "dose"       varchar,
@@ -71,8 +71,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "var_bio_groups" (
       "_order"     integer  NOT NULL,
-      "_parent_id" varchar  NOT NULL
-        REFERENCES "pages_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" varchar  NOT NULL,
+      -- FK to pages_blocks_evolution_band_variants added by 20260430_074534
       "id"         varchar  PRIMARY KEY NOT NULL,
       "_uuid"      varchar
     );
@@ -107,8 +107,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "_pages_v_blocks_evolution_band_variants_cycle1_items" (
       "_order"     integer  NOT NULL,
-      "_parent_id" integer  NOT NULL
-        REFERENCES "_pages_v_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" integer  NOT NULL,
+      -- FK to _pages_v_blocks_evolution_band_variants added by 20260430_074534
       "id"         serial   PRIMARY KEY NOT NULL,
       "_uuid"      varchar,
       "dose"       varchar
@@ -128,8 +128,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "_var_cycle2_items_v" (
       "_order"     integer                              NOT NULL,
-      "_parent_id" integer                              NOT NULL
-        REFERENCES "_pages_v_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" integer                              NOT NULL,
+      -- FK to _pages_v_blocks_evolution_band_variants added by 20260430_074534
       "id"         serial                               PRIMARY KEY NOT NULL,
       "_uuid"      varchar,
       "dose"       varchar,
@@ -149,8 +149,8 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
     CREATE TABLE IF NOT EXISTS "_var_bio_groups_v" (
       "_order"     integer  NOT NULL,
-      "_parent_id" integer  NOT NULL
-        REFERENCES "_pages_v_blocks_evolution_band_variants"("id") ON DELETE CASCADE,
+      "_parent_id" integer  NOT NULL,
+      -- FK to _pages_v_blocks_evolution_band_variants added by 20260430_074534
       "id"         serial   PRIMARY KEY NOT NULL,
       "_uuid"      varchar
     );

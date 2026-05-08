@@ -75,37 +75,46 @@ const IS_UNDERLINE = 8
 
 function renderLexicalNode(node: any, key: string): React.ReactNode {
   if (node.type === 'text') {
-    // TextColorFeature stores color as inline CSS in node.style, e.g. "color: #00a8c2;"
-    const colorMatch =
-      typeof node.style === 'string'
-        ? node.style.match(/(?:^|;)\s*color:\s*([^;]+)/)
-        : null
+    const colorMatch = typeof node.style === 'string' ? node.style.match(/color:\s*([^;]+)/) : null
     const color = colorMatch ? colorMatch[1].trim() : undefined
-    let text: React.ReactNode = node.text
-    if (node.format & IS_ITALIC) text = <em key={`em-${key}`}>{text}</em>
-    if (node.format & IS_BOLD) text = <strong key={`b-${key}`}>{text}</strong>
-    if (node.format & IS_UNDERLINE) text = <u key={`u-${key}`}>{text}</u>
-    if (color) return <span key={key} style={{ color }}>{text}</span>
-    return <React.Fragment key={key}>{text}</React.Fragment>
+
+    let el: React.ReactNode = node.text as string
+
+    if (node.format & IS_BOLD) el = <strong key={key}>{el}</strong>
+    if (node.format & IS_ITALIC) el = <em key={key}>{el}</em>
+    if (node.format & IS_UNDERLINE) el = <u key={key}>{el}</u>
+
+    if (color) {
+      el = (
+        <span key={key} style={{ color }}>
+          {el}
+        </span>
+      )
+    }
+
+    return <React.Fragment key={key}>{el}</React.Fragment>
   }
-  if (Array.isArray(node.children)) {
-    return (
-      <React.Fragment key={key}>
-        {node.children.map((child: any, i: number) => renderLexicalNode(child, `${key}-${i}`))}
-      </React.Fragment>
-    )
+
+  if (!node.children?.length) return null
+
+  const children = node.children.map((child: any, i: number) =>
+    renderLexicalNode(child, `${key}-${i}`),
+  )
+
+  if (node.type === 'paragraph') {
+    return <React.Fragment key={key}>{children}</React.Fragment>
   }
-  return null
+
+  if (node.type === 'root') {
+    return <React.Fragment key={key}>{children}</React.Fragment>
+  }
+
+  return <React.Fragment key={key}>{children}</React.Fragment>
 }
 
-function RichTextInline({ content }: { content: any }): React.ReactNode {
-  if (!content || typeof content !== 'object') return null
-  const root = content?.root
-  if (!root || !Array.isArray(root.children)) return null
-  return root.children.flatMap((para: any, pi: number) => {
-    if (!Array.isArray(para.children)) return []
-    return para.children.map((child: any, ci: number) => renderLexicalNode(child, `${pi}-${ci}`))
-  })
+function RichTextInline({ content }: { content: any }): React.ReactElement {
+  if (!content?.root) return <></>
+  return <>{renderLexicalNode(content.root, 'root')}</>
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -160,9 +169,13 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
   const resolvedCycle2Version = activeVariant?.cycle2Version ?? cycle2Version
   const resolvedCycle2Name = activeVariant?.cycle2Name ?? cycle2Name
   const resolvedCycle2Footer = activeVariant?.cycle2Footer ?? cycle2Footer
-  const resolvedCycle1Items = (activeVariant?.cycle1Items?.length ? activeVariant.cycle1Items : cycle1Items) ?? []
-  const resolvedBiologyGroups = activeVariant?.biologyGroups?.length ? activeVariant.biologyGroups : biologyGroups
-  const resolvedCycle2Items = (activeVariant?.cycle2Items?.length ? activeVariant.cycle2Items : cycle2Items) ?? []
+  const resolvedCycle1Items =
+    (activeVariant?.cycle1Items?.length ? activeVariant.cycle1Items : cycle1Items) ?? []
+  const resolvedBiologyGroups = activeVariant?.biologyGroups?.length
+    ? activeVariant.biologyGroups
+    : biologyGroups
+  const resolvedCycle2Items =
+    (activeVariant?.cycle2Items?.length ? activeVariant.cycle2Items : cycle2Items) ?? []
 
   // ── Design tokens ──────────────────────────────────────────────────────────
   const teal = '#0a8fb0'
@@ -256,7 +269,9 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
         />
         {tag}
       </div>
-      <div style={{ fontSize: '.62rem', fontWeight: 400, color: evoDkMuted, letterSpacing: '.04em' }}>
+      <div
+        style={{ fontSize: '.62rem', fontWeight: 400, color: evoDkMuted, letterSpacing: '.04em' }}
+      >
         {version}
       </div>
     </div>
@@ -298,11 +313,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
   return (
     <section
       style={{
-        backgroundColor: isDark ? '#0a1e35' : '#FFFFFF',
-        paddingTop: '3rem',
-        paddingBottom: '3rem',
-        paddingLeft: '1rem',
-        paddingRight: '1rem',
+        background: isDark ? 'linear-gradient(180deg,#1a3d5c 0%,#0e2640 100%)' : '#FFFFFF',
+        padding: '4rem 1.5rem',
       }}
     >
       <style>{`
@@ -331,9 +343,25 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
               fontFamily: "'Instrument Sans', -apple-system, sans-serif",
             }}
           >
-            <span style={{ width: 24, height: 1, background: teal, display: 'inline-block', flexShrink: 0 }} />
+            <span
+              style={{
+                width: 24,
+                height: 1,
+                background: teal,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
             {resolvedEyebrow}
-            <span style={{ width: 24, height: 1, background: teal, display: 'inline-block', flexShrink: 0 }} />
+            <span
+              style={{
+                width: 24,
+                height: 1,
+                background: teal,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
           </div>
         )}
 
@@ -407,9 +435,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
         />
         {([1, 2] as const).map((cycleNum) => {
           const tag =
-            cycleNum === 1
-              ? resolvedCycle1Tag || 'Cycle 01'
-              : resolvedCycle2Tag || 'Cycle 02'
+            cycleNum === 1 ? resolvedCycle1Tag || 'Cycle 01' : resolvedCycle2Tag || 'Cycle 02'
           const version =
             cycleNum === 1
               ? resolvedCycle1Version || 'Baseline'
@@ -460,7 +486,6 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
 
       {/* Cycle stage */}
       <div style={{ maxWidth: 680, margin: '0 auto' }}>
-
         {/* ── Cycle 1 ── */}
         {activeCycle === 1 && (
           <article className="evo-cycle-card" style={cardStyle}>
@@ -477,7 +502,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                 marginBottom: '1.25rem',
               }}
             >
-              {(resolvedCycle1Items).map((item, i) => (
+              {resolvedCycle1Items.map((item, i) => (
                 <div
                   key={i}
                   style={{
@@ -522,7 +547,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                           marginTop: '.2rem',
                           fontSize: '.56rem',
                           fontWeight: 600,
-                          color: teal,
+                          color: isDark ? '#1ba8c9' : teal,
                           fontStyle: 'normal',
                           letterSpacing: '.08em',
                           textTransform: 'uppercase',
@@ -566,16 +591,19 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
 
             {/* Biology groups */}
             {resolvedBiologyGroups && resolvedBiologyGroups.length > 0 && (
-              <div style={{
-                marginBottom: '1rem',
-                background: 'linear-gradient(135deg,rgba(10,143,176,0.07) 0%,rgba(10,143,176,0.03) 100%)',
-                border: '1px solid rgba(10,143,176,0.18)',
-                borderRadius: 10,
-                padding: '.8rem .9rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '.6rem',
-              }}>
+              <div
+                style={{
+                  marginBottom: '1rem',
+                  background:
+                    'linear-gradient(135deg,rgba(10,143,176,0.07) 0%,rgba(10,143,176,0.03) 100%)',
+                  border: '1px solid rgba(10,143,176,0.18)',
+                  borderRadius: 10,
+                  padding: '.8rem .9rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '.6rem',
+                }}
+              >
                 {resolvedBiologyGroups.map((group, gi) => (
                   <div key={gi} style={{ display: 'flex', flexDirection: 'column', gap: '.55rem' }}>
                     {/* Eyebrow — sits outside the card */}
@@ -598,7 +626,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                             height: 6,
                             borderRadius: '50%',
                             background: teal,
-                            boxShadow: '0 0 0 3px rgba(10,143,176,0.18),0 0 12px rgba(10,143,176,0.5)',
+                            boxShadow:
+                              '0 0 0 3px rgba(10,143,176,0.18),0 0 12px rgba(10,143,176,0.5)',
                             display: 'inline-block',
                             flexShrink: 0,
                           }}
@@ -687,7 +716,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                 marginBottom: '1.25rem',
               }}
             >
-              {(resolvedCycle2Items).map((item, i) => {
+              {resolvedCycle2Items.map((item, i) => {
                 const isRemoved = item.status === 'removed'
                 const isAdded = item.status === 'added'
                 const mark = STATUS_MARK[item.status ?? ''] ?? ''
@@ -772,7 +801,6 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
           </article>
         )}
       </div>
-
     </section>
   )
 }

@@ -5,7 +5,8 @@ import { JsonLd } from '@/components/JsonLd/index'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
-import React, { cache } from 'react'
+import { unstable_noStore as noStore } from 'next/cache'
+import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
@@ -94,10 +95,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <article
         style={{
           backgroundColor: 'rgba(241, 245, 249, 1)',
-          maxWidth: '1440px',
           width: '100%',
-          marginRight: 'auto',
-          marginLeft: 'auto',
         }}
       >
         <PageClient />
@@ -172,7 +170,8 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   }
 }
 
-const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: AppLocale }) => {
+async function queryPageBySlug({ slug, locale }: { slug: string; locale: AppLocale }) {
+  noStore()
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 
@@ -193,4 +192,4 @@ const queryPageBySlug = cache(async ({ slug, locale }: { slug: string; locale: A
   })
 
   return (result.docs?.[0] as RequiredDataFromCollectionSlug<'pages'>) || null
-})
+}
