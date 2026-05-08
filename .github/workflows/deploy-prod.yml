@@ -49,13 +49,20 @@ jobs:
             fi
 
             echo ">>> Sync date STG → PROD"
-            STG_DB=$(grep "^DATABASE_URL=" .env.stg | cut -d'=' -f2-)
-            PROD_DB=$(grep "^DATABASE_URL=" .env.prod | cut -d'=' -f2-)
+            # Prefer DATABASE_URL_DIRECT (bypasses PgBouncer).
+            # pg_dump acquires ACCESS SHARE locks on ALL tables in one transaction;
+            # PgBouncer in transaction-pooling mode interferes with this and causes
+            # "out of shared memory / max_locks_per_transaction".
+            STG_DB=$(grep "^DATABASE_URL_DIRECT=" .env.stg | cut -d'=' -f2- || grep "^DATABASE_URL=" .env.stg | cut -d'=' -f2-)
+            PROD_DB=$(grep "^DATABASE_URL_DIRECT=" .env.prod | cut -d'=' -f2- || grep "^DATABASE_URL=" .env.prod | cut -d'=' -f2-)
+            [[ "$STG_DB"  != *"sslmode"* ]] && STG_DB="${STG_DB}?sslmode=require"
+            [[ "$PROD_DB" != *"sslmode"* ]] && PROD_DB="${PROD_DB}?sslmode=require"
             DUMP_FILE="/tmp/stg_to_prod_$(date +%Y%m%d_%H%M%S).sql"
-            pg_dump "${STG_DB}?sslmode=require" --no-owner --no-privileges -f "$DUMP_FILE"
-            psql "${PROD_DB}?sslmode=require" -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO CURRENT_USER;" > /dev/null
-            psql "${PROD_DB}?sslmode=require" < "$DUMP_FILE" 2>&1 | grep "^ERROR" || true
+            # --clean --if-exists: individual DROP IF EXISTS per object (not DROP SCHEMA CASCADE),
+            # so each psql statement runs in its own autocommit transaction — no lock pile-up.
+            pg_dump "$STG_DB" --no-owner --no-privileges --clean --if-exists -f "$DUMP_FILE"
+            psql "$PROD_DB" < "$DUMP_FILE" 2>&1 | grep "^ERROR" || true
             rm -f "$DUMP_FILE"
-            echo ">>> Sync gata: $(psql ${PROD_DB}?sslmode=require -t -c 'SELECT COUNT(*) FROM pages;' | tr -d ' ') pagini pe PROD"
+            echo ">>> Sync gata: $(psql "$PROD_DB" -t -c 'SELECT COUNT(*) FROM pages;' | tr -d ' ') pagini pe PROD"
 
             bash deploy-prod.sh
