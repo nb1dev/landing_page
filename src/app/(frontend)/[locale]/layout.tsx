@@ -125,20 +125,14 @@ export default async function RootLayout({
         </Script>
 
 
+        <script async src="https://t.contentsquare.net/uxa/ea033811696e4.js" />
+
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
         <JsonLd data={organizationJsonLd} />
       </head>
 
       <body suppressHydrationWarning>
-        {/* ContentSquare: dangerouslySetInnerHTML bypasses React 18 resource hoisting so the literal <script src> appears in HTML */}
-        <div
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html:
-              '<script src="https://t.contentsquare.net/uxa/ea033811696e4.js"></script>',
-          }}
-        />
         <StyledJsxRegistry>
           <noscript>
             <img
