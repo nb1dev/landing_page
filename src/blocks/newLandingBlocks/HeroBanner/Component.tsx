@@ -250,10 +250,6 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           position: relative;
           z-index: 1;
           width: 100%;
-          padding: 2.5rem 4rem;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
           box-sizing: border-box;
         }
 
@@ -263,8 +259,22 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
         .hero--dark .hero-inner {
           background: transparent;
-          max-width: 1280px;
-          margin: 0 auto;
+        }
+
+        .hero-content {
+          width: 100%;
+          padding: 2.5rem 4rem;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 1551px) {
+          .hero-content {
+            width: fit-content;
+            margin: 0 auto;
+          }
         }
 
         .hero-left {
@@ -834,7 +844,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         }
 
         @media (max-width: 880px) {
-          .hero-inner {
+          .hero-content {
             padding: 1.5rem 1.25rem;
           }
 
@@ -874,115 +884,121 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
       <section className={`hero ${isDark ? 'hero--dark' : 'hero--light'}`} style={sectionBgStyle}>
         <div style={!isDark ? { background: resolvedBg } : undefined} className="hero-inner">
-          <div className="hero-left">
-            {resolvedPillText && (
-              <div className="hero-pill">
-                <RichText data={resolvedPillText as any} enableGutter={false} enableProse={false} />
-                <svg
-                  className="hero-pill-arrow"
-                  width="11"
-                  height="9"
-                  viewBox="0 0 11 9"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 4.5h8m0 0L6 1m3 3.5L6 8"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+          <div className="hero-content">
+            <div className="hero-left">
+              {resolvedPillText && (
+                <div className="hero-pill">
+                  <RichText
+                    data={resolvedPillText as any}
+                    enableGutter={false}
+                    enableProse={false}
                   />
-                </svg>
+                  <svg
+                    className="hero-pill-arrow"
+                    width="11"
+                    height="9"
+                    viewBox="0 0 11 9"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M1 4.5h8m0 0L6 1m3 3.5L6 8"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              )}
+
+              <div className="hero-heading">
+                <RichText data={resolvedHeading as any} enableGutter={false} enableProse={false} />
               </div>
-            )}
 
-            <div className="hero-heading">
-              <RichText data={resolvedHeading as any} enableGutter={false} enableProse={false} />
-            </div>
+              {price && (
+                <p className="hero-price">
+                  {pricePrefix && <span>{pricePrefix} </span>}
+                  <span className="hero-price-num">{price}</span>
+                  {priceSuffix && <span>{priceSuffix}</span>}
+                </p>
+              )}
 
-            {price && (
-              <p className="hero-price">
-                {pricePrefix && <span>{pricePrefix} </span>}
-                <span className="hero-price-num">{price}</span>
-                {priceSuffix && <span>{priceSuffix}</span>}
-              </p>
-            )}
+              {resolvedDescription && (
+                <div className="hero-sub">
+                  <RichText
+                    data={resolvedDescription as any}
+                    enableGutter={false}
+                    enableProse={false}
+                  />
+                </div>
+              )}
 
-            {resolvedDescription && (
-              <div className="hero-sub">
-                <RichText
-                  data={resolvedDescription as any}
-                  enableGutter={false}
-                  enableProse={false}
-                />
-              </div>
-            )}
+              <FormProvider {...formMethods}>
+                <div className="form-wrap">
+                  {isLoading && !hasSubmitted && <p className="form-status">Please wait…</p>}
 
-            <FormProvider {...formMethods}>
-              <div className="form-wrap">
-                {isLoading && !hasSubmitted && <p className="form-status">Please wait…</p>}
+                  {error && (
+                    <p className="form-error">{`${error.status || '500'}: ${error.message}`}</p>
+                  )}
 
-                {error && (
-                  <p className="form-error">{`${error.status || '500'}: ${error.message}`}</p>
-                )}
-
-                {hasSubmitted ? (
-                  <div className="form-success">
-                    <strong>{successMessage ? '' : "You're on the list. "}</strong>
-                    {successMessage || 'Your kit ships two weeks before public launch.'}
-                  </div>
-                ) : (
-                  <form id={`hero-banner-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
-                    <div className="form-row">
-                      <div className="form-fields">
-                        {(formFromProps as any)?.fields?.map((field: any, index: number) => {
-                          const Field: React.FC<any> =
-                            fields?.[field.blockType as keyof typeof fields]
-
-                          if (!Field) return null
-
-                          return (
-                            <Field
-                              key={index}
-                              form={formFromProps}
-                              {...field}
-                              {...formMethods}
-                              control={control}
-                              errors={errors}
-                              register={register}
-                            />
-                          )
-                        })}
-                      </div>
-
-                      <button type="submit" disabled={isLoading} className="btn form-btn">
-                        {resolvedButtonText}
-                      </button>
+                  {hasSubmitted ? (
+                    <div className="form-success">
+                      <strong>{successMessage ? '' : "You're on the list. "}</strong>
+                      {successMessage || 'Your kit ships two weeks before public launch.'}
                     </div>
+                  ) : (
+                    <form id={`hero-banner-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
+                      <div className="form-row">
+                        <div className="form-fields">
+                          {(formFromProps as any)?.fields?.map((field: any, index: number) => {
+                            const Field: React.FC<any> =
+                              fields?.[field.blockType as keyof typeof fields]
 
-                    {(launchDate || formFootNote) && (
-                      <p className="form-foot">
-                        {launchDate && <span className="ac">{launchDate}</span>}
-                        {launchDate && formFootNote && ' · '}
-                        {formFootNote}
-                      </p>
-                    )}
+                            if (!Field) return null
 
-                    {trustItems && trustItems.length > 0 && (
-                      <div className="hero-trust">
-                        {trustItems.map((item, i) => (
-                          <div key={i} className="hero-trust-cell">
-                            <span className="ht-tick">✓</span>
-                            {item.label}
-                          </div>
-                        ))}
+                            return (
+                              <Field
+                                key={index}
+                                form={formFromProps}
+                                {...field}
+                                {...formMethods}
+                                control={control}
+                                errors={errors}
+                                register={register}
+                              />
+                            )
+                          })}
+                        </div>
+
+                        <button type="submit" disabled={isLoading} className="btn form-btn">
+                          {resolvedButtonText}
+                        </button>
                       </div>
-                    )}
-                  </form>
-                )}
-              </div>
-            </FormProvider>
+
+                      {(launchDate || formFootNote) && (
+                        <p className="form-foot">
+                          {launchDate && <span className="ac">{launchDate}</span>}
+                          {launchDate && formFootNote && ' · '}
+                          {formFootNote}
+                        </p>
+                      )}
+
+                      {trustItems && trustItems.length > 0 && (
+                        <div className="hero-trust">
+                          {trustItems.map((item, i) => (
+                            <div key={i} className="hero-trust-cell">
+                              <span className="ht-tick">✓</span>
+                              {item.label}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </form>
+                  )}
+                </div>
+              </FormProvider>
+            </div>
           </div>
         </div>
       </section>
