@@ -37,6 +37,7 @@ type MockRow = {
 type ListItem = {
   marker?: string | null
   text?: string | null
+  subLine?: string | null
   dose?: string | null
   benefit?: string | null
 }
@@ -57,6 +58,7 @@ type Step = {
   mockFootLabel?: string | null
   mockFootText?: string | null
   listItems?: ListItem[] | null
+  strainCaption?: string | null
   pills?: Array<{ label?: string | null }> | null
 }
 
