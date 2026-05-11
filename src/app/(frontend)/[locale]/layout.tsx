@@ -184,6 +184,30 @@ export default async function RootLayout({
 
             <ConditionalGoogleTagManager gaId="G-4Y99NTFFZW" />
 
+            <Script id="ketch-consent-bridge" strategy="afterInteractive">
+              {`
+                function applyKetchConsent(consent) {
+                  var p = (consent && consent.purposes) || {};
+                  gtag('consent', 'update', {
+                    'analytics_storage': p.analytics ? 'granted' : 'denied',
+                    'ad_storage': p.targeted_advertising ? 'granted' : 'denied',
+                    'ad_user_data': p.targeted_advertising ? 'granted' : 'denied',
+                    'ad_personalization': p.targeted_advertising ? 'granted' : 'denied'
+                  });
+                }
+
+                // Apply on load for returning visitors (consent already stored)
+                window.ketch('getConsent', function(consent) {
+                  if (consent && consent.purposes) applyKetchConsent(consent);
+                });
+
+                // Apply whenever consent changes (banner accept/reject)
+                window.ketch('on', 'consent', function(consent) {
+                  applyKetchConsent(consent);
+                });
+              `}
+            </Script>
+
             <ChatwootWidget locale={locale} />
 
             <Script

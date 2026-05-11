@@ -192,6 +192,14 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           setIsLoading(false)
           setHasSubmitted(true)
 
+          const email = data['email'] as string | undefined
+          if (email) {
+            const kPayload = btoa(
+              JSON.stringify({ token: 'WwW2Hy', properties: { $email: email } }),
+            )
+            new Image().src = `https://a.klaviyo.com/api/identify?data=${kPayload}`
+          }
+
           if (confirmationType === 'redirect' && redirect?.url) {
             router.push(redirect.url)
           }
