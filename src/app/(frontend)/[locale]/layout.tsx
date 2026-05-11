@@ -124,11 +124,8 @@ export default async function RootLayout({
           `}
         </Script>
 
-        <Script
-          id="contentsquare"
-          src="https://t.contentsquare.net/uxa/ea033811696e4.js"
-          strategy="beforeInteractive"
-        />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://t.contentsquare.net/uxa/ea033811696e4.js" />
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
