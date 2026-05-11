@@ -95,7 +95,7 @@ export default async function RootLayout({
           strategy="beforeInteractive"
         />
 
-        <Script id="gtm-consent-mode" strategy="beforeInteractive">
+        <Script id="gtag-consent-mode" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -125,9 +125,9 @@ export default async function RootLayout({
         </Script>
 
         <Script
+          id="contentsquare"
           src="https://t.contentsquare.net/uxa/ea033811696e4.js"
-          strategy="afterInteractive"
-          async
+          strategy="beforeInteractive"
         />
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
@@ -171,7 +171,7 @@ export default async function RootLayout({
 
             {children}
 
-            <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
+            <ConditionalGoogleTagManager gaId="G-4Y99NTFFZW" />
 
             <ChatwootWidget locale={locale} />
 
