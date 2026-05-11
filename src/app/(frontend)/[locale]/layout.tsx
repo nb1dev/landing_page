@@ -125,7 +125,21 @@ export default async function RootLayout({
         </Script>
 
 
-        <script async src="https://t.contentsquare.net/uxa/ea033811696e4.js" />
+        <Script id="contentsquare" strategy="beforeInteractive">
+          {`
+            window._uxa = window._uxa || [];
+            if (typeof CS_CONF === 'undefined') {
+              window._uxa.push(['setPath', window.location.pathname + window.location.hash.replace('#', '?__')]);
+              var mt = document.createElement('script');
+              mt.type = 'text/javascript';
+              mt.async = true;
+              mt.src = '//t.contentsquare.net/uxa/ea033811696e4.js';
+              document.getElementsByTagName('head')[0].appendChild(mt);
+            } else {
+              window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
+            }
+          `}
+        </Script>
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
