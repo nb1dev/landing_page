@@ -280,6 +280,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
         .hero-left {
           max-width: 760px;
           width: 100%;
+          margin-left: max(0px, calc((100% - 760px) / 2));
           display: flex;
           flex-direction: column;
           align-items: flex-start;

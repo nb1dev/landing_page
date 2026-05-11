@@ -2468,11 +2468,19 @@ export interface ProcessDiagramBlock {
           | {
               marker: string;
               text: string;
+              /**
+               * Optional sub-line shown below the ingredient name (e.g. strain list)
+               */
+              subLine?: string | null;
               dose?: string | null;
               benefit?: string | null;
               id?: string | null;
             }[]
           | null;
+        /**
+         * Optional italic caption between the ingredient list and the pills row
+         */
+        strainCaption?: string | null;
         pills?:
           | {
               label: string;
@@ -4387,10 +4395,12 @@ export interface ProcessDiagramBlockSelect<T extends boolean = true> {
           | {
               marker?: T;
               text?: T;
+              subLine?: T;
               dose?: T;
               benefit?: T;
               id?: T;
             };
+        strainCaption?: T;
         pills?:
           | T
           | {

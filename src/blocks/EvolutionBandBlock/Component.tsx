@@ -227,7 +227,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
     background: cardBg,
     color: evoTextColor,
     borderRadius: 18,
-    padding: '1.5rem 1.5rem 1.25rem',
+    padding: '2rem 2rem 1.5rem',
     border: cardBorder,
     boxShadow: cardShadow,
     display: 'flex',
@@ -281,12 +281,12 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
     <div
       style={{
         fontFamily: "'Instrument Sans', -apple-system, sans-serif",
-        fontSize: '1.15rem',
+        fontSize: '1.4rem',
         fontWeight: 600,
         color: evoTextColor,
-        marginBottom: '1.4rem',
+        marginBottom: '1.5rem',
         letterSpacing: '-.025em',
-        lineHeight: 1.1,
+        lineHeight: 1.15,
       }}
     >
       {name}
@@ -299,7 +299,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
         marginTop: 'auto',
         paddingTop: '1rem',
         borderTop: `1px solid ${rowBottomBorder}`,
-        fontSize: '.72rem',
+        fontSize: '.8rem',
         fontWeight: 400,
         color: evoDkMuted,
         lineHeight: 1.5,
@@ -485,7 +485,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
       </div>
 
       {/* Cycle stage */}
-      <div style={{ maxWidth: 680, margin: '0 auto' }}>
+      <div style={{ maxWidth: 780, margin: '0 auto' }}>
         {/* ── Cycle 1 ── */}
         {activeCycle === 1 && (
           <article className="evo-cycle-card" style={cardStyle}>
@@ -508,20 +508,20 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr auto 18px',
-                    gap: '.65rem',
+                    gap: '.75rem',
                     alignItems: 'center',
-                    padding: '.55rem 0',
+                    padding: '.75rem 0',
                     borderBottom: `1px solid ${rowBottomBorder}`,
                     position: 'relative',
                   }}
                 >
                   <div
                     style={{
-                      fontSize: '.78rem',
+                      fontSize: '.95rem',
                       fontWeight: 500,
                       color: evoTextColor,
                       letterSpacing: '-.005em',
-                      lineHeight: 1.3,
+                      lineHeight: 1.35,
                     }}
                   >
                     {item.name}
@@ -529,8 +529,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                       <small
                         style={{
                           display: 'block',
-                          marginTop: '.15rem',
-                          fontSize: '.62rem',
+                          marginTop: '.2rem',
+                          fontSize: '.72rem',
                           fontWeight: 400,
                           color: evoDkMuted,
                           letterSpacing: '.005em',
@@ -544,8 +544,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                       <small
                         style={{
                           display: 'block',
-                          marginTop: '.2rem',
-                          fontSize: '.56rem',
+                          marginTop: '.25rem',
+                          fontSize: '.65rem',
                           fontWeight: 600,
                           color: isDark ? '#1ba8c9' : teal,
                           fontStyle: 'normal',
@@ -559,7 +559,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                   </div>
                   <div
                     style={{
-                      fontSize: '.72rem',
+                      fontSize: '.85rem',
                       fontWeight: 600,
                       color: evoTextColor,
                       fontVariantNumeric: 'tabular-nums',
@@ -727,9 +727,9 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '1fr auto 18px',
-                      gap: '.65rem',
+                      gap: '.75rem',
                       alignItems: 'center',
-                      padding: isAdded ? '.7rem .6rem' : '.55rem 0',
+                      padding: isAdded ? '.7rem .6rem' : '.75rem 0',
                       borderBottom: isAdded ? 'none' : `1px solid ${rowBottomBorder}`,
                       borderTop: isAdded ? '1px solid rgba(10,143,176,0.15)' : undefined,
                       background: isAdded ? 'rgba(10,143,176,0.05)' : undefined,
@@ -740,11 +740,11 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                   >
                     <div
                       style={{
-                        fontSize: '.78rem',
+                        fontSize: '.95rem',
                         fontWeight: 500,
                         color: isRemoved ? evoDkMuted : evoTextColor,
                         letterSpacing: '-.005em',
-                        lineHeight: 1.3,
+                        lineHeight: 1.35,
                         textDecoration: isRemoved ? 'line-through' : undefined,
                       }}
                     >
@@ -753,8 +753,8 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                         <small
                           style={{
                             display: 'block',
-                            marginTop: '.15rem',
-                            fontSize: '.62rem',
+                            marginTop: '.2rem',
+                            fontSize: '.72rem',
                             fontWeight: 400,
                             color: evoDkMuted,
                             letterSpacing: '.005em',
@@ -768,7 +768,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                     </div>
                     <div
                       style={{
-                        fontSize: '.72rem',
+                        fontSize: '.85rem',
                         fontWeight: 600,
                         color: isRemoved ? evoDkMuted : evoTextColor,
                         fontVariantNumeric: 'tabular-nums',
@@ -783,7 +783,7 @@ export const EvolutionBandBlockComponent: React.FC<EvolutionBandBlockType> = (pr
                     <div
                       style={{
                         width: 18,
-                        fontSize: '.78rem',
+                        fontSize: '.9rem',
                         fontWeight: 600,
                         lineHeight: 1,
                         textAlign: 'right',
