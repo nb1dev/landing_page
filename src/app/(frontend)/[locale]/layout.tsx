@@ -95,7 +95,7 @@ export default async function RootLayout({
           strategy="beforeInteractive"
         />
 
-        <Script id="gtm-consent-mode" strategy="beforeInteractive">
+        <Script id="gtag-consent-mode" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -171,7 +171,7 @@ export default async function RootLayout({
 
             {children}
 
-            <ConditionalGoogleTagManager gtmId="GTM-KQBDCQ9B" />
+            <ConditionalGoogleTagManager gaId="G-4Y99NTFFZW" />
 
             <ChatwootWidget locale={locale} />
 

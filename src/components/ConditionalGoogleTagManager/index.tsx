@@ -1,13 +1,13 @@
 'use client'
 
-import { GoogleTagManager } from '@next/third-parties/google'
+import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 
 type Props = {
-  gtmId: string
+  gaId: string
 }
 
-export function ConditionalGoogleTagManager({ gtmId }: Props) {
+export function ConditionalGoogleTagManager({ gaId }: Props) {
   const pathname = usePathname()
   const isAdminRoute = pathname?.startsWith('/cms/admin')
 
@@ -15,5 +15,20 @@ export function ConditionalGoogleTagManager({ gtmId }: Props) {
     return null
   }
 
-  return <GoogleTagManager gtmId={gtmId} />
+  return (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}');
+        `}
+      </Script>
+    </>
+  )
 }
