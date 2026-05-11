@@ -125,9 +125,9 @@ export default async function RootLayout({
         </Script>
 
         <Script
+          id="contentsquare"
           src="https://t.contentsquare.net/uxa/ea033811696e4.js"
-          strategy="afterInteractive"
-          async
+          strategy="beforeInteractive"
         />
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
