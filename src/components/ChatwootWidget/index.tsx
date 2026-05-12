@@ -45,8 +45,6 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_CHATWOOT_BASE_URL || 'https://app.chatwoot.com'
     const websiteToken = process.env.NEXT_PUBLIC_CHATWOOT_WEBSITE_TOKEN
 
-    console.log(websiteToken)
-
     if (!websiteToken) {
       console.warn('Chatwoot: missing NEXT_PUBLIC_CHATWOOT_WEBSITE_TOKEN environment variable.')
       return
