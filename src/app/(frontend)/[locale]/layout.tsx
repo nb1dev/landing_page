@@ -179,10 +179,13 @@ export default async function RootLayout({
 
             <Script id="ketch-consent-bridge" strategy="afterInteractive">
               {`
+                window.__nb1Consent = window.__nb1Consent || {};
+
                 function applyKetchConsent(consent) {
                   if (typeof gtag !== 'function') return;
                   var p = (consent && consent.purposes) || {};
                   console.debug('[ketch-bridge] purposes received:', p);
+                  window.__nb1Consent = p;
                   gtag('consent', 'update', {
                     'analytics_storage': p.analytics ? 'granted' : 'denied',
                     'ad_storage': p.targeted_advertising ? 'granted' : 'denied',

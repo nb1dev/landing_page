@@ -2,6 +2,7 @@ declare global {
   interface Window {
     dataLayer: Record<string, unknown>[]
     fbq: (...args: unknown[]) => void
+    __nb1Consent: Record<string, boolean>
   }
 
   namespace NodeJS {
