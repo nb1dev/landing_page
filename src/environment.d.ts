@@ -1,4 +1,9 @@
 declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[]
+    fbq: (...args: unknown[]) => void
+  }
+
   namespace NodeJS {
     interface ProcessEnv {
       PAYLOAD_SECRET: string

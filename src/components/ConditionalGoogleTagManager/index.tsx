@@ -23,8 +23,6 @@ export function ConditionalGoogleTagManager({ gaId }: Props) {
       />
       <Script id="gtag-init" strategy="afterInteractive">
         {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${gaId}');
         `}

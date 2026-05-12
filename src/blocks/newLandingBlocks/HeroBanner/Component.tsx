@@ -192,6 +192,11 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
           setIsLoading(false)
           setHasSubmitted(true)
 
+          window.dataLayer = window.dataLayer || []
+          window.dataLayer.push({ event: 'Lead' })
+
+          if (typeof window.fbq === 'function') window.fbq('track', 'Lead')
+
           const email = data['email'] as string | undefined
           if (email) {
             const kPayload = btoa(

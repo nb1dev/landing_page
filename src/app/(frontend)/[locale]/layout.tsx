@@ -30,7 +30,6 @@ import StyledJsxRegistry from './registry'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
-import { ConditionalGoogleTagManager } from '@/components/ConditionalGoogleTagManager'
 
 export function generateStaticParams() {
   return appLocales.map((locale) => ({ locale }))
@@ -76,18 +75,16 @@ export default async function RootLayout({
       <head>
         <InitTheme />
 
-        {/* Google Tag Manager (manual - DISABLED because using ConditionalGoogleTagManager) */}
-        {/*
+        {/* Google Tag Manager */}
         <Script id="gtm-head" strategy="beforeInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=!0;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-KQBDCQ9B');
+            })(window,document,'script','dataLayer','GTM-5F7G4N5K');
           `}
         </Script>
-        */}
         {/* End Google Tag Manager */}
 
         <Script
@@ -104,7 +101,7 @@ export default async function RootLayout({
               'ad_user_data': 'denied',
               'ad_personalization': 'denied',
               'analytics_storage': 'denied',
-              'wait_for_update': 500
+              'wait_for_update': 2000
             });
           `}
         </Script>
@@ -158,17 +155,15 @@ export default async function RootLayout({
             />
           </noscript>
 
-          {/* Google Tag Manager (noscript - DISABLED because using ConditionalGoogleTagManager) */}
-          {/*
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KQBDCQ9B"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        */}
+          {/* Google Tag Manager (noscript) */}
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-5F7G4N5K"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
           {/* End Google Tag Manager (noscript) */}
 
           <Providers>
@@ -182,12 +177,12 @@ export default async function RootLayout({
 
             {children}
 
-            <ConditionalGoogleTagManager gaId="G-4Y99NTFFZW" />
-
             <Script id="ketch-consent-bridge" strategy="afterInteractive">
               {`
                 function applyKetchConsent(consent) {
+                  if (typeof gtag !== 'function') return;
                   var p = (consent && consent.purposes) || {};
+                  console.debug('[ketch-bridge] purposes received:', p);
                   gtag('consent', 'update', {
                     'analytics_storage': p.analytics ? 'granted' : 'denied',
                     'ad_storage': p.targeted_advertising ? 'granted' : 'denied',
@@ -196,12 +191,10 @@ export default async function RootLayout({
                   });
                 }
 
-                // Apply on load for returning visitors (consent already stored)
                 window.ketch('getConsent', function(consent) {
                   if (consent && consent.purposes) applyKetchConsent(consent);
                 });
 
-                // Apply whenever consent changes (banner accept/reject)
                 window.ketch('on', 'consent', function(consent) {
                   applyKetchConsent(consent);
                 });
