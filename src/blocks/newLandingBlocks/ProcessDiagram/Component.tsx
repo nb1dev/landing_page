@@ -37,6 +37,7 @@ type MockRow = {
 type ListItem = {
   marker?: string | null
   text?: string | null
+  subLine?: string | null
   dose?: string | null
   benefit?: string | null
 }
@@ -57,6 +58,7 @@ type Step = {
   mockFootLabel?: string | null
   mockFootText?: string | null
   listItems?: ListItem[] | null
+  strainCaption?: string | null
   pills?: Array<{ label?: string | null }> | null
 }
 
@@ -1036,8 +1038,32 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
                               <>
                                 <span className="dx-panel-rx-l">
                                   {item.text}
+                                  {item.subLine && (
+                                    <small
+                                      style={{
+                                        display: 'block',
+                                        fontSize: '.7rem',
+                                        fontWeight: 400,
+                                        color: 'rgba(18,49,77,.65)',
+                                        letterSpacing: '.005em',
+                                        marginTop: '.2rem',
+                                        lineHeight: 1.4,
+                                      }}
+                                    >
+                                      {item.subLine}
+                                    </small>
+                                  )}
                                   {item.dose && (
-                                    <span className="dx-panel-rx-dose">{item.dose}</span>
+                                    <span
+                                      className="dx-panel-rx-dose"
+                                      style={
+                                        item.subLine
+                                          ? { display: 'block', marginLeft: 0, marginTop: '.15rem' }
+                                          : undefined
+                                      }
+                                    >
+                                      {item.dose}
+                                    </span>
                                   )}
                                 </span>
                                 {item.benefit && (
@@ -1050,6 +1076,23 @@ export const ProcessDiagramComponent: React.FC<ProcessDiagramBlockType> = (props
                           </li>
                         ))}
                       </ul>
+                    )}
+
+                    {step.strainCaption && (
+                      <div
+                        style={{
+                          fontSize: '.7rem',
+                          color: 'rgba(18,49,77,.65)',
+                          fontWeight: 400,
+                          letterSpacing: '.005em',
+                          lineHeight: 1.5,
+                          marginTop: '-.25rem',
+                          marginBottom: '1rem',
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        {step.strainCaption}
+                      </div>
                     )}
 
                     {step.pills && step.pills.length > 0 && (

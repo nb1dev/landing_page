@@ -128,7 +128,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
               <img
                 src={activeLogo.url}
                 alt={activeLogo.alt || 'Logo'}
-                style={{ width: 54, height: 32, objectFit: 'contain', display: 'block' }}
+                style={{ width: 70, height: 42, objectFit: 'contain', display: 'block' }}
               />
             </Link>
           )}

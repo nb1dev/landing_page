@@ -90,6 +90,13 @@ export const FormBlock: React.FC<
           setIsLoading(false)
           setHasSubmitted(true)
 
+          window.dataLayer = window.dataLayer || []
+          window.dataLayer.push({ event: 'Lead' })
+
+          if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
+            window.fbq('track', 'Lead')
+          }
+
           if (confirmationType === 'redirect' && redirect) {
             const { url } = redirect
 

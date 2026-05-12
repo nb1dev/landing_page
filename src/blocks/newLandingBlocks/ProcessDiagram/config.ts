@@ -155,9 +155,25 @@ export const ProcessDiagramBlock: Block = {
           fields: [
             { name: 'marker', type: 'text', required: true },
             { name: 'text', type: 'text', localized: true, required: true },
+            {
+              name: 'subLine',
+              type: 'text',
+              localized: true,
+              admin: {
+                description: 'Optional sub-line shown below the ingredient name (e.g. strain list)',
+              },
+            },
             { name: 'dose', type: 'text', localized: true },
             { name: 'benefit', type: 'text', localized: true },
           ],
+        },
+        {
+          name: 'strainCaption',
+          type: 'text',
+          localized: true,
+          admin: {
+            description: 'Optional italic caption between the ingredient list and the pills row',
+          },
         },
         {
           name: 'pills',

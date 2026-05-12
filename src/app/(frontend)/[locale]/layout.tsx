@@ -30,7 +30,6 @@ import StyledJsxRegistry from './registry'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { appLocales, isAppLocale, type AppLocale, defaultLocale } from '@/i18n/config'
-import { ConditionalGoogleTagManager } from '@/components/ConditionalGoogleTagManager'
 
 export function generateStaticParams() {
   return appLocales.map((locale) => ({ locale }))
@@ -76,18 +75,16 @@ export default async function RootLayout({
       <head>
         <InitTheme />
 
-        {/* Google Tag Manager (manual - DISABLED because using ConditionalGoogleTagManager) */}
-        {/*
+        {/* Google Tag Manager */}
         <Script id="gtm-head" strategy="beforeInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=!0;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-KQBDCQ9B');
+            })(window,document,'script','dataLayer','GTM-5F7G4N5K');
           `}
         </Script>
-        */}
         {/* End Google Tag Manager */}
 
         <Script
@@ -104,7 +101,7 @@ export default async function RootLayout({
               'ad_user_data': 'denied',
               'ad_personalization': 'denied',
               'analytics_storage': 'denied',
-              'wait_for_update': 500
+              'wait_for_update': 2000
             });
           `}
         </Script>
@@ -124,11 +121,22 @@ export default async function RootLayout({
           `}
         </Script>
 
-        <Script
-          id="contentsquare"
-          src="https://t.contentsquare.net/uxa/ea033811696e4.js"
-          strategy="beforeInteractive"
-        />
+
+        <Script id="contentsquare" strategy="beforeInteractive">
+          {`
+            window._uxa = window._uxa || [];
+            if (typeof CS_CONF === 'undefined') {
+              window._uxa.push(['setPath', window.location.pathname + window.location.hash.replace('#', '?__')]);
+              var mt = document.createElement('script');
+              mt.type = 'text/javascript';
+              mt.async = true;
+              mt.src = '//t.contentsquare.net/uxa/ea033811696e4.js';
+              document.getElementsByTagName('head')[0].appendChild(mt);
+            } else {
+              window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
+            }
+          `}
+        </Script>
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
@@ -147,17 +155,15 @@ export default async function RootLayout({
             />
           </noscript>
 
-          {/* Google Tag Manager (noscript - DISABLED because using ConditionalGoogleTagManager) */}
-          {/*
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-KQBDCQ9B"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
-        */}
+          {/* Google Tag Manager (noscript) */}
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-5F7G4N5K"
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
           {/* End Google Tag Manager (noscript) */}
 
           <Providers>
@@ -171,7 +177,32 @@ export default async function RootLayout({
 
             {children}
 
-            <ConditionalGoogleTagManager gaId="G-4Y99NTFFZW" />
+            <Script id="ketch-consent-bridge" strategy="afterInteractive">
+              {`
+                window.__nb1Consent = window.__nb1Consent || {};
+
+                function applyKetchConsent(consent) {
+                  if (typeof gtag !== 'function') return;
+                  var p = (consent && consent.purposes) || {};
+                  console.debug('[ketch-bridge] purposes received:', p);
+                  window.__nb1Consent = p;
+                  gtag('consent', 'update', {
+                    'analytics_storage': p.analytics ? 'granted' : 'denied',
+                    'ad_storage': p.targeted_advertising ? 'granted' : 'denied',
+                    'ad_user_data': p.targeted_advertising ? 'granted' : 'denied',
+                    'ad_personalization': p.targeted_advertising ? 'granted' : 'denied'
+                  });
+                }
+
+                window.ketch('getConsent', function(consent) {
+                  if (consent && consent.purposes) applyKetchConsent(consent);
+                });
+
+                window.ketch('on', 'consent', function(consent) {
+                  applyKetchConsent(consent);
+                });
+              `}
+            </Script>
 
             <ChatwootWidget locale={locale} />
 
