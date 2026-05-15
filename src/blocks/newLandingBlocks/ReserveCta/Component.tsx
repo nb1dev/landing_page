@@ -2,12 +2,10 @@
 
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import RichText from '@/components/RichText'
-import { fields as formFields } from '@/blocks/Form/fields'
 
 type BgPreset = 'white' | 'creamGradient' | 'custom'
 
@@ -46,14 +44,11 @@ export type ReserveCtaBlockType = {
 export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
   const { form: formFromProps, recapItems, variants } = props
 
-  const { id: formID, confirmationType, redirect, submitButtonLabel } = (formFromProps ?? {}) as any
+  const { id: formID, confirmationType, redirect } = (formFromProps ?? {}) as any
 
   const sectionRef = useRef<HTMLElement | null>(null)
   const [revealed, setRevealed] = useState(false)
   const [variantKey, setVariantKey] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 
   const router = useRouter()
 
@@ -75,6 +70,40 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
+      if (detail?.type !== 'submit' || detail?.formId !== 'VkEfpf') return
+
+      const email = detail?.metaData?.$email
+
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({ event: 'Lead' })
+
+      if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
+        window.fbq('track', 'Lead')
+      }
+
+      if (formID) {
+        fetch('/cms/api/form-submissions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            form: formID,
+            submissionData: [{ field: 'email', value: email ?? '' }],
+          }),
+        }).catch(console.warn)
+      }
+
+      if (confirmationType === 'redirect' && redirect?.url) {
+        router.push(redirect.url)
+      }
+    }
+
+    window.addEventListener('klaviyoForms', handler)
+    return () => window.removeEventListener('klaviyoForms', handler)
+  }, [formID, confirmationType, redirect, router])
+
   const activeVariant = variants?.find((v) => v.variantKey === variantKey) ?? null
 
   const backgroundColor = activeVariant?.backgroundColor ?? props.backgroundColor
@@ -82,80 +111,11 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
   const pillText = activeVariant?.pillText ?? props.pillText
   const heading = activeVariant?.heading ?? props.heading
   const subText = activeVariant?.subText ?? props.subText
-  const ctaButtonText = activeVariant?.ctaButtonText ?? props.ctaButtonText
   const footNoteText = props.footNoteText
   const footNoteHighlight = props.footNoteHighlight
-  const successMessage = props.successMessage
 
   const isDark = backgroundColor === 'creamGradient'
   const sectionBg = resolveBg(backgroundColor, backgroundColorCustom)
-
-  const resolvedButtonText = useMemo(
-    () => ctaButtonText || submitButtonLabel || 'Reserve my kit →',
-    [ctaButtonText, submitButtonLabel],
-  )
-
-  const formMethods = useForm({
-    defaultValues: (formFromProps as any)?.fields || {},
-  })
-
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = formMethods
-
-  const onSubmit = useCallback(
-    (data: Record<string, unknown>) => {
-      const submitForm = async () => {
-        setError(undefined)
-        const dataToSend = Object.entries(data).map(([name, value]) => ({ field: name, value }))
-        setIsLoading(true)
-        try {
-          const req = await fetch('/cms/api/form-submissions', {
-            body: JSON.stringify({ form: formID, submissionData: dataToSend }),
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-          })
-          const res = await req.json()
-          if (req.status >= 400) {
-            setIsLoading(false)
-            setError({
-              message: res?.errors?.[0]?.message || 'Internal Server Error',
-              status: String(res?.status || req.status),
-            })
-            return
-          }
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          window.dataLayer = window.dataLayer || []
-          window.dataLayer.push({ event: 'Lead' })
-
-          if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
-            window.fbq('track', 'Lead')
-          }
-
-          const email = data['email'] as string | undefined
-          if (email) {
-            const kPayload = btoa(
-              JSON.stringify({ token: 'WwW2Hy', properties: { $email: email } }),
-            )
-            new Image().src = `https://a.klaviyo.com/api/identify?data=${kPayload}`
-          }
-
-          if (confirmationType === 'redirect' && redirect?.url) router.push(redirect.url)
-        } catch (err) {
-          console.warn(err)
-          setIsLoading(false)
-          setError({ message: 'Something went wrong.' })
-        }
-      }
-      void submitForm()
-    },
-    [formID, confirmationType, redirect, router],
-  )
 
   return (
     <section id="reserve" ref={sectionRef} style={{ background: sectionBg }} className="rc-section">
@@ -509,52 +469,14 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
             .filter(Boolean)
             .join(' ')}
         >
-          {error && <p className="rc-form-error">{`${error.status || '500'}: ${error.message}`}</p>}
+          <div className="klaviyo-form-VkEfpf" />
 
-          {hasSubmitted ? (
-            <div className="rc-form-success">
-              <strong>{"You're on the list. "}</strong>
-              {successMessage || 'Your kit ships two weeks before public launch.'}
-            </div>
-          ) : (
-            <FormProvider {...formMethods}>
-              <form id={`reserve-cta-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
-                <div
-                  className={['rc-form-row', isDark ? 'rc-row-dark' : ''].filter(Boolean).join(' ')}
-                >
-                  <div className="rc-form-fields">
-                    {(formFromProps as any)?.fields?.map((field: any, index: number) => {
-                      const Field: React.FC<any> =
-                        formFields?.[field.blockType as keyof typeof formFields]
-                      if (!Field) return null
-                      return (
-                        <Field
-                          key={index}
-                          form={formFromProps}
-                          {...field}
-                          {...formMethods}
-                          control={control}
-                          errors={errors}
-                          register={register}
-                        />
-                      )
-                    })}
-                  </div>
-
-                  <button type="submit" disabled={isLoading} className="rc-form-btn">
-                    {isLoading ? 'Please wait…' : resolvedButtonText}
-                  </button>
-                </div>
-
-                {(footNoteText || footNoteHighlight) && (
-                  <p className="rc-form-foot">
-                    {footNoteText}
-                    {footNoteText && footNoteHighlight && ' · '}
-                    {footNoteHighlight && <span className="ac">{footNoteHighlight}</span>}
-                  </p>
-                )}
-              </form>
-            </FormProvider>
+          {(footNoteText || footNoteHighlight) && (
+            <p className="rc-form-foot">
+              {footNoteText}
+              {footNoteText && footNoteHighlight && ' · '}
+              {footNoteHighlight && <span className="ac">{footNoteHighlight}</span>}
+            </p>
           )}
         </div>
       </div>

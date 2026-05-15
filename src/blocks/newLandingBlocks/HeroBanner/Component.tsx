@@ -2,12 +2,10 @@
 
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import RichText from '@/components/RichText'
-import { fields } from '@/blocks/Form/fields'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 
 type BgColorPreset = 'light' | 'dark' | 'darkNavy' | 'teal' | 'white' | 'custom'
@@ -93,10 +91,8 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
     priceSuffix,
     description,
     form: formFromProps,
-    ctaButtonText,
     launchDate,
     formFootNote,
-    successMessage,
     trustItems,
     outcomesHeading,
     outcomes,
@@ -104,7 +100,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
     variants,
   } = props
 
-  const { id: formID, confirmationType, redirect, submitButtonLabel } = (formFromProps ?? {}) as any
+  const { id: formID, confirmationType, redirect } = (formFromProps ?? {}) as any
 
   const [variantKey, setVariantKey] = useState('')
 
@@ -137,90 +133,43 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
   const resolvedPillText = activeVariant?.pillText ?? pillText
   const resolvedHeading = (activeVariant?.heading ?? heading) as DefaultTypedEditorState
   const resolvedDescription = activeVariant?.description ?? description
-  const resolvedButtonText = useMemo(
-    () => activeVariant?.ctaButtonText || ctaButtonText || submitButtonLabel || 'Reserve my kit →',
-    [activeVariant, ctaButtonText, submitButtonLabel],
-  )
 
-  const formMethods = useForm({
-    defaultValues: (formFromProps as any)?.fields || {},
-  })
-
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    register,
-  } = formMethods
-
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
 
   const router = useRouter()
 
-  const onSubmit = useCallback(
-    (data: Record<string, unknown>) => {
-      const submitForm = async () => {
-        setError(undefined)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
+      if (detail?.type !== 'submit' || detail?.formId !== 'VkEfpf') return
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+      const email = detail?.metaData?.$email
 
-        setIsLoading(true)
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({ event: 'Lead' })
 
-        try {
-          const req = await fetch('/cms/api/form-submissions', {
-            body: JSON.stringify({ form: formID, submissionData: dataToSend }),
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-          })
-
-          const res = await req.json()
-
-          if (req.status >= 400) {
-            setIsLoading(false)
-            setError({
-              message: res?.errors?.[0]?.message || 'Internal Server Error',
-              status: String(res?.status || req.status),
-            })
-            return
-          }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          window.dataLayer = window.dataLayer || []
-          window.dataLayer.push({ event: 'Lead' })
-
-          if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
-            window.fbq('track', 'Lead')
-          }
-
-          const email = data['email'] as string | undefined
-          if (email) {
-            const kPayload = btoa(
-              JSON.stringify({ token: 'WwW2Hy', properties: { $email: email } }),
-            )
-            new Image().src = `https://a.klaviyo.com/api/identify?data=${kPayload}`
-          }
-
-          if (confirmationType === 'redirect' && redirect?.url) {
-            router.push(redirect.url)
-          }
-        } catch (err) {
-          console.warn(err)
-          setIsLoading(false)
-          setError({ message: 'Something went wrong.' })
-        }
+      if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
+        window.fbq('track', 'Lead')
       }
 
-      void submitForm()
-    },
-    [formID, confirmationType, redirect, router],
-  )
+      if (formID) {
+        fetch('/cms/api/form-submissions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            form: formID,
+            submissionData: [{ field: 'email', value: email ?? '' }],
+          }),
+        }).catch(console.warn)
+      }
+
+      if (confirmationType === 'redirect' && redirect?.url) {
+        router.push(redirect.url)
+      }
+    }
+
+    window.addEventListener('klaviyoForms', handler)
+    return () => window.removeEventListener('klaviyoForms', handler)
+  }, [formID, confirmationType, redirect, router])
 
   const hasOutcomes = outcomesHeading || (outcomes && outcomes.length > 0) || outcomesFooter
 
@@ -949,70 +898,28 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
                 </div>
               )}
 
-              <FormProvider {...formMethods}>
-                <div className="form-wrap">
-                  {isLoading && !hasSubmitted && <p className="form-status">Please wait…</p>}
+              <div className="form-wrap">
+                <div className="klaviyo-form-VkEfpf" />
 
-                  {error && (
-                    <p className="form-error">{`${error.status || '500'}: ${error.message}`}</p>
-                  )}
+                {(launchDate || formFootNote) && (
+                  <p className="form-foot">
+                    {launchDate && <span className="ac">{launchDate}</span>}
+                    {launchDate && formFootNote && ' · '}
+                    {formFootNote}
+                  </p>
+                )}
+              </div>
 
-                  {hasSubmitted ? (
-                    <div className="form-success">
-                      <strong>{successMessage ? '' : "You're on the list. "}</strong>
-                      {successMessage || 'Your kit ships two weeks before public launch.'}
+              {trustItems && trustItems.length > 0 && (
+                <div className="hero-trust">
+                  {trustItems.map((item, i) => (
+                    <div key={i} className="hero-trust-cell">
+                      <span className="ht-tick">✓</span>
+                      {item.label}
                     </div>
-                  ) : (
-                    <form id={`hero-banner-${String(formID)}`} onSubmit={handleSubmit(onSubmit)}>
-                      <div className="form-row">
-                        <div className="form-fields">
-                          {(formFromProps as any)?.fields?.map((field: any, index: number) => {
-                            const Field: React.FC<any> =
-                              fields?.[field.blockType as keyof typeof fields]
-
-                            if (!Field) return null
-
-                            return (
-                              <Field
-                                key={index}
-                                form={formFromProps}
-                                {...field}
-                                {...formMethods}
-                                control={control}
-                                errors={errors}
-                                register={register}
-                              />
-                            )
-                          })}
-                        </div>
-
-                        <button type="submit" disabled={isLoading} className="btn form-btn">
-                          {resolvedButtonText}
-                        </button>
-                      </div>
-
-                      {(launchDate || formFootNote) && (
-                        <p className="form-foot">
-                          {launchDate && <span className="ac">{launchDate}</span>}
-                          {launchDate && formFootNote && ' · '}
-                          {formFootNote}
-                        </p>
-                      )}
-
-                      {trustItems && trustItems.length > 0 && (
-                        <div className="hero-trust">
-                          {trustItems.map((item, i) => (
-                            <div key={i} className="hero-trust-cell">
-                              <span className="ht-tick">✓</span>
-                              {item.label}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </form>
-                  )}
+                  ))}
                 </div>
-              </FormProvider>
+              )}
             </div>
           </div>
         </div>
