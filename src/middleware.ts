@@ -78,7 +78,7 @@ function stripLocalePrefix(pathname: string) {
   return pathname
 }
 
-const GLOBAL_ALLOWED_QUERY_KEYS = ['v']
+const GLOBAL_ALLOWED_QUERY_KEYS = ['v', 'csqVerifyInstall', 'csqVerifyUUID']
 
 function allowedKeysForPath(pathname: string) {
   const pathNoLocale = stripLocalePrefix(pathname)
