@@ -122,6 +122,18 @@ export default async function RootLayout({
         </Script>
 
 
+        <Script id="convertedin-init" strategy="beforeInteractive">
+          {`
+            window.codebase = window.codebase || {};
+            window.codebase.iid = 'B330E7E18FB3';
+          `}
+        </Script>
+
+        <Script
+          src="https://scripts.conversion.io/conversion.js"
+          strategy="beforeInteractive"
+        />
+
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
         <JsonLd data={organizationJsonLd} />
@@ -189,19 +201,6 @@ export default async function RootLayout({
             </Script>
 
             <ChatwootWidget locale={locale} />
-
-            <Script id="convertedin-init" strategy="afterInteractive">
-              {`
-                window.codebase = window.codebase || {};
-                window.codebase.iid = 'B330E7E18FB3';
-              `}
-            </Script>
-
-            <Script
-              src="https://scripts.conversion.io/conversion.js"
-              strategy="afterInteractive"
-              async
-            />
 
             <Script
               src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
