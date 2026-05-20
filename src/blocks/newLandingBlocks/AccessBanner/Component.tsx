@@ -89,7 +89,8 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
           window.dataLayer = window.dataLayer || []
           window.dataLayer.push({ event: 'Lead' })
 
-          if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
+          if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising && !window.__leadFired) {
+            window.__leadFired = true
             window.fbq('track', 'Lead')
           }
 

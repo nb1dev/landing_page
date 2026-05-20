@@ -3,6 +3,7 @@ declare global {
     dataLayer: Record<string, unknown>[]
     fbq: (...args: unknown[]) => void
     __nb1Consent: Record<string, boolean>
+    __leadFired?: boolean
     klaviyo: { push: (...args: unknown[]) => void } & Record<string, (...args: unknown[]) => unknown>
     _klOnsite: unknown[]
   }
