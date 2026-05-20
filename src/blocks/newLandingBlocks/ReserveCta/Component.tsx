@@ -92,12 +92,13 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
 
       const email = detail?.metaData?.$email
 
-      window.dataLayer = window.dataLayer || []
-      window.dataLayer.push({ event: 'Lead' })
-
-      if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising && !window.__leadFired) {
+      if (!window.__leadFired) {
         window.__leadFired = true
-        window.fbq('track', 'Lead')
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({ event: 'Lead' })
+        if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
+          window.fbq('track', 'Lead')
+        }
       }
 
       if (formID) {
