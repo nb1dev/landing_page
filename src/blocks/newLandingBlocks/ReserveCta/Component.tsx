@@ -71,6 +71,21 @@ export const ReserveCtaComponent: React.FC<ReserveCtaBlockType> = (props) => {
   }, [])
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      const container = document.querySelector('.klaviyo-form-VkEfpf')
+      const hasForm = (container?.childElementCount ?? 0) > 0
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        event: 'klaviyo_form_status',
+        klaviyo_form_loaded: hasForm,
+        klaviyo_script_present: typeof window.klaviyo !== 'undefined',
+        klaviyo_location: 'reserve_cta',
+      })
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
       if (detail?.type !== 'submit' || detail?.formId !== 'VkEfpf') return
