@@ -160,12 +160,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url, 301)
   }
 
-  const stripped = stripDisallowedQuery(req)
-  if (stripped) {
-    stripped.pathname = normalizedPath
-    return NextResponse.redirect(stripped, 302)
-  }
-
   const siteURLRaw =
     process.env.NEXT_PUBLIC_SERVER_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL || ''
 
