@@ -122,17 +122,15 @@ export default async function RootLayout({
         </Script>
 
 
-        <Script id="convertedin-init" strategy="beforeInteractive">
-          {`
-            window.codebase = window.codebase || {};
-            window.codebase.iid = 'B330E7E18FB3';
-          `}
-        </Script>
-
-        <Script
-          src="https://scripts.conversion.io/conversion.js"
-          strategy="beforeInteractive"
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+                    window.codebase = window.codebase || {};
+                    window.codebase.iid = 'B330E7E18FB3';
+                  `,
+          }}
         />
+        <script src="https://scripts.conversion.io/conversion.js" async></script>
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
