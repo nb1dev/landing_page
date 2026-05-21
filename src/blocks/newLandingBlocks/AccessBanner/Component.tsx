@@ -86,13 +86,11 @@ export const AccessBannerComponent: React.FC<Props> = (props) => {
           setIsLoading(false)
           setHasSubmitted(true)
 
-          if (!window.__leadFired) {
-            window.__leadFired = true
+          const now = Date.now()
+          if (!window.__lastLeadTime || now - window.__lastLeadTime > 1000) {
+            window.__lastLeadTime = now
             window.dataLayer = window.dataLayer || []
             window.dataLayer.push({ event: 'Lead' })
-            if (typeof window.fbq === 'function' && window.__nb1Consent?.targeted_advertising) {
-              window.fbq('track', 'Lead')
-            }
           }
 
           if (confirmationType === 'redirect' && redirect?.url) {
