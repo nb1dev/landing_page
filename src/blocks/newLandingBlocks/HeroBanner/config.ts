@@ -1,15 +1,22 @@
 import {
+  BoldFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
+  ItalicFeature,
+  ParagraphFeature,
+  UnderlineFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
 
 const headingEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [
-    ...rootFeatures,
+  features: [
+    ParagraphFeature(),
+    BoldFeature(),
+    ItalicFeature(),
+    UnderlineFeature(),
     FixedToolbarFeature(),
     InlineToolbarFeature(),
     TextColorFeature(),
@@ -17,8 +24,11 @@ const headingEditor = lexicalEditor({
   ],
 })
 const inlineEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [
-    ...rootFeatures,
+  features: [
+    ParagraphFeature(),
+    BoldFeature(),
+    ItalicFeature(),
+    UnderlineFeature(),
     FixedToolbarFeature(),
     InlineToolbarFeature(),
     TextColorFeature(),
