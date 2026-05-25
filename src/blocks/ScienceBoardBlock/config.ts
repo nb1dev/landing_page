@@ -1,7 +1,22 @@
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { makeHeadingEditor } from '@/fields/headingLexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-const makeEditor = () => makeHeadingEditor(['h1', 'h2', 'h3', 'h4'])
+const makeEditor = () =>
+  lexicalEditor({
+    features: ({ rootFeatures }) => [
+      ...rootFeatures,
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+      TextColorFeature(),
+      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+    ],
+  })
 
 export const ScienceBoardBlock: Block = {
   slug: 'scienceBoard',
@@ -140,8 +155,7 @@ export const ScienceBoardBlock: Block = {
       label: 'A/B Variants',
       type: 'array',
       admin: {
-        description:
-          'Each variant overrides darkMode when ?v=<key> is present in the URL.',
+        description: 'Each variant overrides darkMode when ?v=<key> is present in the URL.',
         initCollapsed: true,
       },
       fields: [

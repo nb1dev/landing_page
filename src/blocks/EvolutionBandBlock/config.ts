@@ -1,7 +1,22 @@
 import type { Block, Field } from 'payload'
-import { makeHeadingEditor } from '@/fields/headingLexical'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-const makeEditor = () => makeHeadingEditor(['h1', 'h2', 'h3', 'h4'])
+const makeEditor = () =>
+  lexicalEditor({
+    features: ({ rootFeatures }) => [
+      ...rootFeatures,
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+      TextColorFeature(),
+      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+    ],
+  })
 
 const overrideFields: Field[] = [
   {
@@ -251,7 +266,10 @@ export const EvolutionBandBlock: Block = {
       label: 'Biology Delta — Groups',
       type: 'array',
       dbName: 'bio_groups',
-      admin: { description: 'Each group has its own eyebrow label and a set of delta rows shown inside the Cycle 2 card.' },
+      admin: {
+        description:
+          'Each group has its own eyebrow label and a set of delta rows shown inside the Cycle 2 card.',
+      },
       fields: [
         {
           name: 'eyebrow',
@@ -320,7 +338,9 @@ export const EvolutionBandBlock: Block = {
       label: 'Cycle 2 — Footer Note',
       type: 'text',
       localized: true,
-      admin: { description: 'E.g. "Same protocol size. Different composition. Your biology moved.".' },
+      admin: {
+        description: 'E.g. "Same protocol size. Different composition. Your biology moved.".',
+      },
     },
     // ── A/B Variants ────────────────────────────────────────────────────────
     {

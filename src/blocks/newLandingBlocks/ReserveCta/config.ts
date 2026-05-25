@@ -1,7 +1,21 @@
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { makeHeadingEditor } from '@/fields/headingLexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-const headingEditor = makeHeadingEditor(['h1', 'h2', 'h3'])
+const headingEditor = lexicalEditor({
+  features: ({ rootFeatures }) => [
+    ...rootFeatures,
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
+    TextColorFeature(),
+    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3'] }),
+  ],
+})
 
 const bgOptions = [
   { label: 'White (#FFFFFF — light version)', value: 'white' },
@@ -94,7 +108,9 @@ export const ReserveCtaBlock: Block = {
       label: 'Form Footer — Highlighted Text',
       type: 'text',
       localized: true,
-      admin: { description: 'Teal-highlighted portion (shown after "·"). e.g. "Diagnostic included."' },
+      admin: {
+        description: 'Teal-highlighted portion (shown after "·"). e.g. "Diagnostic included."',
+      },
     },
     {
       name: 'successMessage',

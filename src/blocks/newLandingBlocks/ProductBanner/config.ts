@@ -1,5 +1,11 @@
 import type { Block } from 'payload'
-import { makeHeadingEditor } from '@/fields/headingLexical'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
 export const ProductBanner: Block = {
   slug: 'productBanner',
@@ -15,7 +21,15 @@ export const ProductBanner: Block = {
       type: 'richText',
       localized: true,
       required: true,
-      editor: makeHeadingEditor(['h1', 'h2', 'h3', 'h4']),
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          TextColorFeature(),
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+        ],
+      }),
     },
     {
       name: 'subtitle',
@@ -62,7 +76,14 @@ export const ProductBanner: Block = {
       admin: {
         condition: (_, siblingData) => Boolean(siblingData?.enableIntro),
       },
-      editor: makeHeadingEditor(['h1', 'h2', 'h3', 'h4']),
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
+      }),
     },
     {
       name: 'carouselText',

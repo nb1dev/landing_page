@@ -1,7 +1,21 @@
 import type { Block } from 'payload'
-import { makeHeadingEditor } from '@/fields/headingLexical'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+import { TextColorFeature } from 'payloadcms-lexical-ext'
 
-const headingEditor = makeHeadingEditor(['h2', 'h3'])
+const headingEditor = lexicalEditor({
+  features: ({ rootFeatures }) => [
+    ...rootFeatures,
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
+    TextColorFeature(),
+    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
+  ],
+})
 
 export const OutcomesSectionBlock: Block = {
   slug: 'outcomesSection',
