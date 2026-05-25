@@ -1,21 +1,7 @@
 import type { Block } from 'payload'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { makeHeadingEditor } from '@/fields/headingLexical'
 
-const headingEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [
-    ...rootFeatures,
-    FixedToolbarFeature(),
-    InlineToolbarFeature(),
-    TextColorFeature(),
-    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
-  ],
-})
+const headingEditor = makeHeadingEditor(['h2', 'h3'])
 
 export const ProcessDiagramBlock: Block = {
   slug: 'processDiagram',

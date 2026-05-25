@@ -1,9 +1,5 @@
 import type { Block } from 'payload'
-import {
-  FixedToolbarFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
+import { inlineRichTextEditor } from '@/fields/headingLexical'
 
 export const StepsBanner: Block = {
   slug: 'stepsBanner',
@@ -19,11 +15,7 @@ export const StepsBanner: Block = {
       type: 'richText',
       required: true,
       localized: true,
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
-        },
-      }),
+      editor: inlineRichTextEditor,
     },
     {
       name: 'subtitle',

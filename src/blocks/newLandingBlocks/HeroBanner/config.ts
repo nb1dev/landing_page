@@ -1,39 +1,8 @@
-import {
-  BoldFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  ItalicFeature,
-  ParagraphFeature,
-  UnderlineFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { inlineRichTextEditor, makeHeadingEditor } from '@/fields/headingLexical'
 
-const headingEditor = lexicalEditor({
-  features: [
-    ParagraphFeature(),
-    BoldFeature(),
-    ItalicFeature(),
-    UnderlineFeature(),
-    FixedToolbarFeature(),
-    InlineToolbarFeature(),
-    TextColorFeature(),
-    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-  ],
-})
-const inlineEditor = lexicalEditor({
-  features: [
-    ParagraphFeature(),
-    BoldFeature(),
-    ItalicFeature(),
-    UnderlineFeature(),
-    FixedToolbarFeature(),
-    InlineToolbarFeature(),
-    TextColorFeature(),
-  ],
-})
+const headingEditor = makeHeadingEditor(['h1', 'h2', 'h3', 'h4'])
+const inlineEditor = inlineRichTextEditor
 
 export const HeroBannerBlock: Block = {
   slug: 'heroBanner',

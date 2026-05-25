@@ -1,11 +1,5 @@
 import type { Block } from 'payload'
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { makeHeadingEditor } from '@/fields/headingLexical'
 
 export const AccessBanner: Block = {
   slug: 'accessBanner',
@@ -21,15 +15,7 @@ export const AccessBanner: Block = {
       type: 'richText',
       localized: true,
       required: true,
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => [
-          ...rootFeatures,
-          FixedToolbarFeature(),
-          InlineToolbarFeature(),
-          TextColorFeature(),
-          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-        ],
-      }),
+      editor: makeHeadingEditor(['h1', 'h2', 'h3', 'h4']),
     },
     {
       name: 'subtitle',

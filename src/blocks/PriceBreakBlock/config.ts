@@ -1,22 +1,7 @@
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { makeHeadingEditor } from '@/fields/headingLexical'
 
-const makeEditor = () =>
-  lexicalEditor({
-    features: ({ rootFeatures }) => [
-      ...rootFeatures,
-      FixedToolbarFeature(),
-      InlineToolbarFeature(),
-      TextColorFeature(),
-      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-    ],
-  })
+const makeEditor = () => makeHeadingEditor(['h1', 'h2', 'h3', 'h4'])
 
 export const PriceBreakBlock: Block = {
   slug: 'priceBreak',

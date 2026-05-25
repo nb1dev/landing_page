@@ -1,21 +1,7 @@
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { makeHeadingEditor } from '@/fields/headingLexical'
 
-const headingEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [
-    ...rootFeatures,
-    FixedToolbarFeature(),
-    InlineToolbarFeature(),
-    TextColorFeature(),
-    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3'] }),
-  ],
-})
+const headingEditor = makeHeadingEditor(['h1', 'h2', 'h3'])
 
 const bgOptions = [
   { label: 'Cream (#FAF8F2 — light version)', value: 'cream' },
