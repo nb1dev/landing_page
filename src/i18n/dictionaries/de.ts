@@ -21,4 +21,7 @@ export const de = {
   forms: {
     thankYouRegistering: 'Vielen Dank für Ihre Registrierung!',
   },
+  scienceBoard: {
+    viewBio: 'Bio ansehen',
+  },
 }

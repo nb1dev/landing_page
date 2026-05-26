@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, Suspense, CSSProperties } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { getDictionary } from '@/i18n/getDictionary'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -40,6 +41,7 @@ export type ScienceBoardBlockType = {
   stats?: ScienceBoardStat[] | null
   darkMode?: boolean | null
   variants?: ScienceBoardVariant[] | null
+  locale?: string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -101,6 +103,7 @@ function RichTextInline({ content }: { content: any }): React.ReactElement {
 function ScienceBoardBlockInner(props: ScienceBoardBlockType) {
   const searchParams = useSearchParams()
   const vParam = searchParams?.get('v') ?? null
+  const dict = getDictionary(props.locale)
 
   // Resolve active variant
   const activeVariant = props.variants?.find((v) => v.variantKey === vParam) ?? null
@@ -409,7 +412,7 @@ function ScienceBoardBlockInner(props: ScienceBoardBlockType) {
                     onMouseLeave={() => setHoveredCard(null)}
                     tabIndex={0}
                     role="button"
-                    aria-label={`View bio for ${member.name}`}
+                    aria-label={`${dict.scienceBoard.viewBio} ${member.name}`}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault()
@@ -519,7 +522,7 @@ function ScienceBoardBlockInner(props: ScienceBoardBlockType) {
                           alignSelf: 'flex-start',
                         }}
                       >
-                        View bio
+                        {dict.scienceBoard.viewBio}
                         <span
                           style={{
                             fontWeight: 400,
