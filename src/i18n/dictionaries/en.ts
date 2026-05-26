@@ -21,4 +21,7 @@ export const en = {
   forms: {
     thankYouRegistering: 'Thank you for registering!',
   },
+  scienceBoard: {
+    viewBio: 'View bio',
+  },
 }
