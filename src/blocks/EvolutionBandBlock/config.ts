@@ -266,7 +266,10 @@ export const EvolutionBandBlock: Block = {
       label: 'Biology Delta — Groups',
       type: 'array',
       dbName: 'bio_groups',
-      admin: { description: 'Each group has its own eyebrow label and a set of delta rows shown inside the Cycle 2 card.' },
+      admin: {
+        description:
+          'Each group has its own eyebrow label and a set of delta rows shown inside the Cycle 2 card.',
+      },
       fields: [
         {
           name: 'eyebrow',
@@ -335,7 +338,9 @@ export const EvolutionBandBlock: Block = {
       label: 'Cycle 2 — Footer Note',
       type: 'text',
       localized: true,
-      admin: { description: 'E.g. "Same protocol size. Different composition. Your biology moved.".' },
+      admin: {
+        description: 'E.g. "Same protocol size. Different composition. Your biology moved.".',
+      },
     },
     // ── A/B Variants ────────────────────────────────────────────────────────
     {

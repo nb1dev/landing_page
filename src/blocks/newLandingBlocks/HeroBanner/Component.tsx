@@ -3,7 +3,7 @@
 import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
@@ -136,10 +136,12 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
 
   const router = useRouter()
+  const params = useParams()
+  const klaviyoFormId = params?.locale === 'de' ? 'U3dVTL' : 'VkEfpf'
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const container = document.querySelector('.klaviyo-form-VkEfpf')
+      const container = document.querySelector(`.klaviyo-form-${klaviyoFormId}`)
       const hasForm = (container?.childElementCount ?? 0) > 0
       window.dataLayer = window.dataLayer || []
       window.dataLayer.push({
@@ -150,12 +152,12 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
       })
     }, 3000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [klaviyoFormId])
 
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
-      if (detail?.type !== 'submit' || detail?.formId !== 'VkEfpf') return
+      if (detail?.type !== 'submit' || detail?.formId !== klaviyoFormId) return
 
       const email = detail?.metaData?.$email
 
@@ -184,7 +186,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
 
     window.addEventListener('klaviyoForms', handler)
     return () => window.removeEventListener('klaviyoForms', handler)
-  }, [formID, confirmationType, redirect, router])
+  }, [formID, confirmationType, redirect, router, klaviyoFormId])
 
   const hasOutcomes = outcomesHeading || (outcomes && outcomes.length > 0) || outcomesFooter
 
@@ -914,7 +916,7 @@ export const HeroBannerComponent: React.FC<HeroBannerBlockType> = (props) => {
               )}
 
               <div className="form-wrap">
-                <div className="klaviyo-form-VkEfpf" />
+                <div className={`klaviyo-form-${klaviyoFormId}`} />
 
                 {(launchDate || formFootNote) && (
                   <p className="form-foot">

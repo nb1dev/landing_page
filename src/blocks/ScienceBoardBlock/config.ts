@@ -155,8 +155,7 @@ export const ScienceBoardBlock: Block = {
       label: 'A/B Variants',
       type: 'array',
       admin: {
-        description:
-          'Each variant overrides darkMode when ?v=<key> is present in the URL.',
+        description: 'Each variant overrides darkMode when ?v=<key> is present in the URL.',
         initCollapsed: true,
       },
       fields: [

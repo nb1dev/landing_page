@@ -108,7 +108,9 @@ export const ReserveCtaBlock: Block = {
       label: 'Form Footer — Highlighted Text',
       type: 'text',
       localized: true,
-      admin: { description: 'Teal-highlighted portion (shown after "·"). e.g. "Diagnostic included."' },
+      admin: {
+        description: 'Teal-highlighted portion (shown after "·"). e.g. "Diagnostic included."',
+      },
     },
     {
       name: 'successMessage',
