@@ -195,6 +195,22 @@ export default async function RootLayout({
                 window.ketch('on', 'consent', function(consent) {
                   applyKetchConsent(consent);
                 });
+
+                // Intercept inline action links added via Ketch dashboard description field:
+                //   #ketch-accept   → delegates to the primary (Accept All) button
+                //   #ketch-reject   → delegates to the tertiary (Reject All) button
+                //   #ketch-settings → delegates to the secondary (Customize Settings) button
+                document.addEventListener('click', function(e) {
+                  var link = e.target.closest('a[href$="#ketch-accept"], a[href$="#ketch-reject"], a[href$="#ketch-settings"]');
+                  if (!link) return;
+                  e.preventDefault();
+                  var href = link.getAttribute('href') || '';
+                  var btnId = href.endsWith('#ketch-accept')   ? 'ketch-banner-button-primary'
+                            : href.endsWith('#ketch-reject')   ? 'ketch-banner-button-tertiary'
+                            :                                    'ketch-banner-button-secondary';
+                  var btn = document.getElementById(btnId);
+                  if (btn) btn.click();
+                });
               `}
             </Script>
 

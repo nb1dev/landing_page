@@ -155,3 +155,181 @@ html[data-theme='light'] {
 #lanyard_fab_button .bottomRight__ILequ {
   inset: auto !important;
 }
+
+
+/* ═══════════════════════════════════════════════════
+   NB1 — Ketch Consent Banner
+   ═══════════════════════════════════════════════════ */
+
+/* ── 1. FULL-SCREEN OVERLAY — targets the backdrop element that already spans 100vw/100vh ── */
+div[data-ketch-backdrop="true"] {
+  background: rgba(13, 43, 43, 0.45) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* ── 2. BANNER POSITIONER — centered flex container ── */
+#ketch-banner {
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  animation: none !important;
+  background: transparent !important;
+}
+
+/* ── 2. MODAL CARD + THEME TOKEN OVERRIDES ── */
+#ketch-consent-banner {
+  --k-banner-container-background-color:             #ffffff;
+  --k-banner-container-cornerRadius:                 16px;
+  --k-banner-header-title-color:                     #0d2b2b;
+  --k-banner-header-returnButton-background-color:   transparent;
+  --k-banner-header-returnButton-icon-color:         #9aacac;
+  --k-banner-description-text-color:                 #4a5a5a;
+  --k-banner-description-link-color:                 #0d2b2b;
+  --k-banner-buttons-primary-background-color:       #0d2b2b;
+  --k-banner-buttons-primary-text-color:             #ffffff;
+  --k-banner-buttons-primary-cornerRadius:           8px;
+  --k-banner-buttons-secondary-background-color:     #ffffff;
+  --k-banner-buttons-secondary-text-color:           #0d2b2b;
+  --k-banner-buttons-secondary-cornerRadius:         8px;
+
+  max-width: 500px !important;
+  width: 100% !important;
+  border-radius: 16px !important;
+  padding: 2rem 2rem 1.25rem !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ── 3. HEADER ROW — title left, X button right ── */
+/* targets: #ketch-consent-banner > div:first-child > div (the ketch-justify-between wrapper) */
+#ketch-consent-banner > div:first-child > div {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+/* ── 4. CONTENT + BUTTONS — stacked column ── */
+/* targets: the sm:ketch-flex-row div — force column on all screen sizes */
+#ketch-consent-banner > div:nth-child(2) {
+  flex-direction: column !important;
+}
+
+/* ── 5. TITLE ── */
+#ketch-consent-banner #banner-title {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #0d2b2b !important;
+  letter-spacing: -0.2px !important;
+  margin: 0 0 8px !important;
+}
+
+/* ── 6. DESCRIPTION ── */
+#ketch-consent-banner #banner-description,
+#ketch-consent-banner #banner-description p,
+#ketch-consent-banner #banner-description span {
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #4a5a5a !important;
+  margin: 0 0 1.5rem !important;
+}
+
+#ketch-consent-banner #banner-description a {
+  color: #0d2b2b !important;
+  text-decoration: underline !important;
+}
+
+/* ── 7. BUTTON ROW — side by side, 50/50 width ── */
+#ketch-consent-banner #ketch-banner-buttons-container-compact,
+#ketch-consent-banner #ketch-banner-buttons-container-standard {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-bottom: 1rem !important;
+}
+
+/* ── 8. ACCEPT ALL — solid dark ── */
+#ketch-consent-banner #ketch-banner-button-primary {
+  flex: 1 !important;
+  width: 50% !important;
+  min-width: 0 !important;
+  padding: 13px 0 !important;
+  background: #0d2b2b !important;
+  color: #ffffff !important;
+  border: 1.5px solid #0d2b2b !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+}
+
+#ketch-consent-banner #ketch-banner-button-primary:hover {
+  background: #1a3f3f !important;
+  border-color: #1a3f3f !important;
+}
+
+/* ── 9. COOKIE SETTINGS — outline ── */
+#ketch-consent-banner #ketch-banner-button-secondary {
+  flex: 1 !important;
+  width: 50% !important;
+  min-width: 0 !important;
+  padding: 13px 0 !important;
+  background: #ffffff !important;
+  color: #0d2b2b !important;
+  border: 1.5px solid #0d2b2b !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+}
+
+#ketch-consent-banner #ketch-banner-button-secondary:hover {
+  background: #f5f8f8 !important;
+}
+
+/* ── 10. HIDE REJECT ALL ── */
+#ketch-consent-banner #ketch-banner-button-tertiary {
+  display: none !important;
+}
+
+/* ── 11. "POWERED BY KETCH" FOOTER — subtle ── */
+#ketch-consent-banner > div:last-child {
+  font-size: 11px !important;
+  color: #9aacac !important;
+  text-align: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* ── 12. MOBILE ── */
+@media (max-width: 480px) {
+  #ketch-banner {
+    padding: 0.75rem !important;
+    align-items: flex-end !important;
+  }
+
+  #ketch-consent-banner {
+    border-radius: 16px 16px 10px 10px !important;
+  }
+
+  #ketch-consent-banner #ketch-banner-buttons-container-compact,
+  #ketch-consent-banner #ketch-banner-buttons-container-standard {
+    flex-direction: column !important;
+  }
+
+  #ketch-consent-banner #ketch-banner-button-primary,
+  #ketch-consent-banner #ketch-banner-button-secondary {
+    width: 100% !important;
+    order: -1 !important;
+  }
+}
