@@ -195,6 +195,94 @@ export default async function RootLayout({
                 window.ketch('on', 'consent', function(consent) {
                   applyKetchConsent(consent);
                 });
+
+                // Intercept inline action links added via Ketch dashboard description field:
+                //   #ketch-accept   → delegates to the primary (Accept All) button
+                //   #ketch-reject   → delegates to the tertiary (Reject All) button
+                //   #ketch-settings → delegates to the secondary (Customize Settings) button
+                document.addEventListener('click', function(e) {
+                  var link = e.target.closest('a[href$="#ketch-accept"], a[href$="#ketch-reject"], a[href$="#ketch-settings"]');
+                  if (!link) return;
+                  e.preventDefault();
+                  var href = link.getAttribute('href') || '';
+                  var btnId = href.endsWith('#ketch-accept')   ? 'ketch-banner-button-primary'
+                            : href.endsWith('#ketch-reject')   ? 'ketch-banner-button-tertiary'
+                            :                                    'ketch-banner-button-secondary';
+                  var btn = document.getElementById(btnId);
+                  if (btn) btn.click();
+                });
+
+                // MutationObserver: enforce layout via inline styles so Ketch's own
+                // sm:ketch-flex-row / sm:ketch-w-auto !important classes can't override us.
+                function applyKetchLayout() {
+                  var banner = document.getElementById('ketch-consent-banner');
+                  if (!banner) return;
+
+                  // Header section: force column so logo and title stack
+                  var headerSection = banner.querySelector(':scope > div:first-child');
+                  if (headerSection) headerSection.style.setProperty('flex-direction', 'column', 'important');
+
+                  // Header row: center contents (X button is absolute, only logo+title group remains)
+                  var logoRow = banner.querySelector(':scope > div:first-child > div:first-child');
+                  if (logoRow) logoRow.style.setProperty('justify-content', 'center', 'important');
+
+                  // Logo + title inner group (ketch-items-center): stack vertically
+                  var logoImg = banner.querySelector('img[alt="header-logo"]');
+                  if (logoImg) {
+                    var logoTitleGroup = logoImg.closest('.ketch-flex');
+                    while (logoTitleGroup && !logoTitleGroup.querySelector('h3')) {
+                      logoTitleGroup = logoTitleGroup.parentElement ? logoTitleGroup.parentElement.closest('.ketch-flex') : null;
+                    }
+                    if (logoTitleGroup) {
+                      logoTitleGroup.style.setProperty('flex-direction', 'column', 'important');
+                      logoTitleGroup.style.setProperty('align-items', 'stretch', 'important');
+                      logoTitleGroup.style.setProperty('width', '100%', 'important');
+                      logoTitleGroup.style.setProperty('gap', '8px', 'important');
+                    }
+                    // Logo wrapper: center the img
+                    var logoWrapper = logoImg.parentElement;
+                    if (logoWrapper) {
+                      logoWrapper.style.setProperty('align-items', 'center', 'important');
+                      logoWrapper.style.setProperty('width', '100%', 'important');
+                    }
+                  }
+
+                  // Content wrapper (sm:ketch-flex-row): force column on all screens
+                  var contentWrapper = banner.querySelector(':scope > div:nth-child(2)');
+                  if (contentWrapper) contentWrapper.style.setProperty('flex-direction', 'column', 'important');
+
+                  // Buttons container: force row
+                  var btnContainer = banner.querySelector('#ketch-banner-buttons-container-compact, #ketch-banner-buttons-container-standard');
+                  if (btnContainer) {
+                    btnContainer.style.setProperty('display', 'flex', 'important');
+                    btnContainer.style.setProperty('flex-direction', 'row', 'important');
+                    btnContainer.style.setProperty('width', '100%', 'important');
+                    btnContainer.style.setProperty('gap', '10px', 'important');
+                  }
+
+                  // Each button: equal half-width, override sm:ketch-w-auto
+                  ['ketch-banner-button-primary', 'ketch-banner-button-secondary'].forEach(function(id) {
+                    var btn = document.getElementById(id);
+                    if (!btn) return;
+                    btn.style.setProperty('flex', '1 1 0%', 'important');
+                    btn.style.setProperty('width', '0', 'important');
+                    btn.style.setProperty('min-width', '0', 'important');
+                    btn.style.setProperty('max-width', '100%', 'important');
+                  });
+
+                  // Override md:ketch-max-w-[50%] wherever Ketch places it inside the banner
+                  banner.querySelectorAll('[class*="ketch-max-w-"]').forEach(function(el) {
+                    el.style.setProperty('max-width', '100%', 'important');
+                  });
+                }
+
+                var ketchObserver = new MutationObserver(function() {
+                  if (document.getElementById('ketch-consent-banner')) {
+                    applyKetchLayout();
+                    ketchObserver.disconnect();
+                  }
+                });
+                ketchObserver.observe(document.body, { childList: true, subtree: true });
               `}
             </Script>
 
