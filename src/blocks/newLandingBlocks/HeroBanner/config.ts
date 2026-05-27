@@ -115,6 +115,7 @@ export const HeroBannerBlock: Block = {
       name: 'price',
       label: 'Price',
       type: 'text',
+      localized: true,
       admin: { description: 'Price shown in accent style (e.g. "€99/month").' },
     },
     {

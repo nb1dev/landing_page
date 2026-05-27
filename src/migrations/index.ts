@@ -23,6 +23,8 @@ import * as migration_20260504_footer_variants_logo from './20260504_footer_vari
 import * as migration_20260504_header_theme_variants from './20260504_header_theme_variants';
 import * as migration_20260510_heading_richtext from './20260510_heading_richtext';
 import * as migration_20260511_115656 from './20260511_115656';
+import * as migration_20260526_hero_banner_price_localized from './20260526_hero_banner_price_localized';
+import * as migration_20260526_floating_cta_localize_all from './20260526_floating_cta_localize_all';
 
 export const migrations = [
   {
@@ -149,5 +151,15 @@ export const migrations = [
     up: migration_20260511_115656.up,
     down: migration_20260511_115656.down,
     name: '20260511_115656'
+  },
+  {
+    up: migration_20260526_hero_banner_price_localized.up,
+    down: migration_20260526_hero_banner_price_localized.down,
+    name: '20260526_hero_banner_price_localized',
+  },
+  {
+    up: migration_20260526_floating_cta_localize_all.up,
+    down: migration_20260526_floating_cta_localize_all.down,
+    name: '20260526_floating_cta_localize_all',
   },
 ];

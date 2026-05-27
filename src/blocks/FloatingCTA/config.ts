@@ -12,6 +12,7 @@ export const FloatingCTABlock: Block = {
       name: 'text',
       label: 'Text (plain)',
       type: 'text',
+      localized: true,
       admin: {
         placeholder: 'Get your kit',
         description: 'e.g. "Get your kit" — plain text shown before the highlighted part.',
@@ -21,6 +22,7 @@ export const FloatingCTABlock: Block = {
       name: 'highlightedText',
       label: 'Highlighted Text (teal accent)',
       type: 'text',
+      localized: true,
       admin: {
         placeholder: '2 weeks before anyone else',
         description: 'e.g. "2 weeks before anyone else" — displayed in teal accent color.',
@@ -30,6 +32,7 @@ export const FloatingCTABlock: Block = {
       name: 'buttonText',
       label: 'Button Label',
       type: 'text',
+      localized: true,
       required: true,
       admin: {
         placeholder: 'Reserve my kit →',
@@ -40,6 +43,7 @@ export const FloatingCTABlock: Block = {
       name: 'buttonHref',
       label: 'Button Link',
       type: 'text',
+      localized: true,
       required: true,
       admin: {
         placeholder: '#reserve',
@@ -50,6 +54,7 @@ export const FloatingCTABlock: Block = {
       name: 'heroSelector',
       label: 'Hero Section Selector',
       type: 'text',
+      localized: true,
       admin: {
         placeholder: '.hero',
         description:
@@ -60,6 +65,7 @@ export const FloatingCTABlock: Block = {
       name: 'reserveSelector',
       label: 'Reserve Section Selector',
       type: 'text',
+      localized: true,
       admin: {
         placeholder: '#reserve',
         description:
