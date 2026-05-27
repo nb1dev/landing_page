@@ -243,6 +243,8 @@ div[data-ketch-backdrop="true"] {
 #ketch-consent-banner img[alt="header-logo"] {
   display: block !important;
   margin: 0 auto !important;
+  height: 30px !important;
+  width: auto !important;
 }
 
 /* ── 6. CONTENT + BUTTONS — stacked column ── */
@@ -331,11 +333,21 @@ div[data-ketch-backdrop="true"] {
 
 /* ── 11. "POWERED BY KETCH" FOOTER — subtle ── */
 #ketch-consent-banner > div:last-child {
+  display: flex !important;
   font-size: 11px !important;
   color: #9aacac !important;
   text-align: center !important;
+  justify-content: center !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+}
+
+#ketch-consent-banner > div:last-child a {
+  margin: 0 auto !important;
+}
+
+#ketch-consent-banner > div:last-child img:not([alt="header-logo"]) {
+  display: none !important;
 }
 
 /* ── 12. BREAKPOINT OVERRIDES — defeat Ketch sm/md max-width caps ── */
