@@ -73,6 +73,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <meta name="facebook-domain-verification" content="4r4g0m2wo3hl69f7kdwb6eeq1bz2i6" />
         <InitTheme />
 
         {/* Google Tag Manager */}
@@ -120,7 +121,6 @@ export default async function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
-
 
         <script
           dangerouslySetInnerHTML={{
