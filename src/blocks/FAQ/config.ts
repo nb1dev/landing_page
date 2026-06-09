@@ -1,6 +1,5 @@
 import type { Block } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { defaultLexical } from '@/fields/defaultLexical'
+import { FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const FAQBlock: Block = {
   slug: 'faq',
@@ -34,7 +33,13 @@ export const FAQBlock: Block = {
           localized: true,
           required: true,
           label: 'Answer',
-          editor: defaultLexical,
+          editor: lexicalEditor({
+            features: ({ rootFeatures }) => [
+              ...rootFeatures,
+              FixedToolbarFeature(),
+              InlineToolbarFeature(),
+            ],
+          }),
         },
       ],
     },
