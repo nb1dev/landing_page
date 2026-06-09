@@ -6,13 +6,14 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { brandColorSwatches } from '@/fields/brandColors'
 
 const headingEditor = lexicalEditor({
   features: ({ rootFeatures }) => [
     ...rootFeatures,
     FixedToolbarFeature(),
     InlineToolbarFeature(),
-    TextColorFeature(),
+    TextColorFeature({ colors: brandColorSwatches }),
     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
   ],
 })
