@@ -6,6 +6,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
 import { TextColorFeature } from 'payloadcms-lexical-ext'
+import { brandColorSwatches } from '@/fields/brandColors'
 
 export const MissionBanner: Block = {
   slug: 'mission-banner',
@@ -20,7 +21,7 @@ export const MissionBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature(),
+          TextColorFeature({ colors: brandColorSwatches }),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),
@@ -35,7 +36,7 @@ export const MissionBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature(),
+          TextColorFeature({ colors: brandColorSwatches }),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),
