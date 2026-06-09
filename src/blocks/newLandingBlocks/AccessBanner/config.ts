@@ -5,9 +5,6 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-import { brandColorSwatches } from '@/fields/brandColors'
-
 export const AccessBanner: Block = {
   slug: 'accessBanner',
   interfaceName: 'AccessBannerBlock',
@@ -27,7 +24,6 @@ export const AccessBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature({ colors: brandColorSwatches }),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),

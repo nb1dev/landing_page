@@ -5,16 +5,12 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-import { brandColorSwatches } from '@/fields/brandColors'
-
 const makeEditor = () =>
   lexicalEditor({
     features: ({ rootFeatures }) => [
       ...rootFeatures,
       FixedToolbarFeature(),
       InlineToolbarFeature(),
-      TextColorFeature({ colors: brandColorSwatches }),
       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
     ],
   })

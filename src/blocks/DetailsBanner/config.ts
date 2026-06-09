@@ -5,9 +5,6 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-import { brandColorSwatches } from '@/fields/brandColors'
-
 export const DetailsBanner: Block = {
   slug: 'details-banner',
   interfaceName: 'DetailsBannerBlock',
@@ -21,7 +18,6 @@ export const DetailsBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature({ colors: brandColorSwatches }),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),

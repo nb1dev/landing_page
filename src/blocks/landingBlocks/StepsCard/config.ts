@@ -5,8 +5,6 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-
 export const StepsCardBlock: Block = {
   slug: 'steps-card',
   fields: [
