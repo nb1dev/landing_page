@@ -43,6 +43,18 @@ import { AthleteBannerComponent } from './newLandingBlocks/AthleteBanner/Compone
 import { PriceBreakBlockComponent } from './PriceBreakBlock/Component'
 import { ScienceBoardBlockComponent } from './ScienceBoardBlock/Component'
 import { FloatingCTABlockComponent } from './FloatingCTA/Component'
+import { YpHeroComponent } from './yourPlanBlocks/Hero/Component'
+import { YpPlansComponent } from './yourPlanBlocks/Plans/Component'
+import { YpThreeComponentsComponent } from './yourPlanBlocks/ThreeComponents/Component'
+import { YpDashboardComponent } from './yourPlanBlocks/Dashboard/Component'
+import { YpTimelineComponent } from './yourPlanBlocks/Timeline/Component'
+import { YpScienceBoardComponent } from './yourPlanBlocks/ScienceBoard/Component'
+import { YpAthletesComponent } from './yourPlanBlocks/Athletes/Component'
+import { YpBreakupComponent } from './yourPlanBlocks/Breakup/Component'
+import { YpFaqComponent } from './yourPlanBlocks/Faq/Component'
+import { YpStickyBuyComponent } from './yourPlanBlocks/StickyBuy/Component'
+import { YpReassuranceComponent } from './yourPlanBlocks/Reassurance/Component'
+import { YpBuyBoxComponent } from './yourPlanBlocks/BuyBox/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -85,6 +97,18 @@ const blockComponents: Record<string, React.FC<any>> = {
   priceBreak: PriceBreakBlockComponent,
   scienceBoard: ScienceBoardBlockComponent,
   floatingCTA: FloatingCTABlockComponent,
+  ypHero: YpHeroComponent,
+  ypPlans: YpPlansComponent,
+  ypComponents: YpThreeComponentsComponent,
+  ypDashboard: YpDashboardComponent,
+  ypTimeline: YpTimelineComponent,
+  ypScienceBoard: YpScienceBoardComponent,
+  ypAthletes: YpAthletesComponent,
+  ypBreakup: YpBreakupComponent,
+  ypFaq: YpFaqComponent,
+  ypReassurance: YpReassuranceComponent,
+  ypBuyBox: YpBuyBoxComponent,
+  ypStickyBuy: YpStickyBuyComponent,
 }
 
 export const RenderBlocks: React.FC<{
