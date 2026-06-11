@@ -255,6 +255,18 @@ export interface Page {
     | PriceBreakBlock
     | ScienceBoardBlock
     | FloatingCTABlock
+    | YpHeroBlock
+    | YpPlansBlock
+    | YpThreeComponentsBlock
+    | YpDashboardBlock
+    | YpTimelineBlock
+    | YpScienceBoardBlock
+    | YpAthletesBlock
+    | YpBreakupBlock
+    | YpFaqBlock
+    | YpReassuranceBlock
+    | YpBuyBoxBlock
+    | YpStickyBuyBlock
   )[];
   meta?: {
     /**
@@ -3037,6 +3049,1187 @@ export interface FloatingCTABlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpHeroBlock".
+ */
+export interface YpHeroBlock {
+  /**
+   * Background color for the hero section.
+   */
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  /**
+   * Hex value used when "Custom" is selected (e.g. #1a2b3c).
+   */
+  backgroundColorCustom?: string | null;
+  /**
+   * Choose whether the hero uses a color or a background image.
+   */
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Image shown behind the hero (only used when Background Type is "Image").
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Subtle film-grain noise overlay (matches the source design).
+   */
+  grain?: boolean | null;
+  /**
+   * Main H1. Apply teal text color to a word/phrase for the accent (e.g. "your biology").
+   */
+  heading: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  primaryButton?: {
+    /**
+     * e.g. "Order your kit".
+     */
+    label?: string | null;
+    /**
+     * Destination link for the primary CTA.
+     */
+    url?: string | null;
+  };
+  secondaryLink?: {
+    /**
+     * e.g. "See what arrives" (a → arrow is appended automatically).
+     */
+    label?: string | null;
+    /**
+     * Destination link/anchor for the secondary link (e.g. "#components").
+     */
+    url?: string | null;
+  };
+  /**
+   * Overlapping circular portraits shown in the board strip.
+   */
+  boardFaces?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold line, e.g. "Each formula reviewed by our science board".
+   */
+  boardCopy?: string | null;
+  /**
+   * Lighter line below, e.g. "Six researchers · human sign-off before manufacture".
+   */
+  boardSubCopy?: string | null;
+  /**
+   * Large image on the right (still life / product render).
+   */
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpPlansBlock".
+ */
+export interface YpPlansBlock {
+  /**
+   * Background color for the plans section.
+   */
+  backgroundColor?: ('cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  /**
+   * Hex value used when "Custom" is selected (e.g. #1a2b3c).
+   */
+  backgroundColorCustom?: string | null;
+  /**
+   * Choose whether the section uses a color or a background image.
+   */
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Image shown behind the section (only used when Background Type is "Image").
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Subtle film-grain noise overlay (matches the source design).
+   */
+  grain?: boolean | null;
+  /**
+   * Small uppercase label above the heading (e.g. "Choose your starting point").
+   */
+  eyebrow?: string | null;
+  /**
+   * Section H2. Apply teal text color to a phrase for the accent (e.g. "One difference.").
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * The pricing cards (e.g. Core and Advanced).
+   */
+  planCards?:
+    | {
+        featured?: boolean | null;
+        /**
+         * Optional lime flag at the top (e.g. "Most informed").
+         */
+        badge?: string | null;
+        /**
+         * e.g. "Core" / "Advanced".
+         */
+        name: string;
+        /**
+         * Short description under the name.
+         */
+        tag?: string | null;
+        /**
+         * e.g. "€99".
+         */
+        price?: string | null;
+        /**
+         * Suffix shown after the price (e.g. "/mo").
+         */
+        pricePeriod?: string | null;
+        /**
+         * Pill under the price (e.g. "or €109/mo month-to-month · cancel anytime"). Leave empty to keep an invisible spacer for alignment.
+         */
+        monthly?: string | null;
+        /**
+         * e.g. "4 months is the minimum cycle…".
+         */
+        commit?: string | null;
+        /**
+         * e.g. "What's inside" / "Everything in Core, plus".
+         */
+        listLabel?: string | null;
+        listItems?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. "Start with Core".
+         */
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        ctaStyle?: ('out' | 'cta') | null;
+        id?: string | null;
+      }[]
+    | null;
+  showComparison?: boolean | null;
+  comparison?: {
+    /**
+     * e.g. "Compare side by side".
+     */
+    toggleLabelClosed?: string | null;
+    /**
+     * e.g. "Hide full comparison".
+     */
+    toggleLabelOpen?: string | null;
+    /**
+     * Each section is a group header with its own rows underneath.
+     */
+    sections?:
+      | {
+          /**
+           * e.g. "Diagnostics".
+           */
+          title?: string | null;
+          rows?:
+            | {
+                /**
+                 * e.g. "Gut microbiome sequencing, shotgun, species-level".
+                 */
+                text: string;
+                /**
+                 * Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or €109/mo monthly").
+                 */
+                cell?: ('checkbox' | 'oneLine' | 'twoLine') | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Each card is a column (e.g. Core, Advanced). Tick the rows this column includes.
+     */
+    cards?:
+      | {
+          /**
+           * e.g. "Core".
+           */
+          label?: string | null;
+          /**
+           * e.g. "€99".
+           */
+          price?: string | null;
+          /**
+           * e.g. "/mo".
+           */
+          pricePeriod?: string | null;
+          highlight?: boolean | null;
+          features?:
+            | {
+                [k: string]: unknown;
+              }
+            | unknown[]
+            | string
+            | number
+            | boolean
+            | null;
+          /**
+           * e.g. "Start with Core".
+           */
+          ctaLabel?: string | null;
+          ctaUrl?: string | null;
+          ctaStyle?: ('out' | 'lime') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Up to 3 reassurance items shown below the plans.
+   */
+  guaranteeItems?:
+    | {
+        icon?: ('clock' | 'cycle' | 'capsule' | 'none') | null;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypPlans';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpThreeComponentsBlock".
+ */
+export interface YpThreeComponentsBlock {
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * e.g. "What arrives at your door".
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Supporting paragraph. Bold a phrase to emphasise (e.g. "140+ ingredients").
+   */
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "One subscription, in place of".
+   */
+  replacesPrefix?: string | null;
+  /**
+   * Struck-through pills (e.g. greens powder, probiotic…).
+   */
+  replacesItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Kit render shown on the left (floats with a 3D tilt).
+   */
+  image?: (number | null) | Media;
+  /**
+   * Each entry is a tab (e.g. Activate, Restore, Nourish). Tabs auto-advance until clicked.
+   */
+  components?:
+    | {
+        tabLabel: string;
+        icon?: ('sun' | 'moon' | 'shield' | 'none') | null;
+        /**
+         * e.g. "Morning protocol · taken with your first meal".
+         */
+        intro?: string | null;
+        /**
+         * Optional featured item with a "why" note and ingredient chips.
+         */
+        lead?: {
+          /**
+           * e.g. "Probiotic Capsule".
+           */
+          name?: string | null;
+          /**
+           * e.g. "5 strains · AM".
+           */
+          dose?: string | null;
+          /**
+           * e.g. "Why it's in Leonardo's formula".
+           */
+          readLabel?: string | null;
+          /**
+           * Bold a phrase to highlight it in teal.
+           */
+          readBody?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          chips?:
+            | {
+                bold: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        /**
+         * Simple name + dose rows. Mark "Excluded" for left-out items.
+         */
+        rows?:
+          | {
+              name: string;
+              dose?: string | null;
+              excluded?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional note shown with a ✕ icon (e.g. why something was left out).
+         */
+        exNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypComponents';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpDashboardBlock".
+ */
+export interface YpDashboardBlock {
+  backgroundColor?: ('off' | 'paper' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Blurred screenshot shown inside the phone (same across all tabs).
+   */
+  phoneImage?: (number | null) | Media;
+  /**
+   * e.g. "See a full sample health report". Opens the sample report modal.
+   */
+  reportLabel?: string | null;
+  /**
+   * e.g. "Sample health report".
+   */
+  reportModalTitle?: string | null;
+  /**
+   * Full sample report image shown in the modal.
+   */
+  reportImage?: (number | null) | Media;
+  /**
+   * Each pill is a tab. Accordion auto-advances; phone card differs per tab.
+   */
+  views?:
+    | {
+        pillLabel: string;
+        title?: string | null;
+        /**
+         * Numbered 01, 02, 03… automatically.
+         */
+        items?:
+          | {
+              heading: string;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        card?: {
+          cardType?: ('gauge' | 'scales' | 'teams' | 'map') | null;
+          /**
+           * Gauge: label above score (e.g. "Overall score"). Others: small uppercase title.
+           */
+          heading?: string | null;
+          /**
+           * e.g. "Excellent".
+           */
+          flag?: string | null;
+          /**
+           * e.g. "85.5". The track fill is computed as score / 100.
+           */
+          score?: string | null;
+          metrics?:
+            | {
+                name: string;
+                /**
+                 * e.g. "18.7". Bar width is computed as value / max.
+                 */
+                value?: string | null;
+                /**
+                 * e.g. "20" → shown as "/20".
+                 */
+                max?: string | null;
+                amber?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+          scales?:
+            | {
+                label: string;
+                /**
+                 * 0–100 (dot position + shown as "%").
+                 */
+                pct?: number | null;
+                amber?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+          teams?:
+            | {
+                name: string;
+                pct?: number | null;
+                /**
+                 * e.g. "Healthy" / "Below range" / "Controlled".
+                 */
+                statusLabel?: string | null;
+                statusType?: ('ok' | 'low') | null;
+                id?: string | null;
+              }[]
+            | null;
+          mapRows?:
+            | {
+                key: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  boardFaces?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Reviewed by our science board before manufacture."
+   */
+  boardText?: string | null;
+  /**
+   * e.g. "Meet the board" (→ appended).
+   */
+  boardLinkLabel?: string | null;
+  boardLinkUrl?: string | null;
+  /**
+   * e.g. "A health layer, not just supplementation".
+   */
+  ownLabel?: string | null;
+  ownBody?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypDashboard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpTimelineBlock".
+ */
+export interface YpTimelineBlock {
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase. Use Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Vertical milestones. Dots/connector animate in on scroll.
+   */
+  items?:
+    | {
+        /**
+         * e.g. "Month 1".
+         */
+        timeWk?: string | null;
+        title: string;
+        /**
+         * Optional teal pill next to the title (e.g. "Advanced").
+         */
+        badge?: string | null;
+        /**
+         * Bold a phrase to emphasise it.
+         */
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Optional smaller line below the body (e.g. the Core caveat).
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Background photo for the stats card.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * e.g. "What early members report".
+   */
+  statsLabel?: string | null;
+  /**
+   * Bar fills to the percentage in Value (e.g. "95%" → 95% bar).
+   */
+  stats?:
+    | {
+        label: string;
+        /**
+         * e.g. "95%".
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpScienceBoardBlock".
+ */
+export interface YpScienceBoardBlock {
+  backgroundColor?: ('cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Each card opens a bio modal on click.
+   */
+  members?:
+    | {
+        photo: number | Media;
+        name: string;
+        /**
+         * Teal line on the card (e.g. "Chief Scientific Officer").
+         */
+        role?: string | null;
+        /**
+         * Credentials line on the card.
+         */
+        detail?: string | null;
+        /**
+         * Small uppercase pill in the modal (e.g. "Science board").
+         */
+        pill?: string | null;
+        /**
+         * Title line under the name in the modal.
+         */
+        modalTitle?: string | null;
+        /**
+         * One or more paragraphs shown in the modal.
+         */
+        bio?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Italic pull-quote at the bottom of the modal.
+         */
+        quote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypScienceBoard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpAthletesBlock".
+ */
+export interface YpAthletesBlock {
+  backgroundColor?: ('off' | 'paper' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Portrait + quote. Optionally a video card with a play/Watch lightbox.
+   */
+  cards?:
+    | {
+        image: number | Media;
+        quote?: string | null;
+        /**
+         * e.g. "Tim Wenisch".
+         */
+        name?: string | null;
+        /**
+         * Bold part after the name (e.g. "2025 HYROX … Champion").
+         */
+        credit?: string | null;
+        isVideo?: boolean | null;
+        watchLabel?: string | null;
+        /**
+         * MP4 played in the lightbox.
+         */
+        video?: (number | null) | Media;
+        /**
+         * Optional English subtitles track.
+         */
+        subtitlesUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Together they hold the Men's Doubles World Record".
+   */
+  recordLeft?: string | null;
+  /**
+   * Teal value (e.g. "47:40").
+   */
+  recordValue?: string | null;
+  /**
+   * e.g. "London 2026".
+   */
+  recordRight?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypAthletes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBreakupBlock".
+ */
+export interface YpBreakupBlock {
+  backgroundColor?: ('navyDeep' | 'inkDeep' | 'navy' | 'off' | 'paper' | 'cream' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Full-bleed image behind the glass card (e.g. athlete at rest).
+   */
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * Optional small teal label above the line.
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase for emphasis.
+   */
+  line?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypBreakup';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpFaqBlock".
+ */
+export interface YpFaqBlock {
+  backgroundColor?: ('cream' | 'off' | 'paper' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Numbers (01, 02 …) are added automatically in order.
+   */
+  items?:
+    | {
+        question: string;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypFaq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpReassuranceBlock".
+ */
+export interface YpReassuranceBlock {
+  /**
+   * Default renders the signature 160° deep-navy gradient + teal glow.
+   */
+  backgroundColor?: ('navyDeep' | 'navy' | 'inkDeep' | 'teal' | 'off' | 'paper' | 'cream' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Glass cards (the source uses two: guarantee + commitment).
+   */
+  cards?:
+    | {
+        /**
+         * Teal pill label (e.g. "The guarantee").
+         */
+        tag?: string | null;
+        title?: string | null;
+        body?: string | null;
+        points?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypReassurance';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBuyBoxBlock".
+ */
+export interface YpBuyBoxBlock {
+  backgroundColor?: ('inkDeep' | 'navyDeep' | 'navy' | 'teal' | 'off' | 'paper' | 'cream' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Full-bleed image behind the dark overlay (e.g. athlete at rest).
+   */
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  sub?: string | null;
+  /**
+   * Pricing options (the source uses two: Core + Advanced).
+   */
+  options?:
+    | {
+        /**
+         * e.g. "Core".
+         */
+        name: string;
+        /**
+         * e.g. "€99".
+         */
+        price?: string | null;
+        /**
+         * Small text after price (e.g. "/mo").
+         */
+        priceSuffix?: string | null;
+        /**
+         * Optional teal pill (e.g. "or €109/mo, monthly · cancel anytime").
+         */
+        altLabel?: string | null;
+        description?: string | null;
+        /**
+         * e.g. "Order Core kit" — the → arrow is added automatically.
+         */
+        ctaLabel?: string | null;
+        ctaHref?: string | null;
+        recommended?: boolean | null;
+        recFlagLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  buyNote?: string | null;
+  /**
+   * Checkmarked items in the bottom trust row.
+   */
+  trust?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypBuyBox';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpStickyBuyBlock".
+ */
+export interface YpStickyBuyBlock {
+  backgroundColor?: ('glass' | 'paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  /**
+   * e.g. "Your formula, built from your gut".
+   */
+  leftKey?: string | null;
+  /**
+   * Muted text after the bold part — hidden on small screens. e.g. "from €99/mo".
+   */
+  leftValue?: string | null;
+  /**
+   * e.g. "Order your kit". Add an arrow yourself if you want one.
+   */
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  /**
+   * The bar appears once this element scrolls past the top. Falls back to ~700px scrolled if not found.
+   */
+  showAfterSel?: string | null;
+  /**
+   * Comma-separated. The bar hides once any of these enters the viewport.
+   */
+  hideAtSel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypStickyBuy';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -3442,6 +4635,18 @@ export interface PagesSelect<T extends boolean = true> {
         priceBreak?: T | PriceBreakBlockSelect<T>;
         scienceBoard?: T | ScienceBoardBlockSelect<T>;
         floatingCTA?: T | FloatingCTABlockSelect<T>;
+        ypHero?: T | YpHeroBlockSelect<T>;
+        ypPlans?: T | YpPlansBlockSelect<T>;
+        ypComponents?: T | YpThreeComponentsBlockSelect<T>;
+        ypDashboard?: T | YpDashboardBlockSelect<T>;
+        ypTimeline?: T | YpTimelineBlockSelect<T>;
+        ypScienceBoard?: T | YpScienceBoardBlockSelect<T>;
+        ypAthletes?: T | YpAthletesBlockSelect<T>;
+        ypBreakup?: T | YpBreakupBlockSelect<T>;
+        ypFaq?: T | YpFaqBlockSelect<T>;
+        ypReassurance?: T | YpReassuranceBlockSelect<T>;
+        ypBuyBox?: T | YpBuyBoxBlockSelect<T>;
+        ypStickyBuy?: T | YpStickyBuyBlockSelect<T>;
       };
   meta?:
     | T
@@ -4626,6 +5831,480 @@ export interface FloatingCTABlockSelect<T extends boolean = true> {
   buttonHref?: T;
   heroSelector?: T;
   reserveSelector?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpHeroBlock_select".
+ */
+export interface YpHeroBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  heading?: T;
+  description?: T;
+  primaryButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  secondaryLink?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  boardFaces?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  boardCopy?: T;
+  boardSubCopy?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpPlansBlock_select".
+ */
+export interface YpPlansBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  planCards?:
+    | T
+    | {
+        featured?: T;
+        badge?: T;
+        name?: T;
+        tag?: T;
+        price?: T;
+        pricePeriod?: T;
+        monthly?: T;
+        commit?: T;
+        listLabel?: T;
+        listItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaUrl?: T;
+        ctaStyle?: T;
+        id?: T;
+      };
+  showComparison?: T;
+  comparison?:
+    | T
+    | {
+        toggleLabelClosed?: T;
+        toggleLabelOpen?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              rows?:
+                | T
+                | {
+                    text?: T;
+                    cell?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        cards?:
+          | T
+          | {
+              label?: T;
+              price?: T;
+              pricePeriod?: T;
+              highlight?: T;
+              features?: T;
+              ctaLabel?: T;
+              ctaUrl?: T;
+              ctaStyle?: T;
+              id?: T;
+            };
+      };
+  guaranteeItems?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpThreeComponentsBlock_select".
+ */
+export interface YpThreeComponentsBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  replacesPrefix?: T;
+  replacesItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  components?:
+    | T
+    | {
+        tabLabel?: T;
+        icon?: T;
+        intro?: T;
+        lead?:
+          | T
+          | {
+              name?: T;
+              dose?: T;
+              readLabel?: T;
+              readBody?: T;
+              chips?:
+                | T
+                | {
+                    bold?: T;
+                    id?: T;
+                  };
+            };
+        rows?:
+          | T
+          | {
+              name?: T;
+              dose?: T;
+              excluded?: T;
+              id?: T;
+            };
+        exNote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpDashboardBlock_select".
+ */
+export interface YpDashboardBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  phoneImage?: T;
+  reportLabel?: T;
+  reportModalTitle?: T;
+  reportImage?: T;
+  views?:
+    | T
+    | {
+        pillLabel?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              id?: T;
+            };
+        card?:
+          | T
+          | {
+              cardType?: T;
+              heading?: T;
+              flag?: T;
+              score?: T;
+              metrics?:
+                | T
+                | {
+                    name?: T;
+                    value?: T;
+                    max?: T;
+                    amber?: T;
+                    id?: T;
+                  };
+              scales?:
+                | T
+                | {
+                    label?: T;
+                    pct?: T;
+                    amber?: T;
+                    id?: T;
+                  };
+              teams?:
+                | T
+                | {
+                    name?: T;
+                    pct?: T;
+                    statusLabel?: T;
+                    statusType?: T;
+                    id?: T;
+                  };
+              mapRows?:
+                | T
+                | {
+                    key?: T;
+                    value?: T;
+                    id?: T;
+                  };
+            };
+        id?: T;
+      };
+  boardFaces?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  boardText?: T;
+  boardLinkLabel?: T;
+  boardLinkUrl?: T;
+  ownLabel?: T;
+  ownBody?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpTimelineBlock_select".
+ */
+export interface YpTimelineBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  items?:
+    | T
+    | {
+        timeWk?: T;
+        title?: T;
+        badge?: T;
+        body?: T;
+        note?: T;
+        id?: T;
+      };
+  photo?: T;
+  statsLabel?: T;
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpScienceBoardBlock_select".
+ */
+export interface YpScienceBoardBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        detail?: T;
+        pill?: T;
+        modalTitle?: T;
+        bio?: T;
+        quote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpAthletesBlock_select".
+ */
+export interface YpAthletesBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  cards?:
+    | T
+    | {
+        image?: T;
+        quote?: T;
+        name?: T;
+        credit?: T;
+        isVideo?: T;
+        watchLabel?: T;
+        video?: T;
+        subtitlesUrl?: T;
+        id?: T;
+      };
+  recordLeft?: T;
+  recordValue?: T;
+  recordRight?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBreakupBlock_select".
+ */
+export interface YpBreakupBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  line?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpFaqBlock_select".
+ */
+export interface YpFaqBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpReassuranceBlock_select".
+ */
+export interface YpReassuranceBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  cards?:
+    | T
+    | {
+        tag?: T;
+        title?: T;
+        body?: T;
+        points?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBuyBoxBlock_select".
+ */
+export interface YpBuyBoxBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  heading?: T;
+  sub?: T;
+  options?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        priceSuffix?: T;
+        altLabel?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        recommended?: T;
+        recFlagLabel?: T;
+        id?: T;
+      };
+  buyNote?: T;
+  trust?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpStickyBuyBlock_select".
+ */
+export interface YpStickyBuyBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  leftKey?: T;
+  leftValue?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  showAfterSel?: T;
+  hideAtSel?: T;
   id?: T;
   blockName?: T;
 }

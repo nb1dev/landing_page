@@ -189,5 +189,9 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next).*)'],
+  // Exclude `/cms` (Payload admin + REST API) so Next.js does not buffer/cap
+  // their request bodies at the 10MB middleware default — this would truncate
+  // large uploads (e.g. video) and break them. Localized `/{locale}/cms`
+  // paths still match and are redirected to `/cms` below.
+  matcher: ['/((?!_next|cms).*)'],
 }

@@ -52,6 +52,18 @@ import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/conf
 import { PriceBreakBlock } from '@/blocks/PriceBreakBlock/config'
 import { ScienceBoardBlock } from '@/blocks/ScienceBoardBlock/config'
 import { FloatingCTABlock } from '@/blocks/FloatingCTA/config'
+import { YpHeroBlock } from '@/blocks/yourPlanBlocks/Hero/config'
+import { YpPlansBlock } from '@/blocks/yourPlanBlocks/Plans/config'
+import { YpThreeComponentsBlock } from '@/blocks/yourPlanBlocks/ThreeComponents/config'
+import { YpDashboardBlock } from '@/blocks/yourPlanBlocks/Dashboard/config'
+import { YpTimelineBlock } from '@/blocks/yourPlanBlocks/Timeline/config'
+import { YpScienceBoardBlock } from '@/blocks/yourPlanBlocks/ScienceBoard/config'
+import { YpAthletesBlock } from '@/blocks/yourPlanBlocks/Athletes/config'
+import { YpBreakupBlock } from '@/blocks/yourPlanBlocks/Breakup/config'
+import { YpFaqBlock } from '@/blocks/yourPlanBlocks/Faq/config'
+import { YpStickyBuyBlock } from '@/blocks/yourPlanBlocks/StickyBuy/config'
+import { YpReassuranceBlock } from '@/blocks/yourPlanBlocks/Reassurance/config'
+import { YpBuyBoxBlock } from '@/blocks/yourPlanBlocks/BuyBox/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -156,6 +168,18 @@ export const Pages: CollectionConfig<'pages'> = {
                 PriceBreakBlock,
                 ScienceBoardBlock,
                 FloatingCTABlock,
+                YpHeroBlock,
+                YpPlansBlock,
+                YpThreeComponentsBlock,
+                YpDashboardBlock,
+                YpTimelineBlock,
+                YpScienceBoardBlock,
+                YpAthletesBlock,
+                YpBreakupBlock,
+                YpFaqBlock,
+                YpReassuranceBlock,
+                YpBuyBoxBlock,
+                YpStickyBuyBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

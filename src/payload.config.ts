@@ -60,6 +60,16 @@ export default buildConfig({
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,
+  // File upload (express-fileupload) options. Raise the size ceiling so larger
+  // media (e.g. video) uploads aren't rejected. The actual upload fix is the
+  // middleware matcher excluding `/cms` (see src/middleware.ts) — without that
+  // Next.js capped the request body at 10MB. NOTE: do NOT enable `useTempFiles`
+  // here — in this setup it persists 0-byte files to the static dir.
+  upload: {
+    limits: {
+      fileSize: 512 * 1024 * 1024, // 512 MB
+    },
+  },
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
