@@ -51,6 +51,7 @@ export default buildConfig({
       min: 0,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 30000,
+      options: '-c statement_timeout=0',
     },
     push: false,
   }),
