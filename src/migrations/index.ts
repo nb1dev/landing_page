@@ -48,6 +48,9 @@ import * as migration_20260611_093646_yp_faq from './20260611_093646_yp_faq';
 import * as migration_20260611_094037_yp_reassurance from './20260611_094037_yp_reassurance';
 import * as migration_20260611_094413_yp_buy_box from './20260611_094413_yp_buy_box';
 import * as migration_20260611_132854_yp_sticky_buy from './20260611_132854_yp_sticky_buy';
+import * as migration_20260609_ecommerce_blocks from './20260609_ecommerce_blocks'
+import * as migration_20260611_homepage_blocks from './20260611_homepage_blocks'
+import * as migration_20260611_the_case_hero from './20260611_the_case_hero'
 
 export const migrations = [
   {
@@ -298,6 +301,21 @@ export const migrations = [
   {
     up: migration_20260611_132854_yp_sticky_buy.up,
     down: migration_20260611_132854_yp_sticky_buy.down,
-    name: '20260611_132854_yp_sticky_buy'
+    name: '20260611_132854_yp_sticky_buy',
   },
-];
+  {
+    up: migration_20260609_ecommerce_blocks.up,
+    down: migration_20260609_ecommerce_blocks.down,
+    name: '20260609_ecommerce_blocks',
+  },
+  {
+    up: migration_20260611_homepage_blocks.up,
+    down: migration_20260611_homepage_blocks.down,
+    name: '20260611_homepage_blocks',
+  },
+  {
+    up: migration_20260611_the_case_hero.up,
+    down: migration_20260611_the_case_hero.down,
+    name: '20260611_the_case_hero',
+  },
+]

@@ -64,6 +64,33 @@ import { YpFaqBlock } from '@/blocks/yourPlanBlocks/Faq/config'
 import { YpStickyBuyBlock } from '@/blocks/yourPlanBlocks/StickyBuy/config'
 import { YpReassuranceBlock } from '@/blocks/yourPlanBlocks/Reassurance/config'
 import { YpBuyBoxBlock } from '@/blocks/yourPlanBlocks/BuyBox/config'
+import { OrderStepHero } from '@/blocks/checkoutBlocks/OrderStepHero/config'
+import { TrustSealsBar } from '@/blocks/checkoutBlocks/TrustSealsBar/config'
+import { OrderTimeline } from '@/blocks/checkoutBlocks/OrderTimeline/config'
+import { FormulaKit } from '@/blocks/checkoutBlocks/FormulaKit/config'
+import { CheckoutFaq } from '@/blocks/checkoutBlocks/CheckoutFaq/config'
+import { EndCard } from '@/blocks/checkoutBlocks/EndCard/config'
+import { PlanSummaryCard } from '@/blocks/checkoutBlocks/PlanSummaryCard/config'
+import { GuaranteeBadges } from '@/blocks/checkoutBlocks/GuaranteeBadges/config'
+import { CyclesPricingGrid } from '@/blocks/checkoutBlocks/CyclesPricingGrid/config'
+import { ReinforceCta } from '@/blocks/checkoutBlocks/ReinforceCta/config'
+import { PlanPivot } from '@/blocks/checkoutBlocks/PlanPivot/config'
+import { StickyCtaBar } from '@/blocks/checkoutBlocks/StickyCtaBar/config'
+import { PlanSelector } from '@/blocks/checkoutBlocks/PlanSelector/config'
+import { CycleSelector } from '@/blocks/checkoutBlocks/CycleSelector/config'
+import { CheckoutForm } from '@/blocks/checkoutBlocks/CheckoutForm/config'
+import { HomepageHeroBlock } from '@/blocks/HomepageHero/config'
+import { TheCaseBlock } from '@/blocks/TheCase/config'
+import { TwoModelsBlock } from '@/blocks/TwoModels/config'
+import { GutFirstBlock } from '@/blocks/GutFirst/config'
+import { HowItWorksBlock } from '@/blocks/HowItWorks/config'
+import { WhatArrivesBlock } from '@/blocks/WhatArrives/config'
+import { OutcomesBlock } from '@/blocks/Outcomes/config'
+import { AthletesBlock } from '@/blocks/Athletes/config'
+import { ScienceBoardNewBlock } from '@/blocks/ScienceBoardNew/config'
+import { StandardsBlock } from '@/blocks/Standards/config'
+import { PlansBlock } from '@/blocks/Plans/config'
+import { CloseBandBlock } from '@/blocks/CloseBand/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -180,6 +207,33 @@ export const Pages: CollectionConfig<'pages'> = {
                 YpReassuranceBlock,
                 YpBuyBoxBlock,
                 YpStickyBuyBlock,
+                OrderStepHero,
+                TrustSealsBar,
+                OrderTimeline,
+                FormulaKit,
+                CheckoutFaq,
+                EndCard,
+                PlanSummaryCard,
+                GuaranteeBadges,
+                CyclesPricingGrid,
+                ReinforceCta,
+                PlanPivot,
+                StickyCtaBar,
+                PlanSelector,
+                CycleSelector,
+                CheckoutForm,
+                HomepageHeroBlock,
+                TheCaseBlock,
+                TwoModelsBlock,
+                GutFirstBlock,
+                HowItWorksBlock,
+                WhatArrivesBlock,
+                OutcomesBlock,
+                AthletesBlock,
+                ScienceBoardNewBlock,
+                StandardsBlock,
+                PlansBlock,
+                CloseBandBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

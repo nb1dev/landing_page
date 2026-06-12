@@ -55,6 +55,33 @@ import { YpFaqComponent } from './yourPlanBlocks/Faq/Component'
 import { YpStickyBuyComponent } from './yourPlanBlocks/StickyBuy/Component'
 import { YpReassuranceComponent } from './yourPlanBlocks/Reassurance/Component'
 import { YpBuyBoxComponent } from './yourPlanBlocks/BuyBox/Component'
+import { OrderStepHeroComponent } from './checkoutBlocks/OrderStepHero/Component'
+import { TrustSealsBarComponent } from './checkoutBlocks/TrustSealsBar/Component'
+import { OrderTimelineComponent } from './checkoutBlocks/OrderTimeline/Component'
+import { FormulaKitComponent } from './checkoutBlocks/FormulaKit/Component'
+import { CheckoutFaqComponent } from './checkoutBlocks/CheckoutFaq/Component'
+import { EndCardComponent } from './checkoutBlocks/EndCard/Component'
+import { PlanSummaryCardComponent } from './checkoutBlocks/PlanSummaryCard/Component'
+import { GuaranteeBadgesComponent } from './checkoutBlocks/GuaranteeBadges/Component'
+import { CyclesPricingGridComponent } from './checkoutBlocks/CyclesPricingGrid/Component'
+import { ReinforceCtaComponent } from './checkoutBlocks/ReinforceCta/Component'
+import { PlanPivotComponent } from './checkoutBlocks/PlanPivot/Component'
+import { StickyCtaBarComponent } from './checkoutBlocks/StickyCtaBar/Component'
+import { PlanSelectorComponent } from './checkoutBlocks/PlanSelector/Component'
+import { CycleSelectorComponent } from './checkoutBlocks/CycleSelector/Component'
+import { CheckoutFormComponent } from './checkoutBlocks/CheckoutForm/Component'
+import { HomepageHeroComponent } from './HomepageHero/Component'
+import { TheCaseComponent } from './TheCase/Component'
+import { TwoModelsComponent } from './TwoModels/Component'
+import { GutFirstComponent } from './GutFirst/Component'
+import { HowItWorksComponent } from './HowItWorks/Component'
+import { WhatArrivesComponent } from './WhatArrives/Component'
+import { OutcomesComponent } from './Outcomes/Component'
+import { AthletesComponent } from './Athletes/Component'
+import { ScienceBoardNewComponent } from './ScienceBoardNew/Component'
+import { StandardsComponent } from './Standards/Component'
+import { PlansComponent } from './Plans/Component'
+import { CloseBandComponent } from './CloseBand/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -109,6 +136,33 @@ const blockComponents: Record<string, React.FC<any>> = {
   ypReassurance: YpReassuranceComponent,
   ypBuyBox: YpBuyBoxComponent,
   ypStickyBuy: YpStickyBuyComponent,
+  orderStepHero: OrderStepHeroComponent,
+  trustSealsBar: TrustSealsBarComponent,
+  orderTimeline: OrderTimelineComponent,
+  formulaKit: FormulaKitComponent,
+  checkoutFaq: CheckoutFaqComponent,
+  endCard: EndCardComponent,
+  planSummaryCard: PlanSummaryCardComponent,
+  guaranteeBadges: GuaranteeBadgesComponent,
+  cyclesPricingGrid: CyclesPricingGridComponent,
+  reinforceCta: ReinforceCtaComponent,
+  planPivot: PlanPivotComponent,
+  stickyCtaBar: StickyCtaBarComponent,
+  planSelector: PlanSelectorComponent,
+  cycleSelector: CycleSelectorComponent,
+  checkoutForm: CheckoutFormComponent,
+  homepageHero: HomepageHeroComponent,
+  theCase: TheCaseComponent,
+  twoModels: TwoModelsComponent,
+  gutFirst: GutFirstComponent,
+  howItWorks: HowItWorksComponent,
+  whatArrives: WhatArrivesComponent,
+  outcomes: OutcomesComponent,
+  athletesSection: AthletesComponent,
+  scienceBoardSection: ScienceBoardNewComponent,
+  standardsSection: StandardsComponent,
+  plansSection: PlansComponent,
+  closeBand: CloseBandComponent,
 }
 
 export const RenderBlocks: React.FC<{
