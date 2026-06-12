@@ -51,6 +51,7 @@ import * as migration_20260611_132854_yp_sticky_buy from './20260611_132854_yp_s
 import * as migration_20260609_ecommerce_blocks from './20260609_ecommerce_blocks'
 import * as migration_20260611_homepage_blocks from './20260611_homepage_blocks'
 import * as migration_20260611_the_case_hero from './20260611_the_case_hero'
+import * as migration_20260612_090000_recreate_close_band from './20260612_090000_recreate_close_band'
 
 export const migrations = [
   {
@@ -317,5 +318,10 @@ export const migrations = [
     up: migration_20260611_the_case_hero.up,
     down: migration_20260611_the_case_hero.down,
     name: '20260611_the_case_hero',
+  },
+  {
+    up: migration_20260612_090000_recreate_close_band.up,
+    down: migration_20260612_090000_recreate_close_band.down,
+    name: '20260612_090000_recreate_close_band',
   },
 ]
