@@ -267,6 +267,33 @@ export interface Page {
     | YpReassuranceBlock
     | YpBuyBoxBlock
     | YpStickyBuyBlock
+    | OrderStepHeroBlock
+    | TrustSealsBarBlock
+    | OrderTimelineBlock
+    | FormulaKitBlock
+    | CheckoutFaqBlock
+    | EndCardBlock
+    | PlanSummaryCardBlock
+    | GuaranteeBadgesBlock
+    | CyclesPricingGridBlock
+    | ReinforceCtaBlock
+    | PlanPivotBlock
+    | StickyCtaBarBlock
+    | PlanSelectorBlock
+    | CycleSelectorBlock
+    | CheckoutFormBlock
+    | HomepageHeroBlock
+    | TheCaseBlock
+    | TwoModelsBlock
+    | GutFirstBlock
+    | HowItWorksBlock
+    | WhatArrivesBlock
+    | OutcomesBlock
+    | AthletesSectionBlock
+    | ScienceBoardSectionBlock
+    | StandardsSectionBlock
+    | PlansSectionBlock
+    | CloseBandBlock
   )[];
   meta?: {
     /**
@@ -4230,6 +4257,1038 @@ export interface YpStickyBuyBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepHeroBlock".
+ */
+export interface OrderStepHeroBlock {
+  headline?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subtitle?: string | null;
+  showSeals?: boolean | null;
+  seals?:
+    | {
+        type?: ('stars' | 'dot') | null;
+        rating?: string | null;
+        label?: string | null;
+        shortLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderStepHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustSealsBarBlock".
+ */
+export interface TrustSealsBarBlock {
+  seals?:
+    | {
+        type?: ('stars' | 'dot') | null;
+        rating?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'trustSealsBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderTimelineBlock".
+ */
+export interface OrderTimelineBlock {
+  sectionTitle?: string | null;
+  subtitle?: string | null;
+  steps?:
+    | {
+        weekLabel?: string | null;
+        title?: string | null;
+        description?: string | null;
+        isPaymentStep?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  showAdvancedExtras?: boolean | null;
+  advancedPillLabel?: string | null;
+  advancedExtras?:
+    | {
+        weekLabel?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaKitBlock".
+ */
+export interface FormulaKitBlock {
+  sectionTitle?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  kitImage?: (number | null) | Media;
+  kitImageAlt?: string | null;
+  components?:
+    | {
+        name?: string | null;
+        icon?: ('sun' | 'moon' | 'shield') | null;
+        timing?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formulaKit';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFaqBlock".
+ */
+export interface CheckoutFaqBlock {
+  sectionTitle?: string | null;
+  items?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checkoutFaq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EndCardBlock".
+ */
+export interface EndCardBlock {
+  label?: string | null;
+  title: string;
+  ctas?:
+    | {
+        text: string;
+        href: string;
+        variant?: ('advanced' | 'core' | 'core-primary' | 'core-alt') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'endCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSummaryCardBlock".
+ */
+export interface PlanSummaryCardBlock {
+  sectionTitle?: string | null;
+  planVariant: 'core' | 'advanced';
+  planName: string;
+  price: string;
+  priceNote?: string | null;
+  switchLinkText?: string | null;
+  switchLinkHref?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  primaryCtaText: string;
+  primaryCtaPrice?: string | null;
+  primaryCtaHref: string;
+  secondaryCtaText?: string | null;
+  secondaryCtaHref?: string | null;
+  ctaSubText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planSummaryCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBadgesBlock".
+ */
+export interface GuaranteeBadgesBlock {
+  items?:
+    | {
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'guaranteeBadges';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CyclesPricingGridBlock".
+ */
+export interface CyclesPricingGridBlock {
+  sectionTitle?: string | null;
+  subtitle?: string | null;
+  planName?: string | null;
+  monthlyNote?: string | null;
+  rows?:
+    | {
+        months?: string | null;
+        rate?: string | null;
+        isBestValue?: boolean | null;
+        bestValueLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText?: string | null;
+  ctaHref?: string | null;
+  showSecondPlan?: boolean | null;
+  planName2?: string | null;
+  monthlyNote2?: string | null;
+  rows2?:
+    | {
+        months?: string | null;
+        rate?: string | null;
+        isBestValue?: boolean | null;
+        bestValueLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText2?: string | null;
+  ctaHref2?: string | null;
+  footerNote?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  athleteSealText?: string | null;
+  athleteImages?:
+    | {
+        image?: (number | null) | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cyclesPricingGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReinforceCtaBlock".
+ */
+export interface ReinforceCtaBlock {
+  athleteText?: string | null;
+  athleteImages?:
+    | {
+        image: number | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText?: string | null;
+  ctaHref?: string | null;
+  ctaText2?: string | null;
+  ctaHref2?: string | null;
+  seals?:
+    | {
+        boldText?: string | null;
+        regularText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reinforceCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanPivotBlock".
+ */
+export interface PlanPivotBlock {
+  direction?: ('upsell' | 'downsell') | null;
+  title: string;
+  subtitle?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText: string;
+  ctaHref: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planPivot';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBarBlock".
+ */
+export interface StickyCtaBarBlock {
+  primaryCtaText: string;
+  primaryCtaHref: string;
+  secondaryCtaText?: string | null;
+  secondaryCtaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stickyCtaBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSelectorBlock".
+ */
+export interface PlanSelectorBlock {
+  sectionTitle?: string | null;
+  guaranteeItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  plans?:
+    | {
+        planKey: 'core' | 'advanced';
+        isRecommended?: boolean | null;
+        name: string;
+        price: string;
+        strikePrice?: string | null;
+        minNote?: string | null;
+        monthlyLinkText?: string | null;
+        monthlyLinkHref?: string | null;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        ctaText: string;
+        ctaHref: string;
+        id?: string | null;
+      }[]
+    | null;
+  scienceBoardLabel?: string | null;
+  scienceBoardSub?: string | null;
+  scienceBoardImages?:
+    | {
+        image?: (number | null) | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  showComparison?: boolean | null;
+  /**
+   * Leave coreValue/advancedValue empty to render as a section header row.
+   */
+  comparisonRows?:
+    | {
+        label: string;
+        coreValue?: string | null;
+        advancedValue?: string | null;
+        corePositive?: boolean | null;
+        advancedPositive?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planSelector';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CycleSelectorBlock".
+ */
+export interface CycleSelectorBlock {
+  planName: string;
+  switchLinkLabel?: string | null;
+  switchLinkHref?: string | null;
+  tiers?:
+    | {
+        months: string;
+        monthlyRate: string;
+        /**
+         * Leave empty for no savings badge
+         */
+        saveLabel?: string | null;
+        isBestValue?: boolean | null;
+        checkoutHref: string;
+        id?: string | null;
+      }[]
+    | null;
+  showMonthlyOption?: boolean | null;
+  monthlyRate?: string | null;
+  monthlyCheckoutHref?: string | null;
+  faqTitle?: string | null;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cycleSelector';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFormBlock".
+ */
+export interface CheckoutFormBlock {
+  backHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checkoutForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock".
+ */
+export interface HomepageHeroBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  backgroundImage?: (number | null) | Media;
+  backgroundImageMobile?: (number | null) | Media;
+  trustItems?:
+    | {
+        text?: string | null;
+        showStars?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheCaseBlock".
+ */
+export interface TheCaseBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  stats?:
+    | {
+        stat?: string | null;
+        unit?: string | null;
+        tag?: string | null;
+        frontBody?: string | null;
+        backBody?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Closing paragraph. Supports <strong> and <em> tags.
+   */
+  pivotHtml?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'theCase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoModelsBlock".
+ */
+export interface TwoModelsBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  nb1Logo?: (number | null) | Media;
+  rows?:
+    | {
+        label?: string | null;
+        themValue?: string | null;
+        usValue?: string | null;
+        /**
+         * SVG path data for the NB1 icon (contents of the <svg> tag)
+         */
+        usIconSvg?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'twoModels';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GutFirstBlock".
+ */
+export interface GutFirstBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bodyCopy?: string | null;
+  hintText?: string | null;
+  nodes?:
+    | {
+        key?: string | null;
+        label?: string | null;
+        title?: string | null;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gutFirst';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock".
+ */
+export interface HowItWorksBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  steps?:
+    | {
+        week?: string | null;
+        stepNum?: string | null;
+        stepLabel?: string | null;
+        title?: string | null;
+        /**
+         * SVG path data inside viewBox="0 0 24 24"
+         */
+        iconSvg?: string | null;
+        isGate?: boolean | null;
+        calloutLabel?: string | null;
+        calloutNumber?: string | null;
+        /**
+         * Suffix shown as superscript in teal (e.g. ★)
+         */
+        calloutNumberSuffix?: string | null;
+        calloutText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'howItWorks';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhatArrivesBlock".
+ */
+export interface WhatArrivesBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  replacesLabel?: string | null;
+  replacesItems?:
+    | {
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  cards?:
+    | {
+        /**
+         * Hex color for time-of-day dot (e.g. #E8A93B)
+         */
+        todColor?: string | null;
+        todLabel?: string | null;
+        image?: (number | null) | Media;
+        name?: string | null;
+        timing?: string | null;
+        description?: string | null;
+        /**
+         * Hex color for chip dot
+         */
+        chipColor?: string | null;
+        chipLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  closingText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whatArrives';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutcomesBlock".
+ */
+export interface OutcomesBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  gaugeScore?: string | null;
+  gaugeMax?: string | null;
+  gaugeLabel?: string | null;
+  deltaLabel?: string | null;
+  deltaFrom?: string | null;
+  builtInText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  feltText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cards?:
+    | {
+        category?: string | null;
+        image?: (number | null) | Media;
+        frontTitle?: string | null;
+        deltaChip?: string | null;
+        valueBefore?: string | null;
+        valueAfter?: string | null;
+        valueUnit?: string | null;
+        /**
+         * CSS left% for track segment start (e.g. 60%)
+         */
+        trackSegLeft?: string | null;
+        /**
+         * CSS right% for track segment end (e.g. 20%)
+         */
+        trackSegRight?: string | null;
+        /**
+         * CSS left% for "before" dot
+         */
+        trackDotBefore?: string | null;
+        /**
+         * CSS left% for "after" dot
+         */
+        trackDotAfter?: string | null;
+        trackFootnote?: string | null;
+        backEyebrow?: string | null;
+        backBody?: string | null;
+        flipAriaLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'outcomes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthletesSectionBlock".
+ */
+export interface AthletesSectionBlock {
+  quoteText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  quoteAttribution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  recordText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  athletes?:
+    | {
+        name?: string | null;
+        credential?: string | null;
+        photo?: (number | null) | Media;
+        hasVideo?: boolean | null;
+        video?: (number | null) | Media;
+        videoAriaLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'athletesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardSectionBlock".
+ */
+export interface ScienceBoardSectionBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  members?:
+    | {
+        photo?: (number | null) | Media;
+        name?: string | null;
+        role?: string | null;
+        detail?: string | null;
+        pill?: string | null;
+        modalTitle?: string | null;
+        bio?:
+          | {
+              paragraph?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        quote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scienceBoardSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StandardsSectionBlock".
+ */
+export interface StandardsSectionBlock {
+  items?:
+    | {
+        iconSvg?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'standardsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlansSectionBlock".
+ */
+export interface PlansSectionBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  coreLabel?: string | null;
+  coreDesc?: string | null;
+  corePrice?: string | null;
+  coreMonthly?: string | null;
+  coreCommit?: string | null;
+  coreFeaturesLabel?: string | null;
+  coreFeatures?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  coreCtaLabel?: string | null;
+  coreCtaHref?: string | null;
+  advBadge?: string | null;
+  advLabel?: string | null;
+  advDesc?: string | null;
+  advPrice?: string | null;
+  advCommit?: string | null;
+  advFeaturesLabel?: string | null;
+  advFeatures?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  advCtaLabel?: string | null;
+  advCtaHref?: string | null;
+  guarantees?:
+    | {
+        iconSvg?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  compareRowsJson?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'plansSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CloseBandBlock".
+ */
+export interface CloseBandBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'closeBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -4647,6 +5706,33 @@ export interface PagesSelect<T extends boolean = true> {
         ypReassurance?: T | YpReassuranceBlockSelect<T>;
         ypBuyBox?: T | YpBuyBoxBlockSelect<T>;
         ypStickyBuy?: T | YpStickyBuyBlockSelect<T>;
+        orderStepHero?: T | OrderStepHeroBlockSelect<T>;
+        trustSealsBar?: T | TrustSealsBarBlockSelect<T>;
+        orderTimeline?: T | OrderTimelineBlockSelect<T>;
+        formulaKit?: T | FormulaKitBlockSelect<T>;
+        checkoutFaq?: T | CheckoutFaqBlockSelect<T>;
+        endCard?: T | EndCardBlockSelect<T>;
+        planSummaryCard?: T | PlanSummaryCardBlockSelect<T>;
+        guaranteeBadges?: T | GuaranteeBadgesBlockSelect<T>;
+        cyclesPricingGrid?: T | CyclesPricingGridBlockSelect<T>;
+        reinforceCta?: T | ReinforceCtaBlockSelect<T>;
+        planPivot?: T | PlanPivotBlockSelect<T>;
+        stickyCtaBar?: T | StickyCtaBarBlockSelect<T>;
+        planSelector?: T | PlanSelectorBlockSelect<T>;
+        cycleSelector?: T | CycleSelectorBlockSelect<T>;
+        checkoutForm?: T | CheckoutFormBlockSelect<T>;
+        homepageHero?: T | HomepageHeroBlockSelect<T>;
+        theCase?: T | TheCaseBlockSelect<T>;
+        twoModels?: T | TwoModelsBlockSelect<T>;
+        gutFirst?: T | GutFirstBlockSelect<T>;
+        howItWorks?: T | HowItWorksBlockSelect<T>;
+        whatArrives?: T | WhatArrivesBlockSelect<T>;
+        outcomes?: T | OutcomesBlockSelect<T>;
+        athletesSection?: T | AthletesSectionBlockSelect<T>;
+        scienceBoardSection?: T | ScienceBoardSectionBlockSelect<T>;
+        standardsSection?: T | StandardsSectionBlockSelect<T>;
+        plansSection?: T | PlansSectionBlockSelect<T>;
+        closeBand?: T | CloseBandBlockSelect<T>;
       };
   meta?:
     | T
@@ -6305,6 +7391,667 @@ export interface YpStickyBuyBlockSelect<T extends boolean = true> {
   ctaHref?: T;
   showAfterSel?: T;
   hideAtSel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepHeroBlock_select".
+ */
+export interface OrderStepHeroBlockSelect<T extends boolean = true> {
+  headline?: T;
+  subtitle?: T;
+  showSeals?: T;
+  seals?:
+    | T
+    | {
+        type?: T;
+        rating?: T;
+        label?: T;
+        shortLabel?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustSealsBarBlock_select".
+ */
+export interface TrustSealsBarBlockSelect<T extends boolean = true> {
+  seals?:
+    | T
+    | {
+        type?: T;
+        rating?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderTimelineBlock_select".
+ */
+export interface OrderTimelineBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        weekLabel?: T;
+        title?: T;
+        description?: T;
+        isPaymentStep?: T;
+        id?: T;
+      };
+  showAdvancedExtras?: T;
+  advancedPillLabel?: T;
+  advancedExtras?:
+    | T
+    | {
+        weekLabel?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaKitBlock_select".
+ */
+export interface FormulaKitBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  kitImage?: T;
+  kitImageAlt?: T;
+  components?:
+    | T
+    | {
+        name?: T;
+        icon?: T;
+        timing?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFaqBlock_select".
+ */
+export interface CheckoutFaqBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EndCardBlock_select".
+ */
+export interface EndCardBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  ctas?:
+    | T
+    | {
+        text?: T;
+        href?: T;
+        variant?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSummaryCardBlock_select".
+ */
+export interface PlanSummaryCardBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  planVariant?: T;
+  planName?: T;
+  price?: T;
+  priceNote?: T;
+  switchLinkText?: T;
+  switchLinkHref?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  primaryCtaText?: T;
+  primaryCtaPrice?: T;
+  primaryCtaHref?: T;
+  secondaryCtaText?: T;
+  secondaryCtaHref?: T;
+  ctaSubText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBadgesBlock_select".
+ */
+export interface GuaranteeBadgesBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CyclesPricingGridBlock_select".
+ */
+export interface CyclesPricingGridBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  subtitle?: T;
+  planName?: T;
+  monthlyNote?: T;
+  rows?:
+    | T
+    | {
+        months?: T;
+        rate?: T;
+        isBestValue?: T;
+        bestValueLabel?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaHref?: T;
+  showSecondPlan?: T;
+  planName2?: T;
+  monthlyNote2?: T;
+  rows2?:
+    | T
+    | {
+        months?: T;
+        rate?: T;
+        isBestValue?: T;
+        bestValueLabel?: T;
+        id?: T;
+      };
+  ctaText2?: T;
+  ctaHref2?: T;
+  footerNote?: T;
+  athleteSealText?: T;
+  athleteImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReinforceCtaBlock_select".
+ */
+export interface ReinforceCtaBlockSelect<T extends boolean = true> {
+  athleteText?: T;
+  athleteImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaHref?: T;
+  ctaText2?: T;
+  ctaHref2?: T;
+  seals?:
+    | T
+    | {
+        boldText?: T;
+        regularText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanPivotBlock_select".
+ */
+export interface PlanPivotBlockSelect<T extends boolean = true> {
+  direction?: T;
+  title?: T;
+  subtitle?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBarBlock_select".
+ */
+export interface StickyCtaBarBlockSelect<T extends boolean = true> {
+  primaryCtaText?: T;
+  primaryCtaHref?: T;
+  secondaryCtaText?: T;
+  secondaryCtaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSelectorBlock_select".
+ */
+export interface PlanSelectorBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  guaranteeItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  plans?:
+    | T
+    | {
+        planKey?: T;
+        isRecommended?: T;
+        name?: T;
+        price?: T;
+        strikePrice?: T;
+        minNote?: T;
+        monthlyLinkText?: T;
+        monthlyLinkHref?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaText?: T;
+        ctaHref?: T;
+        id?: T;
+      };
+  scienceBoardLabel?: T;
+  scienceBoardSub?: T;
+  scienceBoardImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  showComparison?: T;
+  comparisonRows?:
+    | T
+    | {
+        label?: T;
+        coreValue?: T;
+        advancedValue?: T;
+        corePositive?: T;
+        advancedPositive?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CycleSelectorBlock_select".
+ */
+export interface CycleSelectorBlockSelect<T extends boolean = true> {
+  planName?: T;
+  switchLinkLabel?: T;
+  switchLinkHref?: T;
+  tiers?:
+    | T
+    | {
+        months?: T;
+        monthlyRate?: T;
+        saveLabel?: T;
+        isBestValue?: T;
+        checkoutHref?: T;
+        id?: T;
+      };
+  showMonthlyOption?: T;
+  monthlyRate?: T;
+  monthlyCheckoutHref?: T;
+  faqTitle?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFormBlock_select".
+ */
+export interface CheckoutFormBlockSelect<T extends boolean = true> {
+  backHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock_select".
+ */
+export interface HomepageHeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  backgroundImage?: T;
+  backgroundImageMobile?: T;
+  trustItems?:
+    | T
+    | {
+        text?: T;
+        showStars?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheCaseBlock_select".
+ */
+export interface TheCaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  stats?:
+    | T
+    | {
+        stat?: T;
+        unit?: T;
+        tag?: T;
+        frontBody?: T;
+        backBody?: T;
+        id?: T;
+      };
+  pivotHtml?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoModelsBlock_select".
+ */
+export interface TwoModelsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  nb1Logo?: T;
+  rows?:
+    | T
+    | {
+        label?: T;
+        themValue?: T;
+        usValue?: T;
+        usIconSvg?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GutFirstBlock_select".
+ */
+export interface GutFirstBlockSelect<T extends boolean = true> {
+  heading?: T;
+  bodyCopy?: T;
+  hintText?: T;
+  nodes?:
+    | T
+    | {
+        key?: T;
+        label?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock_select".
+ */
+export interface HowItWorksBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  steps?:
+    | T
+    | {
+        week?: T;
+        stepNum?: T;
+        stepLabel?: T;
+        title?: T;
+        iconSvg?: T;
+        isGate?: T;
+        calloutLabel?: T;
+        calloutNumber?: T;
+        calloutNumberSuffix?: T;
+        calloutText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhatArrivesBlock_select".
+ */
+export interface WhatArrivesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  replacesLabel?: T;
+  replacesItems?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  cards?:
+    | T
+    | {
+        todColor?: T;
+        todLabel?: T;
+        image?: T;
+        name?: T;
+        timing?: T;
+        description?: T;
+        chipColor?: T;
+        chipLabel?: T;
+        id?: T;
+      };
+  closingText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutcomesBlock_select".
+ */
+export interface OutcomesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  gaugeScore?: T;
+  gaugeMax?: T;
+  gaugeLabel?: T;
+  deltaLabel?: T;
+  deltaFrom?: T;
+  builtInText?: T;
+  feltText?: T;
+  cards?:
+    | T
+    | {
+        category?: T;
+        image?: T;
+        frontTitle?: T;
+        deltaChip?: T;
+        valueBefore?: T;
+        valueAfter?: T;
+        valueUnit?: T;
+        trackSegLeft?: T;
+        trackSegRight?: T;
+        trackDotBefore?: T;
+        trackDotAfter?: T;
+        trackFootnote?: T;
+        backEyebrow?: T;
+        backBody?: T;
+        flipAriaLabel?: T;
+        id?: T;
+      };
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthletesSectionBlock_select".
+ */
+export interface AthletesSectionBlockSelect<T extends boolean = true> {
+  quoteText?: T;
+  quoteAttribution?: T;
+  recordText?: T;
+  athletes?:
+    | T
+    | {
+        name?: T;
+        credential?: T;
+        photo?: T;
+        hasVideo?: T;
+        video?: T;
+        videoAriaLabel?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardSectionBlock_select".
+ */
+export interface ScienceBoardSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        detail?: T;
+        pill?: T;
+        modalTitle?: T;
+        bio?:
+          | T
+          | {
+              paragraph?: T;
+              id?: T;
+            };
+        quote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StandardsSectionBlock_select".
+ */
+export interface StandardsSectionBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        iconSvg?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlansSectionBlock_select".
+ */
+export interface PlansSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  coreLabel?: T;
+  coreDesc?: T;
+  corePrice?: T;
+  coreMonthly?: T;
+  coreCommit?: T;
+  coreFeaturesLabel?: T;
+  coreFeatures?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  coreCtaLabel?: T;
+  coreCtaHref?: T;
+  advBadge?: T;
+  advLabel?: T;
+  advDesc?: T;
+  advPrice?: T;
+  advCommit?: T;
+  advFeaturesLabel?: T;
+  advFeatures?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  advCtaLabel?: T;
+  advCtaHref?: T;
+  guarantees?:
+    | T
+    | {
+        iconSvg?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  compareRowsJson?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CloseBandBlock_select".
+ */
+export interface CloseBandBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
   id?: T;
   blockName?: T;
 }

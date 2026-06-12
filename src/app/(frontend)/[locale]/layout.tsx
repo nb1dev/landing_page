@@ -57,6 +57,9 @@ export default async function RootLayout({
   const resolved = await params
   const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
+  const ketchLocaleMap: Record<AppLocale, string> = { en: 'en', de: 'de-DE' }
+  const ketchLang = ketchLocaleMap[locale] ?? locale
+
   let organizationJsonLd: JsonLdValue = null
 
   try {
@@ -88,9 +91,28 @@ export default async function RootLayout({
         </Script>
         {/* End Google Tag Manager */}
 
+        <Script id="ketch-lang" strategy="beforeInteractive">{`
+          (function() {
+            var lang = '${ketchLang}';
+            try {
+              Object.defineProperty(navigator, 'language', { get: function() { return lang; }, configurable: true });
+              Object.defineProperty(navigator, 'languages', { get: function() { return [lang]; }, configurable: true });
+            } catch(e) {}
+            window.ketch_lang = lang;
+            window.ketchConfig = window.ketchConfig || {};
+            window.ketchConfig.language = lang;
+            window.semaphore = window.semaphore || [];
+            window.ketch = window.ketch || function() { window.semaphore.push(Array.from(arguments)); };
+            window.ketch('setLanguage', lang);
+            window.ketch('on', 'willShowExperience', function(experience, next) {
+              if (experience && next) { experience.language = lang; next(experience); }
+            });
+          })();
+        `}</Script>
         <Script
           src="https://global.ketchcdn.com/web/v3/config/nb1_health/website_smart_tag/boot.js"
           strategy="beforeInteractive"
+          data-ketch-lang={ketchLang}
         />
 
         <Script id="gtag-consent-mode" strategy="beforeInteractive">
@@ -174,6 +196,18 @@ export default async function RootLayout({
             <Script id="ketch-consent-bridge" strategy="afterInteractive">
               {`
                 window.__nb1Consent = window.__nb1Consent || {};
+
+                // Ensure Ketch banner language matches the page
+                var pageLang = '${ketchLang}';
+                if (pageLang && typeof window.ketch === 'function') {
+                  window.ketch('setLanguage', pageLang);
+                  window.ketch('on', 'willShowExperience', function(experience, next) {
+                    if (experience && next) {
+                      experience.language = pageLang;
+                      next(experience);
+                    }
+                  });
+                }
 
                 function applyKetchConsent(consent) {
                   if (typeof gtag !== 'function') return;
