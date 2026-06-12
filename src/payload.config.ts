@@ -47,10 +47,10 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
-      max: 3,
-      min: 1,
+      max: 10,
+      min: 0,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 10000,
+      connectionTimeoutMillis: 30000,
     },
     push: false,
   }),
