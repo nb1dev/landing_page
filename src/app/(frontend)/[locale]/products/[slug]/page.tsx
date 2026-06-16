@@ -6,6 +6,10 @@ import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
 import { Header } from '@/Header/Component'
 import { Footer } from '@/Footer/Component'
 
+// ISR: cache product pages — the DB query becomes a cache hit after the first
+// render, re-validated every 10 min, instead of a live query per request.
+export const revalidate = 600
+
 type Props = {
   params: Promise<{ locale: string; slug: string }>
 }

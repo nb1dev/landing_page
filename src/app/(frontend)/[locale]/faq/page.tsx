@@ -6,6 +6,10 @@ import { buildFAQPageSchema } from '@/utilities/buildFAQPageSchema'
 import { Header } from '@/Header/Component'
 import { Footer } from '@/Footer/Component'
 
+// ISR: cache the page and re-render at most every 10 min instead of querying the
+// FAQ global from the DB on every request.
+export const revalidate = 600
+
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
 const isAppLocale = (v: string): v is AppLocale => (LOCALES as readonly string[]).includes(v)
