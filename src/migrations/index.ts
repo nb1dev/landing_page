@@ -54,7 +54,7 @@ import * as migration_20260611_the_case_hero from './20260611_the_case_hero';
 import * as migration_20260612_090000_recreate_close_band from './20260612_090000_recreate_close_band';
 import * as migration_20260615_091409_headers_footers_schema from './20260615_091409_headers_footers_schema';
 import * as migration_20260615_footer_nav_fix from './20260615_footer_nav_fix';
-import * as migration_20260615_nav_footer_fields from './20260615_nav_footer_fields';
+import * as migration_20260615_095000_nav_footer_fields from './20260615_095000_nav_footer_fields';
 import * as migration_20260615_headers_footers_collections from './20260615_headers_footers_collections';
 import * as migration_20260615_hide_header_footer from './20260615_hide_header_footer';
 import * as migration_20260615_legal_strip_block from './20260615_legal_strip_block';
@@ -346,9 +346,9 @@ export const migrations = [
     name: '20260615_footer_nav_fix',
   },
   {
-    up: migration_20260615_nav_footer_fields.up,
-    down: migration_20260615_nav_footer_fields.down,
-    name: '20260615_nav_footer_fields',
+    up: migration_20260615_095000_nav_footer_fields.up,
+    down: migration_20260615_095000_nav_footer_fields.down,
+    name: '20260615_095000_nav_footer_fields',
   },
   {
     up: migration_20260615_headers_footers_collections.up,
