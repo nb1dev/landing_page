@@ -64,17 +64,17 @@ export default buildConfig({
       max: pgPoolMax,
       min: 0,
       idleTimeoutMillis: isNextBuild ? 1000 : 30000,
-      // Fail fast at runtime instead of holding a request for 30s while the
-      // pool is contended; the build phase can afford to wait longer.
-      connectionTimeoutMillis: isNextBuild ? 30000 : 10000,
+      // Generous connect timeout. `payload migrate` and cold starts need time to
+      // establish a connection to the managed DB; cutting this to 10s can make
+      // deploys fail at the migrate step when the DB is briefly slow to accept.
+      connectionTimeoutMillis: 30000,
       // Recycle connections periodically (managed PG drops idle ones server-side).
       maxUses: 7500,
-      // FINITE server-side timeouts. With statement_timeout=0 a single slow or
-      // stuck query held its pooled connection forever; a few of those starved
-      // the whole pool permanently → "timeout exceeded when trying to connect"
-      // for every later request, with no recovery until a restart. These kill
-      // runaway queries / idle-in-transaction sessions so connections are freed.
-      options: '-c statement_timeout=30000 -c idle_in_transaction_session_timeout=30000',
+      // NOTE: statement_timeout / idle_in_transaction_session_timeout are set at
+      // the DATABASE level (ALTER DATABASE payload_stg SET ...), NOT via the libpq
+      // `options` startup param. The DO connection pool (DATABASE_URL) is PgBouncer
+      // in transaction mode, which rejects unknown startup parameters and drops the
+      // connection. DB-level settings apply on every path (pooled or direct).
     },
     push: false,
   }),
