@@ -9,6 +9,8 @@ import { unstable_noStore as noStore } from 'next/cache'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -79,7 +81,9 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page as any
+  const { hero, layout, header: pageHeader, footer: pageFooter, hideHeader, hideFooter } = page as any
+  const headerId = typeof pageHeader === 'object' ? pageHeader?.id : pageHeader
+  const footerId = typeof pageFooter === 'object' ? pageFooter?.id : pageFooter
 
   const absoluteUrl =
     decodedSlug === 'home'
@@ -92,9 +96,11 @@ export default async function Page({ params: paramsPromise }: Args) {
     <>
       <JsonLd data={pageJsonLd} />
 
+      {!hideHeader && <Header locale={locale} id={headerId} />}
+
       <article
         style={{
-          backgroundColor: 'rgba(241, 245, 249, 1)',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}
       >
@@ -107,6 +113,8 @@ export default async function Page({ params: paramsPromise }: Args) {
         {hero ? <RenderHero {...hero} /> : null}
         <RenderBlocks blocks={layout || []} locale={locale} />
       </article>
+
+      {!hideFooter && <Footer locale={locale} id={footerId} />}
     </>
   )
 }

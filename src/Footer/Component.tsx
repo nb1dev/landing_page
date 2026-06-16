@@ -1,27 +1,24 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedFooter } from '@/utilities/getHeaderFooter'
 import React, { Suspense } from 'react'
 
-import type { Footer as FooterType, Media } from '@/payload-types'
+import type { Media } from '@/payload-types'
 import { FooterClient } from './FooterClient'
 
 type Props = {
   locale: string
+  id?: string | null
 }
 
-type FooterData = FooterType & {
+type FooterData = {
   logo?: number | Media | null
   theme?: 'light' | 'dark' | null
   tagline?: string | null
-  address?: string | null
+  subnote?: string | null
+  disclaimer?: string | null
   copyrightText?: string | null
-  navItems?: Array<{
-    link?: {
-      label?: string | null
-      localizedLabel?: string | null
-      [key: string]: unknown
-    } | null
-  }> | null
-  linkColor?: string | null
+  instagramUrl?: string | null
+  exploreLinks?: Array<{ label?: string | null; url?: string | null }> | null
+  getStartedLinks?: Array<{ label?: string | null; url?: string | null }> | null
   variants?: Array<{
     variantKey: string
     theme: 'light' | 'dark'
@@ -30,8 +27,10 @@ type FooterData = FooterType & {
   }> | null
 }
 
-export async function Footer({ locale }: Props) {
-  const footerData = (await getCachedGlobal('footer', 1, locale)()) as FooterData
+export async function Footer({ locale, id }: Props) {
+  const footerData = (await getCachedFooter(id, locale)()) as FooterData | null
+
+  if (!footerData) return null
 
   const logo =
     typeof footerData?.logo === 'object' && footerData.logo !== null
@@ -43,11 +42,13 @@ export async function Footer({ locale }: Props) {
       <FooterClient
         logo={logo ? { url: logo.url, alt: logo.alt } : null}
         tagline={footerData?.tagline ?? null}
-        navItems={footerData?.navItems ?? []}
-        address={footerData?.address ?? null}
+        subnote={footerData?.subnote ?? null}
+        disclaimer={footerData?.disclaimer ?? null}
         copyrightText={footerData?.copyrightText ?? null}
-        defaultTheme={footerData?.theme ?? 'light'}
-        defaultLinkColor={footerData?.linkColor ?? null}
+        instagramUrl={footerData?.instagramUrl ?? null}
+        exploreLinks={(footerData?.exploreLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
+        getStartedLinks={(footerData?.getStartedLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
+        defaultTheme={footerData?.theme ?? 'dark'}
         variants={(footerData?.variants ?? []).map((v) => {
           const raw = v as typeof v & { logo?: number | Media | null }
           const variantLogo =

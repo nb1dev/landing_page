@@ -9,8 +9,8 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
+import { Footers } from './Footer/config'
+import { Headers } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -55,9 +55,9 @@ export default buildConfig({
     },
     push: false,
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Products, Authors],
+  collections: [Pages, Posts, Media, Categories, Users, Products, Authors, Headers, Footers],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, Navigation, SiteSettings, FAQ],
+  globals: [Navigation, SiteSettings, FAQ],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

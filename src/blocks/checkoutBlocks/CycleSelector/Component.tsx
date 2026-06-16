@@ -78,7 +78,7 @@ export const CycleSelectorComponent: React.FC<Props> = ({
     <section className="nb1-cs-sec">
       <style jsx>{`
         .nb1-cs-sec {
-          padding: 40px 0 56px;
+          padding: 56px 0 56px;
         }
         .nb1-cs-con {
           max-width: 900px;
@@ -264,7 +264,7 @@ export const CycleSelectorComponent: React.FC<Props> = ({
         .nb1-cs-faq-wrap {
           border-top: 1px solid rgba(18, 49, 77, 0.07);
           margin-top: 46px;
-          padding-top: 40px;
+          padding-top: 46px;
         }
         .nb1-cs-faq {
           max-width: 680px;

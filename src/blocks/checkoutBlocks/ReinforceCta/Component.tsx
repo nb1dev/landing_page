@@ -38,7 +38,7 @@ export const ReinforceCtaComponent: React.FC<Props> = ({
     <section className="nb1-rc-sec">
       <style jsx>{`
         .nb1-rc-sec {
-          padding: 32px 0 40px;
+          padding: 56px 0;
         }
         .nb1-rc-con {
           max-width: 900px;
@@ -53,23 +53,23 @@ export const ReinforceCtaComponent: React.FC<Props> = ({
         .nb1-rc-ath {
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 13px;
           font-size: 13px;
-          color: rgba(18, 49, 77, 0.65);
+          color: rgba(18, 49, 77, 0.55);
           text-align: center;
         }
         .nb1-rc-faces {
           display: inline-flex;
         }
         .nb1-rc-faces img {
-          width: 28px;
-          height: 28px;
+          width: 38px;
+          height: 38px;
           border-radius: 50%;
           object-fit: cover;
           object-position: center top;
           border: 2px solid #fff;
-          margin-left: -8px;
-          box-shadow: 0 1px 3px rgba(18, 49, 77, 0.2);
+          margin-left: -11px;
+          box-shadow: 0 1px 4px rgba(18, 49, 77, 0.2);
         }
         .nb1-rc-faces img:first-child { margin-left: 0; }
 
@@ -77,54 +77,60 @@ export const ReinforceCtaComponent: React.FC<Props> = ({
         .nb1-rc-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 12px;
+          gap: 16px;
           width: 100%;
-          max-width: 660px;
         }
         .nb1-rc-grid.single {
           grid-template-columns: 1fr;
-          max-width: 660px;
         }
         .nb1-rc-btn {
-          display: block;
-          text-align: center;
-          padding: 16px 24px;
-          border-radius: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 18px;
+          border-radius: 14px;
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 700;
-          font-size: 15px;
+          font-weight: 600;
+          font-size: 17px;
           text-decoration: none;
-          transition: background 0.18s, color 0.18s;
+          transition: transform 0.18s;
         }
+        .nb1-rc-btn:hover { transform: translateY(-2px); }
         .nb1-rc-btn.primary {
           background: #c6ff5b;
           color: #0e2740;
         }
-        .nb1-rc-btn.primary:hover { background: #aaea42; }
         .nb1-rc-btn.secondary {
-          background: rgba(18, 49, 77, 0.06);
+          background: #f1f4f7;
+          border: 1px solid rgba(18, 49, 77, 0.1);
           color: #12314d;
         }
-        .nb1-rc-btn.secondary:hover { background: rgba(18, 49, 77, 0.1); }
 
         /* Trust seals */
         .nb1-rc-seals {
           display: flex;
-          gap: 20px;
+          gap: 24px;
           align-items: center;
           justify-content: center;
           flex-wrap: wrap;
+          margin-top: 18px;
         }
         .nb1-rc-seal {
-          font-size: 13px;
-          color: rgba(18, 49, 77, 0.55);
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 12.5px;
+          color: rgba(18, 49, 77, 0.7);
+          border: 1px solid rgba(18, 49, 77, 0.1);
+          border-radius: 100px;
+          padding: 8px 14px;
         }
         .nb1-rc-seal strong {
           font-weight: 600;
-          color: rgba(18, 49, 77, 0.75);
+          color: #12314d;
         }
 
-        @media (max-width: 560px) {
+        @media (max-width: 600px) {
           .nb1-rc-grid { grid-template-columns: 1fr; }
         }
       `}</style>

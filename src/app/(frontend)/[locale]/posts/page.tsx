@@ -7,11 +7,14 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
 import PageClient from './page.client'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
 
-export default async function Page() {
+export default async function Page({ params }: { params?: Promise<{ locale?: string }> }) {
+  const { locale = 'en' } = (await params) ?? {}
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -28,6 +31,8 @@ export default async function Page() {
   })
 
   return (
+    <>
+    <Header locale={locale} />
     <div className="pt-24 pb-24">
       <PageClient />
       <div className="container mb-16">
@@ -53,6 +58,8 @@ export default async function Page() {
         )}
       </div>
     </div>
+    <Footer locale={locale} />
+    </>
   )
 }
 

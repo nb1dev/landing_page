@@ -11,6 +11,8 @@ import RichText from '@/components/RichText'
 
 import type { Post } from '@/payload-types'
 
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 import { PostHero } from '@/heros/PostHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
@@ -75,6 +77,8 @@ export default async function PostPage({ params: paramsPromise }: Args) {
   const populatedAuthors = (post as any).populatedAuthors || []
 
   return (
+    <>
+      <Header locale={locale} />
     <article className="pt-16 mr-auto ml-auto bg-white" style={{ maxWidth: '1440px' }}>
       <PageClient />
 
@@ -109,6 +113,8 @@ export default async function PostPage({ params: paramsPromise }: Args) {
         </div>
       </div>
     </article>
+      <Footer locale={locale} />
+    </>
   )
 }
 

@@ -3,6 +3,8 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { JsonLd } from '@/components/JsonLd'
 import { buildFAQPageSchema } from '@/utilities/buildFAQPageSchema'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -40,6 +42,7 @@ export default async function FAQPage({ params }: Props) {
 
   return (
     <>
+      <Header locale={locale} />
       <JsonLd data={jsonLd} />
 
       <main style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
@@ -63,6 +66,7 @@ export default async function FAQPage({ params }: Props) {
           </section>
         ))}
       </main>
+      <Footer locale={locale} />
     </>
   )
 }

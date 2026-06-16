@@ -35,8 +35,7 @@ export const CheckoutFaqComponent: React.FC<Props> = ({ sectionTitle, items }) =
     <section ref={ref} className={`nb1-cfaq-sec${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-cfaq-sec {
-          padding: 56px 0;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
+          padding: 0 0 56px;
           position: relative;
           opacity: 0;
           transform: translateY(24px);
@@ -62,7 +61,8 @@ export const CheckoutFaqComponent: React.FC<Props> = ({ sectionTitle, items }) =
           z-index: 1;
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
+          border-top: 1px solid rgba(18, 49, 77, 0.07);
         }
         .nb1-cfaq-title {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
@@ -86,65 +86,58 @@ export const CheckoutFaqComponent: React.FC<Props> = ({ sectionTitle, items }) =
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 20px;
+          gap: 18px;
           background: none;
           border: none;
           cursor: pointer;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, sans-serif;
           text-align: left;
-          padding: 18px 0;
-          font-size: 15px;
-          font-weight: 600;
+          padding: 22px 0;
+          font-size: 16.5px;
+          font-weight: 500;
           color: #12314d;
           transition: color 0.15s;
         }
-        .nb1-faq-q:hover {
-          color: #0a8fb0;
-        }
-        .nb1-faq-item.open .nb1-faq-q {
+        .nb1-faq-item.open .nb1-faq-q :global(span:first-child) {
           color: #0a8fb0;
         }
         .nb1-faq-pm {
           flex-shrink: 0;
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
           position: relative;
         }
         .nb1-faq-pm::before,
         .nb1-faq-pm::after {
           content: '';
           position: absolute;
-          background: rgba(18, 49, 77, 0.4);
-          border-radius: 2px;
-          transition: transform 0.2s, opacity 0.2s;
+          background: rgba(18, 49, 77, 0.55);
+          transition: transform 0.3s, opacity 0.3s;
         }
         .nb1-faq-pm::before {
-          top: 9px;
-          left: 2px;
-          right: 2px;
+          left: 0;
+          top: 8px;
+          width: 18px;
           height: 2px;
         }
         .nb1-faq-pm::after {
-          left: 9px;
-          top: 2px;
-          bottom: 2px;
+          left: 8px;
+          top: 0;
           width: 2px;
+          height: 18px;
         }
         .nb1-faq-item.open .nb1-faq-pm::after {
           transform: scaleY(0);
           opacity: 0;
         }
-        .nb1-faq-item.open .nb1-faq-pm::before {
-          background: #0a8fb0;
-        }
         .nb1-faq-a {
           overflow: hidden;
           max-height: 0;
-          transition: max-height 0.3s ease;
+          transition: max-height 0.35s cubic-bezier(0.16, 0.84, 0.44, 1);
         }
         .nb1-faq-a-in {
-          padding: 0 0 18px;
-          font-size: 14.5px;
+          padding: 0 0 24px 38px;
+          font-size: 15px;
           color: rgba(18, 49, 77, 0.7);
           line-height: 1.65;
           max-width: 680px;

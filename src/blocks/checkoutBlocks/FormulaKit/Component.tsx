@@ -72,7 +72,6 @@ export const FormulaKitComponent: React.FC<Props> = ({
         .nb1-fk-sec {
           padding: 56px 0;
           position: relative;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
           opacity: 0;
           transform: translateY(24px);
           transition: opacity 0.7s ease, transform 0.7s ease;
@@ -123,6 +122,7 @@ export const FormulaKitComponent: React.FC<Props> = ({
           margin-top: 24px;
           background: radial-gradient(110% 90% at 100% 0%, rgba(10, 143, 176, 0.06) 0%, transparent 50%),
             linear-gradient(168deg, rgba(255, 255, 255, 0.82) 0%, rgba(244, 249, 251, 0.74) 100%);
+          -webkit-backdrop-filter: blur(16px) saturate(125%);
           backdrop-filter: blur(16px) saturate(125%);
           border: 1px solid rgba(18, 49, 77, 0.1);
           border-radius: 30px;
@@ -149,7 +149,6 @@ export const FormulaKitComponent: React.FC<Props> = ({
           padding: 38px 38px 30px;
           display: flex;
           flex-direction: column;
-          justify-content: center;
         }
         .nb1-formula {
           display: flex;
@@ -176,7 +175,7 @@ export const FormulaKitComponent: React.FC<Props> = ({
         }
         .nb1-ofg-when {
           margin-left: auto;
-          font-family: 'JetBrains Mono', 'Courier New', monospace;
+          font-family: var(--font-geist-mono), monospace;
           font-size: 10.5px;
           letter-spacing: 0.12em;
           text-transform: uppercase;

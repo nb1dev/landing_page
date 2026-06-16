@@ -44,11 +44,11 @@ export const StickyCtaBarComponent: React.FC<Props> = ({
             bottom: 0;
             z-index: 90;
             display: flex;
-            gap: 12px;
+            gap: 18px;
             align-items: center;
             justify-content: center;
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(16px);
             border-top: 1px solid rgba(18, 49, 77, 0.1);
             transform: translateY(110%);
@@ -90,7 +90,7 @@ export const StickyCtaBarComponent: React.FC<Props> = ({
           }
           @media (max-width: 560px) {
             .nb1-sticky {
-              gap: 8px;
+              gap: 12px;
               padding: 11px 16px;
             }
             .nb1-sticky-go {

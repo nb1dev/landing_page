@@ -22,8 +22,7 @@ export const EndCardComponent: React.FC<Props> = ({ label, title, ctas }) => {
     <section ref={ref} className={`nb1-ec-sec${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-ec-sec {
-          padding: 56px 0;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
+          padding: 0 0 56px;
           opacity: 0;
           transform: translateY(24px);
           transition: opacity 0.7s ease, transform 0.7s ease;
@@ -35,7 +34,8 @@ export const EndCardComponent: React.FC<Props> = ({ label, title, ctas }) => {
         .nb1-ec-con {
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
+          border-top: 1px solid rgba(18, 49, 77, 0.07);
         }
         .nb1-end-card {
           background: linear-gradient(165deg, #1b3e5c, #0e2740);
@@ -45,7 +45,7 @@ export const EndCardComponent: React.FC<Props> = ({ label, title, ctas }) => {
           color: #fff;
         }
         .nb1-ec-label {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, sans-serif;
           font-weight: 600;
           font-size: 11px;
           letter-spacing: 0.16em;
@@ -121,16 +121,20 @@ export const EndCardComponent: React.FC<Props> = ({ label, title, ctas }) => {
         }
         @media (max-width: 560px) {
           .nb1-end-card {
-            padding: 40px 24px;
+            padding: 40px 22px;
             border-radius: 18px;
           }
           .nb1-ec-ctas {
             flex-direction: column;
             align-items: center;
+            gap: 10px;
           }
           .nb1-ec-cta {
             width: 100%;
             text-align: center;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            white-space: nowrap;
           }
         }
       `}</style>

@@ -3,6 +3,7 @@
 import React, { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { createAccountAndSave } from '@/lib/createAccount'
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
@@ -82,6 +83,10 @@ function CheckoutFormInner({ backHref }: Props) {
   const [billingSame, setBillingSame] = useState(true)
   const [payErr,      setPayErr]      = useState<Record<string, string>>({})
 
+  /* account creation */
+  const [accountStatus, setAccountStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [accountErr,    setAccountErr]    = useState('')
+
   /* promo */
   const [promoInput,   setPromoInput]   = useState('')
   const [promoApplied, setPromoApplied] = useState<string | null>(null)
@@ -119,7 +124,7 @@ function CheckoutFormInner({ backHref }: Props) {
 
   function nextShipping() { markDone(3) }
 
-  function nextPayment() {
+  async function nextPayment() {
     const e: Record<string, string> = {}
     if (payMethod === 'card') {
       if (cardNo.replace(/\s/g, '').length < 13) e.cardNo = 'Enter a valid card number.'
@@ -133,6 +138,27 @@ function CheckoutFormInner({ backHref }: Props) {
     }
     setPayErr(e)
     if (Object.keys(e).length) return
+
+    setAccountStatus('sending')
+    setAccountErr('')
+    try {
+      await createAccountAndSave(
+        email,
+        { firstName: fn, lastName: ln, phone },
+        { firstName: fn, lastName: ln, email, phone, addressLine1: a1, addressLine2: a2, city, zip, country },
+      )
+      setAccountStatus('sent')
+    } catch (err: unknown) {
+      setAccountStatus('error')
+      const code = (err as { code?: string })?.code
+      if (code === 'auth/email-already-in-use') {
+        setAccountErr('An account with this email already exists. Please sign in instead.')
+      } else {
+        setAccountErr('Could not create your account. Please try again.')
+      }
+      return
+    }
+
     setConfirmed(true)
   }
 
@@ -199,7 +225,9 @@ function CheckoutFormInner({ backHref }: Props) {
           </svg>
         </div>
         <h2 className="nb1-det-conf-h">You&apos;re all set{fn ? `, ${fn}` : ''}.</h2>
-        <p className="nb1-det-conf-p">Your kit is being prepared. Watch your inbox for tracking and a link to set your password. Nothing is charged until your formula enters manufacture.</p>
+        <p className="nb1-det-conf-p">
+          Your kit is being prepared. We&apos;ve sent a sign-in link to <strong>{email}</strong> — click it to activate your account and access your dashboard. Nothing is charged until your formula enters manufacture.
+        </p>
         <Link href="/" className="nb1-det-conf-btn">Go to my dashboard →</Link>
       </div>
     )
@@ -210,7 +238,7 @@ function CheckoutFormInner({ backHref }: Props) {
     <div className="nb1-det-wrap">
       <style jsx global>{`
         /* ── Layout ── */
-        .nb1-det-wrap { max-width: 900px; margin: 0 auto; padding: 40px 28px 80px; }
+        .nb1-det-wrap { max-width: 900px; margin: 0 auto; padding: 46px 28px 80px; }
         .nb1-det-hero { margin-bottom: 40px; }
         .nb1-det-hero h1 {
           font-family: 'Instrument Sans','Inter',sans-serif;
@@ -226,42 +254,42 @@ function CheckoutFormInner({ backHref }: Props) {
           align-items: start;
         }
         .nb1-det-left {}
-        .nb1-det-right { position: sticky; top: 88px; }
+        .nb1-det-right { position: sticky; top: 96px; }
 
 /* ── Accordion ── */
-        .nb1-acc { border: 1.5px solid rgba(18,49,77,0.1); border-radius: 16px; margin-bottom: 12px; overflow: hidden; background: #fff; transition: border-color 0.18s, box-shadow 0.18s; }
-        .nb1-acc.open { border-color: #0a8fb0; box-shadow: 0 0 0 3px rgba(10,143,176,0.09); }
+        .nb1-acc { border: 1px solid rgba(18,49,77,0.1); border-radius: 14px; margin-bottom: 14px; overflow: hidden; background: #fff; transition: border-color 0.15s, box-shadow 0.15s; }
+        .nb1-acc.open { border-color: #0a8fb0; box-shadow: 0 0 0 3px rgba(10,143,176,0.08); }
         .nb1-acc.locked { opacity: 0.55; pointer-events: none; }
         .nb1-acc-hd {
           display: flex; align-items: center; gap: 14px;
-          padding: 20px 22px; cursor: pointer; background: none; border: none; width: 100%; text-align: left;
+          padding: 20px 24px; cursor: pointer; background: none; border: none; width: 100%; text-align: left;
         }
         .nb1-acc-num {
-          width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+          width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
           display: flex; align-items: center; justify-content: center;
-          font-size: 13px; font-weight: 700;
-          border: 1.5px solid rgba(18,49,77,0.2); color: rgba(18,49,77,0.5);
-          transition: all 0.18s;
+          font-size: 14px; font-weight: 600;
+          border: 1.5px solid rgba(18,49,77,0.1); color: rgba(18,49,77,0.4);
+          transition: all 0.15s;
         }
         .nb1-acc.open .nb1-acc-num { border-color: #0a8fb0; color: #0a8fb0; }
         .nb1-acc.done .nb1-acc-num { border-color: #0a8fb0; background: #0a8fb0; color: #fff; font-size: 0; }
         .nb1-acc.done .nb1-acc-num::after { content: '✓'; font-size: 13px; }
-        .nb1-acc-title { font-family: 'Instrument Sans','Inter',sans-serif; font-weight: 600; font-size: 16px; color: #12314d; flex: 1; }
+        .nb1-acc-title { font-family: 'Instrument Sans','Inter',sans-serif; font-weight: 600; font-size: 16.5px; color: #12314d; flex: 1; }
         .nb1-acc.locked .nb1-acc-title { color: rgba(18,49,77,0.4); }
         .nb1-acc-summary { font-size: 13px; color: rgba(18,49,77,0.55); margin-left: auto; }
         .nb1-acc-edit { font-size: 13px; font-weight: 600; color: #0a8fb0; margin-left: 12px; text-decoration: none; background: none; border: none; cursor: pointer; padding: 0; }
-        .nb1-acc-body { padding: 0 22px 24px; display: none; }
+        .nb1-acc-body { padding: 2px 24px 24px; display: none; }
         .nb1-acc.open .nb1-acc-body { display: block; }
 
         /* ── Form fields ── */
         .nb1-frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
         .nb1-frow.full { grid-template-columns: 1fr; }
         .nb1-fg { display: flex; flex-direction: column; gap: 5px; }
-        .nb1-fg label { font-size: 12.5px; font-weight: 600; color: rgba(18,49,77,0.6); letter-spacing: 0.02em; }
+        .nb1-fg label { font-size: 13px; font-weight: 600; color: rgba(18,49,77,0.7); }
         .nb1-fg input, .nb1-fg select {
-          height: 44px; padding: 0 14px; border-radius: 10px;
-          border: 1.5px solid rgba(18,49,77,0.15); background: #fff;
-          font-size: 14px; color: #12314d; outline: none; width: 100%;
+          padding: 13px 15px; border-radius: 11px;
+          border: 1.5px solid rgba(18,49,77,0.1); background: #fff;
+          font-size: 15px; color: #12314d; outline: none; width: 100%;
           font-family: 'Inter',sans-serif;
           transition: border-color 0.15s, box-shadow 0.15s;
           box-sizing: border-box;
@@ -311,9 +339,9 @@ function CheckoutFormInner({ backHref }: Props) {
         .nb1-wallet-gpay  { background: #fff; color: #12314d; }
         .nb1-pay-divider { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; color: rgba(18,49,77,0.4); font-size: 12.5px; }
         .nb1-pay-divider::before, .nb1-pay-divider::after { content: ''; flex: 1; height: 1px; background: rgba(18,49,77,0.1); }
-        .nb1-pmlist { display: flex; flex-direction: column; gap: 0; border: 1.5px solid rgba(18,49,77,0.1); border-radius: 12px; overflow: hidden; }
-        .nb1-pm-row { border-bottom: 1px solid rgba(18,49,77,0.08); }
-        .nb1-pm-row:last-child { border-bottom: none; }
+        .nb1-pmlist { display: flex; flex-direction: column; gap: 10px; }
+        .nb1-pm-row { border: 1.5px solid rgba(18,49,77,0.1); border-radius: 12px; overflow: hidden; transition: border-color 0.15s, box-shadow 0.15s; }
+        .nb1-pm-row.active { border-color: #0a8fb0; box-shadow: 0 0 0 3px rgba(10,143,176,0.08); }
         .nb1-pm-hd {
           display: flex; align-items: center; gap: 12px; padding: 15px 18px;
           cursor: pointer; background: none; border: none; width: 100%; text-align: left;
@@ -336,7 +364,7 @@ function CheckoutFormInner({ backHref }: Props) {
         .nb1-billing-addr { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
 
         /* secure badge */
-        .nb1-secure { display: flex; align-items: center; gap: 7px; margin-top: 16px; font-size: 12.5px; color: rgba(18,49,77,0.5); }
+        .nb1-secure { display: flex; align-items: center; gap: 7px; margin-top: 16px; font-size: 12.5px; color: rgba(18,49,77,0.5); border: none; border-radius: 0; background: none; }
 
         /* promo in form */
         .nb1-promo-toggle { background: none; border: none; cursor: pointer; font-size: 13.5px; font-weight: 600; color: #0a8fb0; padding: 0; margin-top: 14px; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(10,143,176,0.3); }
@@ -356,13 +384,13 @@ function CheckoutFormInner({ backHref }: Props) {
         .nb1-confirm-legal a { color: #0a8fb0; text-decoration: none; }
 
         /* ── What's next ── */
-        .nb1-whats-next { background: #f1f4f7; border: 1px solid rgba(18,49,77,0.1); border-radius: 14px; padding: 22px 24px; margin-top: 24px; }
+        .nb1-whats-next { background: #f1f4f7; border: 1px solid rgba(18,49,77,0.07); border-radius: 16px; padding: 22px 24px; margin-top: 40px; }
         .nb1-whats-next-h { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(18,49,77,0.45); margin-bottom: 14px; }
         .nb1-whats-next ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
         .nb1-whats-next li { font-size: 13.5px; color: rgba(18,49,77,0.65); line-height: 1.5; }
 
         /* ── Sidebar ── */
-        .nb1-sum { background: #fff; border: 1.5px solid rgba(18,49,77,0.1); border-radius: 16px; padding: 24px; }
+        .nb1-sum { background: #fff; border: 1px solid rgba(18,49,77,0.1); border-radius: 16px; padding: 24px; }
         .nb1-sum-title { font-family: 'Instrument Sans','Inter',sans-serif; font-weight: 600; font-size: 15px; color: #12314d; margin-bottom: 18px; }
         .nb1-sum-rows { display: flex; flex-direction: column; gap: 0; }
         .nb1-sum-row { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid rgba(18,49,77,0.07); font-size: 13.5px; }
@@ -370,13 +398,15 @@ function CheckoutFormInner({ backHref }: Props) {
         .nb1-sum-label { color: rgba(18,49,77,0.55); }
         .nb1-sum-val { font-weight: 600; color: #12314d; }
         .nb1-sum-divider { height: 1px; background: rgba(18,49,77,0.1); margin: 14px 0; }
-        .nb1-sum-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px; }
+        .nb1-sum-price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+        .nb1-sum-price-label { font-size: 13.5px; color: rgba(18,49,77,0.55); }
+        .nb1-sum-price { display: flex; align-items: baseline; gap: 3px; }
         .nb1-sum-price-big { font-family: 'Instrument Sans','Inter',sans-serif; font-weight: 600; font-size: 25px; letter-spacing: -0.02em; color: #12314d; line-height: 1; }
         .nb1-sum-price-per { font-size: 13px; color: rgba(18,49,77,0.5); }
         .nb1-sum-edit { font-size: 12.5px; color: #0a8fb0; text-decoration: none; border-bottom: 1px solid rgba(10,143,176,0.25); }
         .nb1-sum-zero { margin-top: 18px; background: rgba(10,143,176,0.08); border-radius: 10px; padding: 12px; text-align: center; font-size: 15px; font-weight: 700; color: #0a8fb0; }
         .nb1-sum-note { font-size: 12px; color: rgba(18,49,77,0.45); line-height: 1.55; margin-top: 14px; }
-        .nb1-sum-secure { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-size: 12px; color: rgba(18,49,77,0.45); }
+        .nb1-sum-secure { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-size: 12px; color: rgba(18,49,77,0.45); border: none; border-radius: 0; background: none; }
         /* sidebar promo */
         .nb1-sum-promo-toggle { background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 600; color: #0a8fb0; padding: 12px 0 0; display: block; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(10,143,176,0.3); }
 
@@ -688,7 +718,16 @@ function CheckoutFormInner({ backHref }: Props) {
               )}
 
               {/* Confirm */}
-              <button type="button" className="nb1-confirm-btn" onClick={nextPayment}>{confirmLabel}</button>
+              {accountErr && <p style={{color:'#c0392b',fontSize:'13px',marginTop:12}}>{accountErr}</p>}
+              <button
+                type="button"
+                className="nb1-confirm-btn"
+                onClick={nextPayment}
+                disabled={accountStatus === 'sending'}
+                style={accountStatus === 'sending' ? {opacity:0.65,cursor:'not-allowed'} : undefined}
+              >
+                {accountStatus === 'sending' ? 'Processing…' : confirmLabel}
+              </button>
               <p className="nb1-confirm-legal">
                 By confirming you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>, and consent to NB1 processing your biological sample. Your first charge is around two weeks after you return your sample, only once your formula enters manufacture. A one-time <strong>€49 fee</strong> applies only if your sample isn&apos;t returned within 4 weeks.
               </p>
@@ -717,9 +756,12 @@ function CheckoutFormInner({ backHref }: Props) {
               <div className="nb1-sum-row"><span className="nb1-sum-label">Shipping</span><span className="nb1-sum-val">{shippingLabel}</span></div>
             </div>
             <div className="nb1-sum-divider" />
-            <div className="nb1-sum-price">
-              <span className="nb1-sum-price-big">{planInfo.rate}</span>
-              <span className="nb1-sum-price-per">/mo</span>
+            <div className="nb1-sum-price-row">
+              <span className="nb1-sum-price-label">Monthly</span>
+              <div className="nb1-sum-price">
+                <span className="nb1-sum-price-big">{planInfo.rate}</span>
+                <span className="nb1-sum-price-per">/mo</span>
+              </div>
             </div>
             <a href={backLink} className="nb1-sum-edit">Edit plan or duration</a>
             {/* Sidebar promo */}
