@@ -22,9 +22,13 @@ import { FAQ } from './globals/FAQ'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const pgPoolMax = Number(process.env.PG_POOL_MAX ?? 2)
+const pgPoolMax = Number(process.env.PG_POOL_MAX ?? 10)
 
 export default buildConfig({
+  // Canonical absolute URL for this deployment. Without it Payload falls back to
+  // an empty serverURL and logs "Failed to create URL object from URL: , falling
+  // back to http://localhost" on server-side requests that lack an origin header.
+  serverURL: getServerSideURL(),
   admin: {
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
@@ -48,7 +52,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
-      max: Number.isFinite(pgPoolMax) && pgPoolMax > 0 ? pgPoolMax : 2,
+      max: Number.isFinite(pgPoolMax) && pgPoolMax > 0 ? pgPoolMax : 10,
       min: 0,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 30000,
