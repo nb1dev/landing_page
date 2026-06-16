@@ -15,7 +15,7 @@ type ColorState = typeof colorState
 type StateKey = keyof ColorState
 
 type ExtractKeys<T> = {
-  [K in keyof T]: T[K] extends Record<string, any> ? keyof T[K] : never
+  [K in keyof T]: T[K] extends Record<string, unknown> ? keyof T[K] : never
 }[keyof T]
 
 type AnyStateValueKey = ExtractKeys<ColorState>
@@ -33,14 +33,14 @@ export const textConverter: JSXConverters<SerializedTextNode> = {
     const styles: React.CSSProperties = {}
 
     // Payload textState is stored under node.$ (not part of public types)
-    const textState = (node as any).$ as Partial<Record<StateKey, AnyStateValueKey>> | undefined
+    const textState = (node as { $?: Partial<Record<StateKey, AnyStateValueKey>> }).$
 
     if (textState) {
       ;(Object.keys(colorState) as StateKey[]).forEach((stateKey) => {
         const stateValue = textState[stateKey]
         if (!stateValue) return
 
-        const stateValues = (colorState as any)[stateKey] as Record<
+        const stateValues = colorState[stateKey] as Record<
           string,
           { css?: React.CSSProperties }
         >

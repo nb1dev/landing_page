@@ -1,5 +1,5 @@
 // src/endpoints/seed/index.ts
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -19,10 +19,8 @@ const collections: CollectionSlug[] = [
 ]
 
 // Header and Footer are now collections, not globals — no globals to seed here
-const globals: GlobalSlug[] = []
-type SeedGlobal = GlobalSlug
 
-const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+const categories =['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -80,7 +78,7 @@ export const seed = async ({
     ),
   ])
 
-  const [demoUser, image1Doc, image2Doc, imageHomeDoc] = await Promise.all([
+  const [demoUser, _image1Doc, image2Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'users',
       data: {
@@ -127,7 +125,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, _contactPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,

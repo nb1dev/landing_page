@@ -12,8 +12,8 @@ type Props = {
 }
 
 function getLocale(req: PayloadRequest): string {
-  const r = req as any
-  const locale = r?.locale || r?.i18n?.language || r?.payloadAPI?.locale || r?.query?.locale
+  const queryLocale = (req.query as Record<string, unknown> | undefined)?.locale
+  const locale = req.locale || req.i18n?.language || (typeof queryLocale === 'string' ? queryLocale : undefined)
 
   return typeof locale === 'string' && locale.trim() ? locale.trim() : 'en'
 }

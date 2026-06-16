@@ -80,11 +80,12 @@ export function costomSlugField({
     hooks: {
       beforeValidate: [
         ({ value, data }) => {
+          const fromValue = (data as Record<string, unknown> | undefined)?.[from]
           const candidate =
             typeof value === 'string' && value.trim()
               ? value
-              : typeof (data as any)?.[from] === 'string'
-                ? (data as any)[from]
+              : typeof fromValue === 'string'
+                ? fromValue
                 : ''
 
           if (!candidate) return value

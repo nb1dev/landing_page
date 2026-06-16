@@ -1,11 +1,5 @@
 type MarketCode = 'de-DE' | 'de-AT' | 'de-CH' | 'en' | 'x-default'
 
-const GERMAN_MARKETS: Array<Extract<MarketCode, 'de-DE' | 'de-AT' | 'de-CH'>> = [
-  'de-DE',
-  'de-AT',
-  'de-CH',
-]
-
 function abs(siteURL: string, path: string) {
   // path must start with /
   return new URL(path, siteURL).toString()
