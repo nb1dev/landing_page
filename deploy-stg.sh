@@ -27,11 +27,13 @@ set -o allexport
 source .env.stg
 set +o allexport
 
+echo ">>> Stop PM2 first — frees the old app's DB connections so migrations get a"
+echo "    clean connection (critical on the small 1 vCPU DB: a saturated old"
+echo "    process makes the migration connect time out)"
+pm2 stop "$APP_NAME" 2>/dev/null || true
+
 echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
 DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
-
-echo ">>> Stop PM2 (free DB connections before build)"
-pm2 stop "$APP_NAME" 2>/dev/null || true
 
 echo ">>> Build Next.js"
 npm run build
