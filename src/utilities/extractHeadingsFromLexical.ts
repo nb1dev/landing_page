@@ -1,4 +1,27 @@
+import type {
+  SerializedEditorState,
+  SerializedLexicalNode,
+} from '@payloadcms/richtext-lexical/lexical'
+
 type Heading = { id: string; depth: 2 | 3; text: string }
+
+/**
+ * Loosely-typed view of a serialized lexical node. The base `SerializedLexicalNode`
+ * only guarantees `type`/`version`; element/heading/text nodes carry extra fields,
+ * so we describe the ones we read while walking the tree.
+ */
+type LexicalNodeLike = SerializedLexicalNode & {
+  children?: LexicalNodeLike[]
+  text?: string
+  tag?: string
+}
+
+type LexicalDoc =
+  | SerializedEditorState<SerializedLexicalNode>
+  | { root?: LexicalNodeLike }
+  | LexicalNodeLike
+  | null
+  | undefined
 
 function slugify(s: string) {
   return s
@@ -9,18 +32,18 @@ function slugify(s: string) {
     .slice(0, 80)
 }
 
-export function extractHeadingsFromLexical(doc: any, maxDepth: 'h2' | 'h3' = 'h3'): Heading[] {
+export function extractHeadingsFromLexical(doc: LexicalDoc, maxDepth: 'h2' | 'h3' = 'h3'): Heading[] {
   const headings: Heading[] = []
   const max = maxDepth === 'h2' ? 2 : 3
 
-  const collectText = (n: any): string => {
+  const collectText = (n: LexicalNodeLike | null | undefined): string => {
     if (!n) return ''
     if (typeof n.text === 'string') return n.text
     const kids = Array.isArray(n.children) ? n.children : []
     return kids.map(collectText).join('')
   }
 
-  const walk = (node: any) => {
+  const walk = (node: LexicalNodeLike | null | undefined) => {
     if (!node) return
     const children = Array.isArray(node.children) ? node.children : []
 
@@ -35,6 +58,11 @@ export function extractHeadingsFromLexical(doc: any, maxDepth: 'h2' | 'h3' = 'h3
     for (const c of children) walk(c)
   }
 
-  walk(doc?.root ?? doc)
+  const root =
+    doc && typeof doc === 'object' && 'root' in doc
+      ? (doc.root as LexicalNodeLike | undefined)
+      : (doc as LexicalNodeLike | null | undefined)
+
+  walk(root)
   return headings
 }

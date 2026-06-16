@@ -64,55 +64,6 @@ async function lookupRedirect(siteURL: string, fromPath: string) {
   }
 }
 
-const ALLOWED_QUERY_BY_PREFIX: Array<[string, string[]]> = [
-  ['/search', ['q']],
-  ['/posts', ['page']],
-]
-
-function stripLocalePrefix(pathname: string) {
-  for (const l of appLocales) {
-    if (pathname === `/${l}`) return '/'
-    if (pathname.startsWith(`/${l}/`)) return pathname.slice(l.length + 1) || '/'
-  }
-
-  return pathname
-}
-
-const GLOBAL_ALLOWED_QUERY_KEYS = ['v', 'csqVerifyInstall', 'csqVerifyUUID']
-
-function allowedKeysForPath(pathname: string) {
-  const pathNoLocale = stripLocalePrefix(pathname)
-
-  for (const [prefix, keys] of ALLOWED_QUERY_BY_PREFIX) {
-    if (pathNoLocale === prefix || pathNoLocale.startsWith(`${prefix}/`)) {
-      return [...GLOBAL_ALLOWED_QUERY_KEYS, ...keys]
-    }
-  }
-
-  return GLOBAL_ALLOWED_QUERY_KEYS
-}
-
-function stripDisallowedQuery(req: NextRequest) {
-  const url = req.nextUrl.clone()
-  const allowed = allowedKeysForPath(url.pathname)
-
-  const kept = new URLSearchParams()
-  for (const key of allowed) {
-    const value = url.searchParams.get(key)
-    if (value !== null) kept.set(key, value)
-  }
-
-  const newSearch = kept.toString()
-  const oldSearch = url.searchParams.toString()
-
-  if (newSearch !== oldSearch) {
-    url.search = newSearch ? `?${newSearch}` : ''
-    return url
-  }
-
-  return null
-}
-
 export async function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl
 
