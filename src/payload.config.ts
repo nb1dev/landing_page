@@ -22,6 +22,7 @@ import { FAQ } from './globals/FAQ'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const pgPoolMax = Number(process.env.PG_POOL_MAX ?? 2)
 
 export default buildConfig({
   admin: {
@@ -47,7 +48,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
-      max: 5,
+      max: Number.isFinite(pgPoolMax) && pgPoolMax > 0 ? pgPoolMax : 2,
       min: 0,
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 30000,
