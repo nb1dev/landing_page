@@ -22,7 +22,16 @@ import { FAQ } from './globals/FAQ'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-const pgPoolMax = Number(process.env.PG_POOL_MAX ?? 10)
+// `next build` prerenders pages in several parallel worker processes, each of
+// which imports this config and opens its OWN Postgres pool. A large per-pool
+// max × worker count can exhaust the DB connection limit ("sorry, too many
+// clients already"). So use a small pool during the build phase; the long-lived
+// runtime server (single PM2 fork process) gets the full pool.
+const isNextBuild = process.env.NEXT_PHASE === 'phase-production-build'
+const pgPoolDefault = isNextBuild ? 2 : 10
+const pgPoolEnv = isNextBuild ? process.env.PG_POOL_MAX_BUILD : process.env.PG_POOL_MAX
+const pgPoolParsed = Number(pgPoolEnv ?? pgPoolDefault)
+const pgPoolMax = Number.isFinite(pgPoolParsed) && pgPoolParsed > 0 ? pgPoolParsed : pgPoolDefault
 
 export default buildConfig({
   // Canonical absolute URL for this deployment. Without it Payload falls back to
@@ -52,9 +61,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
       ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
-      max: Number.isFinite(pgPoolMax) && pgPoolMax > 0 ? pgPoolMax : 10,
+      max: pgPoolMax,
       min: 0,
-      idleTimeoutMillis: 30000,
+      idleTimeoutMillis: isNextBuild ? 1000 : 30000,
       connectionTimeoutMillis: 30000,
       options: '-c statement_timeout=0',
     },
