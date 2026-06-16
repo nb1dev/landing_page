@@ -1,7 +1,6 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
-import { unstable_noStore as noStore } from 'next/cache'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -11,7 +10,6 @@ function safeLocale(locale?: string): AppLocale {
 }
 
 async function fetchHeaderById(id: string, locale?: string) {
-  noStore()
   const payload = await getPayload({ config: configPromise })
   return payload.findByID({
     collection: 'headers',
@@ -22,7 +20,6 @@ async function fetchHeaderById(id: string, locale?: string) {
 }
 
 async function fetchDefaultHeader(locale?: string) {
-  noStore()
   const payload = await getPayload({ config: configPromise })
   const result = await payload.find({
     collection: 'headers',
