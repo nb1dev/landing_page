@@ -32,6 +32,9 @@ echo "    clean connection (critical on the small 1 vCPU DB: a saturated old"
 echo "    process makes the migration connect time out)"
 pm2 stop "$APP_NAME" 2>/dev/null || true
 
+# Give Postgres a moment to reclaim the connections the stopped app held.
+sleep 5
+
 echo ">>> Run DB migrations (using direct connection to bypass PgBouncer)"
 DATABASE_URL="${DATABASE_URL_DIRECT:-$DATABASE_URL}" npm run migrate
 
