@@ -64,8 +64,17 @@ export default buildConfig({
       max: pgPoolMax,
       min: 0,
       idleTimeoutMillis: isNextBuild ? 1000 : 30000,
-      connectionTimeoutMillis: 30000,
-      options: '-c statement_timeout=0',
+      // Fail fast at runtime instead of holding a request for 30s while the
+      // pool is contended; the build phase can afford to wait longer.
+      connectionTimeoutMillis: isNextBuild ? 30000 : 10000,
+      // Recycle connections periodically (managed PG drops idle ones server-side).
+      maxUses: 7500,
+      // FINITE server-side timeouts. With statement_timeout=0 a single slow or
+      // stuck query held its pooled connection forever; a few of those starved
+      // the whole pool permanently → "timeout exceeded when trying to connect"
+      // for every later request, with no recovery until a restart. These kill
+      // runaway queries / idle-in-transaction sessions so connections are freed.
+      options: '-c statement_timeout=30000 -c idle_in_transaction_session_timeout=30000',
     },
     push: false,
   }),

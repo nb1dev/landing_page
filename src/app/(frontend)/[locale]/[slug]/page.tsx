@@ -5,7 +5,6 @@ import { JsonLd } from '@/components/JsonLd/index'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
-import { unstable_noStore as noStore } from 'next/cache'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
@@ -34,6 +33,12 @@ type Args = {
     slug?: string
   }>
 }
+
+// Pages are served from the static / full-route cache and refreshed on publish
+// via the revalidatePage afterChange hook (revalidatePath). This time-based value
+// is just a backstop. Keeps the heavy ~260KB per-page query off the runtime hot
+// path — critical on the 1 vCPU staging DB where it was saturating the pool.
+export const revalidate = 600
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -179,7 +184,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 async function queryPageBySlug({ slug, locale }: { slug: string; locale: AppLocale }) {
-  noStore()
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 
