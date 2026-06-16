@@ -35,8 +35,7 @@ export const OrderTimelineComponent: React.FC<Props> = ({
     <section ref={ref} className={`nb1-timeline-sec${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-timeline-sec {
-          padding: 56px 0;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
+          padding: 0 0 56px;
           opacity: 0;
           transform: translateY(24px);
           transition: opacity 0.7s ease, transform 0.7s ease;
@@ -48,7 +47,8 @@ export const OrderTimelineComponent: React.FC<Props> = ({
         .nb1-tl-con {
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
+          border-top: 1px solid rgba(18, 49, 77, 0.07);
         }
         .nb1-tl-head {
           margin-bottom: 24px;
@@ -59,6 +59,7 @@ export const OrderTimelineComponent: React.FC<Props> = ({
           font-size: clamp(22px, 2.4vw, 30px);
           letter-spacing: -0.02em;
           color: #12314d;
+          margin-top: 10px;
         }
         .nb1-tl-sub {
           font-size: 15px;
@@ -89,7 +90,7 @@ export const OrderTimelineComponent: React.FC<Props> = ({
           border-top: none;
         }
         .nb1-wk {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, sans-serif;
           font-weight: 600;
           font-size: 11px;
           letter-spacing: 0.06em;
@@ -176,6 +177,9 @@ export const OrderTimelineComponent: React.FC<Props> = ({
           }
           .nb1-tx-d {
             display: block;
+          }
+          .nb1-tx-d::first-letter {
+            text-transform: uppercase;
           }
         }
       `}</style>

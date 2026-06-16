@@ -23,7 +23,7 @@ export const TrustSealsBarComponent: React.FC<Props> = ({ seals }) => {
         .nb1-tsb-con {
           max-width: 900px;
           margin: 0 auto;
-          padding: 18px 28px;
+          padding: 46px 28px 18px;
           display: flex;
           align-items: center;
           justify-content: flex-start;

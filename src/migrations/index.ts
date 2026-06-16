@@ -25,6 +25,7 @@ import * as migration_20260510_heading_richtext from './20260510_heading_richtex
 import * as migration_20260511_115656 from './20260511_115656';
 import * as migration_20260526_floating_cta_localize_all from './20260526_floating_cta_localize_all';
 import * as migration_20260526_hero_banner_price_localized from './20260526_hero_banner_price_localized';
+import * as migration_20260609_ecommerce_blocks from './20260609_ecommerce_blocks';
 import * as migration_20260610_081625_yp_hero_block from './20260610_081625_yp_hero_block';
 import * as migration_20260610_085323_yp_plans_block from './20260610_085323_yp_plans_block';
 import * as migration_20260610_091017_yp_plans_drop_defaults from './20260610_091017_yp_plans_drop_defaults';
@@ -48,10 +49,20 @@ import * as migration_20260611_093646_yp_faq from './20260611_093646_yp_faq';
 import * as migration_20260611_094037_yp_reassurance from './20260611_094037_yp_reassurance';
 import * as migration_20260611_094413_yp_buy_box from './20260611_094413_yp_buy_box';
 import * as migration_20260611_132854_yp_sticky_buy from './20260611_132854_yp_sticky_buy';
-import * as migration_20260609_ecommerce_blocks from './20260609_ecommerce_blocks'
-import * as migration_20260611_homepage_blocks from './20260611_homepage_blocks'
-import * as migration_20260611_the_case_hero from './20260611_the_case_hero'
-import * as migration_20260612_090000_recreate_close_band from './20260612_090000_recreate_close_band'
+import * as migration_20260611_homepage_blocks from './20260611_homepage_blocks';
+import * as migration_20260611_the_case_hero from './20260611_the_case_hero';
+import * as migration_20260612_090000_recreate_close_band from './20260612_090000_recreate_close_band';
+import * as migration_20260615_091409_headers_footers_schema from './20260615_091409_headers_footers_schema';
+import * as migration_20260615_footer_nav_fix from './20260615_footer_nav_fix';
+import * as migration_20260615_headers_footers_collections from './20260615_headers_footers_collections';
+import * as migration_20260615_hide_header_footer from './20260615_hide_header_footer';
+import * as migration_20260615_legal_strip_block from './20260615_legal_strip_block';
+import * as migration_20260615_nav_footer_fields from './20260615_nav_footer_fields';
+import * as migration_20260615_order_step_nav_block from './20260615_order_step_nav_block';
+import * as migration_20260615_order_step_nav_logo from './20260615_order_step_nav_logo';
+import * as migration_20260615_order_step_nav_step_urls from './20260615_order_step_nav_step_urls';
+import * as migration_20260615_legal_strip_links_uuid from './20260615_legal_strip_links_uuid';
+import * as migration_20260615_legal_strip_nullable from './20260615_legal_strip_nullable';
 
 export const migrations = [
   {
@@ -190,6 +201,11 @@ export const migrations = [
     name: '20260526_hero_banner_price_localized',
   },
   {
+    up: migration_20260609_ecommerce_blocks.up,
+    down: migration_20260609_ecommerce_blocks.down,
+    name: '20260609_ecommerce_blocks',
+  },
+  {
     up: migration_20260610_081625_yp_hero_block.up,
     down: migration_20260610_081625_yp_hero_block.down,
     name: '20260610_081625_yp_hero_block',
@@ -305,11 +321,6 @@ export const migrations = [
     name: '20260611_132854_yp_sticky_buy',
   },
   {
-    up: migration_20260609_ecommerce_blocks.up,
-    down: migration_20260609_ecommerce_blocks.down,
-    name: '20260609_ecommerce_blocks',
-  },
-  {
     up: migration_20260611_homepage_blocks.up,
     down: migration_20260611_homepage_blocks.down,
     name: '20260611_homepage_blocks',
@@ -324,4 +335,59 @@ export const migrations = [
     down: migration_20260612_090000_recreate_close_band.down,
     name: '20260612_090000_recreate_close_band',
   },
-]
+  {
+    up: migration_20260615_091409_headers_footers_schema.up,
+    down: migration_20260615_091409_headers_footers_schema.down,
+    name: '20260615_091409_headers_footers_schema',
+  },
+  {
+    up: migration_20260615_footer_nav_fix.up,
+    down: migration_20260615_footer_nav_fix.down,
+    name: '20260615_footer_nav_fix',
+  },
+  {
+    up: migration_20260615_headers_footers_collections.up,
+    down: migration_20260615_headers_footers_collections.down,
+    name: '20260615_headers_footers_collections',
+  },
+  {
+    up: migration_20260615_hide_header_footer.up,
+    down: migration_20260615_hide_header_footer.down,
+    name: '20260615_hide_header_footer',
+  },
+  {
+    up: migration_20260615_legal_strip_block.up,
+    down: migration_20260615_legal_strip_block.down,
+    name: '20260615_legal_strip_block',
+  },
+  {
+    up: migration_20260615_nav_footer_fields.up,
+    down: migration_20260615_nav_footer_fields.down,
+    name: '20260615_nav_footer_fields',
+  },
+  {
+    up: migration_20260615_order_step_nav_block.up,
+    down: migration_20260615_order_step_nav_block.down,
+    name: '20260615_order_step_nav_block',
+  },
+  {
+    up: migration_20260615_order_step_nav_logo.up,
+    down: migration_20260615_order_step_nav_logo.down,
+    name: '20260615_order_step_nav_logo',
+  },
+  {
+    up: migration_20260615_order_step_nav_step_urls.up,
+    down: migration_20260615_order_step_nav_step_urls.down,
+    name: '20260615_order_step_nav_step_urls'
+  },
+  {
+    up: migration_20260615_legal_strip_links_uuid.up,
+    down: migration_20260615_legal_strip_links_uuid.down,
+    name: '20260615_legal_strip_links_uuid',
+  },
+  {
+    up: migration_20260615_legal_strip_nullable.up,
+    down: migration_20260615_legal_strip_nullable.down,
+    name: '20260615_legal_strip_nullable',
+  },
+];

@@ -31,7 +31,7 @@ export const OrderStepHeroComponent: React.FC<Props> = ({
     <header ref={ref} className={`nb1-ok-hero${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-ok-hero {
-          padding: 48px 0 40px;
+          padding: 18px 0 0;
           opacity: 0;
           transform: translateY(18px);
           transition: opacity 0.55s ease, transform 0.55s ease;
@@ -55,7 +55,6 @@ export const OrderStepHeroComponent: React.FC<Props> = ({
           margin: 0;
           max-width: 680px;
           color: #12314d;
-          text-wrap: balance;
         }
         .nb1-ok-headline :global(strong) {
           font-weight: inherit;
@@ -96,7 +95,7 @@ export const OrderStepHeroComponent: React.FC<Props> = ({
         }
         .nb1-seal-mini { display: none; }
         @media (max-width: 560px) {
-          .nb1-ok-hero { padding: 32px 0 28px; }
+          .nb1-ok-hero { padding: 28px 0 20px; }
           .nb1-ok-con { padding: 0 20px; }
           .nb1-ok-seals { gap: 6px; flex-wrap: nowrap; }
           .nb1-seal { font-size: 10.5px; padding: 6px 9px; gap: 5px; white-space: nowrap; }

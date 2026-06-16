@@ -79,7 +79,7 @@ export const PlanSelectorComponent: React.FC<Props> = ({
         .nb1-ps-con {
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
         }
         .nb1-ps-head {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
@@ -98,6 +98,7 @@ export const PlanSelectorComponent: React.FC<Props> = ({
           margin-bottom: 22px;
           flex-wrap: wrap;
           background: rgba(10, 143, 176, 0.08);
+          border: 1px solid rgba(18, 49, 77, 0.1);
           border-radius: 12px;
         }
         .nb1-ps-gi {
@@ -107,7 +108,7 @@ export const PlanSelectorComponent: React.FC<Props> = ({
           font-size: 13.5px;
           color: rgba(18, 49, 77, 0.7);
         }
-        .nb1-ps-gi strong { color: #12314d; font-weight: 600; }
+        .nb1-ps-gi :global(strong) { color: #0e2740; font-weight: 600; }
         .nb1-ps-gdiv {
           width: 1px;
           height: 22px;
@@ -257,9 +258,9 @@ export const PlanSelectorComponent: React.FC<Props> = ({
         .nb1-ps-cta {
           display: block;
           border-radius: 100px;
-          padding: 16px 24px;
-          font-weight: 700;
-          font-size: 15px;
+          padding: 13px 20px;
+          font-weight: 600;
+          font-size: 14px;
           text-align: center;
           text-decoration: none;
           transition: transform 0.18s, background 0.18s, border-color 0.18s;
@@ -279,14 +280,16 @@ export const PlanSelectorComponent: React.FC<Props> = ({
 
         /* Comparison toggle */
         .nb1-cmp-wrap {
-          margin-top: 28px;
+          max-width: 760px;
+          margin: 30px auto 0;
         }
         .nb1-cmp-toggle {
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 12px;
-          width: 100%;
+          margin: 0 auto;
+          min-width: 330px;
           background: linear-gradient(180deg, rgba(10,143,176,0.10) 0%, rgba(10,143,176,0.035) 100%);
           border: 1.5px solid rgba(10, 143, 176, 0.2);
           border-radius: 14px;
@@ -333,7 +336,7 @@ export const PlanSelectorComponent: React.FC<Props> = ({
           padding: 14px 16px;
           border-bottom: 1px solid rgba(18, 49, 77, 0.07);
           font-size: 14px;
-          color: rgba(18, 49, 77, 0.7);
+          color: #12314d;
         }
         .nb1-comp thead th {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
@@ -373,22 +376,25 @@ export const PlanSelectorComponent: React.FC<Props> = ({
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 14px;
-          margin-bottom: 20px;
+          gap: 15px;
+          max-width: 540px;
+          margin: 0 auto 22px;
+          padding-top: 26px;
+          border-top: 1px solid rgba(18, 49, 77, 0.1);
         }
         .nb1-sb-faces {
           display: inline-flex;
           flex-shrink: 0;
         }
         .nb1-sb-faces img {
-          width: 36px;
-          height: 36px;
+          width: 46px;
+          height: 46px;
           border-radius: 50%;
           object-fit: cover;
           object-position: center top;
           border: 2px solid #fff;
-          margin-left: -10px;
-          box-shadow: 0 1px 4px rgba(18, 49, 77, 0.18);
+          margin-left: -12px;
+          box-shadow: 0 2px 8px rgba(18, 49, 77, 0.18);
         }
         .nb1-sb-faces img:first-child { margin-left: 0; }
         .nb1-sb-text {}
@@ -410,8 +416,8 @@ export const PlanSelectorComponent: React.FC<Props> = ({
         @media (max-width: 560px) {
           .nb1-ps-guarantee { gap: 12px 16px; padding: 14px 16px; justify-content: flex-start; }
           .nb1-ps-card { padding: 26px 22px; }
-          .nb1-comp th, .nb1-comp td { padding: 10px 5px; font-size: 11.5px; }
-          .nb1-comp .col-plan { width: 84px; }
+          .nb1-comp th, .nb1-comp td { padding: 11px 8px; font-size: 12.5px; }
+          .nb1-comp .col-plan { width: 72px; }
         }
       `}</style>
 

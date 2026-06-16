@@ -18,9 +18,9 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-// ✅ FIX 1: make this a literal tuple so TS narrows to "header" | "footer"
-const globals = ['header', 'footer'] as const satisfies GlobalSlug[]
-type SeedGlobal = (typeof globals)[number]
+// Header and Footer are now collections, not globals — no globals to seed here
+const globals: GlobalSlug[] = []
+type SeedGlobal = GlobalSlug
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -39,21 +39,7 @@ export const seed = async ({
 
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear globals
-  await Promise.all(
-    (globals as readonly SeedGlobal[]).map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+  // no globals to clear (Header/Footer moved to collections)
 
   // clear collections (excluding posts)
   await Promise.all(
@@ -154,64 +140,7 @@ export const seed = async ({
     }),
   ])
 
-  payload.logger.info(`— Seeding globals...`)
-
-  await Promise.all([
-    payload.updateGlobal({
-      slug: 'header',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
-            },
-          },
-          {
-            link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
-            },
-          },
-        ],
-      },
-    }),
-    payload.updateGlobal({
-      slug: 'footer',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
-        ],
-      },
-    }),
-  ])
+  payload.logger.info(`— Skipping globals (Header/Footer are now collections)...`)
 
   payload.logger.info('Seeded database successfully!')
 }

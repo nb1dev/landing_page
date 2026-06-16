@@ -1,19 +1,40 @@
-import type { GlobalConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 
 import { link } from '@/fields/link'
-import { revalidateFooter } from './hooks/revalidateFooter'
 
 const themeOptions = [
   { label: 'Light (white background)', value: 'light' },
   { label: 'Dark (navy background)', value: 'dark' },
 ]
 
-export const Footer: GlobalConfig = {
-  slug: 'footer',
+export const Footers: CollectionConfig = {
+  slug: 'footers',
   access: {
     read: () => true,
   },
+  admin: {
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'theme', 'isDefault'],
+  },
   fields: [
+    {
+      name: 'name',
+      label: 'Footer Name',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Internal label, e.g. "Default", "Checkout", "Minimal".',
+      },
+    },
+    {
+      name: 'isDefault',
+      label: 'Use as site default',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Pages that do not select a specific footer will use the default.',
+      },
+    },
     {
       name: 'logo',
       label: 'Logo',
@@ -49,9 +70,51 @@ export const Footer: GlobalConfig = {
       },
     },
     {
+      name: 'subnote',
+      label: 'Email Subscribe Subnote',
+      type: 'text',
+      localized: true,
+      admin: {
+        description: 'e.g. "Occasional notes on the science and the product. No spam."',
+      },
+    },
+    {
+      name: 'instagramUrl',
+      label: 'Instagram URL',
+      type: 'text',
+    },
+    {
+      name: 'exploreLinks',
+      label: 'Explore Column Links',
+      type: 'array',
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'url', type: 'text', required: true },
+      ],
+      maxRows: 8,
+      admin: {
+        description: 'Links shown in the "Explore" column (e.g. Home, The lab, Our plans).',
+        initCollapsed: true,
+      },
+    },
+    {
+      name: 'getStartedLinks',
+      label: 'Get Started Column Links',
+      type: 'array',
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'url', type: 'text', required: true },
+      ],
+      maxRows: 8,
+      admin: {
+        description: 'Links shown in the "Get Started" column (e.g. Order your kit, Log in, Contact).',
+        initCollapsed: true,
+      },
+    },
+    {
       name: 'navItems',
       type: 'array',
-      label: 'Nav Links',
+      label: 'Legacy Nav Links',
       fields: [
         link({
           appearances: false,
@@ -60,6 +123,7 @@ export const Footer: GlobalConfig = {
       maxRows: 6,
       admin: {
         initCollapsed: true,
+        description: 'Legacy field – use Explore/Get Started columns above instead.',
         components: {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
@@ -79,6 +143,15 @@ export const Footer: GlobalConfig = {
       label: 'Copyright Text',
       type: 'text',
       localized: true,
+    },
+    {
+      name: 'disclaimer',
+      label: 'Disclaimer Text',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description: 'Legal disclaimer shown below the bottom bar.',
+      },
     },
     {
       name: 'variants',
@@ -126,7 +199,4 @@ export const Footer: GlobalConfig = {
       },
     },
   ],
-  hooks: {
-    afterChange: [revalidateFooter],
-  },
 }

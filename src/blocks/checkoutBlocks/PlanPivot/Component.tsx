@@ -30,13 +30,13 @@ export const PlanPivotComponent: React.FC<Props> = ({
     <section className="nb1-pp-sec">
       <style jsx>{`
         .nb1-pp-sec {
-          padding: 56px 0;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
+          padding: 0 0 56px;
         }
         .nb1-pp-con {
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
+          border-top: 1px solid rgba(18, 49, 77, 0.07);
         }
         .nb1-pp-box {
           background: rgba(10, 143, 176, 0.08);

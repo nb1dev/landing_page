@@ -56,6 +56,8 @@ import { YpStickyBuyComponent } from './yourPlanBlocks/StickyBuy/Component'
 import { YpReassuranceComponent } from './yourPlanBlocks/Reassurance/Component'
 import { YpBuyBoxComponent } from './yourPlanBlocks/BuyBox/Component'
 import { OrderStepHeroComponent } from './checkoutBlocks/OrderStepHero/Component'
+import { OrderStepNavComponent } from './checkoutBlocks/OrderStepNav/Component'
+import { LegalStripComponent } from './checkoutBlocks/LegalStrip/Component'
 import { TrustSealsBarComponent } from './checkoutBlocks/TrustSealsBar/Component'
 import { OrderTimelineComponent } from './checkoutBlocks/OrderTimeline/Component'
 import { FormulaKitComponent } from './checkoutBlocks/FormulaKit/Component'
@@ -136,6 +138,8 @@ const blockComponents: Record<string, React.FC<any>> = {
   ypReassurance: YpReassuranceComponent,
   ypBuyBox: YpBuyBoxComponent,
   ypStickyBuy: YpStickyBuyComponent,
+  orderStepNav: OrderStepNavComponent,
+  legalStrip: LegalStripComponent,
   orderStepHero: OrderStepHeroComponent,
   trustSealsBar: TrustSealsBarComponent,
   orderTimeline: OrderTimelineComponent,

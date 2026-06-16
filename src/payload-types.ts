@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     products: Product;
     authors: Author;
+    headers: Header;
+    footers: Footer;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +100,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
+    headers: HeadersSelect<false> | HeadersSelect<true>;
+    footers: FootersSelect<false> | FootersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -114,15 +118,11 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de' | 'fr') | ('en' | 'de' | 'fr')[];
   globals: {
-    header: Header;
-    footer: Footer;
     navigation: Navigation;
     'site-settings': SiteSetting;
     faq: Faq;
   };
   globalsSelect: {
-    header: HeaderSelect<false> | HeaderSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
@@ -167,6 +167,22 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
+  /**
+   * Leave blank to use the site default header.
+   */
+  header?: (number | null) | Header;
+  /**
+   * Do not render any header on this page.
+   */
+  hideHeader?: boolean | null;
+  /**
+   * Leave blank to use the site default footer.
+   */
+  footer?: (number | null) | Footer;
+  /**
+   * Do not render any footer on this page.
+   */
+  hideFooter?: boolean | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -267,6 +283,8 @@ export interface Page {
     | YpReassuranceBlock
     | YpBuyBoxBlock
     | YpStickyBuyBlock
+    | OrderStepNavBlock
+    | LegalStripBlock
     | OrderStepHeroBlock
     | TrustSealsBarBlock
     | OrderTimelineBlock
@@ -340,109 +358,88 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "headers".
  */
-export interface Post {
+export interface Header {
   id: number;
   /**
-   * Max 70 characters (recommended for SEO)
+   * Internal label, e.g. "Default", "Dark Landing", "Checkout".
    */
-  title: string;
-  subtitle?: string | null;
-  heroImage?: (number | null) | Media;
+  name: string;
   /**
-   * Write 2–3 introductory paragraphs. This appears before all content blocks.
+   * Pages that do not select a specific header will use the default.
    */
-  intro: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  schemaMarkup: {
-    type: 'Article' | 'TechArticle' | 'FAQPage';
-    /**
-     * Optional. If empty, the post title will be used.
-     */
-    headline?: string | null;
-    faqItems?:
-      | {
-          question: string;
-          answer: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  relatedArticles?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  meta: {
-    /**
-     * SEO title tag. Max 60 characters. " | NB1" is added automatically.
-     */
-    title: string;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * SEO meta description. Max 155 characters.
-     */
-    description: string;
-  };
+  isDefault?: boolean | null;
+  logo?: (number | null) | Media;
   /**
-   * Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.
+   * Shown when theme is dark. Falls back to the light logo if empty.
    */
-  focusKeyword?: string | null;
-  publishedAt?: string | null;
-  authors?: (number | Author)[] | null;
-  populatedAuthors?:
+  logoDark?: (number | null) | Media;
+  /**
+   * Used when no A/B variant matches.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * Nav starts transparent with white text over a dark hero, then frosts on scroll. Enable when the page starts with a dark/image hero.
+   */
+  darkHero?: boolean | null;
+  /**
+   * e.g. "Order your kit". Leave empty to hide the CTA button.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
+   * e.g. "Log in"
+   */
+  loginText?: string | null;
+  loginUrl?: string | null;
+  /**
+   * CSS color override. Falls back to theme default if empty.
+   */
+  loginTextColor?: string | null;
+  navItems?:
     | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+        };
         id?: string | null;
-        name?: string | null;
-        slug?: string | null;
-        credentials?: string | null;
-        avatarUrl?: string | null;
       }[]
     | null;
   /**
-   * Auto-formatted: lowercase + hyphens only. Max 70 characters.
+   * Override header appearance per A/B variant (?v= URL param).
    */
-  slug: string;
-  /**
-   * How this article was created.
-   */
-  source?: ('manual' | 'api') | null;
-  /**
-   * Raw HTML from the content pipeline. Parsed automatically on save.
-   */
-  htmlContent?: string | null;
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param. Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default login text color for this variant.
+         */
+        loginTextColor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -568,6 +565,112 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  /**
+   * Max 70 characters (recommended for SEO)
+   */
+  title: string;
+  subtitle?: string | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * Write 2–3 introductory paragraphs. This appears before all content blocks.
+   */
+  intro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  schemaMarkup: {
+    type: 'Article' | 'TechArticle' | 'FAQPage';
+    /**
+     * Optional. If empty, the post title will be used.
+     */
+    headline?: string | null;
+    faqItems?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  relatedArticles?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta: {
+    /**
+     * SEO title tag. Max 60 characters. " | NB1" is added automatically.
+     */
+    title: string;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * SEO meta description. Max 155 characters.
+     */
+    description: string;
+  };
+  /**
+   * Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.
+   */
+  focusKeyword?: string | null;
+  publishedAt?: string | null;
+  authors?: (number | Author)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        slug?: string | null;
+        credentials?: string | null;
+        avatarUrl?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto-formatted: lowercase + hyphens only. Max 70 characters.
+   */
+  slug: string;
+  /**
+   * How this article was created.
+   */
+  source?: ('manual' | 'api') | null;
+  /**
+   * Raw HTML from the content pipeline. Parsed automatically on save.
+   */
+  htmlContent?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -615,6 +718,118 @@ export interface Author {
    * Example: NB1 Health GmbH
    */
   affiliation?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * Internal label, e.g. "Default", "Checkout", "Minimal".
+   */
+  name: string;
+  /**
+   * Pages that do not select a specific footer will use the default.
+   */
+  isDefault?: boolean | null;
+  logo?: (number | null) | Media;
+  /**
+   * Used when no A/B variant matches. Light = white bg, Dark = navy bg.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * CSS color for nav links (e.g. "rgba(18,49,77,0.55)" or "#303438"). Falls back to theme default if empty.
+   */
+  linkColor?: string | null;
+  /**
+   * Short tagline shown next to logo, e.g. "Sequenced. Then yours."
+   */
+  tagline?: string | null;
+  /**
+   * e.g. "Occasional notes on the science and the product. No spam."
+   */
+  subnote?: string | null;
+  instagramUrl?: string | null;
+  /**
+   * Links shown in the "Explore" column (e.g. Home, The lab, Our plans).
+   */
+  exploreLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Links shown in the "Get Started" column (e.g. Order your kit, Log in, Contact).
+   */
+  getStartedLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Legacy field – use Explore/Get Started columns above instead.
+   */
+  navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Company address shown in the legal section.
+   */
+  address?: string | null;
+  copyrightText?: string | null;
+  /**
+   * Legal disclaimer shown below the bottom bar.
+   */
+  disclaimer?: string | null;
+  /**
+   * Map URL variant keys to a footer theme. A visitor with ?v=<key> in the URL gets the matching theme.
+   */
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param (e.g. "dark-page", "eu-b"). Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default link color for this variant. Any CSS color value.
+         */
+        linkColor?: string | null;
+        /**
+         * Overrides the default logo for this variant.
+         */
+        logo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -4257,6 +4472,43 @@ export interface YpStickyBuyBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepNavBlock".
+ */
+export interface OrderStepNavBlock {
+  logo?: (number | null) | Media;
+  logoUrl?: string | null;
+  activeStep: '1' | '2' | '3' | 'done';
+  step1Label?: string | null;
+  step1Url?: string | null;
+  step2Label?: string | null;
+  step2Url?: string | null;
+  step3Label?: string | null;
+  step3Url?: string | null;
+  backLabel?: string | null;
+  backUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderStepNav';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalStripBlock".
+ */
+export interface LegalStripBlock {
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  copyright?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'legalStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "OrderStepHeroBlock".
  */
 export interface OrderStepHeroBlock {
@@ -5561,6 +5813,14 @@ export interface PayloadLockedDocument {
         value: number | Author;
       } | null)
     | ({
+        relationTo: 'headers';
+        value: number | Header;
+      } | null)
+    | ({
+        relationTo: 'footers';
+        value: number | Footer;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -5628,6 +5888,10 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  header?: T;
+  hideHeader?: T;
+  footer?: T;
+  hideFooter?: T;
   hero?:
     | T
     | {
@@ -5706,6 +5970,8 @@ export interface PagesSelect<T extends boolean = true> {
         ypReassurance?: T | YpReassuranceBlockSelect<T>;
         ypBuyBox?: T | YpBuyBoxBlockSelect<T>;
         ypStickyBuy?: T | YpStickyBuyBlockSelect<T>;
+        orderStepNav?: T | OrderStepNavBlockSelect<T>;
+        legalStrip?: T | LegalStripBlockSelect<T>;
         orderStepHero?: T | OrderStepHeroBlockSelect<T>;
         trustSealsBar?: T | TrustSealsBarBlockSelect<T>;
         orderTimeline?: T | OrderTimelineBlockSelect<T>;
@@ -7396,6 +7662,41 @@ export interface YpStickyBuyBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepNavBlock_select".
+ */
+export interface OrderStepNavBlockSelect<T extends boolean = true> {
+  logo?: T;
+  logoUrl?: T;
+  activeStep?: T;
+  step1Label?: T;
+  step1Url?: T;
+  step2Label?: T;
+  step2Url?: T;
+  step3Label?: T;
+  step3Url?: T;
+  backLabel?: T;
+  backUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalStripBlock_select".
+ */
+export interface LegalStripBlockSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  copyright?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "OrderStepHeroBlock_select".
  */
 export interface OrderStepHeroBlockSelect<T extends boolean = true> {
@@ -8278,6 +8579,105 @@ export interface AuthorsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers_select".
+ */
+export interface HeadersSelect<T extends boolean = true> {
+  name?: T;
+  isDefault?: T;
+  logo?: T;
+  logoDark?: T;
+  theme?: T;
+  darkHero?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  loginText?: T;
+  loginUrl?: T;
+  loginTextColor?: T;
+  navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              localizedLabel?: T;
+            };
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        loginTextColor?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers_select".
+ */
+export interface FootersSelect<T extends boolean = true> {
+  name?: T;
+  isDefault?: T;
+  logo?: T;
+  theme?: T;
+  linkColor?: T;
+  tagline?: T;
+  subnote?: T;
+  instagramUrl?: T;
+  exploreLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  getStartedLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              localizedLabel?: T;
+            };
+        id?: T;
+      };
+  address?: T;
+  copyrightText?: T;
+  disclaimer?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        linkColor?: T;
+        logo?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -8553,146 +8953,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
- */
-export interface Header {
-  id: number;
-  logo?: (number | null) | Media;
-  /**
-   * Shown when theme is dark. Falls back to the light logo if empty.
-   */
-  logoDark?: (number | null) | Media;
-  /**
-   * Used when no A/B variant matches.
-   */
-  theme?: ('light' | 'dark') | null;
-  /**
-   * e.g. "Login →"
-   */
-  loginText?: string | null;
-  loginUrl?: string | null;
-  /**
-   * CSS color override. Falls back to theme default if empty.
-   */
-  loginTextColor?: string | null;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Optional translated label. If empty, the default label will be used.
-           */
-          localizedLabel?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Override header appearance per A/B variant (?v= URL param).
-   */
-  variants?:
-    | {
-        /**
-         * Matches the ?v= URL param. Case-sensitive.
-         */
-        variantKey: string;
-        theme: 'light' | 'dark';
-        /**
-         * Overrides the default login text color for this variant.
-         */
-        loginTextColor?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-  id: number;
-  logo?: (number | null) | Media;
-  /**
-   * Used when no A/B variant matches. Light = white bg, Dark = navy bg.
-   */
-  theme?: ('light' | 'dark') | null;
-  /**
-   * CSS color for nav links (e.g. "rgba(18,49,77,0.55)" or "#303438"). Falls back to theme default if empty.
-   */
-  linkColor?: string | null;
-  /**
-   * Short tagline shown next to logo, e.g. "Sequenced. Then yours."
-   */
-  tagline?: string | null;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Optional translated label. If empty, the default label will be used.
-           */
-          localizedLabel?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Company address shown in the legal section.
-   */
-  address?: string | null;
-  copyrightText?: string | null;
-  /**
-   * Map URL variant keys to a footer theme. A visitor with ?v=<key> in the URL gets the matching theme.
-   */
-  variants?:
-    | {
-        /**
-         * Matches the ?v= URL param (e.g. "dark-page", "eu-b"). Case-sensitive.
-         */
-        variantKey: string;
-        theme: 'light' | 'dark';
-        /**
-         * Overrides the default link color for this variant. Any CSS color value.
-         */
-        linkColor?: string | null;
-        /**
-         * Overrides the default logo for this variant.
-         */
-        logo?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "navigation".
  */
 export interface Navigation {
@@ -8760,83 +9020,6 @@ export interface Faq {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
- */
-export interface HeaderSelect<T extends boolean = true> {
-  logo?: T;
-  logoDark?: T;
-  theme?: T;
-  loginText?: T;
-  loginUrl?: T;
-  loginTextColor?: T;
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              localizedLabel?: T;
-            };
-        id?: T;
-      };
-  variants?:
-    | T
-    | {
-        variantKey?: T;
-        theme?: T;
-        loginTextColor?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
- */
-export interface FooterSelect<T extends boolean = true> {
-  logo?: T;
-  theme?: T;
-  linkColor?: T;
-  tagline?: T;
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              localizedLabel?: T;
-            };
-        id?: T;
-      };
-  address?: T;
-  copyrightText?: T;
-  variants?:
-    | T
-    | {
-        variantKey?: T;
-        theme?: T;
-        linkColor?: T;
-        logo?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

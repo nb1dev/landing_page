@@ -71,7 +71,6 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
     <section ref={ref} className={`nb1-cpg-sec${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-cpg-sec {
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
           opacity: 0;
           transform: translateY(20px);
           transition: opacity 0.6s ease, transform 0.6s ease;
@@ -83,7 +82,7 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
         /* cream band — covers title + grid + footer note only */
         .nb1-cpg-band {
           position: relative;
-          padding: 40px 0 32px;
+          padding: 0 0 56px;
         }
         .nb1-cpg-band::before {
           content: '';
@@ -100,7 +99,8 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
           z-index: 1;
           max-width: 900px;
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 56px 28px 0;
+          border-top: 1px solid rgba(18, 49, 77, 0.07);
         }
         /* white area — athlete seal + CTAs */
         .nb1-cpg-below {
@@ -113,7 +113,7 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
           align-items: flex-start;
           justify-content: space-between;
           gap: 20px;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
         }
         .nb1-cpg-head-text {
           flex: 1;
@@ -147,23 +147,24 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
         .nb1-cpg-title {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
-          font-size: clamp(20px, 2.2vw, 26px);
+          font-size: clamp(22px, 2.4vw, 30px);
           letter-spacing: -0.02em;
           color: #12314d;
         }
         .nb1-cpg-sub {
-          font-size: 14.5px;
+          font-size: 15px;
           color: rgba(18, 49, 77, 0.7);
           line-height: 1.55;
-          margin-top: 6px;
-          max-width: 620px;
+          margin-top: 8px;
+          max-width: 560px;
         }
 
         /* Grid: 1-col or 2-col */
         .nb1-cpg-grid {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 14px;
+          gap: 16px;
+          margin-top: 8px;
         }
         .nb1-cpg-grid.two-col {
           grid-template-columns: 1fr 1fr;
@@ -186,7 +187,7 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
           margin-bottom: 4px;
         }
         .nb1-cpg-monthly-note {
-          font-family: 'Inter', sans-serif;
+          font-family: 'Inter', -apple-system, sans-serif;
           font-weight: 500;
           font-size: 11.5px;
           letter-spacing: 0;
@@ -202,6 +203,10 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
           border-top: 1px solid rgba(18, 49, 77, 0.07);
           font-size: 14px;
           color: rgba(18, 49, 77, 0.7);
+        }
+        .nb1-cpg-len {
+          display: inline-flex;
+          align-items: center;
         }
         .nb1-cpg-row.best .nb1-cpg-len {
           color: #12314d;
@@ -221,13 +226,14 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
         }
         .nb1-cpg-best-tag {
           display: inline-block;
-          margin-left: 8px;
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.04em;
+          margin-left: 10px;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
           color: #0e2740;
           background: #c6ff5b;
-          padding: 2px 8px;
+          padding: 3px 9px;
           border-radius: 100px;
         }
 
@@ -243,7 +249,7 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
           line-height: 1.5;
         }
         .nb1-cpg-foot :global(strong) {
-          color: #0a8fb0;
+          color: #aaea42;
           font-weight: 700;
         }
 
@@ -276,7 +282,7 @@ export const CyclesPricingGridComponent: React.FC<Props> = ({
         }
         .nb1-cpg-cta.secondary:hover { background: rgba(18, 49, 77, 0.1); }
 
-        @media (max-width: 640px) {
+        @media (max-width: 600px) {
           .nb1-cpg-grid.two-col { grid-template-columns: 1fr; }
           .nb1-cpg-ctas { grid-template-columns: 1fr; }
         }

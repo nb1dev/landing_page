@@ -44,7 +44,7 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
     <div ref={ref} className={`nb1-psc-sec${revealed ? ' nb1-in' : ''}`}>
       <style jsx>{`
         .nb1-psc-sec {
-          padding: 40px 0;
+          padding: 16px 0 0;
           opacity: 0;
           transform: translateY(18px);
           transition: opacity 0.55s ease, transform 0.55s ease;
@@ -84,7 +84,7 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
         .nb1-psc-price-row {
           display: flex;
           align-items: baseline;
-          gap: 4px;
+          gap: 8px;
           margin-top: 14px;
         }
         .nb1-psc-price {
@@ -120,18 +120,19 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
         .nb1-psc-section-title {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
-          font-size: clamp(20px, 2.2vw, 26px);
+          font-size: clamp(22px, 2.4vw, 30px);
           letter-spacing: -0.02em;
           color: #12314d;
-          margin-bottom: 16px;
+          margin-bottom: 24px;
         }
         .nb1-psc-lower {
-          display: flex;
-          gap: 24px;
-          align-items: flex-start;
-          padding-top: 18px;
+          display: grid;
+          grid-template-columns: 1fr minmax(280px, 340px);
+          gap: 40px;
+          align-items: center;
+          padding-top: 22px;
           border-top: 1px solid rgba(18, 49, 77, 0.07);
-          margin-top: 18px;
+          margin-top: 20px;
         }
         .nb1-psc-bullets {
           list-style: none;
@@ -159,15 +160,13 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
           display: flex;
           flex-direction: column;
           gap: 8px;
-          flex: none;
-          width: 320px;
         }
         .nb1-psc-primary {
           display: block;
           border-radius: 100px;
-          padding: 16px 20px;
-          font-weight: 700;
-          font-size: 15px;
+          padding: 13px 20px;
+          font-weight: 600;
+          font-size: 14px;
           background: #c6ff5b;
           color: #0e2740;
           text-decoration: none;
@@ -190,7 +189,7 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
         .nb1-psc-paylink {
           display: block;
           text-align: center;
-          margin-top: 4px;
+          margin-top: 10px;
           font-size: 13px;
           font-weight: 500;
           color: rgba(18, 49, 77, 0.55);
@@ -207,11 +206,10 @@ export const PlanSummaryCardComponent: React.FC<Props> = ({
           text-align: center;
           margin-top: 4px;
         }
-        @media (max-width: 640px) {
+        @media (max-width: 720px) {
           .nb1-psc-plan { padding: 26px 22px; }
           .nb1-psc-switch { white-space: normal; }
-          .nb1-psc-lower { flex-direction: column; }
-          .nb1-psc-ctas { width: 100%; }
+          .nb1-psc-lower { grid-template-columns: 1fr; gap: 22px; }
         }
       `}</style>
 

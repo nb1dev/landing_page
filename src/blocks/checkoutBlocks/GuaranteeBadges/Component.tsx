@@ -33,8 +33,7 @@ export const GuaranteeBadgesComponent: React.FC<Props> = ({ items }) => {
     <div className="nb1-gb-sec">
       <style jsx>{`
         .nb1-gb-sec {
-          padding: 56px 0;
-          border-top: 1px solid rgba(18, 49, 77, 0.07);
+          padding: 46px 0 56px;
         }
         .nb1-gb-con {
           max-width: 900px;
@@ -47,7 +46,8 @@ export const GuaranteeBadgesComponent: React.FC<Props> = ({ items }) => {
           justify-content: center;
           gap: 24px;
           padding: 16px 20px;
-          background: rgba(10, 143, 176, 0.06);
+          background: rgba(10, 143, 176, 0.08);
+          border: 1px solid rgba(18, 49, 77, 0.1);
           border-radius: 12px;
           flex-wrap: wrap;
         }
@@ -76,7 +76,7 @@ export const GuaranteeBadgesComponent: React.FC<Props> = ({ items }) => {
           flex-shrink: 0;
         }
         @media (max-width: 560px) {
-          .nb1-gb-sec { padding: 40px 0; }
+          .nb1-gb-sec { padding: 14px 0 40px; }
           .nb1-gb-con { padding: 0 20px; }
           .nb1-gb-wrap { gap: 12px 16px; }
           .nb1-gb-div { display: none; }

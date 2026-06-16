@@ -65,6 +65,8 @@ import { YpStickyBuyBlock } from '@/blocks/yourPlanBlocks/StickyBuy/config'
 import { YpReassuranceBlock } from '@/blocks/yourPlanBlocks/Reassurance/config'
 import { YpBuyBoxBlock } from '@/blocks/yourPlanBlocks/BuyBox/config'
 import { OrderStepHero } from '@/blocks/checkoutBlocks/OrderStepHero/config'
+import { OrderStepNav } from '@/blocks/checkoutBlocks/OrderStepNav/config'
+import { LegalStrip } from '@/blocks/checkoutBlocks/LegalStrip/config'
 import { TrustSealsBar } from '@/blocks/checkoutBlocks/TrustSealsBar/config'
 import { OrderTimeline } from '@/blocks/checkoutBlocks/OrderTimeline/config'
 import { FormulaKit } from '@/blocks/checkoutBlocks/FormulaKit/config'
@@ -142,6 +144,49 @@ export const Pages: CollectionConfig<'pages'> = {
     },
 
     {
+      name: 'header',
+      label: 'Header',
+      type: 'relationship',
+      relationTo: 'headers',
+      required: false,
+      admin: {
+        description: 'Leave blank to use the site default header.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'hideHeader',
+      label: 'Hide Header',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Do not render any header on this page.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'footer',
+      label: 'Footer',
+      type: 'relationship',
+      relationTo: 'footers',
+      required: false,
+      admin: {
+        description: 'Leave blank to use the site default footer.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'hideFooter',
+      label: 'Hide Footer',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Do not render any footer on this page.',
+        position: 'sidebar',
+      },
+    },
+
+    {
       type: 'tabs',
       tabs: [
         {
@@ -207,6 +252,8 @@ export const Pages: CollectionConfig<'pages'> = {
                 YpReassuranceBlock,
                 YpBuyBoxBlock,
                 YpStickyBuyBlock,
+                OrderStepNav,
+                LegalStrip,
                 OrderStepHero,
                 TrustSealsBar,
                 OrderTimeline,
