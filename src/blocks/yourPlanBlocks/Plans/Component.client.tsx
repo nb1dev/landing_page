@@ -235,6 +235,7 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
 
   return (
     <section
+      id="plans"
       ref={sectionRef}
       style={sectionStyle}
       className={['yp-plans', grain !== false ? 'grain' : '', isDark ? 'is-dark' : ''].join(' ')}
