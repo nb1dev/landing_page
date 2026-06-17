@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { revalidateHeader } from './hooks/revalidateHeader'
 
 const themeOptions = [
   { label: 'Light (white/glass background)', value: 'light' },
@@ -15,6 +16,9 @@ export const Headers: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'theme', 'isDefault'],
+  },
+  hooks: {
+    afterChange: [revalidateHeader],
   },
   fields: [
     {
