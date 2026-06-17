@@ -52,7 +52,7 @@ export const CycleSelectorComponent: React.FC<Props> = async (props) => {
     monthlyRate: formatRate(plan, currency, locale),
     saveLabel: formatSavingsLabel(plan, currency, locale),
     isBestValue: plan.isPreferred,
-    checkoutHref: `/order-details?plan=${planKey}&cycle=${plan.month}`,
+    checkoutHref: `/${locale}/order-details?plan=${planKey}&cycle=${plan.month}`,
   }))
 
   return (
