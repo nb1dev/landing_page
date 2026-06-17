@@ -361,7 +361,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
             )}
 
             {ctaLabel && ctaUrl && (
-              <a href={ctaUrl} className="nb1-nav-cta">{ctaLabel}</a>
+              <a href={`/${curLang}${ctaUrl.startsWith('/') ? ctaUrl : `/${ctaUrl}`}`} className="nb1-nav-cta">{ctaLabel}</a>
             )}
 
             {/* Mobile burger */}
@@ -397,7 +397,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           <a href={loginUrl} onClick={() => setSheetOpen(false)}>{loginText}</a>
         )}
         {ctaLabel && ctaUrl && (
-          <a href={ctaUrl} className="nb1-sheet-cta" onClick={() => setSheetOpen(false)}>{ctaLabel}</a>
+          <a href={`/${curLang}${ctaUrl.startsWith('/') ? ctaUrl : `/${ctaUrl}`}`} className="nb1-sheet-cta" onClick={() => setSheetOpen(false)}>{ctaLabel}</a>
         )}
         <div className="nb1-sheet-loc">
           <h5>Language</h5>
