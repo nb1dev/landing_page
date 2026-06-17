@@ -4448,7 +4448,7 @@ export interface YpStickyBuyBlock {
    */
   leftKey?: string | null;
   /**
-   * Muted text after the bold part — hidden on small screens. e.g. "from €99/mo".
+   * Muted text after the bold part — hidden on small screens. Supports live-price tokens, e.g. "from {{price:core:4}}/mo".
    */
   leftValue?: string | null;
   /**
