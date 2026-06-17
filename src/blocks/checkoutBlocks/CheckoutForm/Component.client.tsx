@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { createAccountAndSave } from '@/lib/createAccount'
@@ -46,8 +46,7 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
   const rate = planRates?.[planKey]?.[cycleKey] ?? STATIC_RATES[planKey]?.[cycleKey] ?? STATIC_RATES.core['4']
   const planInfo = { label: durationLabel, billing: billingLabel, rate }
   const planLabel  = planKey === 'advanced' ? 'Advanced' : 'Core'
-  const defaultBack = planKey === 'advanced' ? '/order-cycle-advanced' : '/order-cycle-core'
-  const backLink   = backHref || defaultBack
+  const orderHref  = `/${locale || 'en'}/order`
 
   /* accordion */
   const [step, setStep]           = useState(1)
@@ -71,6 +70,39 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
 
   /* step 3 */
   const [shipping, setShipping] = useState<'standard' | 'express'>('standard')
+
+  /* ── sessionStorage: restore on mount ── */
+  const FORM_KEY = 'nb1_checkout_form'
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(FORM_KEY)
+      if (!saved) return
+      const d = JSON.parse(saved)
+      if (d.email)    setEmail(d.email)
+      if (d.fn)       setFn(d.fn)
+      if (d.ln)       setLn(d.ln)
+      if (d.country)  setCountry(d.country)
+      if (d.a1)       setA1(d.a1)
+      if (d.a2)       setA2(d.a2)
+      if (d.zip)      setZip(d.zip)
+      if (d.city)     setCity(d.city)
+      if (d.phone)    setPhone(d.phone)
+      if (d.shipping) setShipping(d.shipping)
+      if (d.step)     setStep(d.step)
+      if (d.doneSteps) setDoneSteps(new Set(d.doneSteps))
+    } catch { /* noop */ }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  /* ── sessionStorage: save on every change ── */
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(FORM_KEY, JSON.stringify({
+        email, fn, ln, country, a1, a2, zip, city, phone, shipping,
+        step, doneSteps: [...doneSteps],
+      }))
+    } catch { /* noop */ }
+  }, [email, fn, ln, country, a1, a2, zip, city, phone, shipping, step, doneSteps])
 
   /* step 4 */
   const [payMethod,   setPayMethod]   = useState<PayMethod>('card')
@@ -768,7 +800,7 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
                 <span className="nb1-sum-price-per">{dict.plans.perMonth}</span>
               </div>
             </div>
-            <a href={backLink} className="nb1-sum-edit">{t.summary.editLink}</a>
+            <a href={orderHref} className="nb1-sum-edit">{t.summary.editLink}</a>
             {/* Sidebar promo */}
             <button type="button" className="nb1-sum-promo-toggle" onClick={() => setPromoOpen(o => !o)}>
               {promoApplied ? t.promoUi.appliedSuffix.replace('{code}', promoApplied) : t.promoUi.addCode}
