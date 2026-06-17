@@ -266,7 +266,7 @@ export const ScienceBoardNewComponent: React.FC<Props> = ({ heading, subheading,
         @media (prefers-reduced-motion: reduce) { .r-up { opacity: 1; transform: none; transition: none; } }
       `}</style>
 
-      <section ref={secRef} className="sb-wrap" data-screen-label="Science">
+      <section ref={secRef} id="science-board" className="sb-wrap" data-screen-label="Science">
         <div className="sb-in">
 
           <div className={`sb-head r-up${visible ? ' in' : ''}`}>
