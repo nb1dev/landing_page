@@ -115,6 +115,7 @@ export const YpScienceBoardComponent: React.FC<YpScienceBoardBlockType> = ({
 
   return (
     <section
+      id="science-board"
       ref={sectionRef}
       style={sectionStyle}
       className={['sci-b nb1-sb', grain ? 'grain' : '', isDark ? 'is-dark' : ''].join(' ')}
