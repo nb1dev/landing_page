@@ -14,6 +14,13 @@ type HeaderVariant = {
 
 export interface HeaderClientProps {
   locale: string
+  /** Resolved server-side from the currency cookie (see src/utilities/currency.ts).
+   * Used as the initial state below instead of reading localStorage, so the
+   * SSR markup and the first client render match exactly — reading
+   * localStorage in a useState initializer caused a hydration mismatch for
+   * any returning visitor whose stored currency differed from the 'EUR'
+   * fallback used during SSR (localStorage isn't available on the server). */
+  initialCurrency?: string
   logo?: { url?: string | null; alt?: string | null } | null
   logoDark?: { url?: string | null; alt?: string | null } | null
   defaultTheme?: Theme
@@ -66,6 +73,7 @@ function lsSet(k: string, v: string) {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({
   locale,
+  initialCurrency,
   logo,
   logoDark,
   defaultTheme = 'light',
@@ -124,8 +132,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   }, [sheetOpen])
 
   // Lang / currency
-  const [curLang, setCurLang] = useState(() => lsGet('nb1_lang', locale || 'en'))
-  const [curCur, setCurCur] = useState(() => lsGet('nb1_cur', 'EUR'))
+  const [curLang, setCurLang] = useState(locale || 'en')
+  // Sync from localStorage after hydration — reading it during SSR causes a
+  // server/client mismatch because localStorage is unavailable on the server.
+  useEffect(() => {
+    const stored = lsGet('nb1_lang', locale || 'en')
+    if (stored !== (locale || 'en')) setCurLang(stored)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  // Seeded from the server-resolved cookie value (not localStorage) so this
+  // matches the SSR HTML exactly — see initialCurrency prop doc above.
+  const [curCur, setCurCur] = useState(initialCurrency || 'EUR')
   const [locOpen, setLocOpen] = useState(false)
   const locRef = useRef<HTMLDivElement>(null)
 
@@ -169,6 +186,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   function applyCur(cur: string) {
     setCurCur(cur)
     lsSet('nb1_cur', cur)
+    // Mirror the selection into a cookie so server components (e.g. live
+    // pricing blocks) can read it on the next render — localStorage isn't
+    // visible to the server. router.refresh() re-renders server components
+    // with the new cookie value without a full page reload or losing the
+    // client state of components further down the tree.
+    try {
+      document.cookie = `nb1_cur=${cur}; path=/; max-age=31536000; samesite=lax`
+    } catch {
+      /* noop */
+    }
+    router.refresh()
   }
 
   const isTransparent = darkHero && !scrolled

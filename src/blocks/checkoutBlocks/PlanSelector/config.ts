@@ -43,6 +43,10 @@ export const PlanSelector: Block = {
             { label: 'Core', value: 'core' },
             { label: 'Advanced', value: 'advanced' },
           ],
+          admin: {
+            description:
+              'Also drives the live headline price (the 4-month rate, fetched from the subscriptions API) — strikePrice/minNote/monthlyLinkText below stay manually edited.',
+          },
         },
         {
           name: 'isRecommended',
@@ -57,13 +61,6 @@ export const PlanSelector: Block = {
           localized: true,
           required: true,
           admin: { placeholder: 'Core' },
-        },
-        {
-          name: 'price',
-          type: 'text',
-          label: 'Price (e.g. €99)',
-          localized: true,
-          required: true,
         },
         {
           name: 'strikePrice',

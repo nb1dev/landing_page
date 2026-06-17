@@ -1,0 +1,2801 @@
+{
+  "_status": "published",
+  "layout": [
+    {
+      "id": "69f47f4e328b51726a19858c",
+      "backgroundColor": "light",
+      "backgroundColorCustom": null,
+      "backgroundType": "color",
+      "backgroundImage": null,
+      "price": "€99/month",
+
+      "form": {
+        "id": 2,
+        "title": "Early Access Form",
+
+        "fields": [
+          {
+            "id": "69cb937feba0351222ed7521",
+            "name": "email",
+            "width": 100,
+            "required": true,
+            "blockName": null,
+            "blockType": "email",
+            "label": "Gib deine E-Mail-Adresse ein"
+          }
+        ],
+        "submitButtonLabel": "Frühen Zugang erhalten",
+        "confirmationType": "message",
+
+        "confirmationMessage": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Deine E-Mail wurde registriert.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": null,
+                "textStyle": "",
+                "textFormat": 0
+              }
+            ],
+            "direction": null
+          }
+        },
+
+        "redirect": {
+          "url": null
+        },
+
+        "emails": [],
+        "updatedAt": "2026-04-01T11:34:03.045Z",
+        "createdAt": "2026-03-31T09:28:08.188Z"
+      },
+      "blockName": "Hero",
+
+      "trustItems": [
+        {
+          "id": "69f47f4e328b51726a198585",
+          "label": "Empfohlen von HYROX-Weltmeistern"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198586",
+          "label": "Unterstützt von führenden Wissenschaftlern"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198587",
+          "label": "Diagnostik im Preis inkludiert"
+        }
+      ],
+
+      "outcomes": [
+        {
+          "id": "69f47f4e328b51726a198588",
+
+          "icon": {
+            "id": 119,
+            "alt": "steady energy",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:48:30.756Z",
+            "createdAt": "2026-05-01T10:48:30.756Z",
+            "url": "/cms/api/media/file/steady-energy.png",
+            "thumbnailURL": null,
+            "filename": "steady-energy.png",
+            "mimeType": "image/png",
+            "filesize": 10511,
+            "width": 75,
+            "height": 103,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Konstante Energie",
+          "anchor": "über den ganzen Nachmittag"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198589",
+
+          "icon": {
+            "id": 120,
+            "alt": "sharper focus",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:49:04.083Z",
+            "createdAt": "2026-05-01T10:49:04.083Z",
+            "url": "/cms/api/media/file/sharper-focus.png",
+            "thumbnailURL": null,
+            "filename": "sharper-focus.png",
+            "mimeType": "image/png",
+            "filesize": 13541,
+            "width": 78,
+            "height": 78,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Schärferer Fokus",
+          "anchor": "gestützt auf deine Daten"
+        },
+
+        {
+          "id": "69f47f4e328b51726a19858a",
+
+          "icon": {
+            "id": 121,
+            "alt": "digestive comfort",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:49:23.446Z",
+            "createdAt": "2026-05-01T10:49:23.446Z",
+            "url": "/cms/api/media/file/digestive-comfort.png",
+            "thumbnailURL": null,
+            "filename": "digestive-comfort.png",
+            "mimeType": "image/png",
+            "filesize": 7809,
+            "width": 68,
+            "height": 80,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Verdauungskomfort",
+          "anchor": "abgestimmt auf deine Spezies"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a19858b",
+          "variantKey": "dark",
+          "backgroundColor": "dark",
+          "backgroundColorCustom": null,
+          "backgroundType": "image",
+
+          "backgroundImage": {
+            "id": 122,
+            "alt": "hero banner background dark",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:52:58.154Z",
+            "createdAt": "2026-05-01T10:52:58.154Z",
+            "url": "/cms/api/media/file/hero-banner-background-dark.jpeg",
+            "thumbnailURL": "/cms/api/media/file/hero-banner-background-dark-300x131.jpg",
+            "filename": "hero-banner-background-dark.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 108927,
+            "width": 1376,
+            "height": 600,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-300x131.jpg",
+                "width": 300,
+                "height": 131,
+                "mimeType": "image/jpeg",
+                "filesize": 3560,
+                "filename": "hero-banner-background-dark-300x131.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 21189,
+                "filename": "hero-banner-background-dark-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-600x262.jpg",
+                "width": 600,
+                "height": 262,
+                "mimeType": "image/jpeg",
+                "filesize": 14436,
+                "filename": "hero-banner-background-dark-600x262.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-900x392.jpg",
+                "width": 900,
+                "height": 392,
+                "mimeType": "image/jpeg",
+                "filesize": 37028,
+                "filename": "hero-banner-background-dark-900x392.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 71418,
+                "filename": "hero-banner-background-dark-1200x630.jpg"
+              }
+            }
+          },
+          "pillText": null,
+          "heading": null,
+          "description": null,
+          "ctaButtonText": null
+        }
+      ],
+      "blockType": "heroBanner",
+
+      "pillText": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Phase 1 · Limitiert auf 1.000 Kits",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h1",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Das Supplement-Abo, das ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "wirklich deins ",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+                {
+                  "mode": "normal",
+                  "text": "ist.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "pricePrefix": "Ab",
+      "priceSuffix": ". Diagnostik inklusive.",
+
+      "description": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "NB¹ ist dein neues Supplement-Abo, das exakt auf deine Biologie abgestimmt ist und nicht auf dem Durchschnitt anderer basiert. Wir analysieren dein Darm-Mikrobiom anhand einer Probe, die du ganz einfach zu Hause entnimmst, bauen daraus dein tägliches Protokoll und liefern dir deine Supplements jeden Monat.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "ctaButtonText": "Mein Kit reservieren →",
+      "launchDate": "Launch im Sommer 2026",
+      "formFootNote": "Melde dich jetzt an, um dir den Launch-Preis zu sichern und deine Supplements als einer der ersten zu erhalten.",
+      "successMessage": "Du bist auf der Liste. Dein Kit wird zwei Wochen vor dem öffentlichen Launch versendet.",
+      "outcomesHeading": "Was du innerhalb von 16 Wochen spüren wirst",
+      "outcomesFooter": "Belegt durch regelmäßige Retest-Daten."
+    },
+    {
+      "id": "69f47f4e328b51726a1985ac",
+      "backgroundColor": "light",
+      "backgroundColorCustom": null,
+      "blockName": "Process Diagram",
+
+      "steps": [
+        {
+          "id": "69f47f4e328b51726a198593",
+          "number": "01",
+          "visualType": "image",
+
+          "image": {
+            "id": 112,
+            "alt": "Stool Kit",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:06.532Z",
+            "createdAt": "2026-05-01T10:19:06.532Z",
+            "url": "/cms/api/media/file/stool-kit-1.png",
+            "thumbnailURL": null,
+            "filename": "stool-kit-1.png",
+            "mimeType": "image/png",
+            "filesize": 78328,
+            "width": 258,
+            "height": 259,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "imageUrl": null,
+
+          "mockRows": [],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a19858d",
+              "marker": "1",
+              "text": "Dein Kit kommt nach Hause",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19858e",
+              "marker": "2",
+              "text": "Probe abgeben",
+              "subLine": null,
+              "dose": "2 Minuten",
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19858f",
+              "marker": "3",
+              "text": "Zurücksenden",
+              "subLine": null,
+              "dose": "Porto übernehmen wir",
+              "benefit": null
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a198590",
+              "label": "Free shipping"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198591",
+              "label": "GMP-zertifiziertes Labor"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198592",
+              "label": "~3 Wochen"
+            }
+          ],
+          "timelineEyebrow": "Diagnostik",
+          "timelineName": "Probe deiner Biologie",
+          "panelTag": "Schritt 01 · Diagnostik-Kit",
+          "panelHeading": "Starte deine Biologie-Analyse bequem von zu Hause aus",
+          "panelBody": "Vor Abschluss des Abos erhältst du das Shotgun-Metagenomik-Kit innerhalb von 48 Stunden. Eine Stuhlprobe, die innerhalb von nur zwei Minuten entnommen werden kann, hilft uns, die gesamte DNA jeder Mikrobe in deinem Darm auf Arten- und Stammebene zu analysieren. Die meisten Consumer-Tests bewegen sich hingegen nur auf der Gattungsebene. Wir gehen bewusst einen Schritt weiter.",
+          "imageAlt": null,
+          "mockEyebrow": null,
+          "mockFootLabel": null,
+          "mockFootText": null,
+          "strainCaption": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a19859f",
+          "number": "02",
+          "visualType": "mockReport",
+          "image": null,
+          "imageUrl": null,
+
+          "mockRows": [
+            {
+              "id": "69f47f4e328b51726a198594",
+              "percentage": 78,
+              "status": "ok",
+              "label": "Ballaststoffe-Verwertung"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198595",
+              "percentage": 64,
+              "status": "ok",
+              "label": "Bifidobakterien"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198596",
+              "percentage": 38,
+              "status": "low",
+              "label": "Cross-Feeder"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198597",
+              "percentage": 42,
+              "status": "low",
+              "label": "Butyrat-Produzenten"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198598",
+              "percentage": 71,
+              "status": "ok",
+              "label": "Schleimhaut-Barriere"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198599",
+              "percentage": 55,
+              "status": "low",
+              "label": "Protein-Fermentierer"
+            }
+          ],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a19859a",
+              "marker": "—",
+              "text": "200–400 Spezies identifiziert",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859b",
+              "marker": "—",
+              "text": "Sechs funktionale Gruppen bewertet",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859c",
+              "marker": "—",
+              "text": "Wellness-Index gegen 8.069 Metagenome",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a19859d",
+              "label": "Shotgun-Metagenomik"
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859e",
+              "label": "Spezies-Ebene"
+            }
+          ],
+          "timelineEyebrow": "Sequenzierung",
+          "timelineName": "Wir kartografieren deinen Darm",
+          "panelTag": "Schritt 02 · Gesundheitsbericht",
+          "panelHeading": "Verstehe deinen kartografierten Darm",
+          "panelBody": "Deine Probe wird sequenziert und gegen 8.069 Referenz-Metagenome ausgewertet. Diese kategorisieren wir in sechs funktionale Gruppen, vier Stoffwechselverhältnisse und zeigen dir die Defizite, die wir zusammen mit deiner persönlichen Formel adressieren. Somit bieten wir dir neben einer Auswertung auch eine Erklärung und genaue Handlungsempfehlungen, die passgenau auf dich zugeschnitten sind.",
+          "imageAlt": null,
+          "mockEyebrow": "Sechs funktionale Gruppen",
+          "mockFootLabel": "Live",
+          "mockFootText": "3 von 6 Gruppen markiert",
+          "strainCaption": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985aa",
+          "number": "03",
+          "visualType": "image",
+
+          "image": {
+            "id": 114,
+            "alt": "Your Formula",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:40.181Z",
+            "createdAt": "2026-05-01T10:19:40.180Z",
+            "url": "/cms/api/media/file/Your-Formula-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/Your-Formula-1-300x238.jpg",
+            "filename": "Your-Formula-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 91235,
+            "width": 640,
+            "height": 508,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Your-Formula-1-300x238.jpg",
+                "width": 300,
+                "height": 238,
+                "mimeType": "image/jpeg",
+                "filesize": 14386,
+                "filename": "Your-Formula-1-300x238.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Your-Formula-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 43972,
+                "filename": "Your-Formula-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Your-Formula-1-600x476.jpg",
+                "width": 600,
+                "height": 476,
+                "mimeType": "image/jpeg",
+                "filesize": 48695,
+                "filename": "Your-Formula-1-600x476.jpg"
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "imageUrl": null,
+
+          "mockRows": [],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a1985a0",
+              "marker": "·",
+              "text": "Probiotika-Mischung",
+              "subLine": null,
+              "dose": "50 Mrd. KBE",
+              "benefit": "Beruhigte Verdauung"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a1",
+              "marker": "·",
+              "text": "Omega-3-Fettsäuren EPA + DHA",
+              "subLine": null,
+              "dose": "712mg",
+              "benefit": "Ausgeglichene Stimmung"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a2",
+              "marker": "·",
+              "text": "Curcumin + Piperin",
+              "subLine": null,
+              "dose": "505 mg",
+              "benefit": "Schnellere Regeneration"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a3",
+              "marker": "·",
+              "text": "Magnesium-Bisglycinat",
+              "subLine": null,
+              "dose": "750mg",
+              "benefit": "Tieferer Schlaf"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a4",
+              "marker": "·",
+              "text": "Polyphenol-Mischung",
+              "subLine": null,
+              "dose": "250mg",
+              "benefit": "Anhaltende Belastbarkeit"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a5",
+              "marker": "·",
+              "text": "Präbiotikum-Pulver",
+              "subLine": null,
+              "dose": "4g",
+              "benefit": "Regelmäßigkeit & Wohlbefinden"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a6",
+              "marker": "·",
+              "text": "+ Adaptogen-Komplex (wo angegeben)",
+              "subLine": null,
+              "dose": null,
+              "benefit": "Stressresistenz"
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a1985a7",
+              "label": "Pharmaqualität"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a8",
+              "label": "Keine Füllstoffe"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a9",
+              "label": "Monatlicher Versand"
+            }
+          ],
+          "timelineEyebrow": "Formulierung",
+          "timelineName": "Deine Formel wird versendet",
+          "panelTag": "Schritt 03 · Deine Formel",
+          "panelHeading": "Herstellung deiner Formel",
+          "panelBody": "Bis zu sieben Einheiten in Blisterverpackungen für morgens und abends. Jede Komponente, jede Dosierung und jeder Ausschluss ist eine Entscheidung, die auf deinen Daten basiert. Erst wenn uns diese vollständig vorliegen, beginnen wir mit der Produktion.",
+          "imageAlt": null,
+          "mockEyebrow": null,
+          "mockFootLabel": null,
+          "mockFootText": null,
+          "strainCaption": null
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985ab",
+          "variantKey": "dark",
+          "backgroundColor": "custom",
+          "backgroundColorCustom": "#FAF8F2",
+          "eyebrow": null,
+          "heading": null
+        }
+      ],
+      "blockType": "processDiagram",
+      "eyebrow": "So funktioniert NB¹",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Von deinem Kit. Zu deinen Daten. Zu ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "deiner Formel.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+    {
+      "id": "69f47f4e328b51726a1985ae",
+      "backgroundColor": "dark",
+      "backgroundColorCustom": null,
+      "blockName": "Gut Break",
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985ad",
+          "variantKey": "dark",
+          "backgroundColor": "cream",
+          "backgroundColorCustom": null,
+          "statNumber": null,
+          "statSuffix": null,
+          "headingLine1": null,
+          "headingLine2": null,
+          "highlightedWord": null,
+          "headingAfter": null
+        }
+      ],
+      "blockType": "statBreak",
+      "statNumber": "150",
+      "statSuffix": "×",
+      "headingLine1": "mehr genetisches Material als deine DNA.",
+      "headingLine2": "Alles davon in deinem",
+      "highlightedWord": "Darm",
+      "headingAfter": "."
+    },
+    {
+      "id": "69f47f4e328b51726a1985b4",
+      "backgroundColor": "white",
+      "backgroundColorCustom": null,
+      "blockName": "Outcomes Section",
+
+      "outcomeCards": [
+        {
+          "id": "69f47f4e328b51726a1985af",
+
+          "image": {
+            "id": 115,
+            "alt": "Beruhigte Verdauung",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:21:53.326Z",
+            "createdAt": "2026-05-01T10:21:53.326Z",
+            "url": "/cms/api/media/file/Calmer-Digestion.png",
+            "thumbnailURL": "/cms/api/media/file/Calmer-Digestion-300x488.jpg",
+            "filename": "Calmer-Digestion.png",
+            "mimeType": "image/png",
+            "filesize": 23964,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Calmer-Digestion-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 17791,
+                "filename": "Calmer-Digestion-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Calmer-Digestion-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 23125,
+                "filename": "Calmer-Digestion-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Beruhigte\nVerdauung",
+          "backEyebrow": "Was sich verändert",
+          "backTitle": "Beruhigte Verdauung",
+          "backBody": "NB1 sorgt für weniger Blähungen, eine geregelte Darmtätigkeit und wirkt gezielt gegen die Bakterienstämme, die deine Beschwerden verursachen, ohne auf ein generisches Probiotikum zurückgreifen zu müssen.",
+          "backFoot": "Tippen zum Zurückdrehen"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b0",
+
+          "image": {
+            "id": 116,
+            "alt": "Ausgeglichene Stimmung",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:22:25.716Z",
+            "createdAt": "2026-05-01T10:22:25.716Z",
+            "url": "/cms/api/media/file/Steady-Mood.png",
+            "thumbnailURL": "/cms/api/media/file/Steady-Mood-300x488.jpg",
+            "filename": "Steady-Mood.png",
+            "mimeType": "image/png",
+            "filesize": 29172,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Steady-Mood-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 21902,
+                "filename": "Steady-Mood-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Steady-Mood-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 29409,
+                "filename": "Steady-Mood-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Ausgeglichene\nStimmung",
+          "backEyebrow": "Was sich verändert",
+          "backTitle": "Ausgeglichene Stimmung",
+          "backBody": "In deiner Formel werden Stressmarker berücksichtigt. Wir eliminieren jegliches Guesswork und wählen daher Adaptogene anhand deiner Daten aus. Dadurch fühlst du dich im Alltag weniger gereizt.",
+          "backFoot": "Tippen zum Zurückdrehen"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b1",
+
+          "image": {
+            "id": 117,
+            "alt": "Sustained Energy",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:22:46.376Z",
+            "createdAt": "2026-05-01T10:22:46.375Z",
+            "url": "/cms/api/media/file/Sustained-Energy.png",
+            "thumbnailURL": "/cms/api/media/file/Sustained-Energy-300x488.jpg",
+            "filename": "Sustained-Energy.png",
+            "mimeType": "image/png",
+            "filesize": 17653,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Sustained-Energy-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 13423,
+                "filename": "Sustained-Energy-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Sustained-Energy-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 19382,
+                "filename": "Sustained-Energy-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Dauerhafte\nEnergie",
+          "backEyebrow": "Was sich verändert",
+          "backTitle": "Dauerhafte Energie",
+          "backBody": "Kein Energieabfall um 15 Uhr. Wir liefern die mitochondrialen Cofaktoren und B-Vitamine, die dein Körper tatsächlich in den Dosierungen, die deine Daten zeigen, benötigt.",
+          "backFoot": "Tippen zum Zurückdrehen"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b2",
+
+          "image": {
+            "id": 118,
+            "alt": "Lasting Resilience",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:23:05.786Z",
+            "createdAt": "2026-05-01T10:23:05.786Z",
+            "url": "/cms/api/media/file/Lasting-Resilience.png",
+            "thumbnailURL": "/cms/api/media/file/Lasting-Resilience-300x488.jpg",
+            "filename": "Lasting-Resilience.png",
+            "mimeType": "image/png",
+            "filesize": 34620,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Lasting-Resilience-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 26841,
+                "filename": "Lasting-Resilience-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Lasting-Resilience-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 33599,
+                "filename": "Lasting-Resilience-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Anhaltende\nBelastbarkeit",
+          "backEyebrow": "Was sich verändert",
+          "backTitle": "Anhaltende Belastbarkeit",
+          "backBody": "Haut, Immunsystem, Regeneration – das sind die Systeme, die deine Darmbarriere unterstützen. Wenn sich dein Mikrobiom wieder aufbaut, folgt der Rest von selbst.",
+          "backFoot": "Tippen zum Zurückdrehen"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985b3",
+          "variantKey": "dark",
+          "backgroundColor": "dark",
+          "backgroundColorCustom": null,
+          "eyebrow": null,
+          "heading": null,
+          "subText": null
+        }
+      ],
+      "blockType": "outcomesSection",
+      "eyebrow": "Echte Ergebnisse",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Tiefer Schlaf. Stabile Energie. ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Ausgeglichene Stimmung.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 2,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subText": "Echte Ergebnisse, keine Versprechen. In jedem Zyklus sequenzieren wir deine Biologie neu, bauen deine Formel neu und zeigen dir genau, was sich verändert hat. Für Verbesserungen in Schlaf, Energie, Verdauung, Stimmung und Erholung setzen wir Marker und ersetzen Vermutungen durch belastbare Daten."
+    },
+    {
+      "id": "69f47f4e328b51726a1985c7",
+      "cycle1Tag": "Zyklus 01",
+      "cycle1Version": "Ausgangslage",
+      "cycle2Tag": "Zyklus 02",
+      "cycle2Version": "Neu formuliert",
+      "blockName": "Evolution Band",
+
+      "cycle1Items": [
+        {
+          "id": "69f47f4e328b51726a1985b5",
+          "dose": "50 Mrd. KBE",
+          "name": "Probiotika-Mischung",
+          "detail": "5 Stämme",
+          "benefit": "Beruhigte Verdauung"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b6",
+          "dose": "712mg",
+          "name": "Omega-3-Fettsäuren",
+          "detail": "EPA + DHA",
+          "benefit": "Ausgeglichene Stimmung"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b7",
+          "dose": "505mg",
+          "name": "Curcumin",
+          "detail": "+ Piperin",
+          "benefit": "Schnellere Regeneration"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b8",
+          "dose": "750mg",
+          "name": "Magnesium-Bisglycinat",
+          "detail": null,
+          "benefit": "Tieferer Schlaf"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b9",
+          "dose": "250mg",
+          "name": "Polyphenol-Mischung",
+          "detail": null,
+          "benefit": "Anhaltende Belastbarkeit"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985ba",
+          "dose": "4g",
+          "name": "Präbiotikum-Pulver",
+          "detail": "FOS + Inulin",
+          "benefit": "Regelmäßigkeit & Wohlbefinden"
+        }
+      ],
+
+      "biologyGroups": [
+        {
+          "id": "69f47f4e328b51726a1985bf",
+
+          "rows": [
+            {
+              "id": "69f47f4e328b51726a1985bb",
+              "delta": "+22%",
+              "direction": "up",
+              "label": "Cross-Feeder"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985bc",
+              "delta": "+14%",
+              "direction": "up",
+              "label": "Akkermansia"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985bd",
+              "delta": "−9%",
+              "direction": "down",
+              "label": "Entzündung"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985be",
+              "delta": "Neu",
+              "direction": "new",
+              "label": "Stressmarker"
+            }
+          ],
+          "eyebrow": "Deine Biologie hat sich verändert"
+        }
+      ],
+
+      "cycle2Items": [
+        {
+          "id": "69f47f4e328b51726a1985c0",
+          "dose": "25 Mrd. KBE",
+          "status": "down",
+          "name": "Probiotika-Mischung",
+          "detail": "3 Stämme · Diversität wiederhergestelltd"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c1",
+          "dose": "712mg",
+          "status": "unchanged",
+          "name": "Omega-3-Fettsäuren",
+          "detail": "EPA + DHA"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c2",
+          "dose": "505mg",
+          "status": "removed",
+          "name": "Curcumin",
+          "detail": "aufgelöst · Entzündung abgeklungen"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c3",
+          "dose": "1000mg",
+          "status": "up",
+          "name": "Magnesium-Bisglycinat",
+          "detail": "Schlafmarker verschoben"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c4",
+          "dose": "500mg",
+          "status": "up",
+          "name": "Polyphenol-Mischung",
+          "detail": "Polyphenol-Mischung"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c5",
+          "dose": "4g",
+          "status": "unchanged",
+          "name": "Präbiotikum-Pulver",
+          "detail": "FOS + Inulin"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c6",
+          "dose": "300mg",
+          "status": "added",
+          "name": "Adaptogen-Komplex",
+          "detail": "hinzugefügt · Stressmarker erhöht"
+        }
+      ],
+
+      "variants": [],
+      "blockType": "evolutionBand",
+      "eyebrow": "Deine Formel entwickelt sich",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "So sieht es aus, wenn sich etwas ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "wirklich mit deiner Biologie weiterentwickelt.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 2,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subtext": "Zwei Zyklen, acht Monate auseinander. Dieselbe Person, neu sequenziert, neu formuliert. Manches hat sich geregelt. Neue Ziele sind hinzugekommen. Deine Formel hat alles berücksichtigt.",
+      "cycle1Name": "Deine Startformel",
+      "cycle1Footer": "3 von 6 Gruppen markiert. Das Protokoll adressiert die Lücken.",
+      "cycle2Name": "Deine aktualisierte Formel",
+      "cycle2Footer": "Gleiche Protokollgröße. Andere Zusammensetzung. Deine Biologie hat sich bewegt."
+    },
+    {
+      "id": "69f47f4e328b51726a1985c9",
+      "backgroundColor": "dark",
+      "backgroundColorCustom": null,
+      "priceNumber": "ab 99 €",
+      "priceUnit": "Monat",
+      "blockName": "Price Break",
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985c8",
+          "variantKey": "dark",
+          "backgroundColor": "cream",
+          "backgroundColorCustom": null,
+          "priceNumber": null,
+          "priceUnit": null,
+          "headingLine1": null,
+          "headingLine2": null
+        }
+      ],
+      "blockType": "priceBreak",
+
+      "headingLine1": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Auf der Grundlage ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+                {
+                  "mode": "normal",
+                  "text": "deiner eigenen biologischen Gegebenheiten ",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+                {
+                  "mode": "normal",
+                  "text": "entwickelt, nicht anhand eines Durchschnittswerts anderer.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+
+      "headingLine2": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+    {
+      "id": "69f47f4e328b51726a1985d5",
+      "darkMode": false,
+      "blockName": "Science Board",
+
+      "members": [
+        {
+          "id": "69f47f4e328b51726a1985ca",
+
+          "photo": {
+            "id": 111,
+            "alt": "Polina",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:42.213Z",
+            "createdAt": "2026-05-01T10:18:42.212Z",
+            "url": "/cms/api/media/file/polina-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/polina-1-300x300.jpg",
+            "filename": "polina-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 33001,
+            "width": 400,
+            "height": 400,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/polina-1-300x300.jpg",
+                "width": 300,
+                "height": 300,
+                "mimeType": "image/jpeg",
+                "filesize": 15405,
+                "filename": "polina-1-300x300.jpg"
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Polina Novikova",
+          "tag": null,
+          "institution": null,
+          "role": "Chief Scientific Officer",
+          "meta": "PhD Bioinformatik · Universität Luxemburg · Mikrobiom & Multi-Omics",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Polina leitet die wissenschaftliche Arbeit hinter dem personalisierten Nahrungsergänzungsprodukt von NB1, von der Mikrobiomanalyse über Stoffwechselmodellierung bis hin zum Algorithmus, der individuelle Darmdaten in ein präzises, klinisch fundiertes Protokoll umsetzt. Sie hat einen Doktortitel in Bioinformatik von der Universität Luxemburg (2020–2024) und einen Master-Abschluss in integrierter Systembiologie. Im Rahmen ihrer Doktorarbeit entwickelte sie computergestützte Arbeitsabläufe unter Verwendung von Graphen, Zeitreihenmodellen und Deep Learning, um Muster in Darmmikrobiom- und Multi-Omics-Daten zu identifizieren.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985cb",
+
+          "photo": {
+            "id": 109,
+            "alt": "Dirk Haller",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:02.416Z",
+            "createdAt": "2026-05-01T10:18:02.416Z",
+            "url": "/cms/api/media/file/Dirk-Haller-1.webp",
+            "thumbnailURL": "/cms/api/media/file/Dirk-Haller-1-300x200.webp",
+            "filename": "Dirk-Haller-1.webp",
+            "mimeType": "image/webp",
+            "filesize": 14620,
+            "width": 458,
+            "height": 305,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Dirk-Haller-1-300x200.webp",
+                "width": 300,
+                "height": 200,
+                "mimeType": "image/webp",
+                "filesize": 9002,
+                "filename": "Dirk-Haller-1-300x200.webp"
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Prof. Dr. Dirk Haller",
+          "tag": null,
+          "institution": null,
+          "role": "Ernährung & Immunologie · TU München",
+          "meta": "Direktor des ZIEL-Instituts · Preisträger des UEG Research Prize",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Prof. Haller hat den Lehrstuhl für Ernährung und Immunologie an der Technischen Universität München inne und leitet das ZIEL-Institut für Ernährung und Gesundheit. Seine Forschung konzentriert sich darauf, wie das Darmmikrobiom die Anfälligkeit für chronische Erkrankungen beeinflusst und wie die Ernährung mikrobielle Gemeinschaften auf molekularer Ebene prägt. Er wurde mit dem renommierten, mit 100.000 Euro dotierten United European Gastroenterology Research Prize ausgezeichnet.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985cc",
+
+          "photo": {
+            "id": 110,
+            "alt": "Koen Venema",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:25.227Z",
+            "createdAt": "2026-05-01T10:18:25.227Z",
+            "url": "/cms/api/media/file/koen-venema-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/koen-venema-1-300x200.jpg",
+            "filename": "koen-venema-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 75764,
+            "width": 640,
+            "height": 427,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/koen-venema-1-300x200.jpg",
+                "width": 300,
+                "height": 200,
+                "mimeType": "image/jpeg",
+                "filesize": 13432,
+                "filename": "koen-venema-1-300x200.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/koen-venema-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 37170,
+                "filename": "koen-venema-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/koen-venema-1-600x400.jpg",
+                "width": 600,
+                "height": 400,
+                "mimeType": "image/jpeg",
+                "filesize": 37394,
+                "filename": "koen-venema-1-600x400.jpg"
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Prof. Dr. Koen Venema",
+          "tag": null,
+          "institution": null,
+          "role": "Darmmikrobiologie · Wageningen",
+          "meta": "254 Publikationen · 17.000+ Zitationen · Editor-in-Chief, Beneficial Microbes",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Prof. Venema ist einer der meistzitierten Mikrobiomforscher Europas und verfügt über 25 Jahre Erfahrung sowie 254 Veröffentlichungen mit mehr als 17.000 Zitationen. Er ist Gründer und CEO von Beneficial Microbes Consultancy sowie Chefredakteur der Fachzeitschrift „Beneficial Microbes„.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        }
+      ],
+
+      "stats": [
+        {
+          "id": "69f47f4e328b51726a1985d0",
+          "target": 250,
+          "suffix": "+",
+          "label": "Referenzierte Peer-Review-Studien"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d1",
+          "target": 170,
+          "suffix": "+",
+          "label": "Analysierte Biomarker"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d2",
+          "target": 170,
+          "suffix": "+",
+          "label": "Klinisch geprüfte Wirkstoffe"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d3",
+          "target": 6,
+          "suffix": "",
+          "label": "Wissenschaftler:innen im Beirat"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985d4",
+          "variantKey": "dark",
+          "darkMode": true
+        }
+      ],
+      "blockType": "scienceBoard",
+      "eyebrow": "Der wissenschaftliche Beirat",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Entwickelt von den Menschen, die die ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Forschung veröffentlichen.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subLead": "NB¹ generiert deine Formel nicht automatisch.",
+
+      "subCredits": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Der Algorithmus, entwickelt von sechs Forschenden der TU München, Wageningen, Luxemburg und Zürich, erstellt aus deiner Diagnostik einen Entwurf. Eine qualifizierte Ernährungswissenschaftlerin im Beirat liest ihn dann, validiert ihn gegen deine Daten und gibt ihn frei. Erst dann wird produziert.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+    {
+      "id": "69f47f4e328b51726a1985dd",
+      "backgroundColor": "cream",
+      "backgroundColorCustom": null,
+      "blockName": "Athlete Banner",
+
+      "athleteCards": [
+        {
+          "id": "69f47f4e328b51726a1985d6",
+
+          "image": {
+            "id": 113,
+            "alt": "Tim Wenisch",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:24.122Z",
+            "createdAt": "2026-05-01T10:19:24.122Z",
+            "url": "/cms/api/media/file/Tim-Wenisch-1.jpeg",
+            "thumbnailURL": "/cms/api/media/file/Tim-Wenisch-1-300x375.jpg",
+            "filename": "Tim-Wenisch-1.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 158805,
+            "width": 1000,
+            "height": 1250,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-300x375.jpg",
+                "width": 300,
+                "height": 375,
+                "mimeType": "image/jpeg",
+                "filesize": 16467,
+                "filename": "Tim-Wenisch-1-300x375.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 31002,
+                "filename": "Tim-Wenisch-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-600x750.jpg",
+                "width": 600,
+                "height": 750,
+                "mimeType": "image/jpeg",
+                "filesize": 45740,
+                "filename": "Tim-Wenisch-1-600x750.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-900x1125.jpg",
+                "width": 900,
+                "height": 1125,
+                "mimeType": "image/jpeg",
+                "filesize": 90386,
+                "filename": "Tim-Wenisch-1-900x1125.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 60865,
+                "filename": "Tim-Wenisch-1-1200x630.jpg"
+              }
+            }
+          },
+          "tag": "Weltmeister 2025",
+          "name": "Tim Wenisch",
+          "title": "HYROX Men's Pro · NB¹-Athlet",
+          "quoteBody": "Zum ersten Mal läuft mein Supplement-Stack auf denselben Daten wie mein Training. Nicht das, was bei anderen funktioniert hat, sondern das, was bei mir funktioniert.",
+          "quoteAttr": "Tim Wenisch · HYROX-Weltmeister 2025"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d7",
+
+          "image": {
+            "id": 108,
+            "alt": "Alexander Roncevic",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:17:45.274Z",
+            "createdAt": "2026-05-01T10:17:45.272Z",
+            "url": "/cms/api/media/file/Alexander-Roncevic-1.jpeg",
+            "thumbnailURL": "/cms/api/media/file/Alexander-Roncevic-1-300x375.jpg",
+            "filename": "Alexander-Roncevic-1.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 135054,
+            "width": 904,
+            "height": 1130,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-300x375.jpg",
+                "width": 300,
+                "height": 375,
+                "mimeType": "image/jpeg",
+                "filesize": 17120,
+                "filename": "Alexander-Roncevic-1-300x375.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 32520,
+                "filename": "Alexander-Roncevic-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-600x750.jpg",
+                "width": 600,
+                "height": 750,
+                "mimeType": "image/jpeg",
+                "filesize": 52010,
+                "filename": "Alexander-Roncevic-1-600x750.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-900x1125.jpg",
+                "width": 900,
+                "height": 1125,
+                "mimeType": "image/jpeg",
+                "filesize": 98825,
+                "filename": "Alexander-Roncevic-1-900x1125.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 60030,
+                "filename": "Alexander-Roncevic-1-1200x630.jpg"
+              }
+            }
+          },
+          "tag": "Weltmeister 2024 · Aktueller Weltrekordhalter",
+          "name": "Alexander Rončević",
+          "title": "HYROX Men's Pro · NB¹-Athlet",
+          "quoteBody": "Auf diesem Niveau sind die Margen klein. NB1 ist das Erste in meiner Routine, das tatsächlich aus meiner Biologie entwickelt wurde, nicht aus der besten Vermutung eines Coaches.",
+          "quoteAttr": "Alexander Rončević · HYROX-Weltmeister 2024"
+        }
+      ],
+
+      "uspItems": [
+        {
+          "id": "69f47f4e328b51726a1985d8",
+          "iconType": "checkCircle",
+          "heading": "Diagnostik inklusive",
+          "subtext": "Wird nicht extra berechnet"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d9",
+          "iconType": "pulse",
+          "heading": "Re-Test in jedem Zyklus",
+          "subtext": "Die Formel entwickelt sich mit dir"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985da",
+          "iconType": "checkSquare",
+          "heading": "Pharmaqualität",
+          "subtext": "GMP · unabhängig getestet"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985db",
+          "iconType": "checkCircle",
+          "heading": "Jederzeit kündbar",
+          "subtext": "Monatliche Abrechnung"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985dc",
+          "iconType": "plus",
+          "heading": "Ab 99 €/Monat",
+          "subtext": "Launch-Preis sichern"
+        }
+      ],
+
+      "variants": [],
+      "blockType": "athleteBanner",
+      "eyebrow": "Was die Weltbesten tatsächlich nehmen",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Sie überlassen nichts dem Zufall und entscheiden sich für ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Daten statt für Konventionen.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+    {
+      "id": "69f47f4e328b51726a1985e2",
+      "backgroundColor": "white",
+      "backgroundColorCustom": null,
+
+      "form": {
+        "id": 2,
+        "title": "Early Access Form",
+
+        "fields": [
+          {
+            "id": "69cb937feba0351222ed7521",
+            "name": "email",
+            "width": 100,
+            "required": true,
+            "blockName": null,
+            "blockType": "email",
+            "label": "Enter your e-mail"
+          }
+        ],
+        "submitButtonLabel": "Get Early Access",
+        "confirmationType": "message",
+
+        "confirmationMessage": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Your email registred.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": null,
+                "textStyle": "",
+                "textFormat": 0
+              }
+            ],
+            "direction": null
+          }
+        },
+
+        "redirect": {
+          "url": null
+        },
+
+        "emails": [],
+        "updatedAt": "2026-04-01T11:34:03.045Z",
+        "createdAt": "2026-03-31T09:28:08.188Z"
+      },
+      "blockName": "Reserve CTA",
+
+      "recapItems": [
+        {
+          "id": "69f47f4e328b51726a1985de",
+          "label": "Diagnostik inklusive"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985df",
+          "label": "Re-Test in jedem Zyklus"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985e0",
+          "label": "Jederzeit kündbar"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985e1",
+          "variantKey": "dark",
+          "backgroundColor": "custom",
+          "backgroundColorCustom": "#FAF8F2",
+          "pillText": null,
+          "heading": null,
+          "subText": null,
+          "ctaButtonText": null
+        }
+      ],
+      "blockType": "reserveCta",
+      "pillText": "Phase 1 · 1,000 kits",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Sichere dir ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "eines von 1.000.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subText": "Phase 1 endet, sobald 1.000 vergeben sind. Dein Kit wird zwei Wochen vor dem öffentlichen Launch versendet.",
+      "ctaButtonText": "Mein Kit reservieren →",
+      "footNoteText": "Ab 99 €/Monat",
+      "footNoteHighlight": "Diagnostik inklusive.",
+      "successMessage": "Du bist auf der Liste. Dein Kit wird zwei Wochen vor dem öffentlichen Launch versendet."
+    },
+    {
+      "id": "69f85738cf5957388f553fe6",
+      "text": "Erhalte dein Kit",
+      "highlightedText": "2 Wochen vor allen anderen",
+      "buttonText": "Mein Kit reservieren →",
+      "buttonHref": "#reserve",
+      "heroSelector": ".hero",
+      "reserveSelector": "#reserve",
+      "blockName": null,
+      "blockType": "floatingCTA"
+    }
+  ]
+}

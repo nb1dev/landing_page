@@ -9,7 +9,8 @@ export const PlansBlock: Block = {
     { name: 'lede', type: 'text', localized: true },
     { name: 'coreLabel', type: 'text', localized: true },
     { name: 'coreDesc', type: 'text', localized: true },
-    { name: 'corePrice', type: 'text' },
+    // corePrice removed — Core's 4-month headline price is fetched live from
+    // the subscriptions API (see Component.tsx) and is no longer editable here.
     { name: 'coreMonthly', type: 'text', localized: true },
     { name: 'coreCommit', type: 'text', localized: true },
     { name: 'coreFeaturesLabel', type: 'text', localized: true },
@@ -19,7 +20,8 @@ export const PlansBlock: Block = {
     { name: 'advBadge', type: 'text', localized: true },
     { name: 'advLabel', type: 'text', localized: true },
     { name: 'advDesc', type: 'text', localized: true },
-    { name: 'advPrice', type: 'text' },
+    // advPrice removed — Advanced's 4-month headline price is fetched live
+    // from the subscriptions API (see Component.tsx) and is no longer editable here.
     { name: 'advCommit', type: 'text', localized: true },
     { name: 'advFeaturesLabel', type: 'text', localized: true },
     { name: 'advFeatures', type: 'array', fields: [{ name: 'item', type: 'text', localized: true }] },

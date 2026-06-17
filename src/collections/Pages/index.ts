@@ -118,9 +118,8 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
-    pagination: {
-      defaultLimit: 5,
-    },
+    pagination: { defaultLimit: 5 },
+
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({

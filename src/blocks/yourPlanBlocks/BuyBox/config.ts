@@ -82,7 +82,19 @@ export const YpBuyBoxBlock: Block = {
       admin: { description: 'Pricing options (the source uses two: Core + Advanced).' },
       fields: [
         { name: 'name', label: 'Name', type: 'text', localized: true, required: true, admin: { description: 'e.g. "Core".' } },
-        { name: 'price', label: 'Price', type: 'text', localized: true, admin: { description: 'e.g. "€99".' } },
+        {
+          name: 'planFamily',
+          label: 'Plan Family (live pricing)',
+          type: 'select',
+          options: [
+            { label: 'Core', value: 'core' },
+            { label: 'Advanced', value: 'advanced' },
+          ],
+          admin: {
+            description:
+              'Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.',
+          },
+        },
         { name: 'priceSuffix', label: 'Price Suffix', type: 'text', localized: true, defaultValue: '/mo', admin: { description: 'Small text after price (e.g. "/mo").' } },
         { name: 'altLabel', label: 'Alt Pill Label', type: 'text', localized: true, admin: { description: 'Optional teal pill (e.g. "or €109/mo, monthly · cancel anytime").' } },
         { name: 'description', label: 'Description', type: 'textarea', localized: true },

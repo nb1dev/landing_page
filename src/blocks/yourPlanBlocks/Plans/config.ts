@@ -144,19 +144,17 @@ export const YpPlansBlock: Block = {
           admin: { description: 'Short description under the name.' },
         },
         {
-          name: 'price',
-          label: 'Price',
-          type: 'text',
-          localized: true,
-          admin: { description: 'e.g. "€99".' },
-        },
-        {
-          name: 'pricePeriod',
-          label: 'Price Period',
-          type: 'text',
-          localized: true,
-          defaultValue: '/mo',
-          admin: { description: 'Suffix shown after the price (e.g. "/mo").' },
+          name: 'planFamily',
+          label: 'Plan Family (live pricing)',
+          type: 'select',
+          options: [
+            { label: 'Core', value: 'core' },
+            { label: 'Advanced', value: 'advanced' },
+          ],
+          admin: {
+            description:
+              'Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.',
+          },
         },
         {
           name: 'monthly',
@@ -317,18 +315,17 @@ export const YpPlansBlock: Block = {
               admin: { description: 'e.g. "Core".' },
             },
             {
-              name: 'price',
-              label: 'Column Price',
-              type: 'text',
-              localized: true,
-              admin: { description: 'e.g. "€99".' },
-            },
-            {
-              name: 'pricePeriod',
-              label: 'Column Price Period',
-              type: 'text',
-              localized: true,
-              admin: { description: 'e.g. "/mo".' },
+              name: 'planFamily',
+              label: 'Column Plan Family (live pricing)',
+              type: 'select',
+              options: [
+                { label: 'Core', value: 'core' },
+                { label: 'Advanced', value: 'advanced' },
+              ],
+              admin: {
+                description:
+                  'Drives the live headline price for this column (the 4-month rate, fetched from the subscriptions API).',
+              },
             },
             {
               name: 'highlight',
