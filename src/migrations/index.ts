@@ -53,16 +53,23 @@ import * as migration_20260611_homepage_blocks from './20260611_homepage_blocks'
 import * as migration_20260611_the_case_hero from './20260611_the_case_hero';
 import * as migration_20260612_090000_recreate_close_band from './20260612_090000_recreate_close_band';
 import * as migration_20260615_091409_headers_footers_schema from './20260615_091409_headers_footers_schema';
-import * as migration_20260615_footer_nav_fix from './20260615_footer_nav_fix';
 import * as migration_20260615_095000_nav_footer_fields from './20260615_095000_nav_footer_fields';
+import * as migration_20260615_footer_nav_fix from './20260615_footer_nav_fix';
 import * as migration_20260615_headers_footers_collections from './20260615_headers_footers_collections';
 import * as migration_20260615_hide_header_footer from './20260615_hide_header_footer';
 import * as migration_20260615_legal_strip_block from './20260615_legal_strip_block';
+import * as migration_20260615_legal_strip_links_uuid from './20260615_legal_strip_links_uuid';
+import * as migration_20260615_legal_strip_nullable from './20260615_legal_strip_nullable';
 import * as migration_20260615_order_step_nav_block from './20260615_order_step_nav_block';
 import * as migration_20260615_order_step_nav_logo from './20260615_order_step_nav_logo';
 import * as migration_20260615_order_step_nav_step_urls from './20260615_order_step_nav_step_urls';
-import * as migration_20260615_legal_strip_links_uuid from './20260615_legal_strip_links_uuid';
-import * as migration_20260615_legal_strip_nullable from './20260615_legal_strip_nullable';
+import * as migration_20260616_130542_cycle_selector_plan_family from './20260616_130542_cycle_selector_plan_family';
+import * as migration_20260616_132605_cycles_pricing_grid_plan_family from './20260616_132605_cycles_pricing_grid_plan_family';
+import * as migration_20260616_133136_plan_selector_remove_price from './20260616_133136_plan_selector_remove_price';
+import * as migration_20260616_133536_yp_buy_box_plan_family from './20260616_133536_yp_buy_box_plan_family';
+import * as migration_20260616_133738_plans_section_remove_price from './20260616_133738_plans_section_remove_price';
+import * as migration_20260616_161130_yp_plans_plan_family from './20260616_161130_yp_plans_plan_family';
+import * as migration_20260616_162431_plan_summary_card_cycle_month from './20260616_162431_plan_summary_card_cycle_month';
 
 export const migrations = [
   {
@@ -341,14 +348,14 @@ export const migrations = [
     name: '20260615_091409_headers_footers_schema',
   },
   {
-    up: migration_20260615_footer_nav_fix.up,
-    down: migration_20260615_footer_nav_fix.down,
-    name: '20260615_footer_nav_fix',
-  },
-  {
     up: migration_20260615_095000_nav_footer_fields.up,
     down: migration_20260615_095000_nav_footer_fields.down,
     name: '20260615_095000_nav_footer_fields',
+  },
+  {
+    up: migration_20260615_footer_nav_fix.up,
+    down: migration_20260615_footer_nav_fix.down,
+    name: '20260615_footer_nav_fix',
   },
   {
     up: migration_20260615_headers_footers_collections.up,
@@ -366,6 +373,16 @@ export const migrations = [
     name: '20260615_legal_strip_block',
   },
   {
+    up: migration_20260615_legal_strip_links_uuid.up,
+    down: migration_20260615_legal_strip_links_uuid.down,
+    name: '20260615_legal_strip_links_uuid',
+  },
+  {
+    up: migration_20260615_legal_strip_nullable.up,
+    down: migration_20260615_legal_strip_nullable.down,
+    name: '20260615_legal_strip_nullable',
+  },
+  {
     up: migration_20260615_order_step_nav_block.up,
     down: migration_20260615_order_step_nav_block.down,
     name: '20260615_order_step_nav_block',
@@ -378,16 +395,41 @@ export const migrations = [
   {
     up: migration_20260615_order_step_nav_step_urls.up,
     down: migration_20260615_order_step_nav_step_urls.down,
-    name: '20260615_order_step_nav_step_urls'
+    name: '20260615_order_step_nav_step_urls',
   },
   {
-    up: migration_20260615_legal_strip_links_uuid.up,
-    down: migration_20260615_legal_strip_links_uuid.down,
-    name: '20260615_legal_strip_links_uuid',
+    up: migration_20260616_130542_cycle_selector_plan_family.up,
+    down: migration_20260616_130542_cycle_selector_plan_family.down,
+    name: '20260616_130542_cycle_selector_plan_family',
   },
   {
-    up: migration_20260615_legal_strip_nullable.up,
-    down: migration_20260615_legal_strip_nullable.down,
-    name: '20260615_legal_strip_nullable',
+    up: migration_20260616_132605_cycles_pricing_grid_plan_family.up,
+    down: migration_20260616_132605_cycles_pricing_grid_plan_family.down,
+    name: '20260616_132605_cycles_pricing_grid_plan_family',
+  },
+  {
+    up: migration_20260616_133136_plan_selector_remove_price.up,
+    down: migration_20260616_133136_plan_selector_remove_price.down,
+    name: '20260616_133136_plan_selector_remove_price',
+  },
+  {
+    up: migration_20260616_133536_yp_buy_box_plan_family.up,
+    down: migration_20260616_133536_yp_buy_box_plan_family.down,
+    name: '20260616_133536_yp_buy_box_plan_family',
+  },
+  {
+    up: migration_20260616_133738_plans_section_remove_price.up,
+    down: migration_20260616_133738_plans_section_remove_price.down,
+    name: '20260616_133738_plans_section_remove_price',
+  },
+  {
+    up: migration_20260616_161130_yp_plans_plan_family.up,
+    down: migration_20260616_161130_yp_plans_plan_family.down,
+    name: '20260616_161130_yp_plans_plan_family',
+  },
+  {
+    up: migration_20260616_162431_plan_summary_card_cycle_month.up,
+    down: migration_20260616_162431_plan_summary_card_cycle_month.down,
+    name: '20260616_162431_plan_summary_card_cycle_month'
   },
 ];

@@ -21,42 +21,17 @@ const planFields = (suffix: '' | '2') => [
     admin: { placeholder: 'or €109/mo monthly' },
   },
   {
-    name: `rows${suffix}`,
-    type: 'array' as const,
-    label: suffix ? 'Pricing rows (2nd column)' : 'Pricing rows',
-    minRows: 1,
-    maxRows: 6,
-    fields: [
-      {
-        name: 'months',
-        type: 'text' as const,
-        label: 'Duration label',
-        localized: true,
-        admin: { placeholder: '4 months' },
-      },
-      {
-        name: 'rate',
-        type: 'text' as const,
-        label: 'Rate (e.g. €99)',
-        localized: true,
-      },
-      {
-        name: 'isBestValue',
-        type: 'checkbox' as const,
-        label: 'Best value row',
-        defaultValue: false,
-      },
-      {
-        name: 'bestValueLabel',
-        type: 'text' as const,
-        label: 'Best value tag label',
-        localized: true,
-        admin: {
-          placeholder: 'Best value',
-          condition: (_: any, siblingData: any) => Boolean(siblingData?.isBestValue),
-        },
-      },
+    name: `planFamily${suffix}`,
+    type: 'select' as const,
+    label: suffix ? 'Plan family (2nd column, live pricing)' : 'Plan family (live pricing)',
+    options: [
+      { label: 'Core', value: 'core' },
+      { label: 'Advanced', value: 'advanced' },
     ],
+    admin: {
+      description:
+        'The 4/8/12-month price grid is fetched live from the subscriptions API for this plan family — it is not editable here.',
+    },
   },
   {
     name: `ctaText${suffix}`,

@@ -3473,13 +3473,9 @@ export interface YpPlansBlock {
          */
         tag?: string | null;
         /**
-         * e.g. "€99".
+         * Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.
          */
-        price?: string | null;
-        /**
-         * Suffix shown after the price (e.g. "/mo").
-         */
-        pricePeriod?: string | null;
+        planFamily?: ('core' | 'advanced') | null;
         /**
          * Pill under the price (e.g. "or €109/mo month-to-month · cancel anytime"). Leave empty to keep an invisible spacer for alignment.
          */
@@ -3552,13 +3548,9 @@ export interface YpPlansBlock {
            */
           label?: string | null;
           /**
-           * e.g. "€99".
+           * Drives the live headline price for this column (the 4-month rate, fetched from the subscriptions API).
            */
-          price?: string | null;
-          /**
-           * e.g. "/mo".
-           */
-          pricePeriod?: string | null;
+          planFamily?: ('core' | 'advanced') | null;
           highlight?: boolean | null;
           features?:
             | {
@@ -4400,9 +4392,9 @@ export interface YpBuyBoxBlock {
          */
         name: string;
         /**
-         * e.g. "€99".
+         * Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.
          */
-        price?: string | null;
+        planFamily?: ('core' | 'advanced') | null;
         /**
          * Small text after price (e.g. "/mo").
          */
@@ -4668,7 +4660,10 @@ export interface PlanSummaryCardBlock {
   sectionTitle?: string | null;
   planVariant: 'core' | 'advanced';
   planName: string;
-  price: string;
+  /**
+   * Drives the live price + the CTA price chip below (fetched from the subscriptions API for this plan variant + cycle). Not editable directly.
+   */
+  cycleMonth: '4' | '8' | '12';
   priceNote?: string | null;
   switchLinkText?: string | null;
   switchLinkHref?: string | null;
@@ -4679,7 +4674,6 @@ export interface PlanSummaryCardBlock {
       }[]
     | null;
   primaryCtaText: string;
-  primaryCtaPrice?: string | null;
   primaryCtaHref: string;
   secondaryCtaText?: string | null;
   secondaryCtaHref?: string | null;
@@ -4726,29 +4720,19 @@ export interface CyclesPricingGridBlock {
   subtitle?: string | null;
   planName?: string | null;
   monthlyNote?: string | null;
-  rows?:
-    | {
-        months?: string | null;
-        rate?: string | null;
-        isBestValue?: boolean | null;
-        bestValueLabel?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  /**
+   * The 4/8/12-month price grid is fetched live from the subscriptions API for this plan family — it is not editable here.
+   */
+  planFamily?: ('core' | 'advanced') | null;
   ctaText?: string | null;
   ctaHref?: string | null;
   showSecondPlan?: boolean | null;
   planName2?: string | null;
   monthlyNote2?: string | null;
-  rows2?:
-    | {
-        months?: string | null;
-        rate?: string | null;
-        isBestValue?: boolean | null;
-        bestValueLabel?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  /**
+   * The 4/8/12-month price grid is fetched live from the subscriptions API for this plan family — it is not editable here.
+   */
+  planFamily2?: ('core' | 'advanced') | null;
   ctaText2?: string | null;
   ctaHref2?: string | null;
   footerNote?: {
@@ -4853,10 +4837,12 @@ export interface PlanSelectorBlock {
     | null;
   plans?:
     | {
+        /**
+         * Also drives the live headline price (the 4-month rate, fetched from the subscriptions API) — strikePrice/minNote/monthlyLinkText below stay manually edited.
+         */
         planKey: 'core' | 'advanced';
         isRecommended?: boolean | null;
         name: string;
-        price: string;
         strikePrice?: string | null;
         minNote?: string | null;
         monthlyLinkText?: string | null;
@@ -4907,19 +4893,10 @@ export interface CycleSelectorBlock {
   planName: string;
   switchLinkLabel?: string | null;
   switchLinkHref?: string | null;
-  tiers?:
-    | {
-        months: string;
-        monthlyRate: string;
-        /**
-         * Leave empty for no savings badge
-         */
-        saveLabel?: string | null;
-        isBestValue?: boolean | null;
-        checkoutHref: string;
-        id?: string | null;
-      }[]
-    | null;
+  /**
+   * The 4/8/12-month price grid below is fetched live from the subscriptions API for this plan family — it is not editable here. Checkout links are generated as /order-details?plan={family}&cycle={month}.
+   */
+  planFamily: 'core' | 'advanced';
   showMonthlyOption?: boolean | null;
   monthlyRate?: string | null;
   monthlyCheckoutHref?: string | null;
@@ -5473,7 +5450,6 @@ export interface PlansSectionBlock {
   lede?: string | null;
   coreLabel?: string | null;
   coreDesc?: string | null;
-  corePrice?: string | null;
   coreMonthly?: string | null;
   coreCommit?: string | null;
   coreFeaturesLabel?: string | null;
@@ -5488,7 +5464,6 @@ export interface PlansSectionBlock {
   advBadge?: string | null;
   advLabel?: string | null;
   advDesc?: string | null;
-  advPrice?: string | null;
   advCommit?: string | null;
   advFeaturesLabel?: string | null;
   advFeatures?:
@@ -7242,8 +7217,7 @@ export interface YpPlansBlockSelect<T extends boolean = true> {
         badge?: T;
         name?: T;
         tag?: T;
-        price?: T;
-        pricePeriod?: T;
+        planFamily?: T;
         monthly?: T;
         commit?: T;
         listLabel?: T;
@@ -7281,8 +7255,7 @@ export interface YpPlansBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              price?: T;
-              pricePeriod?: T;
+              planFamily?: T;
               highlight?: T;
               features?: T;
               ctaLabel?: T;
@@ -7622,7 +7595,7 @@ export interface YpBuyBoxBlockSelect<T extends boolean = true> {
     | T
     | {
         name?: T;
-        price?: T;
+        planFamily?: T;
         priceSuffix?: T;
         altLabel?: T;
         description?: T;
@@ -7822,7 +7795,7 @@ export interface PlanSummaryCardBlockSelect<T extends boolean = true> {
   sectionTitle?: T;
   planVariant?: T;
   planName?: T;
-  price?: T;
+  cycleMonth?: T;
   priceNote?: T;
   switchLinkText?: T;
   switchLinkHref?: T;
@@ -7833,7 +7806,6 @@ export interface PlanSummaryCardBlockSelect<T extends boolean = true> {
         id?: T;
       };
   primaryCtaText?: T;
-  primaryCtaPrice?: T;
   primaryCtaHref?: T;
   secondaryCtaText?: T;
   secondaryCtaHref?: T;
@@ -7864,29 +7836,13 @@ export interface CyclesPricingGridBlockSelect<T extends boolean = true> {
   subtitle?: T;
   planName?: T;
   monthlyNote?: T;
-  rows?:
-    | T
-    | {
-        months?: T;
-        rate?: T;
-        isBestValue?: T;
-        bestValueLabel?: T;
-        id?: T;
-      };
+  planFamily?: T;
   ctaText?: T;
   ctaHref?: T;
   showSecondPlan?: T;
   planName2?: T;
   monthlyNote2?: T;
-  rows2?:
-    | T
-    | {
-        months?: T;
-        rate?: T;
-        isBestValue?: T;
-        bestValueLabel?: T;
-        id?: T;
-      };
+  planFamily2?: T;
   ctaText2?: T;
   ctaHref2?: T;
   footerNote?: T;
@@ -7977,7 +7933,6 @@ export interface PlanSelectorBlockSelect<T extends boolean = true> {
         planKey?: T;
         isRecommended?: T;
         name?: T;
-        price?: T;
         strikePrice?: T;
         minNote?: T;
         monthlyLinkText?: T;
@@ -8023,16 +7978,7 @@ export interface CycleSelectorBlockSelect<T extends boolean = true> {
   planName?: T;
   switchLinkLabel?: T;
   switchLinkHref?: T;
-  tiers?:
-    | T
-    | {
-        months?: T;
-        monthlyRate?: T;
-        saveLabel?: T;
-        isBestValue?: T;
-        checkoutHref?: T;
-        id?: T;
-      };
+  planFamily?: T;
   showMonthlyOption?: T;
   monthlyRate?: T;
   monthlyCheckoutHref?: T;
@@ -8306,7 +8252,6 @@ export interface PlansSectionBlockSelect<T extends boolean = true> {
   lede?: T;
   coreLabel?: T;
   coreDesc?: T;
-  corePrice?: T;
   coreMonthly?: T;
   coreCommit?: T;
   coreFeaturesLabel?: T;
@@ -8321,7 +8266,6 @@ export interface PlansSectionBlockSelect<T extends boolean = true> {
   advBadge?: T;
   advLabel?: T;
   advDesc?: T;
-  advPrice?: T;
   advCommit?: T;
   advFeaturesLabel?: T;
   advFeatures?:

@@ -1,0 +1,224 @@
+{
+  "title": "Order — Cold",
+  "slug": "order-cold",
+  "_status": "published",
+  "hero": { "type": "none" },
+  "layout": [
+    {
+      "blockType": "orderStepHero",
+      "headline": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "Your formula doesn't exist before ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "your diagnostic does.", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "subtitle": "Sequence first. Then a protocol built from your biology, produced only after we know what it needs.",
+      "showSeals": true,
+      "seals": [
+        { "type": "stars", "rating": "4.8", "label": "Early access members", "shortLabel": "Early access" },
+        { "type": "dot",   "label": "Reviewed by our science board",          "shortLabel": "Board-reviewed" },
+        { "type": "dot",   "label": "Diagnostic included",                    "shortLabel": "Diagnostic incl." }
+      ]
+    },
+    {
+      "blockType": "planSelector",
+      "sectionTitle": "Choose your plan",
+      "guaranteeItems": [
+        { "text": "**Billed monthly.** No upfront charge." },
+        { "text": "**Pay nothing until your formula is manufactured.**" }
+      ],
+      "plans": [
+        {
+          "planKey": "core",
+          "isRecommended": false,
+          "name": "Core",
+          "price": "€99",
+          "strikePrice": "€119",
+          "minNote": "4-month minimum · billed monthly",
+          "monthlyLinkText": "or pay monthly, €109/mo, cancel anytime →",
+          "monthlyLinkHref": "/order-warm-core",
+          "bullets": [
+            { "text": "Gut sequencing + summary diagnostic report" },
+            { "text": "Personalised formula: Activate, Restore, Flora" },
+            { "text": "Retest every second cycle" }
+          ],
+          "ctaText": "Start with Core",
+          "ctaHref": "/order-cycle-core"
+        },
+        {
+          "planKey": "advanced",
+          "isRecommended": true,
+          "name": "Advanced",
+          "price": "€149",
+          "strikePrice": "€169",
+          "minNote": "4-month minimum · billed monthly",
+          "monthlyLinkText": "",
+          "monthlyLinkHref": "",
+          "bullets": [
+            { "text": "Gut + blood biomarkers (blood from cycle 2)" },
+            { "text": "Formula rebuilds every cycle" },
+            { "text": "140+ premium ingredients on request" },
+            { "text": "Priority support" }
+          ],
+          "ctaText": "Start Advanced",
+          "ctaHref": "/order-cycle-advanced"
+        }
+      ],
+      "scienceBoardLabel": "Reviewed by our science board",
+      "scienceBoardSub": "Human sign-off before manufacture",
+      "scienceBoardImages": [],
+      "showComparison": true,
+      "comparisonRows": [
+        { "label": "Diagnostics",                   "coreValue": "",                          "advancedValue": "" },
+        { "label": "Gut sequencing",                "coreValue": "Summary",                   "advancedValue": "Full data",       "corePositive": true, "advancedPositive": true },
+        { "label": "Blood biomarkers",              "coreValue": "—",                         "advancedValue": "From cycle 2",    "advancedPositive": true },
+        { "label": "Gut retests",                   "coreValue": "On demand · paid",          "advancedValue": "Every other cycle" },
+        { "label": "Your formula",                  "coreValue": "",                          "advancedValue": "" },
+        { "label": "Personalised formula",          "coreValue": "✓",                         "advancedValue": "✓",               "corePositive": true, "advancedPositive": true },
+        { "label": "Formula rebuilds every cycle",  "coreValue": "—",                         "advancedValue": "✓",               "advancedPositive": true },
+        { "label": "140+ add-on ingredients",       "coreValue": "—",                         "advancedValue": "On request",      "advancedPositive": true },
+        { "label": "Priority support",              "coreValue": "—",                         "advancedValue": "✓",               "advancedPositive": true },
+        { "label": "Billing",                       "coreValue": "",                          "advancedValue": "" },
+        { "label": "Subscription",                  "coreValue": "4 months · or €109 monthly","advancedValue": "4-month minimum" },
+        { "label": "Charged on production",         "coreValue": "✓",                         "advancedValue": "✓",               "corePositive": true, "advancedPositive": true }
+      ]
+    },
+    {
+      "blockType": "orderTimeline",
+      "sectionTitle": "From kit to formula, fully mapped.",
+      "subtitle": "",
+      "steps": [
+        { "weekLabel": "Week 0",    "title": "Kit ships",              "description": "a two-minute gut sample, posted back in the prepaid envelope.",                           "isPaymentStep": false },
+        { "weekLabel": "Weeks 1–2", "title": "Sequencing & sign-off", "description": "read at species level, your formula drafted and approved by a researcher.",                "isPaymentStep": false },
+        { "weekLabel": "Week 3",    "title": "First charge",           "description": "only when your one-of-one formula enters manufacture. Never before.",                     "isPaymentStep": true  },
+        { "weekLabel": "Week 4",    "title": "Formula ships",          "description": "30 days, presorted, blister-packed and travel-ready.",                                    "isPaymentStep": false }
+      ],
+      "showAdvancedExtras": true,
+      "advancedPillLabel": "Advanced",
+      "advancedExtras": [
+        { "weekLabel": "Week 12", "title": "Retest",               "description": "same pipeline; the data shows what shifted." },
+        { "weekLabel": "Week 16", "title": "Formula recalibrates", "description": "your next cycle, rebuilt against new data." }
+      ]
+    },
+    {
+      "blockType": "formulaKit",
+      "sectionTitle": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "Your full personalised supplement formula, ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "in one kit.", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "kitImage": null,
+      "kitImageAlt": "An example kit, built for Leonardo M.",
+      "components": [
+        { "name": "Activate", "icon": "sun",    "timing": "Morning",  "description": "Everything your body needs to start the day." },
+        { "name": "Restore",  "icon": "moon",   "timing": "Evening",  "description": "Everything your body needs for sleep and recovery." },
+        { "name": "Nourish",  "icon": "shield", "timing": "Anytime",  "description": "Everything your gut needs to thrive." }
+      ]
+    },
+    {
+      "blockType": "cyclesPricingGrid",
+      "sectionTitle": "Cycles of four.",
+      "subtitle": "Four months is the minimum window biological change can be measured in, not a contractual lock. Commit longer and your formula earns the right to evolve with you.",
+      "planName": "Core",
+      "monthlyNote": "or €109/mo monthly",
+      "rows": [
+        { "months": "4 months",  "rate": "€99",  "isBestValue": false },
+        { "months": "8 months",  "rate": "€94",  "isBestValue": false },
+        { "months": "12 months", "rate": "€89",  "isBestValue": true, "bestValueLabel": "Best value" }
+      ],
+      "showSecondPlan": true,
+      "planName2": "Advanced",
+      "monthlyNote2": "",
+      "rows2": [
+        { "months": "4 months",  "rate": "€149", "isBestValue": false },
+        { "months": "8 months",  "rate": "€141", "isBestValue": false },
+        { "months": "12 months", "rate": "€134", "isBestValue": true, "bestValueLabel": "Best value" }
+      ],
+      "footerNote": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "Commit to 12 months and save up to ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "€120/yr on Core", "format": 1, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": " and ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "€180/yr on Advanced", "format": 1, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": ". All lengths billed monthly, choose at checkout.", "format": 0, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "athleteSealText": "",
+      "athleteImages": [],
+      "ctaText": "",
+      "ctaHref": "",
+      "ctaText2": "",
+      "ctaHref2": ""
+    },
+    {
+      "blockType": "reinforceCta",
+      "athleteText": "Used by HYROX world champions Tim Wenisch & Alexander Rončević",
+      "athleteImages": [],
+      "ctaText": "Continue with Core →",
+      "ctaHref": "/order-cycle-core",
+      "ctaText2": "Continue with Advanced →",
+      "ctaHref2": "/order-cycle-advanced"
+    },
+    {
+      "blockType": "checkoutFaq",
+      "sectionTitle": "Common questions",
+      "items": [
+        {
+          "question": "When am I actually charged my first month?",
+          "answer": "Your card is authorised at order but charged only when your formula enters manufacture, around week 3, after your diagnostic completes. Nothing before then."
+        },
+        {
+          "question": "What if I don't return my sample in time?",
+          "answer": "If you never return your sample, a one-time €49 diagnostic-kit fee applies. Return it and there's no separate charge, your kit goes straight into sequencing and then manufacture. We'll send reminders, and the kit doesn't expire."
+        },
+        {
+          "question": "Can I cancel before my formula ships?",
+          "answer": "Yes. Before your formula enters manufacture you can cancel at no charge, as long as you've returned your diagnostic kit. If you don't return the kit, a one-time €49 fee applies; once you do, it goes into manufacture."
+        },
+        {
+          "question": "What's the difference between 4-month and monthly billing?",
+          "answer": "Both bill monthly. The 4-month cycle (€99/mo Core) reflects the window biology needs to shift; the monthly option (€109/mo Core) trades a little price for the freedom to cancel anytime."
+        },
+        {
+          "question": "How does the diagnostic actually work?",
+          "answer": "Shotgun metagenomic sequencing reads the functional genes in your gut at species level, what your bacteria do, not just which are present, located against 8,069 reference metagenomes."
+        }
+      ]
+    },
+    {
+      "blockType": "endCard",
+      "label": "Ready when you are",
+      "title": "Your formula doesn't exist until your diagnostic does. Let's start it.",
+      "ctas": [
+        { "text": "Start with Core →",     "href": "/order-cycle-core",     "variant": "core" },
+        { "text": "Start with Advanced →", "href": "/order-cycle-advanced", "variant": "advanced" }
+      ]
+    },
+    {
+      "blockType": "stickyCtaBar",
+      "primaryCtaText":   "Continue with Advanced →",
+      "primaryCtaHref":   "/order-cycle-advanced",
+      "secondaryCtaText": "Start with Core →",
+      "secondaryCtaHref": "/order-cycle-core"
+    }
+  ]
+}

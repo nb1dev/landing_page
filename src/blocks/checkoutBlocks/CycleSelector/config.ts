@@ -27,47 +27,19 @@ export const CycleSelector: Block = {
       admin: { placeholder: '/order-cycle-advanced' },
     },
     {
-      name: 'tiers',
-      type: 'array',
-      label: 'Cycle tiers',
-      minRows: 1,
-      maxRows: 4,
-      fields: [
-        {
-          name: 'months',
-          type: 'text',
-          label: 'Duration label (e.g. 4 months)',
-          localized: true,
-          required: true,
-        },
-        {
-          name: 'monthlyRate',
-          type: 'text',
-          label: 'Monthly rate (e.g. €99)',
-          localized: true,
-          required: true,
-        },
-        {
-          name: 'saveLabel',
-          type: 'text',
-          label: 'Save label (e.g. Save €40 / cycle)',
-          localized: true,
-          admin: { description: 'Leave empty for no savings badge' },
-        },
-        {
-          name: 'isBestValue',
-          type: 'checkbox',
-          label: 'Show "Best value" tag',
-          defaultValue: false,
-        },
-        {
-          name: 'checkoutHref',
-          type: 'text',
-          label: 'Continue href (goes to checkout/details)',
-          required: true,
-          admin: { placeholder: '/order-details?plan=core&cycle=4' },
-        },
+      name: 'planFamily',
+      type: 'select',
+      label: 'Plan family (live pricing)',
+      required: true,
+      defaultValue: 'core',
+      options: [
+        { label: 'Core', value: 'core' },
+        { label: 'Advanced', value: 'advanced' },
       ],
+      admin: {
+        description:
+          'The 4/8/12-month price grid below is fetched live from the subscriptions API for this plan family — it is not editable here. Checkout links are generated as /order-details?plan={family}&cycle={month}.',
+      },
     },
     {
       name: 'showMonthlyOption',

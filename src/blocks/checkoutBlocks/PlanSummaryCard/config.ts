@@ -32,11 +32,20 @@ export const PlanSummaryCard: Block = {
       admin: { placeholder: 'Core' },
     },
     {
-      name: 'price',
-      type: 'text',
-      label: 'Price (e.g. €99)',
-      localized: true,
+      name: 'cycleMonth',
+      type: 'select',
+      label: 'Cycle (live pricing)',
       required: true,
+      defaultValue: '4',
+      options: [
+        { label: '4 months', value: '4' },
+        { label: '8 months', value: '8' },
+        { label: '12 months', value: '12' },
+      ],
+      admin: {
+        description:
+          'Drives the live price + the CTA price chip below (fetched from the subscriptions API for this plan variant + cycle). Not editable directly.',
+      },
     },
     {
       name: 'priceNote',
@@ -79,13 +88,9 @@ export const PlanSummaryCard: Block = {
       required: true,
       admin: { placeholder: 'Start Core · 4-month' },
     },
-    {
-      name: 'primaryCtaPrice',
-      type: 'text',
-      label: 'Primary CTA price label',
-      localized: true,
-      admin: { placeholder: '€99/mo' },
-    },
+    // primaryCtaPrice removed — the CTA price chip is the same live price +
+    // pricePeriod computed above (kept in sync automatically rather than a
+    // separately editable string that could drift from the headline price).
     {
       name: 'primaryCtaHref',
       type: 'text',
