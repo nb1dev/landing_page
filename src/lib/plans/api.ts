@@ -4,12 +4,12 @@
  * Backend: GET {NB1_API_URL}/subscriptions/plans, /subscriptions/plans/slug/{slug}
  * Docs: https://apistg.nb1.com/docs#/Subscriptions
  *
- * Scope note: only month=4, 8, 12 are modelled here. The API also returns a
- * month=1 row for some plan families (e.g. NB1-ADVANCED-1), but per product
- * decision the "flexible monthly" option shown on cycleSelector/planSelector
- * is a separate, manually-edited concept (its own price + checkout href set
- * directly in Payload) and is NOT sourced from this API. Do not wire month=1
- * rows into these helpers without re-confirming that decision.
+ * Scope note: the cycle GRID (getPlanCycles) models only month=4, 8, 12 — the
+ * commitment tiers. The API also returns a month=1 "flexible monthly" row for
+ * each family (NB1-CORE-1, NB1-ADVANCED-1). That row is kept out of the grid,
+ * but ANY month (incl. 1) can be resolved live for free-text price tokens via
+ * getRate() — see src/lib/plans/priceTokens.ts (e.g. "{{price:core:1}}" →
+ * "€109"). Prices are no longer hand-typed in Payload copy.
  */
 import type { CurrencyCode } from '@/utilities/currency'
 
@@ -114,7 +114,7 @@ export async function getPlanCycles(
   )
 
   const baseline = rows.find((p) => p.month === BASELINE_MONTH)
-  const baselineRate = baseline ? baseline.prices[currency] ?? baseline.prices.EUR ?? 0 : 0
+  const baselineRate = baseline ? (baseline.prices[currency] ?? baseline.prices.EUR ?? 0) : 0
 
   return rows
     .map((p) => {
@@ -131,6 +131,22 @@ export async function getPlanCycles(
       }
     })
     .sort((a, b) => a.month - b.month)
+}
+
+/**
+ * Monthly rate for one (family, month) pair, for ANY month the API returns —
+ * including month=1 (the "flexible monthly" tier excluded from the cycle grid).
+ * Used by the per-card Monthly Note. Returns null if that row doesn't exist.
+ */
+export async function getRate(
+  family: PlanFamily,
+  month: number,
+  currency: CurrencyCode,
+): Promise<number | null> {
+  const all = await fetchAllPlans()
+  const row = all.find((p) => p.title === family && p.month === month)
+  if (!row) return null
+  return row.prices[currency] ?? row.prices.EUR ?? null
 }
 
 /** Fetch a single (family, month) plan — e.g. for a headline card price. */

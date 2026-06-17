@@ -31,6 +31,15 @@ export const YpPlansBlock: Block = {
     plural: 'YP — Plans Sections',
   },
   fields: [
+    {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
     // ── Appearance ────────────────────────────────────────────────────────────
     {
       name: 'backgroundColor',
@@ -163,7 +172,7 @@ export const YpPlansBlock: Block = {
           localized: true,
           admin: {
             description:
-              'Pill under the price (e.g. "or €109/mo month-to-month · cancel anytime"). Leave empty to keep an invisible spacer for alignment.',
+              'Pill under the price. Use a live-price token for any amount, e.g. "or {{price:core:1}}/mo month-to-month · cancel anytime". {{price:core:1}} = Core monthly (month=1); {{price:advanced:4}} = Advanced 4-month rate. Resolves to the visitor’s currency. Leave empty to keep an invisible spacer.',
           },
         },
         {
@@ -171,7 +180,10 @@ export const YpPlansBlock: Block = {
           label: 'Commitment Note',
           type: 'textarea',
           localized: true,
-          admin: { description: 'e.g. "4 months is the minimum cycle…".' },
+          admin: {
+            description:
+              'e.g. "4 months is the minimum cycle…". Supports live-price tokens like {{price:core:1}}.',
+          },
         },
         {
           name: 'listLabel',
@@ -290,7 +302,7 @@ export const YpPlansBlock: Block = {
                   ],
                   admin: {
                     description:
-                      'Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or €109/mo monthly").',
+                      'Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or {{price:core:1}}/mo monthly"). Sub-line supports live-price tokens.',
                   },
                 },
               ],

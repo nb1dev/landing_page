@@ -3477,11 +3477,11 @@ export interface YpPlansBlock {
          */
         planFamily?: ('core' | 'advanced') | null;
         /**
-         * Pill under the price (e.g. "or €109/mo month-to-month · cancel anytime"). Leave empty to keep an invisible spacer for alignment.
+         * Pill under the price. Use a live-price token for any amount, e.g. "or {{price:core:1}}/mo month-to-month · cancel anytime". {{price:core:1}} = Core monthly (month=1); {{price:advanced:4}} = Advanced 4-month rate. Resolves to the visitor’s currency. Leave empty to keep an invisible spacer.
          */
         monthly?: string | null;
         /**
-         * e.g. "4 months is the minimum cycle…".
+         * e.g. "4 months is the minimum cycle…". Supports live-price tokens like {{price:core:1}}.
          */
         commit?: string | null;
         /**
@@ -3529,7 +3529,7 @@ export interface YpPlansBlock {
                  */
                 text: string;
                 /**
-                 * Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or €109/mo monthly").
+                 * Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or {{price:core:1}}/mo monthly"). Sub-line supports live-price tokens.
                  */
                 cell?: ('checkbox' | 'oneLine' | 'twoLine') | null;
                 id?: string | null;
@@ -4252,7 +4252,7 @@ export interface YpFaqBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Numbers (01, 02 …) are added automatically in order.
+   * Numbers (01, 02 …) are added automatically in order. Question and answer support live-price tokens, e.g. "…month-to-month at {{price:core:1}}/mo … at {{price:core:4}}/mo…" → visitor-currency rates.
    */
   items?:
     | {
@@ -4381,6 +4381,9 @@ export interface YpBuyBoxBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Supports live-price tokens, e.g. "{{price:core:4}}" → visitor-currency rate.
+   */
   sub?: string | null;
   /**
    * Pricing options (the source uses two: Core + Advanced).
@@ -4400,7 +4403,7 @@ export interface YpBuyBoxBlock {
          */
         priceSuffix?: string | null;
         /**
-         * Optional teal pill (e.g. "or €109/mo, monthly · cancel anytime").
+         * Optional teal pill. Use a token for the price, e.g. "or {{price:core:1}}/mo, monthly · cancel anytime".
          */
         altLabel?: string | null;
         description?: string | null;
@@ -4414,6 +4417,9 @@ export interface YpBuyBoxBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Supports live-price tokens, e.g. "Core runs month-to-month at {{price:core:1}}." Resolves to the visitor’s currency.
+   */
   buyNote?: string | null;
   /**
    * Checkmarked items in the bottom trust row.

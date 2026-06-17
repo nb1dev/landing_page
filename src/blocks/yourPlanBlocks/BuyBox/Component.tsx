@@ -3,6 +3,7 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan, type PlanFamily } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
+import { resolvePriceTokens } from '@/lib/plans/priceTokens'
 import { YpBuyBoxClient } from './Component.client'
 
 type BgColorPreset = 'inkDeep' | 'navyDeep' | 'navy' | 'teal' | 'off' | 'paper' | 'cream' | 'custom'
@@ -49,18 +50,30 @@ export const YpBuyBoxComponent: React.FC<YpBuyBoxBlockType> = async (props) => {
 
   const resolvedOptions = await Promise.all(
     options.map(async (opt) => {
-      if (!opt.planFamily) return { ...opt, price: null }
-      const family: PlanFamily = opt.planFamily === 'advanced' ? 'Advanced' : 'Core'
       let price: string | null = null
-      try {
-        const resolved = await getPlan(family, 4, currency)
-        if (resolved) price = formatRate(resolved, currency, locale)
-      } catch (err) {
-        console.error(`[ypBuyBox] failed to load "${family}" plan:`, err)
+      if (opt.planFamily) {
+        const family: PlanFamily = opt.planFamily === 'advanced' ? 'Advanced' : 'Core'
+        try {
+          const resolved = await getPlan(family, 4, currency)
+          if (resolved) price = formatRate(resolved, currency, locale)
+        } catch (err) {
+          console.error(`[ypBuyBox] failed to load "${family}" plan:`, err)
+        }
       }
-      return { ...opt, price }
+      // altLabel / description may carry live-price tokens (e.g. the "Alt Pill
+      // Label": "or {{price:core:1}}/mo, monthly · cancel anytime").
+      const [altLabel, description] = await Promise.all([
+        resolvePriceTokens(opt.altLabel, currency, locale),
+        resolvePriceTokens(opt.description, currency, locale),
+      ])
+      return { ...opt, price, altLabel, description }
     }),
   )
+
+  const [sub, buyNote] = await Promise.all([
+    resolvePriceTokens(props.sub, currency, locale),
+    resolvePriceTokens(props.buyNote, currency, locale),
+  ])
 
   return (
     <YpBuyBoxClient
@@ -70,9 +83,9 @@ export const YpBuyBoxComponent: React.FC<YpBuyBoxBlockType> = async (props) => {
       backgroundImage={props.backgroundImage}
       grain={props.grain}
       heading={props.heading}
-      sub={props.sub}
+      sub={sub}
       options={resolvedOptions}
-      buyNote={props.buyNote}
+      buyNote={buyNote}
       trust={props.trust}
     />
   )
