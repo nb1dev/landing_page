@@ -20,6 +20,15 @@ export const YpBuyBoxBlock: Block = {
   interfaceName: 'YpBuyBoxBlock',
   labels: { singular: 'YP — Buy Box', plural: 'YP — Buy Boxes' },
   fields: [
+    {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
     // ── Appearance ──────────────────────────────────────────────
     {
       name: 'backgroundColor',
@@ -73,7 +82,15 @@ export const YpBuyBoxBlock: Block = {
       editor: headingEditor,
       admin: { description: 'Apply teal color to a phrase. Shift+Enter for a line break.' },
     },
-    { name: 'sub', label: 'Subtitle', type: 'textarea', localized: true },
+    {
+      name: 'sub',
+      label: 'Subtitle',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description: 'Supports live-price tokens, e.g. "{{price:core:4}}" → visitor-currency rate.',
+      },
+    },
     // ── Options ─────────────────────────────────────────────────
     {
       name: 'options',
@@ -96,7 +113,7 @@ export const YpBuyBoxBlock: Block = {
           },
         },
         { name: 'priceSuffix', label: 'Price Suffix', type: 'text', localized: true, defaultValue: '/mo', admin: { description: 'Small text after price (e.g. "/mo").' } },
-        { name: 'altLabel', label: 'Alt Pill Label', type: 'text', localized: true, admin: { description: 'Optional teal pill (e.g. "or €109/mo, monthly · cancel anytime").' } },
+        { name: 'altLabel', label: 'Alt Pill Label', type: 'text', localized: true, admin: { description: 'Optional teal pill. Use a token for the price, e.g. "or {{price:core:1}}/mo, monthly · cancel anytime".' } },
         { name: 'description', label: 'Description', type: 'textarea', localized: true },
         { name: 'ctaLabel', label: 'CTA Label', type: 'text', localized: true, admin: { description: 'e.g. "Order Core kit" — the → arrow is added automatically.' } },
         { name: 'ctaHref', label: 'CTA URL', type: 'text', defaultValue: '#' },
@@ -105,7 +122,16 @@ export const YpBuyBoxBlock: Block = {
       ],
     },
     // ── Footer ──────────────────────────────────────────────────
-    { name: 'buyNote', label: 'Note', type: 'textarea', localized: true },
+    {
+      name: 'buyNote',
+      label: 'Note',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description:
+          'Supports live-price tokens, e.g. "Core runs month-to-month at {{price:core:1}}." Resolves to the visitor’s currency.',
+      },
+    },
     {
       name: 'trust',
       labels: { singular: 'Trust Item', plural: 'Trust Items' },

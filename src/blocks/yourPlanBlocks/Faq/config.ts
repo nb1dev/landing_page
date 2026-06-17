@@ -23,6 +23,15 @@ export const YpFaqBlock: Block = {
   interfaceName: 'YpFaqBlock',
   labels: { singular: 'YP — FAQ', plural: 'YP — FAQ Sections' },
   fields: [
+    {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
     // ── Appearance ──────────────────────────────────────────────
     {
       name: 'backgroundColor',
@@ -78,7 +87,10 @@ export const YpFaqBlock: Block = {
       name: 'items',
       labels: { singular: 'Question', plural: 'Questions' },
       type: 'array',
-      admin: { description: 'Numbers (01, 02 …) are added automatically in order.' },
+      admin: {
+        description:
+          'Numbers (01, 02 …) are added automatically in order. Question and answer support live-price tokens, e.g. "…month-to-month at {{price:core:1}}/mo … at {{price:core:4}}/mo…" → visitor-currency rates.',
+      },
       fields: [
         { name: 'question', label: 'Question', type: 'text', localized: true, required: true },
         {

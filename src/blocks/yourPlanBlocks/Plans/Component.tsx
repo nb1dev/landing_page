@@ -3,6 +3,7 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { getServerCurrency, type CurrencyCode } from '@/utilities/currency'
 import { getPlan, type PlanFamily } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
+import { resolvePriceTokens, resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 import { getDictionary } from '@/i18n/getDictionary'
 import { YpPlansClient } from './Component.client'
 
@@ -100,6 +101,7 @@ async function resolvePrice(
   }
 }
 
+
 /**
  * Server Component: resolves the live 4-month headline price for every
  * plan card AND every comparison-table column, then hands the merged data
@@ -110,17 +112,28 @@ export const YpPlansComponent: React.FC<YpPlansBlockType> = async (props) => {
   const locale = props.locale || 'en'
   const currency = await getServerCurrency(locale)
   const planCards = props.planCards ?? []
-  const compareCards = props.comparison?.cards ?? []
+
+  // Resolve price tokens across the whole comparison object first (section row
+  // text + each card's `features` json, e.g. the "Subscription terms" sub-line
+  // "or {{price:core:1}}/mo monthly"), then layer the live headline price onto
+  // each column.
+  const compareBase = props.comparison
+    ? await resolvePriceTokensDeep(props.comparison, currency, locale)
+    : null
 
   const [resolvedCards, resolvedCompareCards] = await Promise.all([
     Promise.all(
-      planCards.map(async (card) => ({
-        ...card,
-        ...(await resolvePrice(card.planFamily, currency, locale)),
-      })),
+      planCards.map(async (card) => {
+        const [pricing, monthly, commit] = await Promise.all([
+          resolvePrice(card.planFamily, currency, locale),
+          resolvePriceTokens(card.monthly, currency, locale),
+          resolvePriceTokens(card.commit, currency, locale),
+        ])
+        return { ...card, ...pricing, monthly, commit }
+      }),
     ),
     Promise.all(
-      compareCards.map(async (card) => ({
+      (compareBase?.cards ?? []).map(async (card) => ({
         ...card,
         ...(await resolvePrice(card.planFamily, currency, locale)),
       })),
@@ -139,9 +152,7 @@ export const YpPlansComponent: React.FC<YpPlansBlockType> = async (props) => {
       lede={props.lede}
       planCards={resolvedCards}
       showComparison={props.showComparison}
-      comparison={
-        props.comparison ? { ...props.comparison, cards: resolvedCompareCards } : props.comparison
-      }
+      comparison={compareBase ? { ...compareBase, cards: resolvedCompareCards } : props.comparison}
       guaranteeItems={props.guaranteeItems}
     />
   )
