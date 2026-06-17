@@ -5,6 +5,15 @@ export const YpStickyBuyBlock: Block = {
   interfaceName: 'YpStickyBuyBlock',
   labels: { singular: 'YP — Sticky Buy Bar', plural: 'YP — Sticky Buy Bars' },
   fields: [
+    {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
     // ── Appearance ──────────────────────────────────────────────
     {
       name: 'backgroundColor',
@@ -58,7 +67,7 @@ export const YpStickyBuyBlock: Block = {
       label: 'Secondary Text',
       type: 'text',
       localized: true,
-      admin: { description: 'Muted text after the bold part — hidden on small screens. e.g. "from €99/mo".' },
+      admin: { description: 'Muted text after the bold part — hidden on small screens. Supports live-price tokens, e.g. "from {{price:core:4}}/mo".' },
     },
     {
       name: 'ctaLabel',
