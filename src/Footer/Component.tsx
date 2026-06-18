@@ -19,6 +19,7 @@ type FooterData = {
   instagramUrl?: string | null
   exploreLinks?: Array<{ label?: string | null; url?: string | null }> | null
   getStartedLinks?: Array<{ label?: string | null; url?: string | null }> | null
+  form?: { id?: string | number | null; confirmationType?: string | null; redirect?: { url?: string | null } | null } | number | null
   variants?: Array<{
     variantKey: string
     theme: 'light' | 'dark'
@@ -31,6 +32,12 @@ export async function Footer({ locale, id }: Props) {
   const footerData = (await getCachedFooter(id, locale)()) as FooterData | null
 
   if (!footerData) return null
+
+  const rawForm = footerData?.form
+  const formObj = typeof rawForm === 'object' && rawForm !== null ? rawForm : null
+  const formID = formObj?.id ?? null
+  const confirmationType = (formObj as any)?.confirmationType ?? null
+  const redirectUrl = (formObj as any)?.redirect?.url ?? null
 
   const logo =
     typeof footerData?.logo === 'object' && footerData.logo !== null
@@ -48,6 +55,9 @@ export async function Footer({ locale, id }: Props) {
         instagramUrl={footerData?.instagramUrl ?? null}
         exploreLinks={(footerData?.exploreLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
         getStartedLinks={(footerData?.getStartedLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
+        formID={formID != null ? String(formID) : undefined}
+        confirmationType={confirmationType}
+        redirectUrl={redirectUrl}
         defaultTheme={footerData?.theme ?? 'dark'}
         variants={(footerData?.variants ?? []).map((v) => {
           const raw = v as typeof v & { logo?: number | Media | null }
