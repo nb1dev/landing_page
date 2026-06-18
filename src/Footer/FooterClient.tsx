@@ -1,7 +1,8 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 
 type Theme = 'light' | 'dark'
 
@@ -26,6 +27,9 @@ type Props = {
   defaultTheme?: Theme
   defaultLinkColor?: string | null
   variants?: FooterVariant[]
+  formID?: string
+  confirmationType?: string | null
+  redirectUrl?: string | null
 }
 
 export function FooterClient({
@@ -40,10 +44,62 @@ export function FooterClient({
   defaultTheme = 'dark',
   defaultLinkColor,
   variants = [],
+  formID,
+  confirmationType,
+  redirectUrl,
 }: Props) {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const variantParam = searchParams.get('v')
-  const [email, setEmail] = useState('')
+  const klaviyoFormId = 'SadZpb'
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const container = document.querySelector(`.klaviyo-form-${klaviyoFormId}`)
+      const hasForm = (container?.childElementCount ?? 0) > 0
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        event: 'klaviyo_form_status',
+        klaviyo_form_loaded: hasForm,
+        klaviyo_script_present: typeof window.klaviyo !== 'undefined',
+        klaviyo_location: 'footer',
+      })
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
+      if (detail?.type !== 'submit' || detail?.formId !== klaviyoFormId) return
+
+      const email = detail?.metaData?.$email
+
+      const now = Date.now()
+      if (!window.__lastLeadTime || now - window.__lastLeadTime > 1000) {
+        window.__lastLeadTime = now
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({ event: 'Lead' })
+      }
+
+      if (formID) {
+        fetch('/cms/api/form-submissions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            form: formID,
+            submissionData: [{ field: 'email', value: email ?? '' }],
+          }),
+        }).catch(console.warn)
+      }
+
+      if (confirmationType === 'redirect' && redirectUrl) {
+        router.push(redirectUrl)
+      }
+    }
+    window.addEventListener('klaviyoForms', handler)
+    return () => window.removeEventListener('klaviyoForms', handler)
+  }, [formID, confirmationType, redirectUrl, router])
 
   let theme: Theme = defaultTheme
   let resolvedLogo = logo
@@ -67,12 +123,6 @@ export function FooterClient({
         .nbf-brand { max-width: 390px; }
         .nbf-logo { height: 30px; width: auto; display: block; }
         .nbf-tag { font-size: 14px; line-height: 1.6; color: ${isDark ? 'rgba(255,255,255,0.62)' : 'rgba(18,49,77,0.62)'}; margin: 18px 0 22px; }
-        .nbf-sub { display: flex; align-items: center; gap: 8px; max-width: 330px; }
-        .nbf-sub input { flex: 1; background: ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(18,49,77,0.04)'}; border: 1px solid ${isDark ? 'rgba(255,255,255,0.16)' : 'rgba(18,49,77,0.16)'}; border-radius: 100px; padding: 12px 18px; color: ${isDark ? '#fff' : '#0B1E33'}; font-size: 14px; font-family: inherit; }
-        .nbf-sub input::placeholder { color: ${isDark ? 'rgba(255,255,255,0.4)' : 'rgba(18,49,77,0.4)'}; }
-        .nbf-sub input:focus { outline: none; border-color: rgba(19,166,204,0.6); }
-        .nbf-sub button { width: 44px; height: 44px; flex: none; border: none; border-radius: 50%; background: #13A6CC; color: #0B1E33; font-size: 18px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
-        .nbf-sub button:hover { background: #0A8FB0; }
         .nbf-subnote { font-size: 12px; color: ${isDark ? 'rgba(255,255,255,0.4)' : 'rgba(18,49,77,0.4)'}; margin-top: 12px; }
         .nbf-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${isDark ? 'rgba(255,255,255,0.45)' : 'rgba(18,49,77,0.45)'}; margin: 0 0 14px; }
         .nbf-col a { display: block; font-size: 14px; color: ${isDark ? 'rgba(255,255,255,0.74)' : 'rgba(18,49,77,0.74)'}; text-decoration: none; padding: 7px 0; transition: color 0.15s; }
@@ -103,16 +153,7 @@ export function FooterClient({
                 <img className="nbf-logo" src={resolvedLogo.url} alt={resolvedLogo.alt || 'NB1'} />
               )}
               {tagline && <p className="nbf-tag">{tagline}</p>}
-              <form className="nbf-sub" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  aria-label="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit" aria-label="Subscribe">→</button>
-              </form>
+              <div className={`klaviyo-form-${klaviyoFormId}`} />
               {subnote && <p className="nbf-subnote">{subnote}</p>}
             </div>
 

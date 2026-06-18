@@ -71,6 +71,7 @@ import * as migration_20260616_133738_plans_section_remove_price from './2026061
 import * as migration_20260616_161130_yp_plans_plan_family from './20260616_161130_yp_plans_plan_family';
 import * as migration_20260616_162431_plan_summary_card_cycle_month from './20260616_162431_plan_summary_card_cycle_month';
 import * as migration_20260618_123016 from './20260618_123016';
+import * as migration_20260618_130104 from './20260618_130104';
 
 export const migrations = [
   {
@@ -436,6 +437,11 @@ export const migrations = [
   {
     up: migration_20260618_123016.up,
     down: migration_20260618_123016.down,
-    name: '20260618_123016'
+    name: '20260618_123016',
+  },
+  {
+    up: migration_20260618_130104.up,
+    down: migration_20260618_130104.down,
+    name: '20260618_130104'
   },
 ];

@@ -154,6 +154,15 @@ export const Footers: CollectionConfig = {
       },
     },
     {
+      name: 'form',
+      label: 'Klaviyo Form (Payload submission)',
+      type: 'relationship',
+      relationTo: 'forms',
+      admin: {
+        description: 'Select the Form Builder form to log Klaviyo submissions in Payload.',
+      },
+    },
+    {
       name: 'variants',
       label: 'A/B Variants',
       type: 'array',
