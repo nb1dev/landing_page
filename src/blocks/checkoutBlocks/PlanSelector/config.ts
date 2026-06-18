@@ -6,6 +6,15 @@ export const PlanSelector: Block = {
   labels: { singular: 'Plan Selector', plural: 'Plan Selectors' },
   fields: [
     {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
+    {
       name: 'sectionTitle',
       type: 'text',
       label: 'Section title',

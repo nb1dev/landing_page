@@ -2,7 +2,7 @@ import React from 'react'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
-import { resolvePriceTokens } from '@/lib/plans/priceTokens'
+import { resolvePriceTokens, resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 import { PlansClient } from './Component.client'
 
 type FeatureItem = { item?: string | null }
@@ -57,10 +57,11 @@ export const PlansComponent: React.FC<Props> = async (props) => {
     console.error('[plansSection] failed to load plans:', err)
   }
 
-  const [coreMonthly, coreCommit, advCommit] = await Promise.all([
+  const [coreMonthly, coreCommit, advCommit, compareRowsJson] = await Promise.all([
     resolvePriceTokens(props.coreMonthly, currency, locale),
     resolvePriceTokens(props.coreCommit, currency, locale),
     resolvePriceTokens(props.advCommit, currency, locale),
+    resolvePriceTokensDeep(props.compareRowsJson, currency, locale),
   ])
 
   return (
@@ -86,7 +87,7 @@ export const PlansComponent: React.FC<Props> = async (props) => {
       advCtaLabel={props.advCtaLabel}
       advCtaHref={props.advCtaHref}
       guarantees={props.guarantees}
-      compareRowsJson={props.compareRowsJson}
+      compareRowsJson={compareRowsJson}
     />
   )
 }

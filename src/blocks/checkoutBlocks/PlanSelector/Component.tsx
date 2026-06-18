@@ -2,7 +2,7 @@ import React from 'react'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan, type PlanFamily } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
-import { resolvePriceTokens } from '@/lib/plans/priceTokens'
+import { resolvePriceTokens, resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 import { PlanSelectorClient } from './Component.client'
 
 type ScienceImage = {
@@ -75,6 +75,8 @@ export const PlanSelectorComponent: React.FC<Props> = async (props) => {
     }),
   )
 
+  const comparisonRows = await resolvePriceTokensDeep(props.comparisonRows, currency, locale)
+
   return (
     <PlanSelectorClient
       sectionTitle={props.sectionTitle}
@@ -84,7 +86,7 @@ export const PlanSelectorComponent: React.FC<Props> = async (props) => {
       scienceBoardSub={props.scienceBoardSub}
       scienceBoardImages={props.scienceBoardImages}
       showComparison={props.showComparison}
-      comparisonRows={props.comparisonRows}
+      comparisonRows={comparisonRows}
     />
   )
 }
