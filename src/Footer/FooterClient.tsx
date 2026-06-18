@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 type Theme = 'light' | 'dark'
 
@@ -52,10 +52,18 @@ export function FooterClient({
   const router = useRouter()
   const variantParam = searchParams.get('v')
   const klaviyoFormId = 'SadZpb'
+  const klaviyoContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const div = document.createElement('div')
+    div.className = `klaviyo-form-${klaviyoFormId}`
+    klaviyoContainerRef.current?.appendChild(div)
+    return () => { div.remove() }
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const container = document.querySelector(`.klaviyo-form-${klaviyoFormId}`)
+      const container = klaviyoContainerRef.current?.querySelector(`.klaviyo-form-${klaviyoFormId}`)
       const hasForm = (container?.childElementCount ?? 0) > 0
       window.dataLayer = window.dataLayer || []
       window.dataLayer.push({
@@ -153,7 +161,7 @@ export function FooterClient({
                 <img className="nbf-logo" src={resolvedLogo.url} alt={resolvedLogo.alt || 'NB1'} />
               )}
               {tagline && <p className="nbf-tag">{tagline}</p>}
-              <div className={`klaviyo-form-${klaviyoFormId}`} />
+              <div ref={klaviyoContainerRef} />
               {subnote && <p className="nbf-subnote">{subnote}</p>}
             </div>
 
