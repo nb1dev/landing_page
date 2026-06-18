@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef } from 'react'
 
@@ -50,8 +50,9 @@ export function FooterClient({
 }: Props) {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const params = useParams()
   const variantParam = searchParams.get('v')
-  const klaviyoFormId = 'SadZpb'
+  const klaviyoFormId = params?.locale === 'de' ? 'SadZpb' : 'TPTv44'
   const klaviyoContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
