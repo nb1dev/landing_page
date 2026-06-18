@@ -6,6 +6,15 @@ export const PlanSummaryCard: Block = {
   labels: { singular: 'Plan Summary Card', plural: 'Plan Summary Cards' },
   fields: [
     {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
+    {
       name: 'sectionTitle',
       type: 'text',
       label: 'Section title',
