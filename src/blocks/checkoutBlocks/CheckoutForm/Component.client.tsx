@@ -31,11 +31,11 @@ type PayMethod = 'card' | 'paypal' | 'klarna' | 'sepa'
 /** Live-fetched rate per (plan, cycle) — see Component.tsx (server). */
 type PlanRates = Record<string, Record<string, string>>
 
-type Props = { backHref?: string | null; planRates?: PlanRates | null; locale?: string; zeroPrice?: string | null }
+type Props = { backHref?: string | null; locale?: string }
 
 /* ─── Inner component (needs useSearchParams inside Suspense) ────────── */
 
-function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
+function CheckoutFormInner({ backHref, locale }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const dict = getDictionary(locale)
@@ -44,13 +44,31 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
   const planKey  = searchParams?.get('plan')  ?? 'core'
   const cycleKey = searchParams?.get('cycle') ?? '4'
 
+  const [planRates, setPlanRates] = useState<PlanRates>(STATIC_RATES)
+  const zeroPrice = '€0'
+
+  useEffect(() => {
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://apistg.nb1.com'
+    fetch(`${backend}/subscriptions/plans?preferred_first=false`)
+      .then(r => r.json())
+      .then((plans: Array<{ title: string; month: number; prices: Record<string, number> }>) => {
+        const rates: PlanRates = { core: {}, advanced: {} }
+        for (const p of plans) {
+          const key = p.title === 'Advanced' ? 'advanced' : 'core'
+          if (p.prices.EUR) rates[key][String(p.month)] = `€${p.prices.EUR}`
+        }
+        setPlanRates(rates)
+      })
+      .catch(() => { /* keep static fallback */ })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const monthNum = Number(cycleKey)
   const durationLabel = !Number.isNaN(monthNum) && dict.plans.months[monthNum as 4 | 8 | 12]
     ? dict.plans.months[monthNum as 4 | 8 | 12]
     : cycleKey === 'monthly' ? t.summary.cancelAnytime : cycleKey
   const billingLabel = cycleKey === 'monthly' ? t.summary.cancelAnytime : t.summary.billingMonthly
-  // Fall back to the static EUR figure if the live fetch failed/was unavailable.
-  const rate = planRates?.[planKey]?.[cycleKey] ?? STATIC_RATES[planKey]?.[cycleKey] ?? STATIC_RATES.core['4']
+  const rate = planRates[planKey]?.[cycleKey] ?? STATIC_RATES[planKey]?.[cycleKey] ?? STATIC_RATES.core['4']
   const planInfo = { label: durationLabel, billing: billingLabel, rate }
   const planLabel  = planKey === 'advanced' ? 'Advanced' : 'Core'
   const orderHref  = `/${locale || 'en'}/order`
@@ -728,19 +746,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
               <span className="nb1-acc-title">{t.steps.payment}</span>
             </div>
             <div className="nb1-acc-body">
-              {/* Wallet buttons */}
-              <div className="nb1-wallet-row">
-                <button type="button" className="nb1-wallet-btn nb1-wallet-apple" onClick={() => setConfirmed(true)}>
-                  <svg viewBox="0 0 24 24" width={16} height={16} fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  {t.payment.applePay}
-                </button>
-                <button type="button" className="nb1-wallet-btn nb1-wallet-gpay" onClick={() => setConfirmed(true)}>
-                  <svg viewBox="0 0 41 17" width={41} height={17}><text x="0" y="13" fontFamily="sans-serif" fontSize="13" fontWeight="600" fill="#5F6368">G</text><text x="12" y="13" fontFamily="sans-serif" fontSize="13" fontWeight="600" fill="#4285F4">o</text><text x="20" y="13" fontFamily="sans-serif" fontSize="13" fontWeight="600" fill="#EA4335">o</text><text x="28" y="13" fontFamily="sans-serif" fontSize="13" fontWeight="600" fill="#FBBC05">g</text><text x="35" y="13" fontFamily="sans-serif" fontSize="13" fontWeight="600" fill="#34A853">le</text></svg>
-                  {t.payment.googlePay}
-                </button>
-              </div>
-
-              <div className="nb1-pay-divider">{t.payment.orPayAnotherWay}</div>
+              <div className="nb1-pay-divider" style={{marginTop:0}}>{t.payment.orPayAnotherWay}</div>
 
               {/* Payment method list */}
               <div className="nb1-pmlist">

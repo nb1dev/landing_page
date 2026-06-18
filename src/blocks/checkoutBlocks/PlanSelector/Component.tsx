@@ -1,8 +1,4 @@
 import React from 'react'
-import { getServerCurrency } from '@/utilities/currency'
-import { getPlan, type PlanFamily } from '@/lib/plans/api'
-import { formatRate } from '@/lib/plans/format'
-import { resolvePriceTokens, resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 import { PlanSelectorClient } from './Component.client'
 
 type ScienceImage = {
@@ -14,7 +10,6 @@ type Plan = {
   planKey?: 'core' | 'advanced' | null
   isRecommended?: boolean | null
   name?: string | null
-  // price is resolved live below — not a Payload field anymore
   strikePrice?: string | null
   minNote?: string | null
   monthlyLinkText?: string | null
@@ -44,49 +39,6 @@ type Props = {
   locale?: string
 }
 
-/**
- * Server Component: resolves each plan card's live 4-month headline price
- * (the anchor rate used throughout the rest of the funnel — see
- * src/lib/plans/api.ts), then hands the merged plan objects to the
- * interactive client UI. strikePrice/minNote/monthlyLinkText etc. stay
- * manually edited in Payload — only the literal `price` field is live now.
- */
-export const PlanSelectorComponent: React.FC<Props> = async (props) => {
-  const locale = props.locale || 'en'
-  const currency = await getServerCurrency(locale)
-  const plans = props.plans ?? []
-
-  const resolvedPlans = await Promise.all(
-    plans.map(async (plan) => {
-      const family: PlanFamily = plan.planKey === 'advanced' ? 'Advanced' : 'Core'
-      let price = ''
-      try {
-        const resolved = await getPlan(family, 4, currency)
-        if (resolved) price = formatRate(resolved, currency, locale)
-      } catch (err) {
-        console.error(`[planSelector] failed to load "${family}" plan:`, err)
-      }
-      const [monthlyLinkText, minNote, strikePrice] = await Promise.all([
-        resolvePriceTokens(plan.monthlyLinkText, currency, locale),
-        resolvePriceTokens(plan.minNote, currency, locale),
-        resolvePriceTokens(plan.strikePrice, currency, locale),
-      ])
-      return { ...plan, price, monthlyLinkText, minNote, strikePrice }
-    }),
-  )
-
-  const comparisonRows = await resolvePriceTokensDeep(props.comparisonRows, currency, locale)
-
-  return (
-    <PlanSelectorClient
-      sectionTitle={props.sectionTitle}
-      guaranteeItems={props.guaranteeItems}
-      plans={resolvedPlans}
-      scienceBoardLabel={props.scienceBoardLabel}
-      scienceBoardSub={props.scienceBoardSub}
-      scienceBoardImages={props.scienceBoardImages}
-      showComparison={props.showComparison}
-      comparisonRows={comparisonRows}
-    />
-  )
+export const PlanSelectorComponent: React.FC<Props> = (props) => {
+  return <PlanSelectorClient {...props} />
 }

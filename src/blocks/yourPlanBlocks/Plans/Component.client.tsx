@@ -5,6 +5,15 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  resolveTokens,
+  resolveTokensDeep,
+  PER_MONTH_DICT,
+} from '@/lib/plans/clientUtils'
 
 type BgColorPreset = 'cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom'
 type BgType = 'color' | 'image'
@@ -30,6 +39,7 @@ type PlanCard = {
   badge?: string | null
   name?: string | null
   tag?: string | null
+  planFamily?: 'core' | 'advanced' | null
   price?: string | null
   pricePeriod?: string | null
   monthly?: string | null
@@ -58,6 +68,7 @@ type CompareSection = {
 type CompareCard = {
   id?: string | null
   label?: string | null
+  planFamily?: 'core' | 'advanced' | null
   price?: string | null
   pricePeriod?: string | null
   highlight?: boolean | null
@@ -94,6 +105,7 @@ export type YpPlansBlockType = {
   showComparison?: boolean | null
   comparison?: Comparison | null
   guaranteeItems?: GuaranteeItem[] | null
+  locale?: string
 }
 
 const GUARANTEE_ICONS: Record<string, React.ReactNode> = {
@@ -126,10 +138,11 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
   eyebrow,
   heading,
   lede,
-  planCards,
+  planCards: planCardsProp,
   showComparison,
-  comparison,
+  comparison: comparisonProp,
   guaranteeItems,
+  locale = 'en',
 }) => {
   const sectionRef = useRef<HTMLElement | null>(null)
   const gridRef = useRef<HTMLDivElement | null>(null)
@@ -137,6 +150,46 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
   const [revealed, setRevealed] = useState(false)
   const [activeDot, setActiveDot] = useState(0)
   const [compareOpen, setCompareOpen] = useState(false)
+  const [planCards, setPlanCards] = useState<PlanCard[]>(planCardsProp ?? [])
+  const [comparison, setComparison] = useState<Comparison | null | undefined>(comparisonProp)
+
+  useEffect(() => {
+    const currency = getClientCurrency(locale)
+    const perMonth = PER_MONTH_DICT[locale] ?? PER_MONTH_DICT.en
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        setPlanCards(
+          (planCardsProp ?? []).map((card) => {
+            const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
+            const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
+            return {
+              ...card,
+              price: rate != null ? formatPrice(rate, currency, locale) : card.price,
+              pricePeriod: rate != null ? perMonth : card.pricePeriod,
+              monthly: resolveTokens(card.monthly, rateMap, currency, locale) ?? card.monthly,
+              commit: resolveTokens(card.commit, rateMap, currency, locale) ?? card.commit,
+            }
+          }),
+        )
+        const resolvedComparison = resolveTokensDeep(comparisonProp, rateMap, currency, locale)
+        if (resolvedComparison) {
+          const resolvedCards = resolvedComparison.cards?.map((card: CompareCard) => {
+            const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
+            const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
+            return {
+              ...card,
+              price: rate != null ? formatPrice(rate, currency, locale) : card.price,
+              pricePeriod: rate != null ? perMonth : card.pricePeriod,
+            }
+          })
+          setComparison({ ...resolvedComparison, cards: resolvedCards })
+        } else {
+          setComparison(resolvedComparison)
+        }
+      })
+      .catch(() => {})
+  }, [locale])
 
   const isImageMode = backgroundType === 'image'
   const isDark = isImageMode || isDarkPreset(backgroundColor)

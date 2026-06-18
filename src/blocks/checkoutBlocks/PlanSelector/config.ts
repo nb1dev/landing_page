@@ -97,20 +97,6 @@ export const PlanSelector: Block = {
           label: 'Monthly option link href',
         },
         {
-          name: 'bullets',
-          type: 'array',
-          label: 'Feature bullets',
-          fields: [
-            {
-              name: 'text',
-              type: 'text',
-              label: 'Text',
-              localized: true,
-              required: true,
-            },
-          ],
-        },
-        {
           name: 'ctaText',
           type: 'text',
           label: 'CTA text',

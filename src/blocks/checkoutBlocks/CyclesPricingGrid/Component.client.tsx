@@ -1,10 +1,20 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useReveal } from '../useReveal'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  formatMonthLabel,
+  computeSavings,
+  BEST_VALUE_DICT,
+  resolveTokens,
+} from '@/lib/plans/clientUtils'
 
 type AthleteImage = {
   image?: { url?: string | null } | string | null
@@ -21,23 +31,23 @@ type PricingRow = {
 type Props = {
   sectionTitle?: string | null
   subtitle?: string | null
-  // Plan 1
   planName?: string | null
   monthlyNote?: string | null
+  planFamily?: 'core' | 'advanced' | null
   rows?: PricingRow[] | null
   ctaText?: string | null
   ctaHref?: string | null
-  // Plan 2 (optional — enables 2-column layout)
   showSecondPlan?: boolean | null
   planName2?: string | null
   monthlyNote2?: string | null
+  planFamily2?: 'core' | 'advanced' | null
   rows2?: PricingRow[] | null
   ctaText2?: string | null
   ctaHref2?: string | null
-  // Shared footer
   footerNote?: SerializedEditorState | null
   athleteSealText?: string | null
   athleteImages?: AthleteImage[] | null
+  locale?: string
 }
 
 function imgUrl(img?: AthleteImage['image']): string {
@@ -45,27 +55,74 @@ function imgUrl(img?: AthleteImage['image']): string {
   return img.url ? getMediaUrl(img.url) : ''
 }
 
+function computeRows(
+  family: 'core' | 'advanced',
+  plans: Awaited<ReturnType<typeof fetchPlansClient>>,
+  rateMap: Record<string, number>,
+  currency: ReturnType<typeof getClientCurrency>,
+  locale: string,
+  bestValueLabel: string,
+): PricingRow[] {
+  const apiTitle = family === 'advanced' ? 'Advanced' : 'Core'
+  const baselineRate = rateMap[`${family}:4`] ?? 0
+  return plans
+    .filter((p) => p.title === apiTitle && [4, 8, 12].includes(p.month))
+    .sort((a, b) => a.month - b.month)
+    .map((p) => {
+      const rate = rateMap[`${family}:${p.month}`] ?? 0
+      return {
+        months: formatMonthLabel(p.month, locale),
+        rate: formatPrice(rate, currency, locale),
+        isBestValue: p.is_preferred,
+        bestValueLabel: p.is_preferred ? bestValueLabel : null,
+      }
+    })
+}
 
 export const CyclesPricingGridClient: React.FC<Props> = ({
   sectionTitle,
   subtitle,
   planName,
-  monthlyNote,
-  rows,
+  monthlyNote: rawMonthlyNote,
+  planFamily,
+  rows: rowsProp,
   ctaText,
   ctaHref,
   showSecondPlan,
   planName2,
-  monthlyNote2,
-  rows2,
+  monthlyNote2: rawMonthlyNote2,
+  planFamily2,
+  rows2: rows2Prop,
   ctaText2,
   ctaHref2,
   footerNote,
   athleteSealText,
   athleteImages,
+  locale = 'en',
 }) => {
   const { ref, revealed } = useReveal()
   const twoCol = Boolean(showSecondPlan && planName2)
+  const [rows, setRows] = useState<PricingRow[]>(rowsProp ?? [])
+  const [rows2, setRows2] = useState<PricingRow[]>(rows2Prop ?? [])
+  const [monthlyNote, setMonthlyNote] = useState<string | null | undefined>(rawMonthlyNote)
+  const [monthlyNote2, setMonthlyNote2] = useState<string | null | undefined>(rawMonthlyNote2)
+
+  useEffect(() => {
+    if (!planFamily) return
+    const currency = getClientCurrency(locale)
+    const bestValueLabel = BEST_VALUE_DICT[locale] ?? BEST_VALUE_DICT.en
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        setRows(computeRows(planFamily, plans, rateMap, currency, locale, bestValueLabel))
+        if (showSecondPlan && planFamily2) {
+          setRows2(computeRows(planFamily2, plans, rateMap, currency, locale, bestValueLabel))
+        }
+        setMonthlyNote(resolveTokens(rawMonthlyNote, rateMap, currency, locale))
+        setMonthlyNote2(resolveTokens(rawMonthlyNote2, rateMap, currency, locale))
+      })
+      .catch(() => {})
+  }, [planFamily, planFamily2, locale])
 
   return (
     <section ref={ref} className={`nb1-cpg-sec${revealed ? ' nb1-in' : ''}`}>

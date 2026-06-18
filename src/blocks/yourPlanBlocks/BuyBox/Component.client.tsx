@@ -5,6 +5,13 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  resolveTokens,
+} from '@/lib/plans/clientUtils'
 
 type BgColorPreset = 'inkDeep' | 'navyDeep' | 'navy' | 'teal' | 'off' | 'paper' | 'cream' | 'custom'
 type BgType = 'color' | 'image'
@@ -25,9 +32,9 @@ function resolveBg(p?: BgColorPreset | null, c?: string | null) {
   return '#0A1B2E'
 }
 
-type Option = {
+type RawOption = {
   name?: string | null
-  price?: string | null
+  planFamily?: 'core' | 'advanced' | null
   priceSuffix?: string | null
   altLabel?: string | null
   description?: string | null
@@ -36,6 +43,8 @@ type Option = {
   recommended?: boolean | null
   recFlagLabel?: string | null
 }
+
+type Option = RawOption & { price?: string | null }
 
 export type YpBuyBoxBlockType = {
   blockType?: 'ypBuyBox'
@@ -46,9 +55,10 @@ export type YpBuyBoxBlockType = {
   grain?: boolean | null
   heading?: DefaultTypedEditorState | null
   sub?: string | null
-  options?: Option[] | null
+  options?: RawOption[] | null
   buyNote?: string | null
   trust?: { text?: string | null }[] | null
+  locale?: string
 }
 
 function imgUrl(img?: MediaLike) {
@@ -63,13 +73,40 @@ export const YpBuyBoxClient: React.FC<YpBuyBoxBlockType> = ({
   backgroundImage,
   grain,
   heading,
-  sub,
-  options,
-  buyNote,
+  sub: rawSub,
+  options: optionsProp,
+  buyNote: rawBuyNote,
   trust,
+  locale = 'en',
 }) => {
   const [revealed, setRevealed] = useState(false)
   const sectionRef = useRef<HTMLElement | null>(null)
+  const [options, setOptions] = useState<Option[]>(optionsProp ?? [])
+  const [sub, setSub] = useState<string | null | undefined>(rawSub)
+  const [buyNote, setBuyNote] = useState<string | null | undefined>(rawBuyNote)
+
+  useEffect(() => {
+    const currency = getClientCurrency(locale)
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        setOptions(
+          (optionsProp ?? []).map((opt) => {
+            const family = opt.planFamily === 'advanced' ? 'advanced' : 'core'
+            const rate = opt.planFamily ? rateMap[`${family}:4`] : undefined
+            return {
+              ...opt,
+              price: rate != null ? formatPrice(rate, currency, locale) : undefined,
+              altLabel: resolveTokens(opt.altLabel, rateMap, currency, locale) ?? opt.altLabel,
+              description: resolveTokens(opt.description, rateMap, currency, locale) ?? opt.description,
+            }
+          }),
+        )
+        setSub(resolveTokens(rawSub, rateMap, currency, locale))
+        setBuyNote(resolveTokens(rawBuyNote, rateMap, currency, locale))
+      })
+      .catch(() => {})
+  }, [locale])
 
   const isImageMode = backgroundType === 'image'
   const bgImg = imgUrl(backgroundImage)
