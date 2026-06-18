@@ -224,6 +224,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
         customer_email: email,
         customer_name: `${fn} ${ln}`.trim() || null,
         customer_phone: phone || null,
+        idempotency_key: idempotencyKeyRef.current || undefined,
       })
 
       // 2. Confirm card with Stripe.js
@@ -253,7 +254,6 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
       }
 
       // 3. Confirm checkout — backend creates user + subscription
-      // idempotency_key deduplicates with the Stripe webhook that also calls /confirm
       await checkoutConfirm({
         setup_intent_id: intent.setup_intent_id,
         idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
@@ -265,6 +265,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
           address_line1: a1,
           address_line2: a2 || null,
           city,
+          state: null,
           postal_code: zip,
           country,
           country_code: COUNTRY_CODES[country] ?? '',
@@ -273,13 +274,17 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
           address_type: 'individual',
           first_name: fn,
           last_name: ln,
+          company_name: null,
+          tax_id: null,
+          registration_number: null,
           email,
           phone: phone || null,
           address_line1: a1,
           address_line2: a2 || null,
           city,
+          state: null,
           postal_code: zip,
-          country,
+          country: COUNTRY_CODES[country] ?? country,
         } : {
           address_type: bAddrType,
           first_name: bFn || fn,
@@ -292,8 +297,9 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
           address_line1: bA1,
           address_line2: bA2 || null,
           city: bCity,
+          state: null,
           postal_code: bZip,
-          country: bCountry,
+          country: COUNTRY_CODES[bCountry] ?? bCountry,
         },
       })
 
@@ -586,7 +592,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
 
           {/* Accordion 1 — Email */}
           <div className={`nb1-acc${step === 1 ? ' open' : doneSteps.has(1) ? ' done' : ' locked'}`}>
-            <button type="button" className="nb1-acc-hd" onClick={() => doneSteps.has(1) && setStep(1)}>
+            <div role="button" tabIndex={0} className="nb1-acc-hd" onClick={() => doneSteps.has(1) && setStep(1)}>
               <span className="nb1-acc-num">1</span>
               <span className="nb1-acc-title">{t.steps.email}</span>
               {doneSteps.has(1) && step !== 1 && (
@@ -595,7 +601,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
                   <button type="button" className="nb1-acc-edit" onClick={e => { e.stopPropagation(); setStep(1) }}>{t.edit}</button>
                 </>
               )}
-            </button>
+            </div>
             <div className="nb1-acc-body">
               <div className="nb1-frow full">
                 <div className="nb1-fg">
@@ -617,7 +623,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
 
           {/* Accordion 2 — Address */}
           <div className={`nb1-acc${step === 2 ? ' open' : doneSteps.has(2) ? ' done' : ' locked'}`}>
-            <button type="button" className="nb1-acc-hd" onClick={() => doneSteps.has(2) && setStep(2)}>
+            <div role="button" tabIndex={0} className="nb1-acc-hd" onClick={() => doneSteps.has(2) && setStep(2)}>
               <span className="nb1-acc-num">2</span>
               <span className="nb1-acc-title">{t.steps.address}</span>
               {doneSteps.has(2) && step !== 2 && (
@@ -626,7 +632,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
                   <button type="button" className="nb1-acc-edit" onClick={e => { e.stopPropagation(); setStep(2) }}>{t.edit}</button>
                 </>
               )}
-            </button>
+            </div>
             <div className="nb1-acc-body">
               <div className="nb1-frow">
                 <div className="nb1-fg">
@@ -685,7 +691,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
 
           {/* Accordion 3 — Shipping */}
           <div className={`nb1-acc${step === 3 ? ' open' : doneSteps.has(3) ? ' done' : ' locked'}`}>
-            <button type="button" className="nb1-acc-hd" onClick={() => doneSteps.has(3) && setStep(3)}>
+            <div role="button" tabIndex={0} className="nb1-acc-hd" onClick={() => doneSteps.has(3) && setStep(3)}>
               <span className="nb1-acc-num">3</span>
               <span className="nb1-acc-title">{t.steps.shipping}</span>
               {doneSteps.has(3) && step !== 3 && (
@@ -694,7 +700,7 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
                   <button type="button" className="nb1-acc-edit" onClick={e => { e.stopPropagation(); setStep(3) }}>{t.edit}</button>
                 </>
               )}
-            </button>
+            </div>
             <div className="nb1-acc-body">
               <div className="nb1-ship-opts">
                 {([
@@ -717,10 +723,10 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
 
           {/* Accordion 4 — Payment */}
           <div className={`nb1-acc${step === 4 ? ' open' : doneSteps.has(4) ? ' done' : ' locked'}`}>
-            <button type="button" className="nb1-acc-hd">
+            <div className="nb1-acc-hd">
               <span className="nb1-acc-num">4</span>
               <span className="nb1-acc-title">{t.steps.payment}</span>
-            </button>
+            </div>
             <div className="nb1-acc-body">
               {/* Wallet buttons */}
               <div className="nb1-wallet-row">
