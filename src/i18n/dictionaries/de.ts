@@ -119,6 +119,11 @@ export const de = {
       sepaConsent: 'Mit Angabe Ihrer IBAN ermächtigen Sie NB1 und Stripe, Ihrer Bank Anweisungen zur Belastung Ihres Kontos per SEPA-Lastschrift zu erteilen – beginnend erst, wenn Ihre Formel hergestellt wird.',
       billingSame: 'Rechnungsadresse wie Lieferadresse',
       streetNumber: 'Straße & Nummer',
+      billingIndividual: 'Privatperson',
+      billingCompany: 'Unternehmen',
+      companyName: 'Firmenname',
+      taxId: 'USt-IdNr. / Steuernummer',
+      registrationNumber: 'Handelsregisternummer',
     },
     secured: 'Abgesichert durch Stripe',
     promoUi: {

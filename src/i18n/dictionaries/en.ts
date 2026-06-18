@@ -117,6 +117,11 @@ export const en = {
       sepaConsent: 'By providing your IBAN you authorise NB1 and Stripe to debit your account by SEPA Direct Debit, beginning only when your formula is manufactured.',
       billingSame: 'Billing address same as delivery',
       streetNumber: 'Street & number',
+      billingIndividual: 'Individual',
+      billingCompany: 'Company',
+      companyName: 'Company name',
+      taxId: 'VAT / Tax ID',
+      registrationNumber: 'Registration number',
     },
     secured: 'Secured by Stripe',
     promoUi: {

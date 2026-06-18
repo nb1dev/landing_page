@@ -38,10 +38,27 @@ export type PublicShippingAddressIn = {
   country_code: string
 }
 
+export type BillingAddressIn = {
+  address_type?: 'individual' | 'company' | null
+  first_name: string
+  last_name: string
+  company_name?: string | null
+  tax_id?: string | null
+  registration_number?: string | null
+  email?: string | null
+  phone?: string | null
+  address_line1: string
+  address_line2?: string | null
+  city: string
+  state?: string | null
+  postal_code: string
+  country: string
+}
+
 export type CheckoutConfirmIn = {
   setup_intent_id: string
   shipping_address: PublicShippingAddressIn
-  billing_address?: PublicShippingAddressIn | null
+  billing_address: BillingAddressIn
   idempotency_key?: string | null
 }
 
