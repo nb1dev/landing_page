@@ -128,7 +128,7 @@ export const en = {
       appliedSuffix: '{code} applied',
     },
     confirm: {
-      label: 'Confirm — €0 due today',
+      label: 'Confirm — {zeroPrice} due today',
       paypal: 'Continue with PayPal →',
       klarna: 'Continue with Klarna →',
       processing: 'Processing…',
@@ -159,7 +159,7 @@ export const en = {
       shipping: 'Shipping',
       monthly: 'Monthly',
       editLink: 'Edit plan or duration',
-      dueToday: '€0 due today',
+      dueToday: '{zeroPrice} due today',
       note: 'Your first charge is around two weeks after you return your sample, only once your formula enters manufacture.',
     },
     done: {

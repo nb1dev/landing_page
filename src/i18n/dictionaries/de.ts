@@ -130,7 +130,7 @@ export const de = {
       appliedSuffix: '{code} angewendet',
     },
     confirm: {
-      label: 'Bestätigen — €0 heute fällig',
+      label: 'Bestätigen — {zeroPrice} heute fällig',
       paypal: 'Mit PayPal fortfahren →',
       klarna: 'Mit Klarna fortfahren →',
       processing: 'Wird verarbeitet …',
@@ -161,7 +161,7 @@ export const de = {
       shipping: 'Versand',
       monthly: 'Monatlich',
       editLink: 'Plan oder Laufzeit ändern',
-      dueToday: '€0 heute fällig',
+      dueToday: '{zeroPrice} heute fällig',
       note: 'Ihre erste Abbuchung erfolgt etwa zwei Wochen nach Rücksendung Ihrer Probe, erst wenn Ihre Formel in die Herstellung geht.',
     },
     done: {
