@@ -1,10 +1,15 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { createAccountAndSave } from '@/lib/createAccount'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { createFirebaseAccount } from '@/lib/createAccount'
+import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
 import { getDictionary } from '@/i18n/getDictionary'
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
@@ -26,11 +31,13 @@ type PayMethod = 'card' | 'paypal' | 'klarna' | 'sepa'
 /** Live-fetched rate per (plan, cycle) — see Component.tsx (server). */
 type PlanRates = Record<string, Record<string, string>>
 
-type Props = { backHref?: string | null; planRates?: PlanRates | null; locale?: string }
+type Props = { backHref?: string | null; planRates?: PlanRates | null; locale?: string; zeroPrice?: string | null }
 
 /* ─── Inner component (needs useSearchParams inside Suspense) ────────── */
 
-function CheckoutFormInner({ backHref, planRates, locale }: Props) {
+function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
+  const stripe = useStripe()
+  const elements = useElements()
   const dict = getDictionary(locale)
   const t = dict.checkout
   const searchParams = useSearchParams()
@@ -106,9 +113,6 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
 
   /* step 4 */
   const [payMethod,   setPayMethod]   = useState<PayMethod>('card')
-  const [cardNo,      setCardNo]      = useState('')
-  const [exp,         setExp]         = useState('')
-  const [cvc,         setCvc]         = useState('')
   const [cardName,    setCardName]    = useState('')
   const [iban,        setIban]        = useState('')
   const [ibanName,    setIbanName]    = useState('')
@@ -118,6 +122,7 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
   /* account creation */
   const [accountStatus, setAccountStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [accountErr,    setAccountErr]    = useState('')
+  const submittingRef = useRef(false)
 
   /* promo */
   const [promoInput,   setPromoInput]   = useState('')
@@ -158,14 +163,13 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
 
   function nextShipping() { markDone(3) }
 
+  const COUNTRY_CODES: Record<string, string> = {
+    Germany: 'DE', Austria: 'AT', Netherlands: 'NL',
+    Belgium: 'BE', France: 'FR', Luxembourg: 'LU', Ireland: 'IE',
+  }
+
   async function nextPayment() {
     const e: Record<string, string> = {}
-    if (payMethod === 'card') {
-      if (cardNo.replace(/\s/g, '').length < 13) e.cardNo = t.payment.cardNumberInvalid
-      if (!/^\d{2}\s*\/\s*\d{2}$/.test(exp)) e.exp = t.payment.expiryFormat
-      if (cvc.length < 3) e.cvc = t.payment.cvcDigits
-      if (!cardName.trim()) e.cardName = t.required
-    }
     if (payMethod === 'sepa') {
       if (iban.replace(/\s/g, '').length < 15) e.iban = t.payment.ibanInvalid
       if (!ibanName.trim()) e.ibanName = t.required
@@ -173,14 +177,70 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
     setPayErr(e)
     if (Object.keys(e).length) return
 
+    if (submittingRef.current) return
+    submittingRef.current = true
     setAccountStatus('sending')
     setAccountErr('')
+
     try {
-      await createAccountAndSave(
-        email,
-        { firstName: fn, lastName: ln, phone },
-        { firstName: fn, lastName: ln, email, phone, addressLine1: a1, addressLine2: a2, city, zip, country },
-      )
+      // 1. Create Stripe SetupIntent via backend
+      // Backend slugs follow the pattern NB1-{PLAN}-{MONTHS} (e.g. NB1-CORE-4)
+      const monthNum = cycleKey === 'monthly' ? 1 : Number(cycleKey)
+      const planSlug = `NB1-${planKey.toUpperCase()}-${monthNum}`
+
+      const intent = await checkoutPaymentIntent({
+        plan_slug: planSlug,
+        currency: 'EUR',
+        shipping_option: shipping,
+        discount_code: promoApplied ?? null,
+        customer_email: email,
+        customer_name: `${fn} ${ln}`.trim() || null,
+        customer_phone: phone || null,
+      })
+
+      // 2. Confirm card with Stripe.js
+      if (payMethod === 'card') {
+        if (!stripe || !elements) {
+          setAccountErr(t.confirm.accountError)
+          setAccountStatus('error')
+          return
+        }
+        const cardElement = elements.getElement(CardElement)
+        if (!cardElement) {
+          setAccountErr(t.confirm.accountError)
+          setAccountStatus('error')
+          return
+        }
+        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: { name: cardName || `${fn} ${ln}`.trim(), email },
+          },
+        })
+        if (stripeError) {
+          setAccountErr(stripeError.message ?? t.confirm.accountError)
+          setAccountStatus('error')
+          return
+        }
+      }
+
+      // 3. Confirm checkout — backend creates user + subscription
+      await checkoutConfirm({
+        setup_intent_id: intent.setup_intent_id,
+        shipping_address: {
+          first_name: fn,
+          last_name: ln,
+          email,
+          phone: phone || null,
+          address_line1: a1,
+          address_line2: a2 || null,
+          city,
+          postal_code: zip,
+          country,
+          country_code: COUNTRY_CODES[country] ?? '',
+        },
+      })
+
       setAccountStatus('sent')
     } catch (err: unknown) {
       setAccountStatus('error')
@@ -190,6 +250,7 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
       } else {
         setAccountErr(t.confirm.accountError)
       }
+      submittingRef.current = false
       return
     }
 
@@ -213,20 +274,14 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
     setPromoMsg(null)
   }
 
-  function fmtCard(v: string) {
-    return v.replace(/\D/g, '').slice(0, 16).replace(/(.{4})(?=.)/g, '$1 ')
-  }
-  function fmtExp(v: string) {
-    const d = v.replace(/\D/g, '').slice(0, 4)
-    return d.length > 2 ? d.slice(0, 2) + ' / ' + d.slice(2) : d
-  }
   function fmtIban(v: string) {
     return v.replace(/[^A-Z0-9]/gi, '').toUpperCase().slice(0, 34).replace(/(.{4})(?=.)/g, '$1 ')
   }
 
+  const zero = zeroPrice ?? '€0'
   const confirmLabel = payMethod === 'paypal' ? t.confirm.paypal
     : payMethod === 'klarna' ? t.confirm.klarna
-    : t.confirm.label
+    : t.confirm.label.replace('{zeroPrice}', zero)
 
   const [doneBodyPrefix, doneBodySuffix] = t.done.body.split('{email}')
 
@@ -640,28 +695,17 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
                   <div className="nb1-pm-body">
                     <div className="nb1-frow full">
                       <div className="nb1-fg">
-                        <label>{t.payment.cardNumber}</label>
-                        <input type="text" inputMode="numeric" placeholder="1234 1234 1234 1234" value={cardNo} onChange={e => setCardNo(fmtCard(e.target.value))} className={payErr.cardNo ? 'err' : ''} />
-                        {payErr.cardNo && <span className="nb1-err">{payErr.cardNo}</span>}
-                      </div>
-                    </div>
-                    <div className="nb1-frow">
-                      <div className="nb1-fg">
-                        <label>{t.payment.expiry}</label>
-                        <input type="text" inputMode="numeric" placeholder="MM / YY" value={exp} onChange={e => setExp(fmtExp(e.target.value))} className={payErr.exp ? 'err' : ''} />
-                        {payErr.exp && <span className="nb1-err">{payErr.exp}</span>}
-                      </div>
-                      <div className="nb1-fg">
-                        <label>{t.payment.cvc}</label>
-                        <input type="text" inputMode="numeric" placeholder="123" maxLength={4} value={cvc} onChange={e => setCvc(e.target.value.replace(/\D/g,'').slice(0,4))} className={payErr.cvc ? 'err' : ''} />
-                        {payErr.cvc && <span className="nb1-err">{payErr.cvc}</span>}
+                        <label>{t.payment.nameOnCard}</label>
+                        <input type="text" autoComplete="cc-name" value={cardName} onChange={e => setCardName(e.target.value)} className={payErr.cardName ? 'err' : ''} />
+                        {payErr.cardName && <span className="nb1-err">{payErr.cardName}</span>}
                       </div>
                     </div>
                     <div className="nb1-frow full">
                       <div className="nb1-fg">
-                        <label>{t.payment.nameOnCard}</label>
-                        <input type="text" autoComplete="cc-name" value={cardName} onChange={e => setCardName(e.target.value)} className={payErr.cardName ? 'err' : ''} />
-                        {payErr.cardName && <span className="nb1-err">{payErr.cardName}</span>}
+                        <label>{t.payment.cardNumber}</label>
+                        <div style={{padding:'13px 15px',borderRadius:'11px',border:`1.5px solid rgba(18,49,77,0.1)`,background:'#fff'}}>
+                          <CardElement options={{ style: { base: { fontSize: '15px', color: '#12314d', fontFamily: 'Inter, sans-serif', '::placeholder': { color: 'rgba(18,49,77,0.35)' } } } }} />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -815,7 +859,7 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
               </div>
             )}
 
-            <div className="nb1-sum-zero">{t.summary.dueToday}</div>
+            <div className="nb1-sum-zero">{t.summary.dueToday.replace('{zeroPrice}', zero)}</div>
             <p className="nb1-sum-note">{t.summary.note}</p>
 
           </div>
@@ -834,9 +878,12 @@ function CheckoutFormInner({ backHref, planRates, locale }: Props) {
   )
 }
 
-/* ── Exported wrapper (Suspense for useSearchParams) ─────────────────── */
+/* ── Exported wrapper (Elements + Suspense for useSearchParams) ─────── */
 export const CheckoutFormClient: React.FC<Props> = (props) => (
-  <Suspense fallback={null}>
-    <CheckoutFormInner {...props} />
-  </Suspense>
+  <Elements stripe={stripePromise}>
+    <Suspense fallback={null}>
+      <CheckoutFormInner {...props} />
+    </Suspense>
+  </Elements>
 )
+

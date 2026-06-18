@@ -2,6 +2,7 @@ import React from 'react'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
+import { resolvePriceTokens } from '@/lib/plans/priceTokens'
 import { PlansClient } from './Component.client'
 
 type FeatureItem = { item?: string | null }
@@ -56,6 +57,12 @@ export const PlansComponent: React.FC<Props> = async (props) => {
     console.error('[plansSection] failed to load plans:', err)
   }
 
+  const [coreMonthly, coreCommit, advCommit] = await Promise.all([
+    resolvePriceTokens(props.coreMonthly, currency, locale),
+    resolvePriceTokens(props.coreCommit, currency, locale),
+    resolvePriceTokens(props.advCommit, currency, locale),
+  ])
+
   return (
     <PlansClient
       heading={props.heading}
@@ -63,8 +70,8 @@ export const PlansComponent: React.FC<Props> = async (props) => {
       coreLabel={props.coreLabel}
       coreDesc={props.coreDesc}
       corePrice={corePrice}
-      coreMonthly={props.coreMonthly}
-      coreCommit={props.coreCommit}
+      coreMonthly={coreMonthly}
+      coreCommit={coreCommit}
       coreFeaturesLabel={props.coreFeaturesLabel}
       coreFeatures={props.coreFeatures}
       coreCtaLabel={props.coreCtaLabel}
@@ -73,7 +80,7 @@ export const PlansComponent: React.FC<Props> = async (props) => {
       advLabel={props.advLabel}
       advDesc={props.advDesc}
       advPrice={advPrice}
-      advCommit={props.advCommit}
+      advCommit={advCommit}
       advFeaturesLabel={props.advFeaturesLabel}
       advFeatures={props.advFeatures}
       advCtaLabel={props.advCtaLabel}

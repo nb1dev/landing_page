@@ -1,5 +1,5 @@
 import React from 'react'
-import { getServerCurrency } from '@/utilities/currency'
+import { getServerCurrency, formatPrice } from '@/utilities/currency'
 import { getPlanCycles } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
 import { CheckoutFormClient } from './Component.client'
@@ -32,5 +32,7 @@ export const CheckoutFormComponent: React.FC<Props> = async (props) => {
     console.error('[checkoutForm] failed to load plans:', err)
   }
 
-  return <CheckoutFormClient backHref={props.backHref} planRates={planRates} locale={locale} />
+  const zeroPrice = formatPrice(0, currency, locale)
+
+  return <CheckoutFormClient backHref={props.backHref} planRates={planRates} locale={locale} zeroPrice={zeroPrice} />
 }

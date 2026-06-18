@@ -2,6 +2,7 @@ import React from 'react'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan, type PlanFamily } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
+import { resolvePriceTokens } from '@/lib/plans/priceTokens'
 import { PlanSelectorClient } from './Component.client'
 
 type ScienceImage = {
@@ -65,7 +66,12 @@ export const PlanSelectorComponent: React.FC<Props> = async (props) => {
       } catch (err) {
         console.error(`[planSelector] failed to load "${family}" plan:`, err)
       }
-      return { ...plan, price }
+      const [monthlyLinkText, minNote, strikePrice] = await Promise.all([
+        resolvePriceTokens(plan.monthlyLinkText, currency, locale),
+        resolvePriceTokens(plan.minNote, currency, locale),
+        resolvePriceTokens(plan.strikePrice, currency, locale),
+      ])
+      return { ...plan, price, monthlyLinkText, minNote, strikePrice }
     }),
   )
 
