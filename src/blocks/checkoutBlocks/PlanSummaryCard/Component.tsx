@@ -2,6 +2,7 @@ import React from 'react'
 import { getServerCurrency } from '@/utilities/currency'
 import { getPlan, type PlanFamily, type PlanMonth } from '@/lib/plans/api'
 import { formatRate } from '@/lib/plans/format'
+import { resolvePriceTokens } from '@/lib/plans/priceTokens'
 import { PlanSummaryCardClient } from './Component.client'
 
 type Bullet = { text?: string | null }
@@ -47,6 +48,7 @@ export const PlanSummaryCardComponent: React.FC<Props> = async (props) => {
     console.error(`[planSummaryCard] failed to load "${family}" plan (month=${month}):`, err)
   }
   const ctaPrice = price ? `${price}/mo` : null
+  const secondaryCtaText = await resolvePriceTokens(props.secondaryCtaText, currency, locale)
 
   return (
     <PlanSummaryCardClient
@@ -61,7 +63,7 @@ export const PlanSummaryCardComponent: React.FC<Props> = async (props) => {
       primaryCtaText={props.primaryCtaText}
       primaryCtaPrice={ctaPrice}
       primaryCtaHref={props.primaryCtaHref}
-      secondaryCtaText={props.secondaryCtaText}
+      secondaryCtaText={secondaryCtaText}
       secondaryCtaHref={props.secondaryCtaHref}
       ctaSubText={props.ctaSubText}
     />
