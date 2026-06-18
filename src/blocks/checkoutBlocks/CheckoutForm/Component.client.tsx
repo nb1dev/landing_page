@@ -119,10 +119,38 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
   const [billingSame, setBillingSame] = useState(true)
   const [payErr,      setPayErr]      = useState<Record<string, string>>({})
 
+  /* billing address (used when billingSame is false) */
+  const [bAddrType,  setBAddrType]  = useState<'individual' | 'company'>('individual')
+  const [bFn,        setBFn]        = useState('')
+  const [bLn,        setBLn]        = useState('')
+  const [bCompany,   setBCompany]   = useState('')
+  const [bTaxId,     setBTaxId]     = useState('')
+  const [bRegNum,    setBRegNum]    = useState('')
+  const [bEmail,     setBEmail]     = useState('')
+  const [bPhone,     setBPhone]     = useState('')
+  const [bA1,        setBA1]        = useState('')
+  const [bA2,        setBA2]        = useState('')
+  const [bZip,       setBZip]       = useState('')
+  const [bCity,      setBCity]      = useState('')
+  const [bCountry,   setBCountry]   = useState('Germany')
+
   /* account creation */
   const [accountStatus, setAccountStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [accountErr,    setAccountErr]    = useState('')
   const submittingRef = useRef(false)
+
+  /* idempotency key — generated once per checkout session, persisted in sessionStorage */
+  const idempotencyKeyRef = useRef<string>('')
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('nb1_checkout_idempotency_key')
+      idempotencyKeyRef.current = saved ?? crypto.randomUUID()
+      sessionStorage.setItem('nb1_checkout_idempotency_key', idempotencyKeyRef.current)
+    } catch {
+      idempotencyKeyRef.current = crypto.randomUUID()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   /* promo */
   const [promoInput,   setPromoInput]   = useState('')
@@ -225,8 +253,10 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
       }
 
       // 3. Confirm checkout — backend creates user + subscription
+      // idempotency_key deduplicates with the Stripe webhook that also calls /confirm
       await checkoutConfirm({
         setup_intent_id: intent.setup_intent_id,
+        idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
         shipping_address: {
           first_name: fn,
           last_name: ln,
@@ -238,6 +268,32 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
           postal_code: zip,
           country,
           country_code: COUNTRY_CODES[country] ?? '',
+        },
+        billing_address: billingSame ? {
+          address_type: 'individual',
+          first_name: fn,
+          last_name: ln,
+          email,
+          phone: phone || null,
+          address_line1: a1,
+          address_line2: a2 || null,
+          city,
+          postal_code: zip,
+          country,
+        } : {
+          address_type: bAddrType,
+          first_name: bFn || fn,
+          last_name: bLn || ln,
+          company_name: bCompany || null,
+          tax_id: bTaxId || null,
+          registration_number: bRegNum || null,
+          email: bEmail || email,
+          phone: bPhone || phone || null,
+          address_line1: bA1,
+          address_line2: bA2 || null,
+          city: bCity,
+          postal_code: bZip,
+          country: bCountry,
         },
       })
 
@@ -766,13 +822,84 @@ function CheckoutFormInner({ backHref, planRates, locale, zeroPrice }: Props) {
               </label>
               {!billingSame && (
                 <div className="nb1-billing-addr">
-                  <div className="nb1-fg">
-                    <label>{t.payment.streetNumber}</label>
-                    <input type="text" autoComplete="billing street-address" />
+                  {/* Address type toggle */}
+                  <div className="nb1-frow" style={{gridTemplateColumns:'1fr 1fr',marginBottom:14}}>
+                    {(['individual','company'] as const).map(type => (
+                      <div key={type} className={`nb1-ship-opt${bAddrType === type ? ' sel' : ''}`} onClick={() => setBAddrType(type)} style={{padding:'12px 16px'}}>
+                        <div className="nb1-ship-radio"><div className="nb1-ship-radio-dot" /></div>
+                        <span className="nb1-ship-name" style={{fontSize:14}}>{type === 'individual' ? t.payment.billingIndividual : t.payment.billingCompany}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {bAddrType === 'company' && (<>
+                    <div className="nb1-frow full">
+                      <div className="nb1-fg">
+                        <label>{t.payment.companyName}</label>
+                        <input type="text" autoComplete="organization" value={bCompany} onChange={e => setBCompany(e.target.value)} />
+                      </div>
+                    </div>
+                    <div className="nb1-frow">
+                      <div className="nb1-fg">
+                        <label>{t.payment.taxId}</label>
+                        <input type="text" value={bTaxId} onChange={e => setBTaxId(e.target.value)} />
+                      </div>
+                      <div className="nb1-fg">
+                        <label>{t.payment.registrationNumber}</label>
+                        <input type="text" value={bRegNum} onChange={e => setBRegNum(e.target.value)} />
+                      </div>
+                    </div>
+                  </>)}
+
+                  <div className="nb1-frow">
+                    <div className="nb1-fg">
+                      <label>{t.address.firstName}</label>
+                      <input type="text" autoComplete="billing given-name" value={bFn} onChange={e => setBFn(e.target.value)} />
+                    </div>
+                    <div className="nb1-fg">
+                      <label>{t.address.lastName}</label>
+                      <input type="text" autoComplete="billing family-name" value={bLn} onChange={e => setBLn(e.target.value)} />
+                    </div>
                   </div>
                   <div className="nb1-frow">
-                    <div className="nb1-fg"><label>{t.address.postalCode}</label><input type="text" autoComplete="billing postal-code" /></div>
-                    <div className="nb1-fg"><label>{t.address.city}</label><input type="text" autoComplete="billing address-level2" /></div>
+                    <div className="nb1-fg">
+                      <label>{t.email.label}</label>
+                      <input type="email" autoComplete="billing email" value={bEmail} onChange={e => setBEmail(e.target.value)} />
+                    </div>
+                    <div className="nb1-fg">
+                      <label>{t.address.phone} <span style={{fontWeight:400,opacity:0.6}}>{t.address.phoneNote}</span></label>
+                      <input type="tel" autoComplete="billing tel" value={bPhone} onChange={e => setBPhone(e.target.value)} />
+                    </div>
+                  </div>
+                  <div className="nb1-frow full">
+                    <div className="nb1-fg">
+                      <label>{t.address.country}</label>
+                      <select autoComplete="billing country-name" value={bCountry} onChange={e => setBCountry(e.target.value)}>
+                        {COUNTRIES.map(c => <option key={c} value={c}>{dict.countries[c] ?? c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="nb1-frow full">
+                    <div className="nb1-fg">
+                      <label>{t.address.addressLabel}</label>
+                      <input type="text" autoComplete="billing address-line1" placeholder={t.address.addressPlaceholder} value={bA1} onChange={e => setBA1(e.target.value)} />
+                    </div>
+                  </div>
+                  <div className="nb1-frow full">
+                    <div className="nb1-fg">
+                      <label>{t.address.apt} <span style={{fontWeight:400,opacity:0.6}}>{t.address.optional}</span></label>
+                      <input type="text" autoComplete="billing address-line2" value={bA2} onChange={e => setBA2(e.target.value)} />
+                    </div>
+                  </div>
+                  <div className="nb1-frow">
+                    <div className="nb1-fg">
+                      <label>{t.address.postalCode}</label>
+                      <input type="text" autoComplete="billing postal-code" value={bZip} onChange={e => setBZip(e.target.value)} />
+                    </div>
+                    <div className="nb1-fg">
+                      <label>{t.address.city}</label>
+                      <input type="text" autoComplete="billing address-level2" value={bCity} onChange={e => setBCity(e.target.value)} />
+                    </div>
                   </div>
                 </div>
               )}
