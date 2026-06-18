@@ -5,6 +5,15 @@ export const PlansBlock: Block = {
   slug: 'plansSection',
   interfaceName: 'PlansSectionBlock',
   fields: [
+    {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
     { name: 'heading', type: 'richText', localized: true, editor: makeHeadingEditor() },
     { name: 'lede', type: 'text', localized: true },
     { name: 'coreLabel', type: 'text', localized: true },

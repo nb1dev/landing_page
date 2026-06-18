@@ -54,6 +54,15 @@ export const CyclesPricingGrid: Block = {
   labels: { singular: 'Cycles Pricing Grid', plural: 'Cycles Pricing Grids' },
   fields: [
     {
+      name: 'priceTokenHelp',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: { path: '/blocks/yourPlanBlocks/PriceTokenHelp', exportName: 'PriceTokenHelp' },
+        },
+      },
+    },
+    {
       name: 'sectionTitle',
       type: 'text',
       label: 'Section title',

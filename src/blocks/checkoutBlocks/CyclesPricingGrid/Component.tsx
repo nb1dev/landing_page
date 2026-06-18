@@ -4,6 +4,7 @@ import { getServerCurrency } from '@/utilities/currency'
 import { getPlanCycles, type PlanFamily } from '@/lib/plans/api'
 import { formatMonthLabel, formatRate } from '@/lib/plans/format'
 import { getDictionary } from '@/i18n/getDictionary'
+import { resolvePriceTokens } from '@/lib/plans/priceTokens'
 import { CyclesPricingGridClient } from './Component.client'
 
 type AthleteImage = {
@@ -69,11 +70,13 @@ export const CyclesPricingGridComponent: React.FC<Props> = async (props) => {
 
   const showSecond = Boolean(props.showSecondPlan && props.planFamily2)
 
-  const [rows, rows2] = await Promise.all([
+  const [rows, rows2, monthlyNote, monthlyNote2] = await Promise.all([
     resolveRows(props.planFamily, currency, locale, bestValueLabel),
     showSecond
       ? resolveRows(props.planFamily2, currency, locale, bestValueLabel)
       : Promise.resolve([]),
+    resolvePriceTokens(props.monthlyNote, currency, locale),
+    resolvePriceTokens(props.monthlyNote2, currency, locale),
   ])
 
   return (
@@ -81,13 +84,13 @@ export const CyclesPricingGridComponent: React.FC<Props> = async (props) => {
       sectionTitle={props.sectionTitle}
       subtitle={props.subtitle}
       planName={props.planName}
-      monthlyNote={props.monthlyNote}
+      monthlyNote={monthlyNote}
       rows={rows}
       ctaText={props.ctaText}
       ctaHref={props.ctaHref}
       showSecondPlan={props.showSecondPlan}
       planName2={props.planName2}
-      monthlyNote2={props.monthlyNote2}
+      monthlyNote2={monthlyNote2}
       rows2={rows2}
       ctaText2={props.ctaText2}
       ctaHref2={props.ctaHref2}
