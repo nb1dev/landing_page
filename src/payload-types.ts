@@ -4673,12 +4673,6 @@ export interface PlanSummaryCardBlock {
   priceNote?: string | null;
   switchLinkText?: string | null;
   switchLinkHref?: string | null;
-  bullets?:
-    | {
-        text: string;
-        id?: string | null;
-      }[]
-    | null;
   primaryCtaText: string;
   primaryCtaHref: string;
   secondaryCtaText?: string | null;
@@ -4853,12 +4847,6 @@ export interface PlanSelectorBlock {
         minNote?: string | null;
         monthlyLinkText?: string | null;
         monthlyLinkHref?: string | null;
-        bullets?:
-          | {
-              text: string;
-              id?: string | null;
-            }[]
-          | null;
         ctaText: string;
         ctaHref: string;
         id?: string | null;
@@ -7805,12 +7793,6 @@ export interface PlanSummaryCardBlockSelect<T extends boolean = true> {
   priceNote?: T;
   switchLinkText?: T;
   switchLinkHref?: T;
-  bullets?:
-    | T
-    | {
-        text?: T;
-        id?: T;
-      };
   primaryCtaText?: T;
   primaryCtaHref?: T;
   secondaryCtaText?: T;
@@ -7943,12 +7925,6 @@ export interface PlanSelectorBlockSelect<T extends boolean = true> {
         minNote?: T;
         monthlyLinkText?: T;
         monthlyLinkHref?: T;
-        bullets?:
-          | T
-          | {
-              text?: T;
-              id?: T;
-            };
         ctaText?: T;
         ctaHref?: T;
         id?: T;

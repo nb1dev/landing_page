@@ -1,7 +1,16 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useReveal } from '../useReveal'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  formatMonthLabel,
+  formatSavingsLabel,
+  computeSavings,
+} from '@/lib/plans/clientUtils'
 
 type Tier = {
   months?: string | null
@@ -20,12 +29,14 @@ type Props = {
   planName?: string | null
   switchLinkLabel?: string | null
   switchLinkHref?: string | null
+  planFamily?: 'core' | 'advanced' | null
   tiers?: Tier[] | null
   showMonthlyOption?: boolean | null
   monthlyRate?: string | null
   monthlyCheckoutHref?: string | null
   faqTitle?: string | null
   faqItems?: FaqItem[] | null
+  locale?: string
 }
 
 const CheckIcon = () => (
@@ -38,20 +49,54 @@ export const CycleSelectorClient: React.FC<Props> = ({
   planName,
   switchLinkLabel,
   switchLinkHref,
-  tiers,
+  planFamily,
+  tiers: tiersProp,
   showMonthlyOption,
   monthlyRate,
   monthlyCheckoutHref,
   faqTitle,
   faqItems,
+  locale = 'en',
 }) => {
   const { ref, revealed } = useReveal()
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [monthlySelected, setMonthlySelected] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [tiers, setTiers] = useState<Tier[]>(tiersProp ?? [])
+
+  useEffect(() => {
+    if (!planFamily) return
+    const family = planFamily === 'advanced' ? 'Advanced' : 'Core'
+    const planKey = planFamily
+    const currency = getClientCurrency(locale)
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        const familyPlans = plans
+          .filter((p) => p.title === family && [4, 8, 12].includes(p.month))
+          .sort((a, b) => a.month - b.month)
+        const baselineRate = rateMap[`${planKey}:4`] ?? 0
+        setTiers(
+          familyPlans.map((p) => {
+            const rate = rateMap[`${planKey}:${p.month}`] ?? 0
+            const savings = computeSavings(rate, baselineRate, p.month)
+            return {
+              months: formatMonthLabel(p.month, locale),
+              monthlyRate: formatPrice(rate, currency, locale),
+              saveLabel: formatSavingsLabel(savings, currency, locale),
+              isBestValue: p.is_preferred,
+              checkoutHref: `/${locale}/order-details?plan=${planKey}&cycle=${p.month}`,
+            }
+          }),
+        )
+      })
+      .catch(() => {})
+  }, [planFamily, locale])
+
+  const activeTiers = tiers.length > 0 ? tiers : (tiersProp ?? [])
   const faqAnswerRefs = React.useRef<(HTMLDivElement | null)[]>([])
 
-  const activeTier = monthlySelected ? null : tiers?.[selectedIdx]
+  const activeTier = monthlySelected ? null : activeTiers?.[selectedIdx]
   const activeRate = monthlySelected ? monthlyRate : activeTier?.monthlyRate
   const activeHref = monthlySelected
     ? (monthlyCheckoutHref ?? '#')
@@ -362,9 +407,9 @@ export const CycleSelectorClient: React.FC<Props> = ({
         </div>
 
         {/* Tier boxes */}
-        {tiers && tiers.length > 0 && (
+        {activeTiers && activeTiers.length > 0 && (
           <div className="nb1-cs-boxes">
-            {tiers.map((tier, i) => (
+            {activeTiers.map((tier, i) => (
               <button
                 key={i}
                 type="button"

@@ -1,44 +1,76 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useReveal } from '../useReveal'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  resolveTokens,
+  extractBullets,
+} from '@/lib/plans/clientUtils'
 
 type Bullet = { text?: string | null }
 
 type Props = {
   sectionTitle?: string | null
   planVariant?: 'core' | 'advanced' | null
+  cycleMonth?: '4' | '8' | '12' | null
   planName?: string | null
-  price?: string | null
   priceNote?: string | null
   switchLinkText?: string | null
   switchLinkHref?: string | null
   bullets?: Bullet[] | null
   primaryCtaText?: string | null
-  primaryCtaPrice?: string | null
   primaryCtaHref?: string | null
   secondaryCtaText?: string | null
   secondaryCtaHref?: string | null
   ctaSubText?: string | null
+  locale?: string
 }
 
 export const PlanSummaryCardClient: React.FC<Props> = ({
   sectionTitle,
   planVariant = 'core',
+  cycleMonth,
   planName,
-  price,
   priceNote,
   switchLinkText,
   switchLinkHref,
-  bullets,
+  bullets: bulletsProp,
   primaryCtaText,
-  primaryCtaPrice,
   primaryCtaHref,
-  secondaryCtaText,
+  secondaryCtaText: rawSecondaryCtaText,
   secondaryCtaHref,
   ctaSubText,
+  locale = 'en',
 }) => {
   const { ref, revealed } = useReveal()
+  const [price, setPrice] = useState<string | null>(null)
+  const [primaryCtaPrice, setPrimaryCtaPrice] = useState<string | null>(null)
+  const [secondaryCtaText, setSecondaryCtaText] = useState<string | null | undefined>(rawSecondaryCtaText)
+  const [bullets, setBullets] = useState<Bullet[]>(bulletsProp ?? [])
+
+  useEffect(() => {
+    const family = planVariant === 'advanced' ? 'advanced' : 'core'
+    const month = Number(cycleMonth) || 4
+    const currency = getClientCurrency(locale)
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        const rate = rateMap[`${family}:${month}`]
+        if (rate != null) {
+          const formatted = formatPrice(rate, currency, locale)
+          setPrice(formatted)
+          setPrimaryCtaPrice(`${formatted}/mo`)
+        }
+        setSecondaryCtaText(resolveTokens(rawSecondaryCtaText, rateMap, currency, locale))
+        const apiBullets = extractBullets(plans, family, locale)
+        if (apiBullets.length > 0) setBullets(apiBullets.map((text) => ({ text })))
+      })
+      .catch(() => {})
+  }, [planVariant, cycleMonth, locale])
 
   return (
     <div ref={ref} className={`nb1-psc-sec${revealed ? ' nb1-in' : ''}`}>

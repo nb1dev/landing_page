@@ -1,10 +1,5 @@
 import React from 'react'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import { getServerCurrency, type CurrencyCode } from '@/utilities/currency'
-import { getPlan, type PlanFamily } from '@/lib/plans/api'
-import { formatRate } from '@/lib/plans/format'
-import { resolvePriceTokens, resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
-import { getDictionary } from '@/i18n/getDictionary'
 import { YpPlansClient } from './Component.client'
 
 type BgColorPreset = 'cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom'
@@ -81,79 +76,6 @@ export type YpPlansBlockType = {
   locale?: string
 }
 
-async function resolvePrice(
-  family: 'core' | 'advanced' | null | undefined,
-  currency: CurrencyCode,
-  locale: string,
-): Promise<{ price: string | null; pricePeriod: string | null }> {
-  if (!family) return { price: null, pricePeriod: null }
-  const apiFamily: PlanFamily = family === 'advanced' ? 'Advanced' : 'Core'
-  try {
-    const resolved = await getPlan(apiFamily, 4, currency)
-    if (!resolved) return { price: null, pricePeriod: null }
-    return {
-      price: formatRate(resolved, currency, locale),
-      pricePeriod: getDictionary(locale).plans.perMonth,
-    }
-  } catch (err) {
-    console.error(`[ypPlans] failed to load "${apiFamily}" plan:`, err)
-    return { price: null, pricePeriod: null }
-  }
-}
-
-
-/**
- * Server Component: resolves the live 4-month headline price for every
- * plan card AND every comparison-table column, then hands the merged data
- * to the client UI. `features` (the curated checkmark grid) stays fully
- * manual in Payload — it's editorial content, not pricing.
- */
-export const YpPlansComponent: React.FC<YpPlansBlockType> = async (props) => {
-  const locale = props.locale || 'en'
-  const currency = await getServerCurrency(locale)
-  const planCards = props.planCards ?? []
-
-  // Resolve price tokens across the whole comparison object first (section row
-  // text + each card's `features` json, e.g. the "Subscription terms" sub-line
-  // "or {{price:core:1}}/mo monthly"), then layer the live headline price onto
-  // each column.
-  const compareBase = props.comparison
-    ? await resolvePriceTokensDeep(props.comparison, currency, locale)
-    : null
-
-  const [resolvedCards, resolvedCompareCards] = await Promise.all([
-    Promise.all(
-      planCards.map(async (card) => {
-        const [pricing, monthly, commit] = await Promise.all([
-          resolvePrice(card.planFamily, currency, locale),
-          resolvePriceTokens(card.monthly, currency, locale),
-          resolvePriceTokens(card.commit, currency, locale),
-        ])
-        return { ...card, ...pricing, monthly, commit }
-      }),
-    ),
-    Promise.all(
-      (compareBase?.cards ?? []).map(async (card) => ({
-        ...card,
-        ...(await resolvePrice(card.planFamily, currency, locale)),
-      })),
-    ),
-  ])
-
-  return (
-    <YpPlansClient
-      backgroundColor={props.backgroundColor}
-      backgroundColorCustom={props.backgroundColorCustom}
-      backgroundType={props.backgroundType}
-      backgroundImage={props.backgroundImage}
-      grain={props.grain}
-      eyebrow={props.eyebrow}
-      heading={props.heading}
-      lede={props.lede}
-      planCards={resolvedCards}
-      showComparison={props.showComparison}
-      comparison={compareBase ? { ...compareBase, cards: resolvedCompareCards } : props.comparison}
-      guaranteeItems={props.guaranteeItems}
-    />
-  )
+export const YpPlansComponent: React.FC<YpPlansBlockType> = (props) => {
+  return <YpPlansClient {...props} />
 }

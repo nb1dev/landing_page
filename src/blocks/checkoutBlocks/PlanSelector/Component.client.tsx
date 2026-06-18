@@ -1,7 +1,16 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  resolveTokens,
+  resolveTokensDeep,
+  extractBullets,
+} from '@/lib/plans/clientUtils'
 
 type Plan = {
   planKey?: 'core' | 'advanced' | null
@@ -39,6 +48,7 @@ type Props = {
   scienceBoardImages?: ScienceImage[] | null
   showComparison?: boolean | null
   comparisonRows?: ComparisonRow[] | null
+  locale?: string
 }
 
 function parseGuaranteeText(text: string) {
@@ -56,17 +66,48 @@ const CheckIcon = () => (
 export const PlanSelectorClient: React.FC<Props> = ({
   sectionTitle,
   guaranteeItems,
-  plans,
+  plans: plansProp,
   scienceBoardLabel,
   scienceBoardSub,
   scienceBoardImages,
   showComparison,
-  comparisonRows,
+  comparisonRows: comparisonRowsProp,
+  locale = 'en',
 }) => {
+  const [plans, setPlans] = useState<Plan[]>(plansProp ?? [])
+  const [comparisonRows, setComparisonRows] = useState<ComparisonRow[] | null | undefined>(comparisonRowsProp)
   const [selectedKey, setSelectedKey] = useState<string>(
-    plans?.find(p => p.isRecommended)?.planKey ?? plans?.[1]?.planKey ?? 'advanced'
+    plansProp?.find(p => p.isRecommended)?.planKey ?? plansProp?.[1]?.planKey ?? 'advanced'
   )
   const [cmpOpen, setCmpOpen] = useState(false)
+
+  useEffect(() => {
+    if (!plansProp?.length) return
+    const currency = getClientCurrency(locale)
+    fetchPlansClient()
+      .then((apiPlans) => {
+        const rateMap = buildRateMap(apiPlans, currency)
+        setPlans(
+          plansProp.map((plan) => {
+            const family = plan.planKey === 'advanced' ? 'advanced' : 'core'
+            const rate = rateMap[`${family}:4`]
+            const apiBullets = extractBullets(apiPlans, family, locale)
+            return {
+              ...plan,
+              price: rate != null ? formatPrice(rate, currency, locale) : plan.price,
+              strikePrice: resolveTokens(plan.strikePrice, rateMap, currency, locale) ?? plan.strikePrice,
+              minNote: resolveTokens(plan.minNote, rateMap, currency, locale) ?? plan.minNote,
+              monthlyLinkText: resolveTokens(plan.monthlyLinkText, rateMap, currency, locale) ?? plan.monthlyLinkText,
+              bullets: apiBullets.length > 0
+                ? apiBullets.map((text) => ({ text }))
+                : plan.bullets,
+            }
+          }),
+        )
+        setComparisonRows(resolveTokensDeep(comparisonRowsProp, rateMap, currency, locale))
+      })
+      .catch(() => {})
+  }, [locale])
 
   if (!plans?.length) return null
 

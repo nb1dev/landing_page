@@ -2,6 +2,14 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import RichText from '@/components/RichText'
+import {
+  fetchPlansClient,
+  getClientCurrency,
+  formatPrice,
+  buildRateMap,
+  resolveTokens,
+  resolveTokensDeep,
+} from '@/lib/plans/clientUtils'
 
 type FeatureItem = { item?: string | null }
 type Guarantee = { iconSvg?: string | null; title?: string | null; description?: string | null }
@@ -15,7 +23,6 @@ type Props = {
   lede?: string | null
   coreLabel?: string | null
   coreDesc?: string | null
-  corePrice?: string | null
   coreMonthly?: string | null
   coreCommit?: string | null
   coreFeaturesLabel?: string | null
@@ -25,7 +32,6 @@ type Props = {
   advBadge?: string | null
   advLabel?: string | null
   advDesc?: string | null
-  advPrice?: string | null
   advCommit?: string | null
   advFeaturesLabel?: string | null
   advFeatures?: FeatureItem[] | null
@@ -33,6 +39,7 @@ type Props = {
   advCtaHref?: string | null
   guarantees?: Guarantee[] | null
   compareRowsJson?: string | null
+  locale?: string
 }
 
 function CheckIcon({ on }: { on: boolean }) {
@@ -55,14 +62,40 @@ function CompareCell({ v, adv }: { v: boolean | string | { v: string; sub: strin
 export const PlansClient: React.FC<Props> = (props) => {
   const {
     heading, lede,
-    coreLabel, coreDesc, corePrice, coreMonthly, coreCommit, coreFeaturesLabel, coreFeatures, coreCtaLabel, coreCtaHref,
-    advBadge, advLabel, advDesc, advPrice, advCommit, advFeaturesLabel, advFeatures, advCtaLabel, advCtaHref,
-    guarantees, compareRowsJson,
+    coreLabel, coreDesc, coreMonthly: rawCoreMonthly, coreCommit: rawCoreCommit,
+    coreFeaturesLabel, coreFeatures, coreCtaLabel, coreCtaHref,
+    advBadge, advLabel, advDesc, advCommit: rawAdvCommit,
+    advFeaturesLabel, advFeatures, advCtaLabel, advCtaHref,
+    guarantees, compareRowsJson: rawCompareRowsJson,
+    locale = 'en',
   } = props
 
   const secRef = useRef<HTMLElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
+  const [corePrice, setCorePrice] = useState<string | null>(null)
+  const [advPrice, setAdvPrice] = useState<string | null>(null)
+  const [coreMonthly, setCoreMonthly] = useState<string | null | undefined>(rawCoreMonthly)
+  const [coreCommit, setCoreCommit] = useState<string | null | undefined>(rawCoreCommit)
+  const [advCommit, setAdvCommit] = useState<string | null | undefined>(rawAdvCommit)
+  const [compareRowsJson, setCompareRowsJson] = useState<string | null | undefined>(rawCompareRowsJson)
+
+  useEffect(() => {
+    const currency = getClientCurrency(locale)
+    fetchPlansClient()
+      .then((plans) => {
+        const rateMap = buildRateMap(plans, currency)
+        const coreRate = rateMap['core:4']
+        const advRate = rateMap['advanced:4']
+        if (coreRate != null) setCorePrice(formatPrice(coreRate, currency, locale))
+        if (advRate != null) setAdvPrice(formatPrice(advRate, currency, locale))
+        setCoreMonthly(resolveTokens(rawCoreMonthly, rateMap, currency, locale))
+        setCoreCommit(resolveTokens(rawCoreCommit, rateMap, currency, locale))
+        setAdvCommit(resolveTokens(rawAdvCommit, rateMap, currency, locale))
+        setCompareRowsJson(resolveTokensDeep(rawCompareRowsJson, rateMap, currency, locale))
+      })
+      .catch(() => {})
+  }, [locale])
   const [compareOpen, setCompareOpen] = useState(false)
 
   useEffect(() => {

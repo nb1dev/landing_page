@@ -76,20 +76,6 @@ export const PlanSummaryCard: Block = {
       label: 'Switch plan link href',
     },
     {
-      name: 'bullets',
-      type: 'array',
-      label: 'Feature bullets',
-      fields: [
-        {
-          name: 'text',
-          type: 'text',
-          label: 'Text',
-          localized: true,
-          required: true,
-        },
-      ],
-    },
-    {
       name: 'primaryCtaText',
       type: 'text',
       label: 'Primary CTA text',
