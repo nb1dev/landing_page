@@ -838,16 +838,18 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             </div>
             <div className="nb1-acc-body">
               {walletAvailable && paymentRequest && (
-                <div style={{marginBottom: 14}}>
-                  <PaymentRequestButtonElement
-                    options={{
-                      paymentRequest,
-                      style: { paymentRequestButton: { height: '48px' } },
-                    }}
-                  />
-                </div>
+                <>
+                  <div style={{marginBottom: 14}}>
+                    <PaymentRequestButtonElement
+                      options={{
+                        paymentRequest,
+                        style: { paymentRequestButton: { height: '48px' } },
+                      }}
+                    />
+                  </div>
+                  <div className="nb1-pay-divider" style={{marginTop:0}}>{t.payment.orPayAnotherWay}</div>
+                </>
               )}
-              <div className="nb1-pay-divider" style={{marginTop:0}}>{t.payment.orPayAnotherWay}</div>
 
               {/* Payment method list */}
               <div className="nb1-pmlist">

@@ -101,6 +101,7 @@ export const Headers: CollectionConfig = {
       name: 'loginUrl',
       label: 'Login Link URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'loginTextColor',

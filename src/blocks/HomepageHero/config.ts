@@ -25,6 +25,7 @@ export const HomepageHeroBlock: Block = {
     {
       name: 'ctaHref',
       type: 'text',
+      localized: true,
     },
     {
       name: 'backgroundImage',
