@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { getDictionary } from '@/i18n/getDictionary'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import {
   fetchPlansClient,
@@ -74,6 +75,7 @@ export const PlanSelectorClient: React.FC<Props> = ({
   comparisonRows: comparisonRowsProp,
   locale = 'en',
 }) => {
+  const dict = getDictionary(locale)
   const [plans, setPlans] = useState<Plan[]>(plansProp ?? [])
   const [comparisonRows, setComparisonRows] = useState<ComparisonRow[] | null | undefined>(comparisonRowsProp)
   const [selectedKey, setSelectedKey] = useState<string>(
@@ -545,7 +547,7 @@ export const PlanSelectorClient: React.FC<Props> = ({
               onClick={() => setCmpOpen(o => !o)}
               aria-expanded={cmpOpen}
             >
-              <span>{cmpOpen ? 'Hide full comparison' : 'Compare Core & Advanced in full'}</span>
+              <span>{cmpOpen ? dict.plans.compareHide : dict.plans.compareShow}</span>
               <span className={`nb1-cmp-arr${cmpOpen ? ' open' : ''}`} aria-hidden="true">
                 <svg viewBox="0 0 24 24" width={13} height={13} fill="none" stroke="currentColor" strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 9l6 6 6-6" />

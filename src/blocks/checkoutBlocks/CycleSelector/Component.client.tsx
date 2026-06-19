@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { getDictionary } from '@/i18n/getDictionary'
 import { useReveal } from '../useReveal'
 import {
   fetchPlansClient,
@@ -34,6 +35,14 @@ type Props = {
   showMonthlyOption?: boolean | null
   monthlyRate?: string | null
   monthlyCheckoutHref?: string | null
+  yourPlanLabel?: string | null
+  bestValueLabel?: string | null
+  preferFlexibleLabel?: string | null
+  chooseFlexiblePrefix?: string | null
+  continuePrefix?: string | null
+  cancelAnytimeLabel?: string | null
+  billedMonthlyShortLabel?: string | null
+  guaranteeItems?: { text?: string | null }[] | null
   faqTitle?: string | null
   faqItems?: FaqItem[] | null
   locale?: string
@@ -54,11 +63,21 @@ export const CycleSelectorClient: React.FC<Props> = ({
   showMonthlyOption,
   monthlyRate,
   monthlyCheckoutHref,
+  yourPlanLabel,
+  bestValueLabel,
+  preferFlexibleLabel,
+  chooseFlexiblePrefix,
+  continuePrefix,
+  cancelAnytimeLabel,
+  billedMonthlyShortLabel,
+  guaranteeItems,
   faqTitle,
   faqItems,
   locale = 'en',
 }) => {
   const { ref, revealed } = useReveal()
+  const dict = getDictionary(locale)
+  const perMonth = dict.plans.perMonth
   const [selectedIdx, setSelectedIdx] = useState(0)
   const [monthlySelected, setMonthlySelected] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -102,7 +121,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
     ? (monthlyCheckoutHref ?? '#')
     : (activeTier?.checkoutHref ?? '#')
   const activeLabel = monthlySelected
-    ? 'Flexible monthly'
+    ? (preferFlexibleLabel ?? 'Flexible monthly')
     : activeTier?.months ?? ''
 
   const selectTier = (idx: number) => {
@@ -399,7 +418,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
         {/* Section head */}
         <div className="nb1-cs-head">
           <div className="nb1-cs-title">
-            Your plan · <span>{planName}</span>
+            {yourPlanLabel ?? 'Your plan'} · <span>{planName}</span>
           </div>
           {switchLinkLabel && switchLinkHref && (
             <a href={switchLinkHref} className="nb1-cs-switch">{switchLinkLabel}</a>
@@ -416,10 +435,10 @@ export const CycleSelectorClient: React.FC<Props> = ({
                 className={`nb1-cs-box${!monthlySelected && selectedIdx === i ? ' on' : ''}`}
                 onClick={() => selectTier(i)}
               >
-                {tier.isBestValue && <span className="nb1-cs-tag">Best value</span>}
+                {tier.isBestValue && <span className="nb1-cs-tag">{bestValueLabel ?? 'Best value'}</span>}
                 <span className="nb1-cs-dur">{tier.months}</span>
                 <span className="nb1-cs-rate">
-                  {tier.monthlyRate}<i>/mo</i>
+                  {tier.monthlyRate}<i>{perMonth}</i>
                 </span>
                 <span className={`nb1-cs-save${tier.saveLabel ? ' has-save' : ''}`}>
                   {tier.saveLabel ?? ' '}
@@ -436,30 +455,31 @@ export const CycleSelectorClient: React.FC<Props> = ({
             className={`nb1-cs-monthly${monthlySelected ? ' on' : ''}`}
             onClick={() => { setMonthlySelected(true) }}
           >
-            Prefer to stay flexible?{' '}
+            {preferFlexibleLabel ?? 'Prefer to stay flexible?'}{' '}
             <span className="nb1-cs-ml">
-              Choose Flexible monthly · {monthlyRate}/mo
+              {chooseFlexiblePrefix ?? 'Choose Flexible monthly ·'} {monthlyRate}{perMonth}
             </span>
           </button>
         )}
 
         {/* Guarantee strip */}
         <div className="nb1-cs-guarantee">
-          <div className="nb1-cs-gi"><CheckIcon /><strong>Billed monthly.</strong></div>
-          <div className="nb1-cs-gdiv" />
-          <div className="nb1-cs-gi"><CheckIcon /><strong>No upfront charge.</strong></div>
-          <div className="nb1-cs-gdiv" />
-          <div className="nb1-cs-gi"><CheckIcon /><strong>Pay nothing until your formula is made.</strong></div>
+          {guaranteeItems && guaranteeItems.map((item, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && <div className="nb1-cs-gdiv" />}
+              {item.text && <div className="nb1-cs-gi"><CheckIcon /><strong>{item.text}</strong></div>}
+            </React.Fragment>
+          ))}
         </div>
 
         {/* Footer */}
         <div className="nb1-cs-foot">
           <div className="nb1-cs-sel">
-            {activeLabel} · <b>{activeRate}/mo</b> ·{' '}
-            {monthlySelected ? 'cancel anytime' : 'billed monthly'}
+            {activeLabel} · <b>{activeRate}{perMonth}</b> ·{' '}
+            {monthlySelected ? (cancelAnytimeLabel ?? 'cancel anytime') : (billedMonthlyShortLabel ?? 'billed monthly')}
           </div>
           <a href={activeHref} className="nb1-cs-go">
-            Continue · {activeRate}/mo →
+            {continuePrefix ?? 'Continue'} · {activeRate}{perMonth} →
           </a>
         </div>
 

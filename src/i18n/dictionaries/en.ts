@@ -30,6 +30,11 @@ export const en = {
     savingsPrefix: 'Save',
     savingsSuffix: '/ cycle',
     bestValue: 'Best value',
+    compareShow: 'Compare Core & Advanced in full',
+    compareHide: 'Hide full comparison',
+    guaranteeBilledMonthly: 'Billed monthly.',
+    guaranteeNoUpfront: 'No upfront charge.',
+    guaranteePayNothing: 'Pay nothing until your formula is made.',
   },
   countries: {
     Germany: 'Germany',
