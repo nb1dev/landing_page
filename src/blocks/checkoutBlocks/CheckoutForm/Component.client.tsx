@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
-import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { Elements, CardElement, PaymentRequestButtonElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
 import { getDictionary } from '@/i18n/getDictionary'
@@ -23,6 +24,11 @@ const STATIC_RATES: Record<string, Record<string, string>> = {
 }
 
 const COUNTRIES = ['Germany', 'Austria', 'Netherlands', 'Belgium', 'France', 'Luxembourg', 'Ireland']
+
+const COUNTRY_CODES: Record<string, string> = {
+  Germany: 'DE', Austria: 'AT', Netherlands: 'NL',
+  Belgium: 'BE', France: 'FR', Luxembourg: 'LU', Ireland: 'IE',
+}
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 
@@ -129,6 +135,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     } catch { /* noop */ }
   }, [email, fn, ln, country, a1, a2, zip, city, phone, shipping, step, doneSteps])
 
+  /* wallet (Apple Pay / Google Pay) */
+  const [paymentRequest, setPaymentRequest] = useState<ReturnType<NonNullable<typeof stripe>['paymentRequest']> | null>(null)
+  const [walletAvailable, setWalletAvailable] = useState(false)
+
   /* step 4 */
   const [payMethod,   setPayMethod]   = useState<PayMethod>('card')
   const [cardName,    setCardName]    = useState('')
@@ -176,6 +186,92 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [promoMsg,     setPromoMsg]     = useState<{ text: string; ok: boolean } | null>(null)
   const [promoOpen,    setPromoOpen]    = useState(false)
 
+  /* ── Wallet: create PaymentRequest once Stripe is ready ── */
+  useEffect(() => {
+    if (!stripe) return
+    const pr = stripe.paymentRequest({
+      country: 'DE',
+      currency: 'eur',
+      total: { label: `NB1 ${planLabel} Plan`, amount: 0, pending: true },
+      requestPayerName: true,
+      requestPayerEmail: true,
+    })
+    void pr.canMakePayment().then(result => {
+      console.log('[Wallet] canMakePayment result:', result)
+      if (result) {
+        setPaymentRequest(pr)
+        setWalletAvailable(true)
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stripe])
+
+  /* ── Wallet: paymentmethod handler (re-registers when form state changes) ── */
+  useEffect(() => {
+    if (!paymentRequest || !stripe) return
+    const accountError = t.confirm.accountError
+    const accountExists = t.confirm.accountExists
+    const handler = async (event: PaymentRequestPaymentMethodEvent) => {
+      if (submittingRef.current) { event.complete('fail'); return }
+      submittingRef.current = true
+      setAccountStatus('sending')
+      setAccountErr('')
+      try {
+        const monthNum = cycleKey === 'monthly' ? 1 : Number(cycleKey)
+        const planSlug = `NB1-${planKey.toUpperCase()}-${monthNum}`
+        const intent = await checkoutPaymentIntent({
+          plan_slug: planSlug,
+          currency: 'EUR',
+          shipping_option: shipping,
+          discount_code: promoApplied ?? null,
+          customer_email: email,
+          customer_name: `${fn} ${ln}`.trim() || null,
+          customer_phone: phone || null,
+          idempotency_key: idempotencyKeyRef.current || undefined,
+        })
+        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
+          payment_method: event.paymentMethod.id,
+        })
+        if (stripeError) {
+          event.complete('fail')
+          setAccountErr(stripeError.message ?? accountError)
+          setAccountStatus('error')
+          submittingRef.current = false
+          return
+        }
+        event.complete('success')
+        await checkoutConfirm({
+          setup_intent_id: intent.setup_intent_id,
+          idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
+          shipping_address: {
+            first_name: fn, last_name: ln, email,
+            phone: phone || null, address_line1: a1, address_line2: a2 || null,
+            city, state: null, postal_code: zip, country,
+            country_code: COUNTRY_CODES[country] ?? '',
+          },
+          billing_address: {
+            address_type: 'individual',
+            first_name: fn, last_name: ln, company_name: null,
+            tax_id: null, registration_number: null, email,
+            phone: phone || null, address_line1: a1, address_line2: a2 || null,
+            city, state: null, postal_code: zip,
+            country: COUNTRY_CODES[country] ?? country,
+          },
+        })
+        setAccountStatus('sent')
+        setConfirmed(true)
+      } catch (err: unknown) {
+        event.complete('fail')
+        setAccountStatus('error')
+        const code = (err as { code?: string })?.code
+        setAccountErr(code === 'auth/email-already-in-use' ? accountExists : accountError)
+        submittingRef.current = false
+      }
+    }
+    paymentRequest.on('paymentmethod', handler)
+    return () => { paymentRequest.off('paymentmethod', handler) }
+  }, [paymentRequest, stripe, email, fn, ln, phone, a1, a2, zip, city, country, shipping, planKey, cycleKey, promoApplied, t.confirm.accountError, t.confirm.accountExists])
+
   /* ── helpers ── */
   const shippingLabel = shipping === 'express'
     ? `${t.shipping.expressName} · ${t.shipping.expressPrice}`
@@ -208,11 +304,6 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   }
 
   function nextShipping() { markDone(3) }
-
-  const COUNTRY_CODES: Record<string, string> = {
-    Germany: 'DE', Austria: 'AT', Netherlands: 'NL',
-    Belgium: 'BE', France: 'FR', Luxembourg: 'LU', Ireland: 'IE',
-  }
 
   async function nextPayment() {
     const e: Record<string, string> = {}
@@ -746,6 +837,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
               <span className="nb1-acc-title">{t.steps.payment}</span>
             </div>
             <div className="nb1-acc-body">
+              {walletAvailable && paymentRequest && (
+                <div style={{marginBottom: 14}}>
+                  <PaymentRequestButtonElement
+                    options={{
+                      paymentRequest,
+                      style: { paymentRequestButton: { height: '48px' } },
+                    }}
+                  />
+                </div>
+              )}
               <div className="nb1-pay-divider" style={{marginTop:0}}>{t.payment.orPayAnotherWay}</div>
 
               {/* Payment method list */}
