@@ -229,7 +229,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           customer_phone: phone || null,
           idempotency_key: idempotencyKeyRef.current || undefined,
         })
-        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
+        const { error: stripeError } = await stripe.confirmCardPayment(intent.client_secret, {
           payment_method: event.paymentMethod.id,
         })
         if (stripeError) {
@@ -241,8 +241,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         }
         event.complete('success')
         await checkoutConfirm({
-          setup_intent_id: intent.setup_intent_id,
-          idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
+          payment_intent_id: intent.payment_intent_id,
+          idempotency_key: idempotencyKeyRef.current || intent.payment_intent_id,
           shipping_address: {
             first_name: fn, last_name: ln, email,
             phone: phone || null, address_line1: a1, address_line2: a2 || null,
@@ -349,7 +349,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           setAccountStatus('error')
           return
         }
-        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
+        const { error: stripeError } = await stripe.confirmCardPayment(intent.client_secret, {
           payment_method: {
             card: cardElement,
             billing_details: { name: cardName || `${fn} ${ln}`.trim(), email },
@@ -364,8 +364,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       // 3. Confirm checkout — backend creates user + subscription
       await checkoutConfirm({
-        setup_intent_id: intent.setup_intent_id,
-        idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
+        payment_intent_id: intent.payment_intent_id,
+        idempotency_key: idempotencyKeyRef.current || intent.payment_intent_id,
         shipping_address: {
           first_name: fn,
           last_name: ln,
