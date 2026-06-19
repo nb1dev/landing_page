@@ -4898,6 +4898,19 @@ export interface CycleSelectorBlock {
   showMonthlyOption?: boolean | null;
   monthlyRate?: string | null;
   monthlyCheckoutHref?: string | null;
+  yourPlanLabel?: string | null;
+  bestValueLabel?: string | null;
+  preferFlexibleLabel?: string | null;
+  chooseFlexiblePrefix?: string | null;
+  continuePrefix?: string | null;
+  cancelAnytimeLabel?: string | null;
+  billedMonthlyShortLabel?: string | null;
+  guaranteeItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   faqTitle?: string | null;
   faqItems?:
     | {
@@ -7968,6 +7981,19 @@ export interface CycleSelectorBlockSelect<T extends boolean = true> {
   showMonthlyOption?: T;
   monthlyRate?: T;
   monthlyCheckoutHref?: T;
+  yourPlanLabel?: T;
+  bestValueLabel?: T;
+  preferFlexibleLabel?: T;
+  chooseFlexiblePrefix?: T;
+  continuePrefix?: T;
+  cancelAnytimeLabel?: T;
+  billedMonthlyShortLabel?: T;
+  guaranteeItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
   faqTitle?: T;
   faqItems?:
     | T

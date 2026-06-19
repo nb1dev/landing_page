@@ -14,6 +14,14 @@ type Props = {
   showMonthlyOption?: boolean | null
   monthlyRate?: string | null
   monthlyCheckoutHref?: string | null
+  yourPlanLabel?: string | null
+  bestValueLabel?: string | null
+  preferFlexibleLabel?: string | null
+  chooseFlexiblePrefix?: string | null
+  continuePrefix?: string | null
+  cancelAnytimeLabel?: string | null
+  billedMonthlyShortLabel?: string | null
+  guaranteeItems?: { text?: string | null }[] | null
   faqTitle?: string | null
   faqItems?: FaqItem[] | null
   locale?: string

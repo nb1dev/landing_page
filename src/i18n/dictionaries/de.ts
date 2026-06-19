@@ -32,6 +32,11 @@ export const de = {
     savingsPrefix: '',
     savingsSuffix: 'pro Zyklus sparen',
     bestValue: 'Bester Wert',
+    compareShow: 'Core & Advanced im Vergleich',
+    compareHide: 'Vergleich ausblenden',
+    guaranteeBilledMonthly: 'Monatliche Abrechnung.',
+    guaranteeNoUpfront: 'Keine Vorauszahlung.',
+    guaranteePayNothing: 'Nichts zahlen, bis Ihre Formel hergestellt ist.',
   },
   countries: {
     Germany: 'Deutschland',
