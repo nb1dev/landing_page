@@ -13,7 +13,7 @@ export type CheckoutPaymentIntentIn = {
 
 export type CheckoutPaymentIntentOut = {
   client_secret: string
-  setup_intent_id: string
+  payment_intent_id: string
   customer_id: string
   amount: number
   currency: string
@@ -56,7 +56,7 @@ export type BillingAddressIn = {
 }
 
 export type CheckoutConfirmIn = {
-  setup_intent_id: string
+  payment_intent_id: string
   shipping_address: PublicShippingAddressIn
   billing_address: BillingAddressIn
   idempotency_key?: string | null
