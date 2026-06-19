@@ -72,6 +72,8 @@ import * as migration_20260616_161130_yp_plans_plan_family from './20260616_1611
 import * as migration_20260616_162431_plan_summary_card_cycle_month from './20260616_162431_plan_summary_card_cycle_month';
 import * as migration_20260618_123016 from './20260618_123016';
 import * as migration_20260618_130104 from './20260618_130104';
+import * as migration_20260619_083036 from './20260619_083036';
+import * as migration_20260619_083741 from './20260619_083741';
 
 export const migrations = [
   {
@@ -442,6 +444,16 @@ export const migrations = [
   {
     up: migration_20260618_130104.up,
     down: migration_20260618_130104.down,
-    name: '20260618_130104'
+    name: '20260618_130104',
+  },
+  {
+    up: migration_20260619_083036.up,
+    down: migration_20260619_083036.down,
+    name: '20260619_083036',
+  },
+  {
+    up: migration_20260619_083741.up,
+    down: migration_20260619_083741.down,
+    name: '20260619_083741',
   },
 ];

@@ -88,8 +88,8 @@ export const Footers: CollectionConfig = {
       label: 'Explore Column Links',
       type: 'array',
       fields: [
-        { name: 'label', type: 'text', required: true },
-        { name: 'url', type: 'text', required: true },
+        { name: 'label', type: 'text', required: true, localized: true },
+        { name: 'url', type: 'text', required: true, localized: true },
       ],
       maxRows: 8,
       admin: {
@@ -102,8 +102,8 @@ export const Footers: CollectionConfig = {
       label: 'Get Started Column Links',
       type: 'array',
       fields: [
-        { name: 'label', type: 'text', required: true },
-        { name: 'url', type: 'text', required: true },
+        { name: 'label', type: 'text', required: true, localized: true },
+        { name: 'url', type: 'text', required: true, localized: true },
       ],
       maxRows: 8,
       admin: {
