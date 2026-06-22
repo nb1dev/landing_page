@@ -154,6 +154,32 @@ export const Footers: CollectionConfig = {
       },
     },
     {
+      name: 'legalLinks',
+      label: 'Legal Links',
+      type: 'array',
+      localized: true,
+      admin: {
+        description: 'Privacy, Terms, Imprint etc. shown in the bottom bar.',
+        components: {
+          RowLabel: '@/Footer/RowLabel#RowLabel',
+        },
+      },
+      fields: [
+        {
+          name: 'label',
+          label: 'Label',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'url',
+          label: 'URL',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
+    {
       name: 'form',
       label: 'Klaviyo Form (Payload submission)',
       type: 'relationship',

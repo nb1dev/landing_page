@@ -19,6 +19,7 @@ type FooterData = {
   instagramUrl?: string | null
   exploreLinks?: Array<{ label?: string | null; url?: string | null }> | null
   getStartedLinks?: Array<{ label?: string | null; url?: string | null }> | null
+  legalLinks?: Array<{ label?: string | null; url?: string | null }> | null
   form?: { id?: string | number | null; confirmationType?: string | null; redirect?: { url?: string | null } | null } | number | null
   variants?: Array<{
     variantKey: string
@@ -55,6 +56,7 @@ export async function Footer({ locale, id }: Props) {
         instagramUrl={footerData?.instagramUrl ?? null}
         exploreLinks={(footerData?.exploreLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
         getStartedLinks={(footerData?.getStartedLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
+        legalLinks={(footerData?.legalLinks ?? []).map((l) => ({ label: l.label ?? null, url: l.url ?? null }))}
         formID={formID != null ? String(formID) : undefined}
         confirmationType={confirmationType}
         redirectUrl={redirectUrl}
