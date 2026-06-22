@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
+import { getDictionary } from '@/i18n/getDictionary'
 
 type Theme = 'light' | 'dark'
 
@@ -131,15 +132,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     return () => { document.body.style.overflow = '' }
   }, [sheetOpen])
 
-  // Lang / currency
-  const [curLang, setCurLang] = useState(locale || 'en')
-  // Sync from localStorage after hydration — reading it during SSR causes a
-  // server/client mismatch because localStorage is unavailable on the server.
+  // Lang / currency — derive from URL pathname (e.g. /de/...) so the selector
+  // always reflects the page the user is actually on, regardless of localStorage.
+  const langFromPath = pathname.split('/')[1]
+  const validLangCodes = langs.map(([code]) => code)
+  const activeLang = validLangCodes.includes(langFromPath) ? langFromPath : (locale || 'en')
+  const dict = getDictionary(activeLang)
+  const [curLang, setCurLang] = useState(activeLang)
   useEffect(() => {
-    const stored = lsGet('nb1_lang', locale || 'en')
-    if (stored !== (locale || 'en')) setCurLang(stored)
+    setCurLang(activeLang)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [pathname])
   // Seeded from the server-resolved cookie value (not localStorage) so this
   // matches the SSR HTML exactly — see initialCurrency prop doc above.
   const [curCur, setCurCur] = useState(initialCurrency || 'EUR')
@@ -326,7 +329,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 {CHEV}
               </button>
               <div className={`nb1-loc-menu${locOpen ? '' : ''}`} style={locOpen ? { opacity: 1, visibility: 'visible', transform: 'none' } : {}}>
-                <h5>Language</h5>
+                <h5>{dict.header.language}</h5>
                 <div className="nb1-loc-grid">
                   {langs.map(([code, label]) => (
                     <button
@@ -339,7 +342,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                     </button>
                   ))}
                 </div>
-                <h5>Currency</h5>
+                <h5>{dict.header.currency}</h5>
                 <div className="nb1-loc-grid">
                   {allowedCurs().map(([code, sym, name]) => (
                     <button
@@ -352,7 +355,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                     </button>
                   ))}
                 </div>
-                <button type="button" className="nb1-loc-done" onClick={() => setLocOpen(false)}>Apply</button>
+                <button type="button" className="nb1-loc-done" onClick={() => setLocOpen(false)}>{dict.header.apply}</button>
               </div>
             </div>
 
@@ -400,7 +403,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           <a href={`/${curLang}${ctaUrl.startsWith('/') ? ctaUrl : `/${ctaUrl}`}`} className="nb1-sheet-cta" onClick={() => setSheetOpen(false)}>{ctaLabel}</a>
         )}
         <div className="nb1-sheet-loc">
-          <h5>Language</h5>
+          <h5>{dict.header.language}</h5>
           <div className="nb1-sheet-chips">
             {langs.map(([code]) => (
               <button
@@ -415,7 +418,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           </div>
         </div>
         <div className="nb1-sheet-loc">
-          <h5>Currency</h5>
+          <h5>{dict.header.currency}</h5>
           <div className="nb1-sheet-chips">
             {allowedCurs().map(([code, sym, name]) => (
               <button
@@ -430,7 +433,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           </div>
         </div>
         <div className="nb1-sheet-loc">
-          <button type="button" className="nb1-loc-done" onClick={() => setSheetOpen(false)}>Apply</button>
+          <button type="button" className="nb1-loc-done" onClick={() => setSheetOpen(false)}>{dict.header.apply}</button>
         </div>
       </nav>
     </>
