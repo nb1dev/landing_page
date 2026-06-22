@@ -1,4 +1,9 @@
 export const en = {
+  header: {
+    language: 'Language',
+    currency: 'Currency',
+    apply: 'Apply',
+  },
   theCase: {
     readMore: 'Read more',
     back: 'Back',

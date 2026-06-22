@@ -1,4 +1,9 @@
 export const de = {
+  header: {
+    language: 'Sprache',
+    currency: 'Währung',
+    apply: 'Übernehmen',
+  },
   theCase: {
     readMore: 'Mehr lesen',
     back: 'Zurück',
