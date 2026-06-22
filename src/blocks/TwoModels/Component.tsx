@@ -3,6 +3,7 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getDictionary } from '@/i18n/getDictionary'
 
 const X_ICON = `<path d="M4.6 4.6l6.8 6.8M11.4 4.6l-6.8 6.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>`
 
@@ -17,9 +18,12 @@ type Props = {
   heading?: any
   nb1Logo?: { url?: string | null } | null
   rows?: Row[] | null
+  theyLabel?: string | null
+  locale?: string
 }
 
-export const TwoModelsComponent: React.FC<Props> = ({ heading, nb1Logo, rows }) => {
+export const TwoModelsComponent: React.FC<Props> = ({ heading, nb1Logo, rows, theyLabel, locale }) => {
+  const dict = getDictionary(locale)
   const logoUrl = nb1Logo?.url ? getMediaUrl(nb1Logo.url) : null
   const rowCount = rows?.length ?? 0
 
@@ -273,7 +277,7 @@ export const TwoModelsComponent: React.FC<Props> = ({ heading, nb1Logo, rows }) 
             <div className="ctbl">
               <div className="ct-panel" />
 
-              <div className="ctc ct-h ct-h-them">Everyone else</div>
+              <div className="ctc ct-h ct-h-them">{theyLabel || dict.twoModels.theyLabel}</div>
               <div className="ctc ct-h ct-h-us">
                 {logoUrl
                   ? <img src={logoUrl} alt="NB1" style={{ height: '24px', width: 'auto', display: 'block' }} />

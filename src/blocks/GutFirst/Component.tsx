@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import RichText from '@/components/RichText'
+import { getDictionary } from '@/i18n/getDictionary'
 
 type NodeData = {
   key?: string | null
@@ -15,6 +16,7 @@ type Props = {
   bodyCopy?: string | null
   hintText?: string | null
   nodes?: NodeData[] | null
+  locale?: string
 }
 
 const NODE_COORDS: Record<string, { cx: number; cy: number; labelAnchor: string; labelX: number; labelY: number }> = {
@@ -75,7 +77,8 @@ function getMobilePath(x: number, y: number) {
   return `M${MOBILE_CX} ${MOBILE_CY} Q${qx} ${qy} ${x} ${y}`
 }
 
-export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText, nodes }) => {
+export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText, nodes, locale }) => {
+  const dict = getDictionary(locale)
   const secRef = useRef<HTMLElement>(null)
   const popRef = useRef<HTMLDivElement>(null)
   const stemRef = useRef<HTMLDivElement>(null)
@@ -509,7 +512,7 @@ export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText
                     <circle key={i} cx={x} cy={y} r={r} opacity={o} />
                   ))}
                 </g>
-                <text className="gs-gutlabel" style={{ fontFamily: 'Inter, sans-serif', fontSize: '12.5px', fontWeight: 600, letterSpacing: '.2em', textTransform: 'uppercase', fill: '#7FD0E6' }} x="280" y="498" textAnchor="middle">Your gut</text>
+                <text className="gs-gutlabel" style={{ fontFamily: 'Inter, sans-serif', fontSize: '12.5px', fontWeight: 600, letterSpacing: '.2em', textTransform: 'uppercase', fill: '#7FD0E6' }} x="280" y="498" textAnchor="middle">{dict.gutFirst.yourGut}</text>
               </g>
 
               {/* Nodes */}
@@ -615,7 +618,7 @@ export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText
                   <circle key={i} cx={MOBILE_CX + ox} cy={MOBILE_CY + oy} r={r} fill="#7FD6EC" opacity={op} />
                 ))}
                 <circle cx={MOBILE_CX} cy={MOBILE_CY} r="6" fill="#CFF1FB" />
-                <text className="gs-rgut-label" x={MOBILE_CX} y={MOBILE_CY + 36} textAnchor="middle">Your gut</text>
+                <text className="gs-rgut-label" x={MOBILE_CX} y={MOBILE_CY + 36} textAnchor="middle">{dict.gutFirst.yourGut}</text>
 
                 {/* Mobile nodes */}
                 {MOBILE_NODE_POSITIONS.map(m => {
@@ -660,7 +663,7 @@ export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText
             onClick={e => e.stopPropagation()}
           >
             <button className="gs-pop-x" type="button" aria-label="Close" onClick={e => { e.stopPropagation(); closeNode() }}>×</button>
-            <div className="gs-pop-k">What your gut reveals</div>
+            <div className="gs-pop-k">{dict.gutFirst.revealsLabel}</div>
             <h3 className="gs-pop-t">{selectedNode?.title || ''}</h3>
             <p className="gs-pop-b">{selectedNode?.body || ''}</p>
           </div>
@@ -673,7 +676,7 @@ export const GutFirstComponent: React.FC<Props> = ({ heading, bodyCopy, hintText
           <div className="gs-sheet-scrim open" onClick={() => setSheetKey(null)} />
           <div className="gs-sheet open" role="dialog" aria-live="polite">
             <div className="gs-sheet-grip" />
-            <div className="gs-sheet-k">What your gut reveals</div>
+            <div className="gs-sheet-k">{dict.gutFirst.revealsLabel}</div>
             <h3 className="gs-sheet-t">{nodeMap[sheetKey]?.title || ''}</h3>
             <p className="gs-sheet-b">{nodeMap[sheetKey]?.body || ''}</p>
           </div>

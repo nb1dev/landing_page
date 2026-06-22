@@ -1,4 +1,15 @@
 export const en = {
+  theCase: {
+    readMore: 'Read more',
+    back: 'Back',
+  },
+  gutFirst: {
+    revealsLabel: 'What your gut reveals',
+    yourGut: 'Your gut',
+  },
+  twoModels: {
+    theyLabel: 'Everyone else',
+  },
   keyTakeaways: {
     heading: 'Key Takeaways',
   },
