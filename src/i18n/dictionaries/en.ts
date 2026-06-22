@@ -136,6 +136,8 @@ export const en = {
       placeholder: 'Discount code',
       apply: 'Apply',
       appliedSuffix: '{code} applied',
+      discount: 'Discount',
+      firstMonth: 'First month',
     },
     confirm: {
       label: 'Confirm — {zeroPrice} due today',

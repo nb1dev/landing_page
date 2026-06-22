@@ -138,6 +138,8 @@ export const de = {
       placeholder: 'Rabattcode',
       apply: 'Anwenden',
       appliedSuffix: '{code} angewendet',
+      discount: 'Rabatt',
+      firstMonth: 'Erster Monat',
     },
     confirm: {
       label: 'Bestätigen — {zeroPrice} heute fällig',
