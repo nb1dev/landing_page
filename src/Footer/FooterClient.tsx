@@ -14,6 +14,7 @@ type FooterVariant = {
 }
 
 type NavLink = { label?: string | null; url?: string | null }
+type LegalLink = { label?: string | null; url?: string | null }
 
 type Props = {
   logo?: { url?: string | null; alt?: string | null } | null
@@ -27,6 +28,7 @@ type Props = {
   defaultTheme?: Theme
   defaultLinkColor?: string | null
   variants?: FooterVariant[]
+  legalLinks?: LegalLink[]
   formID?: string
   confirmationType?: string | null
   redirectUrl?: string | null
@@ -44,6 +46,7 @@ export function FooterClient({
   defaultTheme = 'dark',
   defaultLinkColor,
   variants = [],
+  legalLinks = [],
   formID,
   confirmationType,
   redirectUrl,
@@ -189,11 +192,13 @@ export function FooterClient({
 
           <div className="nbf-bot">
             {copyrightText && <span className="nbf-copy">{copyrightText}</span>}
-            <div className="nbf-legal">
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-              <a href="#">Imprint</a>
-            </div>
+            {legalLinks.length > 0 && (
+              <div className="nbf-legal">
+                {legalLinks.map((link, i) => (
+                  <a key={i} href={link.url ?? '#'}>{link.label}</a>
+                ))}
+              </div>
+            )}
             {instagramUrl && (
               <div className="nbf-soc">
                 <a href={instagramUrl} target="_blank" rel="noopener noreferrer">Instagram ↗</a>

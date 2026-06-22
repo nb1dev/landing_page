@@ -810,6 +810,16 @@ export interface Footer {
    */
   disclaimer?: string | null;
   /**
+   * Privacy, Terms, Imprint etc. shown in the bottom bar.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
    * Select the Form Builder form to log Klaviyo submissions in Payload.
    */
   form?: (number | null) | Form;
@@ -8620,6 +8630,13 @@ export interface FootersSelect<T extends boolean = true> {
   address?: T;
   copyrightText?: T;
   disclaimer?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
   form?: T;
   variants?:
     | T
