@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import RichText from '@/components/RichText'
+import { getDictionary } from '@/i18n/getDictionary'
 import {
   fetchPlansClient,
   getClientCurrency,
@@ -70,6 +71,7 @@ export const PlansClient: React.FC<Props> = (props) => {
     locale = 'en',
   } = props
 
+  const dict = getDictionary(locale)
   const secRef = useRef<HTMLElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
@@ -565,7 +567,7 @@ export const PlansClient: React.FC<Props> = (props) => {
                 aria-expanded={compareOpen}
                 onClick={() => setCompareOpen(o => !o)}
               >
-                <span>{compareOpen ? 'Hide full comparison' : 'Compare side by side'}</span>
+                <span>{compareOpen ? dict.plans.compareHide : dict.plans.compareShow}</span>
                 <span className={`cmp-arr${compareOpen ? ' open' : ''}`} aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M6 9l6 6 6-6" />

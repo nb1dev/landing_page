@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import RichText from '@/components/RichText'
+import { getDictionary } from '@/i18n/getDictionary'
 
 type Stat = {
   stat?: string | null
@@ -16,9 +17,11 @@ type Props = {
   lede?: string | null
   stats?: Stat[] | null
   pivotHtml?: string | null
+  locale?: string
 }
 
-export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotHtml }) => {
+export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotHtml, locale }) => {
+  const dict = getDictionary(locale)
   const [flipped, setFlipped] = useState<number | null>(null)
 
   const toggle = (i: number) => setFlipped((prev) => (prev === i ? null : i))
@@ -305,7 +308,7 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
                       {item.tag && <div className="tag">{item.tag}</div>}
                       {item.frontBody && <p className="exp">{item.frontBody}</p>}
                       <span className="cstat-more">
-                        Read more <span className="cstat-more-icon">+</span>
+                        {dict.theCase.readMore} <span className="cstat-more-icon">+</span>
                       </span>
                     </div>
                     {/* back */}
@@ -313,7 +316,7 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
                       {item.tag && <div className="tag">{item.tag}</div>}
                       {item.backBody && <p className="back-body">{item.backBody}</p>}
                       <span className="cstat-more">
-                        Back <span className="cstat-more-icon">×</span>
+                        {dict.theCase.back} <span className="cstat-more-icon">×</span>
                       </span>
                     </div>
                   </div>

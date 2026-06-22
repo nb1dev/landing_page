@@ -1,4 +1,15 @@
 export const de = {
+  theCase: {
+    readMore: 'Mehr lesen',
+    back: 'Zurück',
+  },
+  gutFirst: {
+    revealsLabel: 'Was dein Darm zeigt',
+    yourGut: 'Dein Darm',
+  },
+  twoModels: {
+    theyLabel: 'Alle anderen',
+  },
   keyTakeaways: {
     heading: 'Wichtigste Erkenntnisse',
   },
