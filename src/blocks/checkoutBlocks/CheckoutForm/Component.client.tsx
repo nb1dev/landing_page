@@ -236,13 +236,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* ── Klarna/PayPal redirect return handler ── */
   useEffect(() => {
     const redirectStatus = searchParams?.get('redirect_status')
-    const paymentIntentId = searchParams?.get('payment_intent')
-    const paymentIntentClientSecret = searchParams?.get('payment_intent_client_secret')
+    // After a SetupIntent redirect (Klarna/PayPal) Stripe appends setup_intent[_client_secret],
+    // NOT payment_intent[_client_secret].
+    const setupIntentParam = searchParams?.get('setup_intent')
+    const setupIntentClientSecret = searchParams?.get('setup_intent_client_secret')
     if (!stripe) return
     if (
       (redirectStatus !== 'succeeded' && redirectStatus !== 'pending') ||
-      !paymentIntentId ||
-      !paymentIntentClientSecret
+      !setupIntentParam ||
+      !setupIntentClientSecret
     )
       return
 
@@ -252,7 +254,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         const setupIntentId =
           sessionStorage.getItem('nb1_paypal_setup_intent_id') ??
           sessionStorage.getItem('nb1_klarna_setup_intent_id') ??
-          paymentIntentId
+          setupIntentParam
         const idempotencyKey =
           sessionStorage.getItem('nb1_checkout_idempotency_key') ?? setupIntentId
         sessionStorage.removeItem('nb1_paypal_setup_intent_id')
@@ -649,7 +651,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         // Store setup_intent_id so we can call checkoutConfirm after redirect
         sessionStorage.setItem('nb1_klarna_setup_intent_id', intent.setup_intent_id)
         const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
-        const { error: klarnaError } = await stripe.confirmKlarnaPayment(intent.client_secret, {
+        // SetupIntent (method saved, no charge) → must use confirmKlarnaSetup, NOT confirmKlarnaPayment.
+        const { error: klarnaError } = await stripe.confirmKlarnaSetup(intent.client_secret, {
           payment_method: {
             billing_details: {
               name: `${fn} ${ln}`.trim(),
@@ -665,6 +668,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             },
           },
           return_url: returnUrl,
+          mandate_data: {
+            customer_acceptance: { type: 'online', online: { infer_from_client: true } },
+          },
         })
         // If we reach here Stripe failed before redirecting
         if (klarnaError) {
@@ -685,8 +691,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         }
         sessionStorage.setItem('nb1_paypal_setup_intent_id', intent.setup_intent_id)
         const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
-        const { error: paypalError } = await stripe.confirmPayPalPayment(intent.client_secret, {
+        // SetupIntent (method saved, no charge) → must use confirmPayPalSetup, NOT confirmPayPalPayment.
+        const { error: paypalError } = await stripe.confirmPayPalSetup(intent.client_secret, {
           return_url: returnUrl,
+          mandate_data: {
+            customer_acceptance: { type: 'online', online: { infer_from_client: true } },
+          },
         })
         if (paypalError) {
           setAccountErr(paypalError.message ?? t.confirm.accountError)
