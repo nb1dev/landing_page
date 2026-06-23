@@ -14,6 +14,7 @@ import {
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
+import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
 import { getDictionary } from '@/i18n/getDictionary'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
@@ -77,17 +78,26 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://apistg.nb1.com'
     fetch(`${backend}/subscriptions/plans?preferred_first=false`)
       .then((r) => r.json())
-      .then((plans: Array<{ id: string; title: string; month: number; prices: Record<string, number> }>) => {
-        const rates: PlanRates = { core: {}, advanced: {} }
-        const ids: Record<string, Record<string, string>> = { core: {}, advanced: {} }
-        for (const p of plans) {
-          const key = p.title === 'Advanced' ? 'advanced' : 'core'
-          if (p.prices.EUR) rates[key][String(p.month)] = `€${p.prices.EUR}`
-          if (p.id) ids[key][String(p.month)] = p.id
-        }
-        setPlanRates(rates)
-        setPlanIds(ids)
-      })
+      .then(
+        (
+          plans: Array<{
+            id: string
+            title: string
+            month: number
+            prices: Record<string, number>
+          }>,
+        ) => {
+          const rates: PlanRates = { core: {}, advanced: {} }
+          const ids: Record<string, Record<string, string>> = { core: {}, advanced: {} }
+          for (const p of plans) {
+            const key = p.title === 'Advanced' ? 'advanced' : 'core'
+            if (p.prices.EUR) rates[key][String(p.month)] = `€${p.prices.EUR}`
+            if (p.id) ids[key][String(p.month)] = p.id
+          }
+          setPlanRates(rates)
+          setPlanIds(ids)
+        },
+      )
       .catch(() => {
         /* keep static fallback */
       })
@@ -111,6 +121,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [step, setStep] = useState(1)
   const [doneSteps, setDoneSteps] = useState<Set<number>>(new Set())
   const [confirmed, setConfirmed] = useState(false)
+
+  useEffect(() => {
+    const osn = document.querySelector('.osn-nav')
+    if (confirmed) {
+      osn?.setAttribute('style', 'display:none!important')
+    }
+    return () => { osn?.removeAttribute('style') }
+  }, [confirmed])
 
   /* step 1 */
   const [email, setEmail] = useState('')
@@ -213,6 +231,81 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [accountErr, setAccountErr] = useState('')
   const submittingRef = useRef(false)
 
+  /* ── Klarna/PayPal redirect return handler ── */
+  useEffect(() => {
+    const redirectStatus = searchParams?.get('redirect_status')
+    const paymentIntentId = searchParams?.get('payment_intent')
+    const paymentIntentClientSecret = searchParams?.get('payment_intent_client_secret')
+    if (!stripe) return
+    if ((redirectStatus !== 'succeeded' && redirectStatus !== 'pending') || !paymentIntentId || !paymentIntentClientSecret) return
+
+    setAccountStatus('sending');
+    (async () => {
+      try {
+        const setupIntentId =
+          sessionStorage.getItem('nb1_paypal_setup_intent_id') ??
+          sessionStorage.getItem('nb1_klarna_setup_intent_id') ??
+          paymentIntentId
+        const idempotencyKey =
+          sessionStorage.getItem('nb1_checkout_idempotency_key') ?? setupIntentId
+        sessionStorage.removeItem('nb1_paypal_setup_intent_id')
+        // Restore form data from sessionStorage
+        const saved = JSON.parse(sessionStorage.getItem('nb1_checkout_form') ?? '{}')
+        const klarnaConfirmation = await checkoutConfirm({
+          setup_intent_id: setupIntentId,
+          idempotency_key: idempotencyKey,
+          shipping_address: {
+            first_name: saved.fn ?? fn,
+            last_name: saved.ln ?? ln,
+            email: saved.email ?? email,
+            phone: saved.phone || null,
+            address_line1: saved.a1 ?? a1,
+            address_line2: saved.a2 || null,
+            city: saved.city ?? city,
+            state: null,
+            postal_code: saved.zip ?? zip,
+            country: saved.country ?? country,
+            country_code: COUNTRY_CODES[saved.country ?? country] ?? '',
+          },
+          billing_address: {
+            address_type: 'individual',
+            first_name: saved.fn ?? fn,
+            last_name: saved.ln ?? ln,
+            company_name: null,
+            tax_id: null,
+            registration_number: null,
+            email: saved.email ?? email,
+            phone: saved.phone || null,
+            address_line1: saved.a1 ?? a1,
+            address_line2: saved.a2 || null,
+            city: saved.city ?? city,
+            state: null,
+            postal_code: saved.zip ?? zip,
+            country: COUNTRY_CODES[saved.country ?? country] ?? (saved.country ?? country),
+          },
+        })
+        sessionStorage.removeItem('nb1_klarna_setup_intent_id')
+        pushEvent('purchase', {
+          event_id: klarnaConfirmation.event_id,
+          external_id: klarnaConfirmation.external_id,
+          ecommerce: {
+            transaction_id: klarnaConfirmation.subscription_id,
+            currency: 'EUR',
+            value: rate,
+            shipping: (saved.shipping ?? shipping) === 'express' ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9 : 0,
+            items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+          },
+        })
+        setAccountStatus('sent')
+        setConfirmed(true)
+      } catch (err) {
+        setAccountErr((err as Error).message || t.confirm.accountError)
+        setAccountStatus('error')
+      }
+    })()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stripe])
+
   /* idempotency key — generated once per checkout session, persisted in sessionStorage */
   const idempotencyKeyRef = useRef<string>('')
   useEffect(() => {
@@ -223,6 +316,20 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     } catch {
       idempotencyKeyRef.current = crypto.randomUUID()
     }
+  }, [])
+
+  /* ── begin_checkout on mount ── */
+  useEffect(() => {
+    pushEvent('begin_checkout', {
+      ecommerce: {
+        currency: 'EUR',
+        value: rate,
+        ...(promoApplied ? { coupon: promoApplied } : {}),
+        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+      },
+    })
+  // Fire once on mount only
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /* promo */
@@ -248,7 +355,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     fetch(`${backend}/subscriptions/public/checkout/preview`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan_id: planId, currency: 'EUR', shipping_option: shipping, discount_code: promoApplied }),
+      body: JSON.stringify({
+        plan_id: planId,
+        currency: 'EUR',
+        shipping_option: shipping,
+        discount_code: promoApplied,
+      }),
     })
       .then((r) => r.json())
       .then((data) => {
@@ -261,7 +373,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           })
         }
       })
-      .catch(() => {/* ignore */})
+      .catch(() => {
+        /* ignore */
+      })
   }, [shipping])
 
   /* ── Wallet: create PaymentRequest once Stripe is ready ── */
@@ -310,7 +424,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           customer_phone: phone || null,
           idempotency_key: idempotencyKeyRef.current || undefined,
         })
-        const { error: stripeError } = await stripe.confirmCardPayment(intent.client_secret, {
+        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
           payment_method: event.paymentMethod.id,
         })
         if (stripeError) {
@@ -322,8 +436,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         }
         event.complete('success')
         await checkoutConfirm({
-          payment_intent_id: intent.payment_intent_id,
-          idempotency_key: idempotencyKeyRef.current || intent.payment_intent_id,
+          setup_intent_id: intent.setup_intent_id,
+          idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
           shipping_address: {
             first_name: fn,
             last_name: ln,
@@ -360,7 +474,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         event.complete('fail')
         setAccountStatus('error')
         const code = (err as { code?: string })?.code
-        setAccountErr(code === 'auth/email-already-in-use' ? accountExists : accountError)
+        setAccountErr(code === 'auth/email-already-in-use' ? accountExists : ((err as Error).message || accountError))
         submittingRef.current = false
       }
     }
@@ -421,6 +535,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   }
 
   function nextShipping() {
+    pushEvent('add_shipping_info', {
+      ecommerce: {
+        currency: 'EUR',
+        value: rate,
+        ...(promoApplied ? { coupon: promoApplied } : {}),
+        shipping_tier: shipping === 'express' ? 'Express' : 'Standard',
+        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+      },
+    })
     markDone(3)
   }
 
@@ -438,8 +561,18 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     setAccountStatus('sending')
     setAccountErr('')
 
+    pushEvent('add_payment_info', {
+      ecommerce: {
+        currency: 'EUR',
+        value: rate,
+        ...(promoApplied ? { coupon: promoApplied } : {}),
+        payment_type: payMethod === 'card' ? 'Card' : payMethod === 'paypal' ? 'PayPal' : payMethod === 'klarna' ? 'Klarna' : payMethod === 'sepa' ? 'SEPA Direct Debit' : payMethod,
+        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+      },
+    })
+
     try {
-      // 1. Create Stripe SetupIntent via backend
+      // 1. Create Stripe PaymentIntent via backend
       // Backend slugs follow the pattern NB1-{PLAN}-{MONTHS} (e.g. NB1-CORE-4)
       const monthNum = cycleKey === 'monthly' ? 1 : Number(cycleKey)
       const planSlug = `NB1-${planKey.toUpperCase()}-${monthNum}`
@@ -453,9 +586,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         customer_name: `${fn} ${ln}`.trim() || null,
         customer_phone: phone || null,
         idempotency_key: idempotencyKeyRef.current || undefined,
+        payment_method_type: payMethod === 'paypal' ? 'paypal' : payMethod === 'klarna' ? 'klarna' : null,
       })
 
-      // 2. Confirm card with Stripe.js
+      // 2. Confirm payment with Stripe.js
       if (payMethod === 'card') {
         if (!stripe || !elements) {
           setAccountErr(t.confirm.accountError)
@@ -468,7 +602,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           setAccountStatus('error')
           return
         }
-        const { error: stripeError } = await stripe.confirmCardPayment(intent.client_secret, {
+        const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
           payment_method: {
             card: cardElement,
             billing_details: { name: cardName || `${fn} ${ln}`.trim(), email },
@@ -481,10 +615,67 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         }
       }
 
+      if (payMethod === 'klarna') {
+        if (!stripe) {
+          setAccountErr(t.confirm.accountError)
+          setAccountStatus('error')
+          submittingRef.current = false
+          return
+        }
+        // Store setup_intent_id so we can call checkoutConfirm after redirect
+        sessionStorage.setItem('nb1_klarna_setup_intent_id', intent.setup_intent_id)
+        const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
+        const { error: klarnaError } = await stripe.confirmKlarnaPayment(intent.client_secret, {
+          payment_method: {
+            billing_details: {
+              name: `${fn} ${ln}`.trim(),
+              email,
+              phone: phone || undefined,
+              address: {
+                line1: a1,
+                line2: a2 || undefined,
+                city,
+                postal_code: zip,
+                country: COUNTRY_CODES[country] ?? 'DE',
+              },
+            },
+          },
+          return_url: returnUrl,
+        })
+        // If we reach here Stripe failed before redirecting
+        if (klarnaError) {
+          setAccountErr(klarnaError.message ?? t.confirm.accountError)
+          setAccountStatus('error')
+          submittingRef.current = false
+        }
+        // Redirect is in progress — do not continue
+        return
+      }
+
+      if (payMethod === 'paypal') {
+        if (!stripe) {
+          setAccountErr(t.confirm.accountError)
+          setAccountStatus('error')
+          submittingRef.current = false
+          return
+        }
+        sessionStorage.setItem('nb1_paypal_setup_intent_id', intent.setup_intent_id)
+        const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
+        const { error: paypalError } = await stripe.confirmPayPalPayment(intent.client_secret, {
+          return_url: returnUrl,
+        })
+        if (paypalError) {
+          setAccountErr(paypalError.message ?? t.confirm.accountError)
+          setAccountStatus('error')
+          submittingRef.current = false
+        }
+        return
+      }
+
       // 3. Confirm checkout — backend creates user + subscription
-      await checkoutConfirm({
-        payment_intent_id: intent.payment_intent_id,
-        idempotency_key: idempotencyKeyRef.current || intent.payment_intent_id,
+      const confirmation = await checkoutConfirm({
+        setup_intent_id: intent.setup_intent_id,
+        idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
         shipping_address: {
           first_name: fn,
           last_name: ln,
@@ -533,6 +724,19 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             },
       })
 
+      pushEvent('purchase', {
+        event_id: confirmation.event_id,
+        external_id: confirmation.external_id,
+        ecommerce: {
+          transaction_id: confirmation.subscription_id,
+          currency: 'EUR',
+          value: rate,
+          shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9 : 0),
+          ...(promoApplied ? { coupon: promoApplied } : {}),
+          items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel, discount: promoPreview?.promo_discount })],
+        },
+      })
+
       setAccountStatus('sent')
     } catch (err: unknown) {
       setAccountStatus('error')
@@ -540,7 +744,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       if (code === 'auth/email-already-in-use') {
         setAccountErr(t.confirm.accountExists)
       } else {
-        setAccountErr(t.confirm.accountError)
+        setAccountErr((err as Error).message || t.confirm.accountError)
       }
       submittingRef.current = false
       return
@@ -564,7 +768,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       const res = await fetch(`${backend}/subscriptions/public/checkout/preview`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan_id: planId, currency: 'EUR', shipping_option: shipping, discount_code: code }),
+        body: JSON.stringify({
+          plan_id: planId,
+          currency: 'EUR',
+          shipping_option: shipping,
+          discount_code: code,
+        }),
       })
       const data = await res.json()
       if (data.discount_code_valid) {
@@ -575,7 +784,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           monthly_price: data.monthly_price,
           shipping_price: data.shipping_price,
         })
-        setPromoMsg({ text: data.discount_message ?? dict.promo.appliedTemplate.replace('{code}', code).replace('{desc}', ''), ok: true })
+        setPromoMsg({
+          text:
+            data.discount_message ??
+            dict.promo.appliedTemplate.replace('{code}', code).replace('{desc}', ''),
+          ok: true,
+        })
       } else {
         setPromoMsg({ text: data.discount_message ?? dict.promo.invalid, ok: false })
       }
@@ -1790,15 +2004,22 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                 </div>
 
                 {/* PayPal */}
-                {/* <div className={`nb1-pm-row${payMethod === 'paypal' ? ' active' : ''}`}>
-                  <button type="button" className="nb1-pm-hd" onClick={() => setPayMethod('paypal')}>
-                    <div className="nb1-pm-radio"><div className="nb1-pm-radio-dot" /></div>
-                    <span style={{color:'#003087',fontWeight:700}}>Pay</span><span style={{color:'#009cde',fontWeight:700}}>Pal</span>
+                <div className={`nb1-pm-row${payMethod === 'paypal' ? ' active' : ''}`}>
+                  <button
+                    type="button"
+                    className="nb1-pm-hd"
+                    onClick={() => setPayMethod('paypal')}
+                  >
+                    <div className="nb1-pm-radio">
+                      <div className="nb1-pm-radio-dot" />
+                    </div>
+                    <span style={{ color: '#003087', fontWeight: 700 }}>Pay</span>
+                    <span style={{ color: '#009cde', fontWeight: 700 }}>Pal</span>
                   </button>
                   <div className="nb1-pm-body">
                     <p className="nb1-pm-note">{t.payment.paypalNote}</p>
                   </div>
-                </div> */}
+                </div>
 
                 {/* Klarna */}
                 <div className={`nb1-pm-row${payMethod === 'klarna' ? ' active' : ''}`}>
@@ -2054,9 +2275,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       placeholder={t.promoUi.placeholder}
                       value={promoInput}
                       onChange={(e) => setPromoInput(e.target.value)}
-                      onKeyDown={(e) => { if (e.key === 'Enter') void applyPromo() }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') void applyPromo()
+                      }}
                     />
-                    <button type="button" className="nb1-promo-apply" onClick={() => void applyPromo()} disabled={promoLoading}>
+                    <button
+                      type="button"
+                      className="nb1-promo-apply"
+                      onClick={() => void applyPromo()}
+                      disabled={promoLoading}
+                    >
                       {promoLoading ? '…' : t.promoUi.apply}
                     </button>
                   </div>
@@ -2145,7 +2373,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             <div className="nb1-sum-price-row">
               <span className="nb1-sum-price-label">{t.summary.monthly}</span>
               <div className="nb1-sum-price">
-                <span className="nb1-sum-price-big" style={promoPreview ? { textDecoration: 'line-through', opacity: 0.45, fontSize: '1rem' } : undefined}>
+                <span
+                  className="nb1-sum-price-big"
+                  style={
+                    promoPreview
+                      ? { textDecoration: 'line-through', opacity: 0.45, fontSize: '1rem' }
+                      : undefined
+                  }
+                >
                   {promoPreview ? `€${promoPreview.monthly_price.toFixed(2)}` : planInfo.rate}
                 </span>
                 <span className="nb1-sum-price-per">{dict.plans.perMonth}</span>
@@ -2153,14 +2388,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             </div>
             {promoPreview && (
               <>
-                <div className="nb1-sum-row" style={{ color: '#0a8fb0', fontWeight: 600, marginTop: 4 }}>
+                <div
+                  className="nb1-sum-row"
+                  style={{ color: '#0a8fb0', fontWeight: 600, marginTop: 4 }}
+                >
                   <span className="nb1-sum-label">{t.promoUi.discount ?? 'Discount'}</span>
                   <span className="nb1-sum-val">−€{promoPreview.promo_discount.toFixed(2)}</span>
                 </div>
                 <div className="nb1-sum-price-row" style={{ marginTop: 4 }}>
-                  <span className="nb1-sum-price-label">{t.promoUi.firstMonth ?? 'First month'}</span>
+                  <span className="nb1-sum-price-label">
+                    {t.promoUi.firstMonth ?? 'First month'}
+                  </span>
                   <div className="nb1-sum-price">
-                    <span className="nb1-sum-price-big" style={{ color: '#0a8fb0' }}>€{promoPreview.first_month_price.toFixed(2)}</span>
+                    <span className="nb1-sum-price-big" style={{ color: '#0a8fb0' }}>
+                      €{promoPreview.first_month_price.toFixed(2)}
+                    </span>
                     <span className="nb1-sum-price-per">{dict.plans.perMonth}</span>
                   </div>
                 </div>
@@ -2187,7 +2429,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     placeholder={t.promoUi.placeholder}
                     value={promoInput}
                     onChange={(e) => setPromoInput(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') void applyPromo() }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') void applyPromo()
+                    }}
                   />
                   <button type="button" className="nb1-promo-apply" onClick={applyPromo}>
                     {t.promoUi.apply}

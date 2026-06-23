@@ -199,6 +199,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     } catch {
       /* noop */
     }
+    window.dispatchEvent(new CustomEvent('nb1:currencychange', { detail: cur }))
     router.refresh()
   }
 

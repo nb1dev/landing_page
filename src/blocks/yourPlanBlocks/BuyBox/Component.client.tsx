@@ -86,26 +86,34 @@ export const YpBuyBoxClient: React.FC<YpBuyBoxBlockType> = ({
   const [buyNote, setBuyNote] = useState<string | null | undefined>(rawBuyNote)
 
   useEffect(() => {
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const rateMap = buildRateMap(plans, currency)
+      setOptions(
+        (optionsProp ?? []).map((opt) => {
+          const family = opt.planFamily === 'advanced' ? 'advanced' : 'core'
+          const rate = opt.planFamily ? rateMap[`${family}:4`] : undefined
+          return {
+            ...opt,
+            price: rate != null ? formatPrice(rate, currency, locale) : undefined,
+            altLabel: resolveTokens(opt.altLabel, rateMap, currency, locale) ?? opt.altLabel,
+            description: resolveTokens(opt.description, rateMap, currency, locale) ?? opt.description,
+          }
+        }),
+      )
+      setSub(resolveTokens(rawSub, rateMap, currency, locale))
+      setBuyNote(resolveTokens(rawBuyNote, rateMap, currency, locale))
+    }
+
     const currency = getClientCurrency(locale)
-    fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        setOptions(
-          (optionsProp ?? []).map((opt) => {
-            const family = opt.planFamily === 'advanced' ? 'advanced' : 'core'
-            const rate = opt.planFamily ? rateMap[`${family}:4`] : undefined
-            return {
-              ...opt,
-              price: rate != null ? formatPrice(rate, currency, locale) : undefined,
-              altLabel: resolveTokens(opt.altLabel, rateMap, currency, locale) ?? opt.altLabel,
-              description: resolveTokens(opt.description, rateMap, currency, locale) ?? opt.description,
-            }
-          }),
-        )
-        setSub(resolveTokens(rawSub, rateMap, currency, locale))
-        setBuyNote(resolveTokens(rawBuyNote, rateMap, currency, locale))
-      })
-      .catch(() => {})
+    fetchPlansClient().then((plans) => applyPrices(currency, plans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((plans) => applyPrices(cur, plans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
 
   const isImageMode = backgroundType === 'image'
