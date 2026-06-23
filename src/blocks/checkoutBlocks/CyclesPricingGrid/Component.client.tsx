@@ -113,7 +113,7 @@ export const CyclesPricingGridClient: React.FC<Props> = ({
 
     function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
       const rateMap = buildRateMap(plans, currency)
-      setRows(computeRows(planFamily, plans, rateMap, currency, locale, bestValueLabel))
+      setRows(computeRows(planFamily!, plans, rateMap, currency, locale, bestValueLabel))
       if (showSecondPlan && planFamily2) {
         setRows2(computeRows(planFamily2, plans, rateMap, currency, locale, bestValueLabel))
       }
