@@ -59,6 +59,22 @@ type PlanRates = Record<string, Record<string, string>>
 
 type Props = { backHref?: string | null; locale?: string }
 
+/**
+ * confirmKlarnaSetup / confirmPayPalSetup exist in the Stripe.js runtime (loaded from
+ * js.stripe.com, evergreen) but are not yet declared in the @stripe/stripe-js 9.8.0 type
+ * defs. Narrow shim so we can call them; drop it once the npm types catch up.
+ */
+type StripeSetupConfirms = {
+  confirmKlarnaSetup: (
+    clientSecret: string,
+    options: Record<string, unknown>,
+  ) => Promise<{ error?: { message?: string } }>
+  confirmPayPalSetup: (
+    clientSecret: string,
+    options: Record<string, unknown>,
+  ) => Promise<{ error?: { message?: string } }>
+}
+
 /* ─── Inner component (needs useSearchParams inside Suspense) ────────── */
 
 function CheckoutFormInner({ backHref, locale }: Props) {
@@ -652,7 +668,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         sessionStorage.setItem('nb1_klarna_setup_intent_id', intent.setup_intent_id)
         const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
         // SetupIntent (method saved, no charge) → must use confirmKlarnaSetup, NOT confirmKlarnaPayment.
-        const { error: klarnaError } = await stripe.confirmKlarnaSetup(intent.client_secret, {
+        const { error: klarnaError } = await (
+          stripe as unknown as StripeSetupConfirms
+        ).confirmKlarnaSetup(intent.client_secret, {
           payment_method: {
             billing_details: {
               name: `${fn} ${ln}`.trim(),
@@ -692,7 +710,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         sessionStorage.setItem('nb1_paypal_setup_intent_id', intent.setup_intent_id)
         const returnUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
         // SetupIntent (method saved, no charge) → must use confirmPayPalSetup, NOT confirmPayPalPayment.
-        const { error: paypalError } = await stripe.confirmPayPalSetup(intent.client_secret, {
+        const { error: paypalError } = await (
+          stripe as unknown as StripeSetupConfirms
+        ).confirmPayPalSetup(intent.client_secret, {
           return_url: returnUrl,
           mandate_data: {
             customer_acceptance: { type: 'online', online: { infer_from_client: true } },
