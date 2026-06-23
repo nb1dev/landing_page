@@ -127,7 +127,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     if (confirmed) {
       osn?.setAttribute('style', 'display:none!important')
     }
-    return () => { osn?.removeAttribute('style') }
+    return () => {
+      osn?.removeAttribute('style')
+    }
   }, [confirmed])
 
   /* step 1 */
@@ -237,10 +239,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const paymentIntentId = searchParams?.get('payment_intent')
     const paymentIntentClientSecret = searchParams?.get('payment_intent_client_secret')
     if (!stripe) return
-    if ((redirectStatus !== 'succeeded' && redirectStatus !== 'pending') || !paymentIntentId || !paymentIntentClientSecret) return
+    if (
+      (redirectStatus !== 'succeeded' && redirectStatus !== 'pending') ||
+      !paymentIntentId ||
+      !paymentIntentClientSecret
+    )
+      return
 
-    setAccountStatus('sending');
-    (async () => {
+    setAccountStatus('sending')
+    ;(async () => {
       try {
         const setupIntentId =
           sessionStorage.getItem('nb1_paypal_setup_intent_id') ??
@@ -281,7 +288,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             city: saved.city ?? city,
             state: null,
             postal_code: saved.zip ?? zip,
-            country: COUNTRY_CODES[saved.country ?? country] ?? (saved.country ?? country),
+            country: COUNTRY_CODES[saved.country ?? country] ?? saved.country ?? country,
           },
         })
         sessionStorage.removeItem('nb1_klarna_setup_intent_id')
@@ -292,7 +299,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             transaction_id: klarnaConfirmation.subscription_id,
             currency: 'EUR',
             value: rate,
-            shipping: (saved.shipping ?? shipping) === 'express' ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9 : 0,
+            shipping:
+              (saved.shipping ?? shipping) === 'express'
+                ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9
+                : 0,
             items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
           },
         })
@@ -303,7 +313,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         setAccountStatus('error')
       }
     })()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stripe])
 
   /* idempotency key — generated once per checkout session, persisted in sessionStorage */
@@ -328,8 +338,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
       },
     })
-  // Fire once on mount only
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Fire once on mount only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /* promo */
@@ -474,7 +484,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         event.complete('fail')
         setAccountStatus('error')
         const code = (err as { code?: string })?.code
-        setAccountErr(code === 'auth/email-already-in-use' ? accountExists : ((err as Error).message || accountError))
+        setAccountErr(
+          code === 'auth/email-already-in-use'
+            ? accountExists
+            : (err as Error).message || accountError,
+        )
         submittingRef.current = false
       }
     }
@@ -566,7 +580,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         currency: 'EUR',
         value: rate,
         ...(promoApplied ? { coupon: promoApplied } : {}),
-        payment_type: payMethod === 'card' ? 'Card' : payMethod === 'paypal' ? 'PayPal' : payMethod === 'klarna' ? 'Klarna' : payMethod === 'sepa' ? 'SEPA Direct Debit' : payMethod,
+        payment_type:
+          payMethod === 'card'
+            ? 'Card'
+            : payMethod === 'paypal'
+              ? 'PayPal'
+              : payMethod === 'klarna'
+                ? 'Klarna'
+                : payMethod === 'sepa'
+                  ? 'SEPA Direct Debit'
+                  : payMethod,
         items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
       },
     })
@@ -586,7 +609,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         customer_name: `${fn} ${ln}`.trim() || null,
         customer_phone: phone || null,
         idempotency_key: idempotencyKeyRef.current || undefined,
-        payment_method_type: payMethod === 'paypal' ? 'paypal' : payMethod === 'klarna' ? 'klarna' : null,
+        payment_method_type:
+          payMethod === 'paypal' ? 'paypal' : payMethod === 'klarna' ? 'klarna' : null,
       })
 
       // 2. Confirm payment with Stripe.js
@@ -731,9 +755,18 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           transaction_id: confirmation.subscription_id,
           currency: 'EUR',
           value: rate,
-          shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9 : 0),
+          shipping:
+            promoPreview?.shipping_price ??
+            (shipping === 'express'
+              ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9
+              : 0),
           ...(promoApplied ? { coupon: promoApplied } : {}),
-          items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel, discount: promoPreview?.promo_discount })],
+          items: [
+            buildNb1Item(planKey, cycleKey, rate, {
+              planTitle: planLabel,
+              discount: promoPreview?.promo_discount,
+            }),
+          ],
         },
       })
 
