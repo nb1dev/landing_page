@@ -55,21 +55,30 @@ export const PlanSummaryCardClient: React.FC<Props> = ({
   useEffect(() => {
     const family = planVariant === 'advanced' ? 'advanced' : 'core'
     const month = Number(cycleMonth) || 4
+
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const rateMap = buildRateMap(plans, currency)
+      const rate = rateMap[`${family}:${month}`]
+      if (rate != null) {
+        const formatted = formatPrice(rate, currency, locale)
+        setPrice(formatted)
+        setPrimaryCtaPrice(`${formatted}/mo`)
+      }
+      setSecondaryCtaText(resolveTokens(rawSecondaryCtaText, rateMap, currency, locale))
+      const apiBullets = extractBullets(plans, family, locale)
+      if (apiBullets.length > 0) setBullets(apiBullets.map((text) => ({ text })))
+    }
+
     const currency = getClientCurrency(locale)
-    fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        const rate = rateMap[`${family}:${month}`]
-        if (rate != null) {
-          const formatted = formatPrice(rate, currency, locale)
-          setPrice(formatted)
-          setPrimaryCtaPrice(`${formatted}/mo`)
-        }
-        setSecondaryCtaText(resolveTokens(rawSecondaryCtaText, rateMap, currency, locale))
-        const apiBullets = extractBullets(plans, family, locale)
-        if (apiBullets.length > 0) setBullets(apiBullets.map((text) => ({ text })))
-      })
-      .catch(() => {})
+    fetchPlansClient().then((plans) => applyPrices(currency, plans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((plans) => applyPrices(cur, plans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planVariant, cycleMonth, locale])
 
   return (

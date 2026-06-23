@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getDictionary } from '@/i18n/getDictionary'
 import { useReveal } from '../useReveal'
 import {
@@ -12,6 +12,7 @@ import {
   formatSavingsLabel,
   computeSavings,
 } from '@/lib/plans/clientUtils'
+import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
 
 type Tier = {
   months?: string | null
@@ -82,34 +83,49 @@ export const CycleSelectorClient: React.FC<Props> = ({
   const [monthlySelected, setMonthlySelected] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [tiers, setTiers] = useState<Tier[]>(tiersProp ?? [])
+  const currencyRef = useRef<string>('EUR')
+  const rateMapRef = useRef<Record<string, number>>({})
+  const planTitleRef = useRef<string>('Core')
 
   useEffect(() => {
     if (!planFamily) return
     const family = planFamily === 'advanced' ? 'Advanced' : 'Core'
     const planKey = planFamily
+
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const rateMap = buildRateMap(plans, currency)
+      rateMapRef.current = rateMap
+      currencyRef.current = currency
+      planTitleRef.current = plans.find(p => p.title.toLowerCase() === planFamily)?.title ?? family
+      const familyPlans = plans
+        .filter((p) => p.title === family && [4, 8, 12].includes(p.month))
+        .sort((a, b) => a.month - b.month)
+      const baselineRate = rateMap[`${planKey}:4`] ?? 0
+      setTiers(
+        familyPlans.map((p) => {
+          const rate = rateMap[`${planKey}:${p.month}`] ?? 0
+          const savings = computeSavings(rate, baselineRate, p.month)
+          return {
+            months: formatMonthLabel(p.month, locale),
+            monthlyRate: formatPrice(rate, currency, locale),
+            saveLabel: formatSavingsLabel(savings, currency, locale),
+            isBestValue: p.is_preferred,
+            checkoutHref: `/${locale}/order-details?plan=${planKey}&cycle=${p.month}`,
+          }
+        }),
+      )
+    }
+
     const currency = getClientCurrency(locale)
-    fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        const familyPlans = plans
-          .filter((p) => p.title === family && [4, 8, 12].includes(p.month))
-          .sort((a, b) => a.month - b.month)
-        const baselineRate = rateMap[`${planKey}:4`] ?? 0
-        setTiers(
-          familyPlans.map((p) => {
-            const rate = rateMap[`${planKey}:${p.month}`] ?? 0
-            const savings = computeSavings(rate, baselineRate, p.month)
-            return {
-              months: formatMonthLabel(p.month, locale),
-              monthlyRate: formatPrice(rate, currency, locale),
-              saveLabel: formatSavingsLabel(savings, currency, locale),
-              isBestValue: p.is_preferred,
-              checkoutHref: `/${locale}/order-details?plan=${planKey}&cycle=${p.month}`,
-            }
-          }),
-        )
-      })
-      .catch(() => {})
+    fetchPlansClient().then((plans) => applyPrices(currency, plans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((plans) => applyPrices(cur, plans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planFamily, locale])
 
   const activeTiers = tiers.length > 0 ? tiers : (tiersProp ?? [])
@@ -478,7 +494,14 @@ export const CycleSelectorClient: React.FC<Props> = ({
             {activeLabel} · <b>{activeRate}{perMonth}</b> ·{' '}
             {monthlySelected ? (cancelAnytimeLabel ?? 'cancel anytime') : (billedMonthlyShortLabel ?? 'billed monthly')}
           </div>
-          <a href={activeHref} className="nb1-cs-go">
+          <a href={activeHref} className="nb1-cs-go" onClick={() => {
+            const params = new URL(activeHref, window.location.href).searchParams
+            const cycleKey = params.get('cycle') ?? '4'
+            const planKey = params.get('plan') ?? (planFamily ?? 'core')
+            const rate = rateMapRef.current[`${planKey}:${cycleKey}`]
+            if (rate != null)
+              pushEvent('add_to_cart', { ecommerce: { currency: currencyRef.current, value: rate, items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planTitleRef.current })] } })
+          }}>
             {continuePrefix ?? 'Continue'} · {activeRate}{perMonth} →
           </a>
         </div>

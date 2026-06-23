@@ -9,11 +9,12 @@ export type CheckoutPaymentIntentIn = {
   customer_name?: string | null
   customer_phone?: string | null
   idempotency_key?: string | null
+  payment_method_type?: string | null
 }
 
 export type CheckoutPaymentIntentOut = {
   client_secret: string
-  payment_intent_id: string
+  setup_intent_id: string
   customer_id: string
   amount: number
   currency: string
@@ -56,7 +57,7 @@ export type BillingAddressIn = {
 }
 
 export type CheckoutConfirmIn = {
-  payment_intent_id: string
+  setup_intent_id: string
   shipping_address: PublicShippingAddressIn
   billing_address: BillingAddressIn
   idempotency_key?: string | null
@@ -75,6 +76,8 @@ export type CheckoutConfirmOut = {
   billing_started_at: string | null
   sample_return_deadline_at: string | null
   password_setup_email_sent: boolean
+  event_id: string
+  external_id: string
 }
 
 export async function checkoutPaymentIntent(

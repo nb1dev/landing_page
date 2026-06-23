@@ -154,41 +154,49 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
   const [comparison, setComparison] = useState<Comparison | null | undefined>(comparisonProp)
 
   useEffect(() => {
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const perMonth = PER_MONTH_DICT[locale] ?? PER_MONTH_DICT.en
+      const rateMap = buildRateMap(plans, currency)
+      setPlanCards(
+        (planCardsProp ?? []).map((card) => {
+          const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
+          const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
+          return {
+            ...card,
+            price: rate != null ? formatPrice(rate, currency, locale) : card.price,
+            pricePeriod: rate != null ? perMonth : card.pricePeriod,
+            monthly: resolveTokens(card.monthly, rateMap, currency, locale) ?? card.monthly,
+            commit: resolveTokens(card.commit, rateMap, currency, locale) ?? card.commit,
+          }
+        }),
+      )
+      const resolvedComparison = resolveTokensDeep(comparisonProp, rateMap, currency, locale)
+      if (resolvedComparison) {
+        const resolvedCards = resolvedComparison.cards?.map((card: CompareCard) => {
+          const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
+          const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
+          return {
+            ...card,
+            price: rate != null ? formatPrice(rate, currency, locale) : card.price,
+            pricePeriod: rate != null ? perMonth : card.pricePeriod,
+          }
+        })
+        setComparison({ ...resolvedComparison, cards: resolvedCards })
+      } else {
+        setComparison(resolvedComparison)
+      }
+    }
+
     const currency = getClientCurrency(locale)
-    const perMonth = PER_MONTH_DICT[locale] ?? PER_MONTH_DICT.en
-    fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        setPlanCards(
-          (planCardsProp ?? []).map((card) => {
-            const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
-            const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
-            return {
-              ...card,
-              price: rate != null ? formatPrice(rate, currency, locale) : card.price,
-              pricePeriod: rate != null ? perMonth : card.pricePeriod,
-              monthly: resolveTokens(card.monthly, rateMap, currency, locale) ?? card.monthly,
-              commit: resolveTokens(card.commit, rateMap, currency, locale) ?? card.commit,
-            }
-          }),
-        )
-        const resolvedComparison = resolveTokensDeep(comparisonProp, rateMap, currency, locale)
-        if (resolvedComparison) {
-          const resolvedCards = resolvedComparison.cards?.map((card: CompareCard) => {
-            const family = card.planFamily === 'advanced' ? 'advanced' : 'core'
-            const rate = card.planFamily ? rateMap[`${family}:4`] : undefined
-            return {
-              ...card,
-              price: rate != null ? formatPrice(rate, currency, locale) : card.price,
-              pricePeriod: rate != null ? perMonth : card.pricePeriod,
-            }
-          })
-          setComparison({ ...resolvedComparison, cards: resolvedCards })
-        } else {
-          setComparison(resolvedComparison)
-        }
-      })
-      .catch(() => {})
+    fetchPlansClient().then((plans) => applyPrices(currency, plans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((plans) => applyPrices(cur, plans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
 
   const isImageMode = backgroundType === 'image'

@@ -109,19 +109,28 @@ export const CyclesPricingGridClient: React.FC<Props> = ({
 
   useEffect(() => {
     if (!planFamily) return
-    const currency = getClientCurrency(locale)
     const bestValueLabel = BEST_VALUE_DICT[locale] ?? BEST_VALUE_DICT.en
-    fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        setRows(computeRows(planFamily, plans, rateMap, currency, locale, bestValueLabel))
-        if (showSecondPlan && planFamily2) {
-          setRows2(computeRows(planFamily2, plans, rateMap, currency, locale, bestValueLabel))
-        }
-        setMonthlyNote(resolveTokens(rawMonthlyNote, rateMap, currency, locale))
-        setMonthlyNote2(resolveTokens(rawMonthlyNote2, rateMap, currency, locale))
-      })
-      .catch(() => {})
+
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const rateMap = buildRateMap(plans, currency)
+      setRows(computeRows(planFamily, plans, rateMap, currency, locale, bestValueLabel))
+      if (showSecondPlan && planFamily2) {
+        setRows2(computeRows(planFamily2, plans, rateMap, currency, locale, bestValueLabel))
+      }
+      setMonthlyNote(resolveTokens(rawMonthlyNote, rateMap, currency, locale))
+      setMonthlyNote2(resolveTokens(rawMonthlyNote2, rateMap, currency, locale))
+    }
+
+    const currency = getClientCurrency(locale)
+    fetchPlansClient().then((plans) => applyPrices(currency, plans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((plans) => applyPrices(cur, plans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planFamily, planFamily2, locale])
 
   return (

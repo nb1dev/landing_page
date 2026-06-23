@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import RichText from '@/components/RichText'
 import { getDictionary } from '@/i18n/getDictionary'
+import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
 import {
   fetchPlansClient,
   getClientCurrency,
@@ -77,26 +78,47 @@ export const PlansClient: React.FC<Props> = (props) => {
   const [visible, setVisible] = useState(false)
   const [corePrice, setCorePrice] = useState<string | null>(null)
   const [advPrice, setAdvPrice] = useState<string | null>(null)
+  const coreRateRef = useRef<number | null>(null)
+  const advRateRef = useRef<number | null>(null)
+  const currencyRef = useRef<string>('EUR')
+  const planTitlesRef = useRef<{ core: string; advanced: string }>({ core: 'Core', advanced: 'Advanced' })
   const [coreMonthly, setCoreMonthly] = useState<string | null | undefined>(rawCoreMonthly)
   const [coreCommit, setCoreCommit] = useState<string | null | undefined>(rawCoreCommit)
   const [advCommit, setAdvCommit] = useState<string | null | undefined>(rawAdvCommit)
   const [compareRowsJson, setCompareRowsJson] = useState<string | null | undefined>(rawCompareRowsJson)
 
+  function applyPlans(currency: ReturnType<typeof getClientCurrency>, plans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+    const rateMap = buildRateMap(plans, currency)
+    const coreRate = rateMap['core:4']
+    const advRate = rateMap['advanced:4']
+    if (coreRate != null) { setCorePrice(formatPrice(coreRate, currency, locale)); coreRateRef.current = coreRate }
+    if (advRate != null) { setAdvPrice(formatPrice(advRate, currency, locale)); advRateRef.current = advRate }
+    const coreTitle = plans.find(p => p.title.toLowerCase() === 'core')?.title ?? 'Core'
+    const advTitle = plans.find(p => p.title.toLowerCase() === 'advanced')?.title ?? 'Advanced'
+    planTitlesRef.current = { core: coreTitle, advanced: advTitle }
+    setCoreMonthly(resolveTokens(rawCoreMonthly, rateMap, currency, locale))
+    setCoreCommit(resolveTokens(rawCoreCommit, rateMap, currency, locale))
+    setAdvCommit(resolveTokens(rawAdvCommit, rateMap, currency, locale))
+    setCompareRowsJson(resolveTokensDeep(rawCompareRowsJson, rateMap, currency, locale))
+  }
+
   useEffect(() => {
     const currency = getClientCurrency(locale)
+    currencyRef.current = currency
     fetchPlansClient()
-      .then((plans) => {
-        const rateMap = buildRateMap(plans, currency)
-        const coreRate = rateMap['core:4']
-        const advRate = rateMap['advanced:4']
-        if (coreRate != null) setCorePrice(formatPrice(coreRate, currency, locale))
-        if (advRate != null) setAdvPrice(formatPrice(advRate, currency, locale))
-        setCoreMonthly(resolveTokens(rawCoreMonthly, rateMap, currency, locale))
-        setCoreCommit(resolveTokens(rawCoreCommit, rateMap, currency, locale))
-        setAdvCommit(resolveTokens(rawAdvCommit, rateMap, currency, locale))
-        setCompareRowsJson(resolveTokensDeep(rawCompareRowsJson, rateMap, currency, locale))
-      })
+      .then((plans) => applyPlans(currency, plans))
       .catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      currencyRef.current = cur
+      fetchPlansClient()
+        .then((plans) => applyPlans(cur, plans))
+        .catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
   const [compareOpen, setCompareOpen] = useState(false)
 
@@ -522,7 +544,10 @@ export const PlansClient: React.FC<Props> = (props) => {
                 </ul>
               )}
               {coreCtaLabel && (
-                <a href={coreCtaHref || '#'} className="pl-btn">{coreCtaLabel}</a>
+                <a href={coreCtaHref || '#'} className="pl-btn" onClick={() => {
+                  if (coreRateRef.current != null)
+                    { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
+                }}>{coreCtaLabel}</a>
               )}
             </div>
 
@@ -548,7 +573,10 @@ export const PlansClient: React.FC<Props> = (props) => {
                 </ul>
               )}
               {advCtaLabel && (
-                <a href={advCtaHref || '#'} className="pl-btn">{advCtaLabel}</a>
+                <a href={advCtaHref || '#'} className="pl-btn" onClick={() => {
+                  if (advRateRef.current != null)
+                    { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
+                }}>{advCtaLabel}</a>
               )}
             </div>
           </div>
@@ -616,10 +644,16 @@ export const PlansClient: React.FC<Props> = (props) => {
                     <div className="crow cta">
                       <div className="ccell" />
                       <div className="ccell center">
-                        <a href={coreCtaHref || '#'} className="cbtn out">{coreCtaLabel || 'Start with Core'}</a>
+                        <a href={coreCtaHref || '#'} className="cbtn out" onClick={() => {
+                          if (coreRateRef.current != null)
+                            { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
+                        }}>{coreCtaLabel || 'Start with Core'}</a>
                       </div>
                       <div className="ccell center adv">
-                        <a href={advCtaHref || '#'} className="cbtn lime">{advCtaLabel || 'Start with Advanced'}</a>
+                        <a href={advCtaHref || '#'} className="cbtn lime" onClick={() => {
+                          if (advRateRef.current != null)
+                            { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
+                        }}>{advCtaLabel || 'Start with Advanced'}</a>
                       </div>
                     </div>
                   </div>

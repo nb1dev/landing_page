@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getDictionary } from '@/i18n/getDictionary'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
 import {
   fetchPlansClient,
   getClientCurrency,
@@ -76,6 +77,9 @@ export const PlanSelectorClient: React.FC<Props> = ({
   locale = 'en',
 }) => {
   const dict = getDictionary(locale)
+  const rateMapRef = useRef<Record<string, number>>({})
+  const currencyRef = useRef<string>('EUR')
+  const planTitlesRef = useRef<Record<string, string>>({})
   const [plans, setPlans] = useState<Plan[]>(plansProp ?? [])
   const [comparisonRows, setComparisonRows] = useState<ComparisonRow[] | null | undefined>(comparisonRowsProp)
   const [selectedKey, setSelectedKey] = useState<string>(
@@ -85,30 +89,42 @@ export const PlanSelectorClient: React.FC<Props> = ({
 
   useEffect(() => {
     if (!plansProp?.length) return
+
+    function applyPrices(currency: ReturnType<typeof getClientCurrency>, apiPlans: Awaited<ReturnType<typeof fetchPlansClient>>) {
+      const rateMap = buildRateMap(apiPlans, currency)
+      rateMapRef.current = rateMap
+      currencyRef.current = currency
+      apiPlans.forEach(p => { planTitlesRef.current[p.title.toLowerCase()] = p.title })
+      setPlans(
+        plansProp!.map((plan) => {
+          const family = plan.planKey === 'advanced' ? 'advanced' : 'core'
+          const rate = rateMap[`${family}:4`]
+          const apiBullets = extractBullets(apiPlans, family, locale)
+          return {
+            ...plan,
+            price: rate != null ? formatPrice(rate, currency, locale) : plan.price,
+            strikePrice: resolveTokens(plan.strikePrice, rateMap, currency, locale) ?? plan.strikePrice,
+            minNote: resolveTokens(plan.minNote, rateMap, currency, locale) ?? plan.minNote,
+            monthlyLinkText: resolveTokens(plan.monthlyLinkText, rateMap, currency, locale) ?? plan.monthlyLinkText,
+            bullets: apiBullets.length > 0
+              ? apiBullets.map((text) => ({ text }))
+              : plan.bullets,
+          }
+        }),
+      )
+      setComparisonRows(resolveTokensDeep(comparisonRowsProp, rateMap, currency, locale))
+    }
+
     const currency = getClientCurrency(locale)
-    fetchPlansClient()
-      .then((apiPlans) => {
-        const rateMap = buildRateMap(apiPlans, currency)
-        setPlans(
-          plansProp.map((plan) => {
-            const family = plan.planKey === 'advanced' ? 'advanced' : 'core'
-            const rate = rateMap[`${family}:4`]
-            const apiBullets = extractBullets(apiPlans, family, locale)
-            return {
-              ...plan,
-              price: rate != null ? formatPrice(rate, currency, locale) : plan.price,
-              strikePrice: resolveTokens(plan.strikePrice, rateMap, currency, locale) ?? plan.strikePrice,
-              minNote: resolveTokens(plan.minNote, rateMap, currency, locale) ?? plan.minNote,
-              monthlyLinkText: resolveTokens(plan.monthlyLinkText, rateMap, currency, locale) ?? plan.monthlyLinkText,
-              bullets: apiBullets.length > 0
-                ? apiBullets.map((text) => ({ text }))
-                : plan.bullets,
-            }
-          }),
-        )
-        setComparisonRows(resolveTokensDeep(comparisonRowsProp, rateMap, currency, locale))
-      })
-      .catch(() => {})
+    fetchPlansClient().then((apiPlans) => applyPrices(currency, apiPlans)).catch(() => {})
+
+    const onCurrencyChange = (e: Event) => {
+      const cur = (e as CustomEvent<string>).detail as ReturnType<typeof getClientCurrency>
+      fetchPlansClient().then((apiPlans) => applyPrices(cur, apiPlans)).catch(() => {})
+    }
+    window.addEventListener('nb1:currencychange', onCurrencyChange)
+    return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locale])
 
   if (!plans?.length) return null
@@ -530,7 +546,19 @@ export const PlanSelectorClient: React.FC<Props> = ({
                 <a
                   href={plan.ctaHref ?? '#'}
                   className={`nb1-ps-cta ${key}`}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    const href = plan.ctaHref ?? ''
+                    const cycle = new URL(href, window.location.href).searchParams.get('cycle') ?? '4'
+                    const rate = rateMapRef.current[key] ?? 0
+                    pushEvent('plan_selected', {
+                      ecommerce: {
+                        currency: currencyRef.current,
+                        value: rate,
+                        items: [buildNb1Item(key, cycle, rate, { planTitle: planTitlesRef.current[key] })],
+                      },
+                    })
+                  }}
                 >
                   {plan.ctaText}
                 </a>
