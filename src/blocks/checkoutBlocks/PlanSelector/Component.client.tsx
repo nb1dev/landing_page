@@ -88,6 +88,19 @@ export const PlanSelectorClient: React.FC<Props> = ({
   const [cmpOpen, setCmpOpen] = useState(false)
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent('nb1:planselected', { detail: { key: selectedKey } }))
+  }, [selectedKey])
+
+  useEffect(() => {
+    const onSelectPlan = (e: Event) => {
+      const key = (e as CustomEvent<{ key: string }>).detail?.key
+      if (key) setSelectedKey(key)
+    }
+    window.addEventListener('nb1:selectplan', onSelectPlan)
+    return () => window.removeEventListener('nb1:selectplan', onSelectPlan)
+  }, [])
+
+  useEffect(() => {
     if (!plansProp?.length) return
 
     function applyPrices(currency: ReturnType<typeof getClientCurrency>, apiPlans: Awaited<ReturnType<typeof fetchPlansClient>>) {

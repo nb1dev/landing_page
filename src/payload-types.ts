@@ -298,6 +298,7 @@ export interface Page {
     | PlanPivotBlock
     | StickyCtaBarBlock
     | PlanSelectorBlock
+    | PlanStickyBarBlock
     | CycleSelectorBlock
     | CheckoutFormBlock
     | HomepageHeroBlock
@@ -4895,6 +4896,31 @@ export interface PlanSelectorBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanStickyBarBlock".
+ */
+export interface PlanStickyBarBlock {
+  defaultPlanKey?: ('core' | 'advanced') | null;
+  plans?:
+    | {
+        planKey: 'core' | 'advanced';
+        selectedLabel: string;
+        switchLinkText?: string | null;
+        /**
+         * Which plan to activate in PlanSelector when switch is clicked
+         */
+        switchToPlanKey?: ('core' | 'advanced') | null;
+        ctaText: string;
+        ctaHref: string;
+        ctaVariant?: ('advanced' | 'core') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planStickyBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "CycleSelectorBlock".
  */
 export interface CycleSelectorBlock {
@@ -5981,6 +6007,7 @@ export interface PagesSelect<T extends boolean = true> {
         planPivot?: T | PlanPivotBlockSelect<T>;
         stickyCtaBar?: T | StickyCtaBarBlockSelect<T>;
         planSelector?: T | PlanSelectorBlockSelect<T>;
+        planStickyBar?: T | PlanStickyBarBlockSelect<T>;
         cycleSelector?: T | CycleSelectorBlockSelect<T>;
         checkoutForm?: T | CheckoutFormBlockSelect<T>;
         homepageHero?: T | HomepageHeroBlockSelect<T>;
@@ -7974,6 +8001,27 @@ export interface PlanSelectorBlockSelect<T extends boolean = true> {
         advancedValue?: T;
         corePositive?: T;
         advancedPositive?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanStickyBarBlock_select".
+ */
+export interface PlanStickyBarBlockSelect<T extends boolean = true> {
+  defaultPlanKey?: T;
+  plans?:
+    | T
+    | {
+        planKey?: T;
+        selectedLabel?: T;
+        switchLinkText?: T;
+        switchToPlanKey?: T;
+        ctaText?: T;
+        ctaHref?: T;
+        ctaVariant?: T;
         id?: T;
       };
   id?: T;

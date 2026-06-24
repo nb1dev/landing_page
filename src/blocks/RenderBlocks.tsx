@@ -70,6 +70,7 @@ import { ReinforceCtaComponent } from './checkoutBlocks/ReinforceCta/Component'
 import { PlanPivotComponent } from './checkoutBlocks/PlanPivot/Component'
 import { StickyCtaBarComponent } from './checkoutBlocks/StickyCtaBar/Component'
 import { PlanSelectorComponent } from './checkoutBlocks/PlanSelector/Component'
+import { PlanStickyBarComponent } from './checkoutBlocks/PlanStickyBar/Component'
 import { CycleSelectorComponent } from './checkoutBlocks/CycleSelector/Component'
 import { CheckoutFormComponent } from './checkoutBlocks/CheckoutForm/Component'
 import { HomepageHeroComponent } from './HomepageHero/Component'
@@ -153,6 +154,7 @@ const blockComponents: Record<string, React.FC<any>> = {
   planPivot: PlanPivotComponent,
   stickyCtaBar: StickyCtaBarComponent,
   planSelector: PlanSelectorComponent,
+  planStickyBar: PlanStickyBarComponent,
   cycleSelector: CycleSelectorComponent,
   checkoutForm: CheckoutFormComponent,
   homepageHero: HomepageHeroComponent,

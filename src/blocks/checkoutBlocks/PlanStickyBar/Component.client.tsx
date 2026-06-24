@@ -20,7 +20,6 @@ type Props = {
 export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advanced', plans }) => {
   const [activePlanKey, setActivePlanKey] = useState(defaultPlanKey ?? 'advanced')
   const [visible, setVisible] = useState(false)
-  const sentinelRef = useRef<HTMLDivElement>(null)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
@@ -33,8 +32,7 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
   }, [])
 
   useEffect(() => {
-    const sentinel = sentinelRef.current
-    if (!sentinel) return
+    const THRESHOLD = 120
 
     const showBar = (show: boolean) => {
       setVisible(show)
@@ -45,9 +43,8 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
       const y = window.scrollY
       const delta = y - lastScrollY.current
       const isMobile = window.innerWidth <= 760
-      const pastSentinel = (sentinel?.getBoundingClientRect().bottom ?? 0) < 0
 
-      if (!pastSentinel) {
+      if (y < THRESHOLD) {
         showBar(false)
       } else if (isMobile && delta < 0) {
         showBar(false)
@@ -74,8 +71,6 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
 
   return (
     <>
-      <div ref={sentinelRef} style={{ height: 0, pointerEvents: 'none' }} aria-hidden="true" />
-
       <div className={`nb1-psb${visible ? ' nb1-psb-show' : ''}`}>
         <style jsx>{`
           .nb1-psb {
@@ -86,11 +81,12 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
             z-index: 90;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 12px 28px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(16px);
-            border-top: 1px solid rgba(18, 49, 77, 0.1);
+            justify-content: center;
+            gap: 24px;
+            padding: 14px 32px;
+            background: #fff;
+            border-top: 1px solid rgba(18, 49, 77, 0.12);
+            box-shadow: 0 -4px 24px rgba(18, 49, 77, 0.08);
             transform: translateY(110%);
             transition: transform 0.4s cubic-bezier(0.16, 0.84, 0.44, 1);
             pointer-events: none;
@@ -102,31 +98,38 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
           .nb1-psb-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-size: 14px;
+          }
+          .nb1-psb-prefix {
+            color: rgba(18, 49, 77, 0.4);
+            font-weight: 400;
+          }
+          .nb1-psb-name {
+            font-weight: 700;
             color: #12314d;
           }
-          .nb1-psb-label {
-            font-weight: 600;
-          }
           .nb1-psb-dot {
-            color: rgba(18, 49, 77, 0.35);
+            color: rgba(18, 49, 77, 0.25);
           }
           .nb1-psb-switch {
             font-size: 13px;
             color: #0a8fb0;
-            font-weight: 500;
+            font-weight: 600;
             background: none;
             border: none;
             padding: 0;
             cursor: pointer;
             font-family: inherit;
+            text-decoration: underline;
+            text-decoration-color: rgba(10, 143, 176, 0.3);
+            text-underline-offset: 2px;
           }
           .nb1-psb-switch:hover {
-            opacity: 0.8;
+            text-decoration-color: #0a8fb0;
           }
           .nb1-psb-cta {
-            padding: 11px 24px;
+            padding: 12px 26px;
             border-radius: 100px;
             font-weight: 700;
             font-size: 14px;
@@ -140,6 +143,7 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
           .nb1-psb-cta.advanced {
             background: #c6ff5b;
             color: #0e2740;
+            border: 1.5px solid transparent;
           }
           .nb1-psb-cta.advanced:hover {
             background: #aaea42;
@@ -166,13 +170,24 @@ export const PlanStickyBarClient: React.FC<Props> = ({ defaultPlanKey = 'advance
             }
           }
           @media (max-width: 400px) {
-            .nb1-psb-label { display: none; }
+            .nb1-psb-prefix { display: none; }
+            .nb1-psb-name { display: none; }
             .nb1-psb-dot { display: none; }
           }
         `}</style>
 
         <div className="nb1-psb-left">
-          {plan.selectedLabel && <span className="nb1-psb-label">{plan.selectedLabel}</span>}
+          {plan.selectedLabel && (() => {
+            const parts = plan.selectedLabel!.trim().split(' ')
+            const prefix = parts.slice(0, -1).join(' ')
+            const name = parts[parts.length - 1]
+            return (
+              <>
+                {prefix && <span className="nb1-psb-prefix">{prefix}</span>}
+                <span className="nb1-psb-name">{name}</span>
+              </>
+            )
+          })()}
           {plan.switchLinkText && plan.switchToPlanKey && (
             <>
               <span className="nb1-psb-dot">·</span>
