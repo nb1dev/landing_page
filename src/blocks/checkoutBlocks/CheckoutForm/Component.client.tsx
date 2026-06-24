@@ -15,6 +15,7 @@ import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
 import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
+import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
 import { PaymentFailedScreen } from './PaymentFailedScreen'
@@ -23,13 +24,12 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY 
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
-// 'monthly' (flexible) stays hardcoded — it's a separate, non-API concept
-// (see src/lib/plans/api.ts file header). label/billing are localized below
-// via dict.plans.months / dict.checkout.summary; only the rate here is the
-// static EUR fallback used if the live fetch (passed in as planRates) failed.
-const STATIC_RATES: Record<string, Record<string, string>> = {
-  core: { '4': '€99', '8': '€94', '12': '€89', monthly: '€109' },
-  advanced: { '4': '€149', '8': '€141', '12': '€134' },
+// Numeric EUR fallback rates, used only if the live /subscriptions/plans fetch
+// fails. Live prices (in the visitor's selected currency) replace these on load.
+// 'monthly' (flexible, month=1) is included here as a fallback too.
+const STATIC_RATES_EUR: Record<string, Record<string, number>> = {
+  core: { '4': 99, '8': 94, '12': 89, monthly: 109 },
+  advanced: { '4': 149, '8': 141, '12': 134 },
 }
 
 const COUNTRIES = [
@@ -55,9 +55,6 @@ const COUNTRY_CODES: Record<string, string> = {
 /* ─── Types ─────────────────────────────────────────────────────────── */
 
 type PayMethod = 'card' | 'paypal' | 'klarna' | 'sepa'
-
-/** Live-fetched rate per (plan, cycle) — see Component.tsx (server). */
-type PlanRates = Record<string, Record<string, string>>
 
 type Props = { backHref?: string | null; locale?: string }
 
@@ -88,9 +85,24 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const planKey = searchParams?.get('plan') ?? 'core'
   const cycleKey = searchParams?.get('cycle') ?? '4'
 
-  const [planRates, setPlanRates] = useState<PlanRates>(STATIC_RATES)
+  // Numeric live prices per (plan, cycle, currency): { core: { '4': { EUR: 99, GBP: 89 } } }
+  const [planPrices, setPlanPrices] = useState<
+    Record<string, Record<string, Record<string, number>>>
+  >({})
   const [planIds, setPlanIds] = useState<Record<string, Record<string, string>>>({})
-  const zeroPrice = '€0'
+  // Express shipping fee in the selected currency, fetched live from the backend
+  // (authoritative — it's what actually gets charged). null until loaded / on failure.
+  const [expressShip, setExpressShip] = useState<number | null>(null)
+
+  // Visitor's selected currency (nb1_cur cookie); stays in sync with the
+  // site-wide currency switcher so the summary + charge match what they picked.
+  const [currency, setCurrency] = useState<CurrencyCode>('EUR')
+  useEffect(() => {
+    setCurrency(getClientCurrency(locale || 'en'))
+    const onCur = (e: Event) => setCurrency((e as CustomEvent<CurrencyCode>).detail)
+    window.addEventListener('nb1:currencychange', onCur)
+    return () => window.removeEventListener('nb1:currencychange', onCur)
+  }, [locale])
 
   useEffect(() => {
     const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://apistg.nb1.com'
@@ -105,14 +117,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             prices: Record<string, number>
           }>,
         ) => {
-          const rates: PlanRates = { core: {}, advanced: {} }
+          const prices: Record<string, Record<string, Record<string, number>>> = {
+            core: {},
+            advanced: {},
+          }
           const ids: Record<string, Record<string, string>> = { core: {}, advanced: {} }
           for (const p of plans) {
             const key = p.title === 'Advanced' ? 'advanced' : 'core'
-            if (p.prices.EUR) rates[key][String(p.month)] = `€${p.prices.EUR}`
-            if (p.id) ids[key][String(p.month)] = p.id
+            const cycle = p.month === 1 ? 'monthly' : String(p.month)
+            if (p.prices) prices[key][cycle] = p.prices
+            if (p.id) {
+              ids[key][cycle] = p.id
+              ids[key][String(p.month)] = p.id
+            }
           }
-          setPlanRates(rates)
+          setPlanPrices(prices)
           setPlanIds(ids)
         },
       )
@@ -120,6 +139,49 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         /* keep static fallback */
       })
   }, [])
+
+  /**
+   * Format an amount in the visitor's selected currency + locale. Shows cents
+   * only when present (e.g. €99, but €88.50 for a promo first-month price).
+   */
+  const fmt = (n: number) => {
+    const intlLocale = (locale || 'en') === 'de' ? 'de-DE' : 'en-IE'
+    try {
+      return new Intl.NumberFormat(intlLocale, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }).format(n)
+    } catch {
+      return `${currency} ${n.toFixed(2)}`
+    }
+  }
+
+  // Fetch the express shipping fee in the selected currency (the value the
+  // backend actually charges). Re-runs when the currency or plan/cycle changes.
+  useEffect(() => {
+    const planId = planIds[planKey]?.[cycleKey]
+    if (!planId) return
+    const backend = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://apistg.nb1.com'
+    fetch(`${backend}/subscriptions/public/checkout/preview`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        plan_id: planId,
+        currency,
+        shipping_option: 'express',
+        discount_code: null,
+      }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (typeof d?.shipping_price === 'number') setExpressShip(d.shipping_price)
+      })
+      .catch(() => {
+        /* keep dictionary fallback */
+      })
+  }, [currency, planKey, cycleKey, planIds])
 
   const monthNum = Number(cycleKey)
   const durationLabel =
@@ -129,8 +191,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         ? t.summary.cancelAnytime
         : cycleKey
   const billingLabel = cycleKey === 'monthly' ? t.summary.cancelAnytime : t.summary.billingMonthly
-  const rate =
-    planRates[planKey]?.[cycleKey] ?? STATIC_RATES[planKey]?.[cycleKey] ?? STATIC_RATES.core['4']
+  // Numeric monthly rate in the selected currency (live, falling back to EUR
+  // statics), plus its formatted display string.
+  const livePrices = planPrices[planKey]?.[cycleKey]
+  const rateNum =
+    livePrices?.[currency] ??
+    livePrices?.EUR ??
+    STATIC_RATES_EUR[planKey]?.[cycleKey] ??
+    STATIC_RATES_EUR.core['4']
+  const rate = fmt(rateNum)
+  const zeroPrice = fmt(0)
   const planInfo = { label: durationLabel, billing: billingLabel, rate }
   const planLabel = planKey === 'advanced' ? 'Advanced' : 'Core'
   const orderHref = `/${locale || 'en'}/order`
@@ -149,7 +219,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     if (confirmed) {
       osn.style.removeProperty('display')
       osn.removeAttribute('style')
-      osn.querySelectorAll('.osn-step.active').forEach(el => {
+      osn.querySelectorAll('.osn-step.active').forEach((el) => {
         el.classList.remove('active')
         el.classList.add('done')
       })
@@ -336,13 +406,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           external_id: klarnaConfirmation.external_id,
           ecommerce: {
             transaction_id: klarnaConfirmation.subscription_id,
-            currency: 'EUR',
-            value: rate,
-            shipping:
-              (saved.shipping ?? shipping) === 'express'
-                ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9
-                : 0,
-            items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+            currency,
+            value: rateNum,
+            shipping: (saved.shipping ?? shipping) === 'express' ? expressShipNum : 0,
+            items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
           },
         })
         setAccountStatus('sent')
@@ -371,10 +438,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   useEffect(() => {
     pushEvent('begin_checkout', {
       ecommerce: {
-        currency: 'EUR',
-        value: rate,
+        currency,
+        value: rateNum,
         ...(promoApplied ? { coupon: promoApplied } : {}),
-        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
       },
     })
     // Fire once on mount only
@@ -395,7 +462,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   } | null>(null)
   const [promoLoading, setPromoLoading] = useState(false)
 
-  /* ── Re-fetch preview when shipping changes while promo is applied ── */
+  /* ── Re-fetch preview when shipping or currency changes while promo applied ── */
   useEffect(() => {
     if (!promoApplied) return
     const planId = planIds[planKey]?.[cycleKey]
@@ -406,7 +473,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         plan_id: planId,
-        currency: 'EUR',
+        currency,
         shipping_option: shipping,
         discount_code: promoApplied,
       }),
@@ -425,14 +492,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       .catch(() => {
         /* ignore */
       })
-  }, [shipping])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shipping, currency])
 
   /* ── Wallet: create PaymentRequest once Stripe is ready ── */
   useEffect(() => {
     if (!stripe) return
     const pr = stripe.paymentRequest({
       country: 'DE',
-      currency: 'eur',
+      currency: currency.toLowerCase(),
       total: { label: `NB1 ${planLabel} Plan`, amount: 0, pending: true },
       requestPayerName: true,
       requestPayerEmail: true,
@@ -465,7 +533,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         const planSlug = `NB1-${planKey.toUpperCase()}-${monthNum}`
         const intent = await checkoutPaymentIntent({
           plan_slug: planSlug,
-          currency: 'EUR',
+          currency,
           shipping_option: shipping,
           discount_code: promoApplied ?? null,
           customer_email: email,
@@ -556,9 +624,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   ])
 
   /* ── helpers ── */
+  // Express fee shown in the selected currency once the live price loads;
+  // falls back to the dictionary string (EUR) if the fetch hasn't returned.
+  const expressPriceLabel = expressShip != null ? fmt(expressShip) : t.shipping.expressPrice
+  const expressShipNum =
+    expressShip ?? (parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9)
   const shippingLabel =
     shipping === 'express'
-      ? `${t.shipping.expressName} · ${t.shipping.expressPrice}`
+      ? `${t.shipping.expressName} · ${expressPriceLabel}`
       : `${t.shipping.standardName} · ${t.shipping.standardPrice}`
 
   function markDone(n: number) {
@@ -590,11 +663,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   function nextShipping() {
     pushEvent('add_shipping_info', {
       ecommerce: {
-        currency: 'EUR',
-        value: rate,
+        currency,
+        value: rateNum,
         ...(promoApplied ? { coupon: promoApplied } : {}),
         shipping_tier: shipping === 'express' ? 'Express' : 'Standard',
-        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
       },
     })
     markDone(3)
@@ -616,8 +689,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
     pushEvent('add_payment_info', {
       ecommerce: {
-        currency: 'EUR',
-        value: rate,
+        currency,
+        value: rateNum,
         ...(promoApplied ? { coupon: promoApplied } : {}),
         payment_type:
           payMethod === 'card'
@@ -629,7 +702,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                 : payMethod === 'sepa'
                   ? 'SEPA Direct Debit'
                   : payMethod,
-        items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planLabel })],
+        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
       },
     })
 
@@ -641,7 +714,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       const intent = await checkoutPaymentIntent({
         plan_slug: planSlug,
-        currency: 'EUR',
+        currency,
         shipping_option: shipping,
         discount_code: promoApplied ?? null,
         customer_email: email,
@@ -804,16 +877,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         external_id: confirmation.external_id,
         ecommerce: {
           transaction_id: confirmation.subscription_id,
-          currency: 'EUR',
-          value: rate,
-          shipping:
-            promoPreview?.shipping_price ??
-            (shipping === 'express'
-              ? parseFloat(t.shipping.expressPrice.replace(/[^0-9.]/g, '')) || 9
-              : 0),
+          currency,
+          value: rateNum,
+          shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? expressShipNum : 0),
           ...(promoApplied ? { coupon: promoApplied } : {}),
           items: [
-            buildNb1Item(planKey, cycleKey, rate, {
+            buildNb1Item(planKey, cycleKey, rateNum, {
               planTitle: planLabel,
               discount: promoPreview?.promo_discount,
             }),
@@ -856,7 +925,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           plan_id: planId,
-          currency: 'EUR',
+          currency,
           shipping_option: shipping,
           discount_code: code,
         }),
@@ -901,7 +970,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       .replace(/(.{4})(?=.)/g, '$1 ')
   }
 
-  const zero = zeroPrice ?? '€0'
+  const zero = zeroPrice
   const confirmLabel =
     payMethod === 'paypal'
       ? t.confirm.paypal
@@ -918,7 +987,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       <PaymentFailedScreen
         locale={locale ?? 'en'}
         t={t}
-        onRetry={() => window.location.replace(window.location.pathname + window.location.search.split('&redirect_status')[0])}
+        onRetry={() =>
+          window.location.replace(
+            window.location.pathname + window.location.search.split('&redirect_status')[0],
+          )
+        }
       />
     )
   }
@@ -935,15 +1008,26 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     ]
     const cycleLabel = cycleKey === 'monthly' ? 'Flexible monthly' : `${cycleKey} months`
     const priceFormatted = rate != null ? String(rate) : ''
-    const referLink = referralShareUrl ?? (referralCode ? `https://nb1.health/r/${referralCode}` : 'https://nb1.health/r/…')
+    const referLink =
+      referralShareUrl ??
+      (referralCode ? `https://nb1.health/r/${referralCode}` : 'https://nb1.health/r/…')
     const referMsg = t.done.refer.modal.defaultMsg
     return (
       <ConfirmationScreen
-        fn={fn} email={email} planLabel={planLabel} cycleLabel={cycleLabel}
-        priceFormatted={priceFormatted} locale={locale ?? 'en'} t={t}
-        inboxBodyPrefix={inboxBodyPrefix} inboxBodySuffix={inboxBodySuffix}
-        chargeNotePrefix={chargeNotePrefix} chargeNoteSuffix={chargeNoteSuffix}
-        survOpts={SURV_OPTS} referLink={referLink} referMsg={referMsg}
+        fn={fn}
+        email={email}
+        planLabel={planLabel}
+        cycleLabel={cycleLabel}
+        priceFormatted={priceFormatted}
+        locale={locale ?? 'en'}
+        t={t}
+        inboxBodyPrefix={inboxBodyPrefix}
+        inboxBodySuffix={inboxBodySuffix}
+        chargeNotePrefix={chargeNotePrefix}
+        chargeNoteSuffix={chargeNoteSuffix}
+        survOpts={SURV_OPTS}
+        referLink={referLink}
+        referMsg={referMsg}
       />
     )
   }
@@ -1918,7 +2002,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       val: 'express',
                       name: t.shipping.expressName,
                       sub: t.shipping.expressSub,
-                      price: t.shipping.expressPrice,
+                      price: expressPriceLabel,
                     },
                   ] as const
                 ).map((opt) => (
@@ -2421,7 +2505,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       : undefined
                   }
                 >
-                  {promoPreview ? `€${promoPreview.monthly_price.toFixed(2)}` : planInfo.rate}
+                  {promoPreview ? fmt(promoPreview.monthly_price) : planInfo.rate}
                 </span>
                 <span className="nb1-sum-price-per">{dict.plans.perMonth}</span>
               </div>
@@ -2433,7 +2517,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                   style={{ color: '#0a8fb0', fontWeight: 600, marginTop: 4 }}
                 >
                   <span className="nb1-sum-label">{t.promoUi.discount ?? 'Discount'}</span>
-                  <span className="nb1-sum-val">−€{promoPreview.promo_discount.toFixed(2)}</span>
+                  <span className="nb1-sum-val">−{fmt(promoPreview.promo_discount)}</span>
                 </div>
                 <div className="nb1-sum-price-row" style={{ marginTop: 4 }}>
                   <span className="nb1-sum-price-label">
@@ -2441,7 +2525,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                   </span>
                   <div className="nb1-sum-price">
                     <span className="nb1-sum-price-big" style={{ color: '#0a8fb0' }}>
-                      €{promoPreview.first_month_price.toFixed(2)}
+                      {fmt(promoPreview.first_month_price)}
                     </span>
                     <span className="nb1-sum-price-per">{dict.plans.perMonth}</span>
                   </div>
