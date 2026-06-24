@@ -17,17 +17,35 @@ export const StickyCtaBarComponent: React.FC<Props> = ({
 }) => {
   const [visible, setVisible] = useState(false)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const lastScrollY = useRef(0)
 
   useEffect(() => {
     const sentinel = sentinelRef.current
     if (!sentinel) return
 
-    const io = new IntersectionObserver(
-      ([entry]) => setVisible(!entry.isIntersecting),
-      { threshold: 0, rootMargin: '-100px 0px 0px 0px' },
-    )
-    io.observe(sentinel)
-    return () => io.disconnect()
+    const showBar = (show: boolean) => { setVisible(show); document.body.classList.toggle('nb1-sticky-active', show) }
+
+    function onScroll() {
+      const y = window.scrollY
+      const delta = y - lastScrollY.current
+      const isMobile = window.innerWidth <= 760
+      const pastSentinel = sentinel?.getBoundingClientRect().bottom ?? 0 < 0
+
+      if (!pastSentinel) {
+        showBar(false)
+      } else if (isMobile && delta < 0) {
+        showBar(false)
+      } else {
+        showBar(true)
+      }
+
+      lastScrollY.current = y
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    onScroll()
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); document.body.classList.remove('nb1-sticky-active') }
   }, [])
 
   return (

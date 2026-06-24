@@ -292,7 +292,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
 
       <nav className={`nb1-nav${hidden ? ' nb1-hidden' : ''}`} aria-label="Main navigation">
         <div className="nb1-nav-in">
-          <Link href={`/${locale}`} className="nb1-logo" aria-label="NB1">
+          <Link href={`/${locale}/home-page`} className="nb1-logo" aria-label="NB1">
             {activeLogo?.url
               ? <img src={activeLogo.url} alt={activeLogo.alt || 'NB1'} />
               : <span style={{ fontWeight: 800, fontSize: 18, color: isTransparent ? '#fff' : '#0B1E33' }}>NB<sup>1</sup></span>

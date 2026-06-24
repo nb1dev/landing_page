@@ -163,6 +163,16 @@ html[data-theme='light'] {
   inset: auto !important;
 }
 
+/* Chatwoot bubble: behind modals by default */
+.woot-widget-bubble.woot-elements--right {
+  z-index: 80 !important;
+}
+
+/* Push Chatwoot bubble above the sticky CTA bar when it's visible */
+body.nb1-sticky-active .woot-widget-bubble.woot-elements--right {
+  bottom: 80px !important;
+}
+
 
 /* ═══════════════════════════════════════════════════
    NB1 — Ketch Consent Banner

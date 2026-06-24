@@ -16,6 +16,8 @@ import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
 import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
 import { getDictionary } from '@/i18n/getDictionary'
+import { ConfirmationScreen } from './ConfirmationScreen'
+import { PaymentFailedScreen } from './PaymentFailedScreen'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -137,14 +139,28 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [step, setStep] = useState(1)
   const [doneSteps, setDoneSteps] = useState<Set<number>>(new Set())
   const [confirmed, setConfirmed] = useState(false)
+  const [paymentFailed, setPaymentFailed] = useState(false)
+  const [referralCode, setReferralCode] = useState<string | null>(null)
+  const [referralShareUrl, setReferralShareUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    const osn = document.querySelector('.osn-nav')
+    const osn = document.querySelector<HTMLElement>('.osn-nav')
+    if (!osn) return
     if (confirmed) {
-      osn?.setAttribute('style', 'display:none!important')
-    }
-    return () => {
-      osn?.removeAttribute('style')
+      osn.style.removeProperty('display')
+      osn.removeAttribute('style')
+      osn.querySelectorAll('.osn-step.active').forEach(el => {
+        el.classList.remove('active')
+        el.classList.add('done')
+      })
+      const back = osn.querySelector('.osn-back')
+      if (back) {
+        const help = document.createElement('a')
+        help.href = `mailto:${t.done.supportEmail}`
+        help.className = 'osn-back'
+        help.textContent = t.done.helpLink
+        back.replaceWith(help)
+      }
     }
   }, [confirmed])
 
@@ -257,6 +273,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const setupIntentParam = searchParams?.get('setup_intent')
     const setupIntentClientSecret = searchParams?.get('setup_intent_client_secret')
     if (!stripe) return
+    if (!redirectStatus) return
+    if (redirectStatus === 'failed' || redirectStatus === 'canceled') {
+      setPaymentFailed(true)
+      return
+    }
     if (
       (redirectStatus !== 'succeeded' && redirectStatus !== 'pending') ||
       !setupIntentParam ||
@@ -801,6 +822,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       })
 
       setAccountStatus('sent')
+      setReferralCode(confirmation.referral_code ?? null)
+      setReferralShareUrl(confirmation.referral_share_url ?? null)
     } catch (err: unknown) {
       setAccountStatus('error')
       const code = (err as { code?: string })?.code
@@ -886,88 +909,42 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         ? t.confirm.klarna
         : t.confirm.label.replace('{zeroPrice}', zero)
 
-  const [doneBodyPrefix, doneBodySuffix] = t.done.body.split('{email}')
+  const [inboxBodyPrefix, inboxBodySuffix] = t.done.inboxBody.split('{email}')
+  const [chargeNotePrefix, chargeNoteSuffix] = t.done.summary.chargeNote.split('{when}')
+
+  /* ── Payment failed screen ── */
+  if (paymentFailed) {
+    return (
+      <PaymentFailedScreen
+        locale={locale ?? 'en'}
+        t={t}
+        onRetry={() => window.location.replace(window.location.pathname + window.location.search.split('&redirect_status')[0])}
+      />
+    )
+  }
 
   /* ── Confirmation screen ── */
   if (confirmed) {
+    const SURV_OPTS = [
+      { v: 'Social media', sub: ['Instagram', 'TikTok', 'YouTube'] },
+      { v: 'Google' },
+      { v: 'Influencer / creator' },
+      { v: 'A friend' },
+      { v: 'Podcast' },
+      { v: 'HYROX / event' },
+    ]
+    const cycleLabel = cycleKey === 'monthly' ? 'Flexible monthly' : `${cycleKey} months`
+    const priceFormatted = rate != null ? String(rate) : ''
+    const referLink = referralShareUrl ?? (referralCode ? `https://nb1.health/r/${referralCode}` : 'https://nb1.health/r/…')
+    const referMsg = t.done.refer.modal.defaultMsg
     return (
-      <div className="nb1-det-confirmed">
-        <style jsx global>{`
-          .nb1-det-confirmed {
-            min-height: 60vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 80px 28px;
-            text-align: center;
-          }
-          .nb1-det-check-circle {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: #0a8fb0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 28px;
-          }
-          .nb1-det-conf-h {
-            font-family: 'Instrument Sans', 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: clamp(26px, 3vw, 36px);
-            letter-spacing: -0.02em;
-            color: #12314d;
-            margin-bottom: 14px;
-          }
-          .nb1-det-conf-p {
-            font-size: 15px;
-            color: rgba(18, 49, 77, 0.7);
-            line-height: 1.6;
-            max-width: 480px;
-            margin: 0 auto 32px;
-          }
-          .nb1-det-conf-btn {
-            display: inline-block;
-            background: #c6ff5b;
-            color: #0e2740;
-            font-weight: 700;
-            font-size: 15px;
-            padding: 16px 36px;
-            border-radius: 100px;
-            text-decoration: none;
-          }
-          .nb1-det-conf-btn:hover {
-            background: #aaea42;
-          }
-        `}</style>
-        <div className="nb1-det-check-circle">
-          <svg
-            viewBox="0 0 24 24"
-            width={32}
-            height={32}
-            fill="none"
-            stroke="#fff"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h2 className="nb1-det-conf-h">
-          {t.done.heading}
-          {fn ? `, ${fn}` : ''}.
-        </h2>
-        <p className="nb1-det-conf-p">
-          {doneBodyPrefix}
-          <strong>{email}</strong>
-          {doneBodySuffix}
-        </p>
-        <Link href="/" className="nb1-det-conf-btn">
-          {t.done.dashboard}
-        </Link>
-      </div>
+      <ConfirmationScreen
+        fn={fn} email={email} planLabel={planLabel} cycleLabel={cycleLabel}
+        priceFormatted={priceFormatted} locale={locale ?? 'en'} t={t}
+        inboxBodyPrefix={inboxBodyPrefix} inboxBodySuffix={inboxBodySuffix}
+        chargeNotePrefix={chargeNotePrefix} chargeNoteSuffix={chargeNoteSuffix}
+        survOpts={SURV_OPTS} referLink={referLink} referMsg={referMsg}
+      />
     )
   }
 

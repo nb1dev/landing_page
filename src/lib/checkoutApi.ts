@@ -78,6 +78,8 @@ export type CheckoutConfirmOut = {
   password_setup_email_sent: boolean
   event_id: string
   external_id: string
+  referral_code: string | null
+  referral_share_url: string | null
 }
 
 export async function checkoutPaymentIntent(
