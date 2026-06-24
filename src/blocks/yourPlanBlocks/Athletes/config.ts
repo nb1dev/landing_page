@@ -88,7 +88,7 @@ export const YpAthletesBlock: Block = {
         { name: 'isVideo', label: 'Video card (play + lightbox)', type: 'checkbox', defaultValue: false },
         { name: 'watchLabel', label: 'Watch Label', type: 'text', localized: true, defaultValue: 'Watch', admin: { condition: (_, s) => !!s?.isVideo } },
         { name: 'video', label: 'Video file', type: 'upload', relationTo: 'media', admin: { condition: (_, s) => !!s?.isVideo, description: 'MP4 played in the lightbox.' } },
-        { name: 'subtitlesUrl', label: 'Subtitles URL (.vtt)', type: 'text', admin: { condition: (_, s) => !!s?.isVideo, description: 'Optional English subtitles track.' } },
+        { name: 'subtitles', label: 'Subtitles (.vtt file)', type: 'upload', relationTo: 'media', admin: { condition: (_, s) => !!s?.isVideo, description: 'Upload a .vtt subtitles file.' } },
       ],
     },
     // ── Record strip ────────────────────────────────────────────
