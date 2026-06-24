@@ -166,8 +166,18 @@ export const YpHeroComponent: React.FC<YpHeroBlockType> = ({
         .hero2 {
           display: grid;
           grid-template-columns: 0.9fr 1.1fr;
-          gap: 48px;
-          align-items: stretch;
+          grid-template-rows: auto auto auto auto;
+          gap: 0 48px;
+          align-items: start;
+        }
+        .hero-head { grid-column: 1; grid-row: 1; }
+        .hero-lede { grid-column: 1; grid-row: 2; margin-top: 22px; }
+        .hero-cta  { grid-column: 1; grid-row: 3; }
+        .hero-board { grid-column: 1; grid-row: 4; }
+        .hero-visual {
+          grid-column: 2;
+          grid-row: 1 / 5;
+          align-self: stretch;
         }
 
         /* heading */
@@ -341,8 +351,13 @@ export const YpHeroComponent: React.FC<YpHeroBlockType> = ({
         @media (max-width: 920px) {
           .hero2 {
             grid-template-columns: 1fr;
-            gap: 36px;
+            gap: 0;
           }
+          .hero-head   { grid-column: 1; grid-row: unset; order: 1; }
+          .hero-visual { grid-column: 1; grid-row: unset; order: 2; margin-top: 24px; }
+          .hero-lede   { grid-column: 1; grid-row: unset; order: 3; margin-top: 22px; }
+          .hero-cta    { grid-column: 1; grid-row: unset; order: 4; }
+          .hero-board  { grid-column: 1; grid-row: unset; order: 5; }
         }
 
         @media (max-width: 640px) {
@@ -376,60 +391,58 @@ export const YpHeroComponent: React.FC<YpHeroBlockType> = ({
 
       <div className="wrap">
         <div className={['hero2 reveal', revealed ? 'in' : ''].join(' ')}>
-          <div>
-            {heading && (
-              <div className="hero-head">
-                <RichText data={heading as any} enableGutter={false} enableProse={false} />
-              </div>
-            )}
-
-            {description && (
-              <div className="hero-lede">
-                <RichText data={description as any} enableGutter={false} enableProse={false} />
-              </div>
-            )}
-
-            {(primaryButton?.label || secondaryLink?.label) && (
-              <div className="hero-cta">
-                {primaryButton?.label && (
-                  <a
-                    href={primaryButton.url || '#'}
-                    className="btn btn-cta"
-                    style={{ backgroundColor: 'rgb(198, 255, 91)' }}
-                  >
-                    {primaryButton.label}
-                  </a>
-                )}
-                {secondaryLink?.label && (
-                  <a href={secondaryLink.url || '#'} className="btn-link">
-                    {secondaryLink.label} <span className="arr">→</span>
-                  </a>
-                )}
-              </div>
-            )}
-
-            {hasBoard && (
-              <div className="hero-board">
-                {faces.length > 0 && (
-                  <div className="faces">
-                    {faces.map((face, i) => (
-                      <img key={i} src={imgUrl(face.image)} alt={imgAlt(face.image)} />
-                    ))}
-                  </div>
-                )}
-                {(boardCopy || boardSubCopy) && (
-                  <div className="hb-copy">
-                    {boardCopy}
-                    {boardSubCopy && <span>{boardSubCopy}</span>}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+          {heading && (
+            <div className="hero-head">
+              <RichText data={heading as any} enableGutter={false} enableProse={false} />
+            </div>
+          )}
 
           <div className="hero-visual">
             {heroPhoto && <img className="hero-photo" src={heroPhoto} alt={imgAlt(image)} />}
           </div>
+
+          {description && (
+            <div className="hero-lede">
+              <RichText data={description as any} enableGutter={false} enableProse={false} />
+            </div>
+          )}
+
+          {(primaryButton?.label || secondaryLink?.label) && (
+            <div className="hero-cta">
+              {primaryButton?.label && (
+                <a
+                  href={primaryButton.url || '#'}
+                  className="btn btn-cta"
+                  style={{ backgroundColor: 'rgb(198, 255, 91)' }}
+                >
+                  {primaryButton.label}
+                </a>
+              )}
+              {secondaryLink?.label && (
+                <a href={secondaryLink.url || '#'} className="btn-link">
+                  {secondaryLink.label} <span className="arr">→</span>
+                </a>
+              )}
+            </div>
+          )}
+
+          {hasBoard && (
+            <div className="hero-board">
+              {faces.length > 0 && (
+                <div className="faces">
+                  {faces.map((face, i) => (
+                    <img key={i} src={imgUrl(face.image)} alt={imgAlt(face.image)} />
+                  ))}
+                </div>
+              )}
+              {(boardCopy || boardSubCopy) && (
+                <div className="hb-copy">
+                  {boardCopy}
+                  {boardSubCopy && <span>{boardSubCopy}</span>}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

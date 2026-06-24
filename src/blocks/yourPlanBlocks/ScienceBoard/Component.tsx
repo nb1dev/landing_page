@@ -451,8 +451,14 @@ export const YpScienceBoardComponent: React.FC<YpScienceBoardBlockType> = ({
             overflow: auto;
           }
           .sb-modal-photo {
-            height: 300px;
+            height: 260px;
             min-height: 0;
+          }
+          .sb-modal-photo img {
+            object-position: center 10%;
+            object-fit: cover;
+            transform: scale(0.92);
+            transform-origin: center 15%;
           }
           .sb-modal-body {
             padding: 28px 26px;

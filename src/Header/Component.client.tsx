@@ -111,12 +111,20 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const lastY = useRef(0)
+  const upDelta = useRef(0)
   useEffect(() => {
     function onScroll() {
       const y = window.scrollY || 0
       if (darkHero) setScrolled(y > 80)
-      if (y > lastY.current + 6 && y > 120) setHidden(true)
-      else if (y < lastY.current - 6 || y < 80) setHidden(false)
+      const isMobile = window.innerWidth <= 860
+      if (y > lastY.current + 6 && y > 120) {
+        setHidden(true)
+        upDelta.current = 0
+      } else if (y < lastY.current) {
+        upDelta.current += lastY.current - y
+        const upThreshold = isMobile ? 40 : 6
+        if (upDelta.current > upThreshold || y < 80) setHidden(false)
+      }
       lastY.current = y
     }
     window.addEventListener('scroll', onScroll, { passive: true })

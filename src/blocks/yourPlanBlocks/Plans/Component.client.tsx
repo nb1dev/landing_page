@@ -1232,7 +1232,18 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
                           <div className="crow" key={ri}>
                             <div className="ccell">{row.text}</div>
                             {cmpCards.map((card, ci) => {
-                              const raw = row.id ? card.features?.[row.id] : undefined
+                              const feats = card.features ?? {}
+                              // Locale-specific value takes priority over the base value.
+                              // Stored as `rowId__locale` (e.g. "abc123__de") so different
+                              // languages can have different text without making the whole
+                              // features JSON field localized (Payload can't do that).
+                              const localeKey = row.id && locale ? `${row.id}__${locale}` : null
+                              const raw =
+                                (localeKey && feats[localeKey] !== undefined
+                                  ? feats[localeKey]
+                                  : row.id
+                                    ? feats[row.id]
+                                    : undefined)
                               const two =
                                 raw && typeof raw === 'object'
                                   ? (raw as { v?: string | null; sub?: string | null })

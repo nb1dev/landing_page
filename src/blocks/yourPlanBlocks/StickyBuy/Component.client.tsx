@@ -44,7 +44,10 @@ export const YpStickyBuyClient: React.FC<YpStickyBuyBlockType> = ({
   hideAtSel,
 }) => {
   const [show, setShow] = useState(false)
+  const [scrollingUp, setScrollingUp] = useState(false)
   const barRef = useRef<HTMLDivElement | null>(null)
+  const lastYRef = useRef(0)
+  const upDeltaRef = useRef(0)
 
   const isImageMode = backgroundType === 'image'
   const bgImg = imgUrl(backgroundImage)
@@ -97,9 +100,21 @@ export const YpStickyBuyClient: React.FC<YpStickyBuyBlockType> = ({
       return r.top < window.innerHeight && r.bottom > 0
     }
     const onScroll = () => {
+      const y = window.scrollY || 0
+      const dy = y - lastYRef.current
+      const isMobile = window.innerWidth <= 860
+      if (dy > 4) {
+        upDeltaRef.current = 0
+        if (isMobile) setScrollingUp(false)
+      } else if (dy < 0 && isMobile) {
+        upDeltaRef.current += -dy
+        if (upDeltaRef.current > 40) setScrollingUp(true)
+      }
+      lastYRef.current = y
+
       const past = showEl
         ? showEl.getBoundingClientRect().bottom < 0
-        : (window.scrollY || 0) > 700
+        : y > 700
       const atHide = hideEls.some(inViewport)
       setShow(past && !atHide)
     }
@@ -120,7 +135,7 @@ export const YpStickyBuyClient: React.FC<YpStickyBuyBlockType> = ({
       style={barStyle}
       className={[
         'yp-sticky',
-        show ? 'show' : '',
+        show && !scrollingUp ? 'show' : '',
         isGlass ? 'is-glass' : '',
         isDark ? 'is-dark' : '',
       ].join(' ')}
