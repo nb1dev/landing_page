@@ -4176,9 +4176,9 @@ export interface YpAthletesBlock {
          */
         video?: (number | null) | Media;
         /**
-         * Optional English subtitles track.
+         * Upload a .vtt subtitles file.
          */
-        subtitlesUrl?: string | null;
+        subtitles?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -5407,6 +5407,10 @@ export interface AthletesSectionBlock {
         hasVideo?: boolean | null;
         video?: (number | null) | Media;
         videoAriaLabel?: string | null;
+        /**
+         * Upload a .vtt subtitles file.
+         */
+        subtitles?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -7551,7 +7555,7 @@ export interface YpAthletesBlockSelect<T extends boolean = true> {
         isVideo?: T;
         watchLabel?: T;
         video?: T;
-        subtitlesUrl?: T;
+        subtitles?: T;
         id?: T;
       };
   recordLeft?: T;
@@ -8264,6 +8268,7 @@ export interface AthletesSectionBlockSelect<T extends boolean = true> {
         hasVideo?: T;
         video?: T;
         videoAriaLabel?: T;
+        subtitles?: T;
         id?: T;
       };
   id?: T;
