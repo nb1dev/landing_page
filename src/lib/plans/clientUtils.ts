@@ -4,6 +4,8 @@
  * instead of (or in addition to) the server-side API layer.
  */
 
+import { PRICE_TOKEN_RE, hasPriceToken, resolveExpr } from './priceExpr'
+
 export type CurrencyCode = 'EUR' | 'GBP' | 'AED' | 'CHF'
 
 export interface RawPlanClient {
@@ -83,7 +85,22 @@ export function buildRateMap(
   return map
 }
 
-const TOKEN_RE = /\{\{\s*price:(core|advanced):(\d+)\s*\}\}/gi
+/**
+ * Resolve `{{ … }}` price tokens — including arithmetic such as
+ * `{{(price:core:4-price:core:12)*12}}/yr` — to formatted prices, using a
+ * prebuilt `family:month → rate` map. See priceExpr.ts for the grammar.
+ */
+function replaceTokens(
+  text: string,
+  rateMap: Record<string, number>,
+  currency: CurrencyCode,
+  locale: string,
+): string {
+  return text.replace(PRICE_TOKEN_RE, (_full, inner: string) => {
+    const val = resolveExpr(inner, (fam, mo) => rateMap[`${fam}:${mo}`])
+    return val == null ? '' : formatPrice(val, currency, locale)
+  })
+}
 
 export function resolveTokens(
   text: string | null | undefined,
@@ -91,11 +108,8 @@ export function resolveTokens(
   currency: CurrencyCode,
   locale: string,
 ): string | null | undefined {
-  if (!text || !/\{\{\s*price:/i.test(text)) return text
-  return text.replace(TOKEN_RE, (_full, fam: string, mo: string) => {
-    const rate = rateMap[`${fam.toLowerCase()}:${Number(mo)}`]
-    return rate != null ? formatPrice(rate, currency, locale) : ''
-  })
+  if (!hasPriceToken(text)) return text
+  return replaceTokens(text as string, rateMap, currency, locale)
 }
 
 export function resolveTokensDeep<T>(
@@ -106,11 +120,8 @@ export function resolveTokensDeep<T>(
 ): T {
   if (value == null) return value
   const scan = typeof value === 'string' ? value : JSON.stringify(value)
-  if (!/\{\{\s*price:/i.test(scan)) return value
-  const resolved = scan.replace(TOKEN_RE, (_full, fam: string, mo: string) => {
-    const rate = rateMap[`${fam.toLowerCase()}:${Number(mo)}`]
-    return rate != null ? formatPrice(rate, currency, locale) : ''
-  })
+  if (!hasPriceToken(scan)) return value
+  const resolved = replaceTokens(scan, rateMap, currency, locale)
   return typeof value === 'string' ? (resolved as T) : JSON.parse(resolved)
 }
 
