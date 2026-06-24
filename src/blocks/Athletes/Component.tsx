@@ -11,6 +11,7 @@ type Athlete = {
   hasVideo?: boolean | null
   video?: { url?: string | null } | null
   videoAriaLabel?: string | null
+  subtitles?: { url?: string | null } | null
 }
 
 type Props = {
@@ -28,6 +29,7 @@ export const AthletesComponent: React.FC<Props> = ({
   const [visible, setVisible] = useState(false)
   const [lbOpen, setLbOpen] = useState(false)
   const [activeVideoUrl, setActiveVideoUrl] = useState<string | null>(null)
+  const [activeAthlete, setActiveAthlete] = useState<Athlete | null>(null)
 
   useEffect(() => {
     const el = secRef.current
@@ -39,8 +41,10 @@ export const AthletesComponent: React.FC<Props> = ({
     return () => obs.disconnect()
   }, [])
 
-  const openLightbox = useCallback((videoUrl: string) => {
-    setActiveVideoUrl(videoUrl)
+  const openLightbox = useCallback((athlete: Athlete) => {
+    if (!athlete.video?.url) return
+    setActiveVideoUrl(getMediaUrl(athlete.video.url))
+    setActiveAthlete(athlete)
     setLbOpen(true)
   }, [])
 
@@ -50,12 +54,19 @@ export const AthletesComponent: React.FC<Props> = ({
     if (v) { v.pause(); try { v.currentTime = 0 } catch (_) {} }
   }, [])
 
-  // Auto-play when lightbox opens
+  // Auto-play and enable subtitles when lightbox opens
   useEffect(() => {
-    if (lbOpen && videoRef.current) {
-      const p = videoRef.current.play()
-      if (p?.catch) p.catch(() => {})
+    const v = videoRef.current
+    if (!lbOpen || !v) return
+    const p = v.play()
+    if (p?.catch) p.catch(() => {})
+    const enableTrack = () => {
+      for (let i = 0; i < v.textTracks.length; i++) {
+        v.textTracks[i].mode = 'showing'
+      }
     }
+    if (v.readyState >= 1) enableTrack()
+    else v.addEventListener('loadedmetadata', enableTrack, { once: true })
   }, [lbOpen, activeVideoUrl])
 
   // Escape key
@@ -318,8 +329,8 @@ export const AthletesComponent: React.FC<Props> = ({
                         role={canPlay ? 'button' : undefined}
                         tabIndex={canPlay ? 0 : undefined}
                         aria-label={canPlay ? (ath.videoAriaLabel || `Play ${ath.name}'s video`) : undefined}
-                        onClick={canPlay ? () => openLightbox(videoUrl!) : undefined}
-                        onKeyDown={canPlay ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(videoUrl!) } } : undefined}
+                        onClick={canPlay ? () => openLightbox(ath) : undefined}
+                        onKeyDown={canPlay ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(ath) } } : undefined}
                       >
                         {photoUrl && (
                           <img className="ath-bg" src={photoUrl} alt={ath.name || ''} />
@@ -373,7 +384,15 @@ export const AthletesComponent: React.FC<Props> = ({
               playsInline
               preload="metadata"
               src={activeVideoUrl}
-            />
+            >
+              {activeAthlete?.subtitles?.url && (
+                <track
+                  kind="subtitles"
+                  src={getMediaUrl(activeAthlete.subtitles.url)}
+                  default
+                />
+              )}
+            </video>
           )}
         </div>
       </div>

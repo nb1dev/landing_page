@@ -23,6 +23,13 @@ export const AthletesBlock: Block = {
           admin: { condition: (_, siblingData) => !!siblingData?.hasVideo },
         },
         { name: 'videoAriaLabel', type: 'text', localized: true },
+        {
+          name: 'subtitles',
+          label: 'Subtitles (.vtt file)',
+          type: 'upload',
+          relationTo: 'media',
+          admin: { condition: (_, siblingData) => !!siblingData?.hasVideo, description: 'Upload a .vtt subtitles file.' },
+        },
       ],
     },
   ],

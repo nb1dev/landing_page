@@ -32,7 +32,7 @@ type Card = {
   isVideo?: boolean | null
   watchLabel?: string | null
   video?: MediaLike
-  subtitlesUrl?: string | null
+  subtitles?: MediaLike
 }
 
 export type YpAthletesBlockType = {
@@ -110,6 +110,19 @@ export const YpAthletesComponent: React.FC<YpAthletesBlockType> = ({
       } catch {}
       const p = v.play()
       if (p && p.catch) p.catch(() => {})
+
+      // Force subtitles on — browsers (especially Chrome) ignore the
+      // `default` attribute on <track> and leave captions disabled.
+      const enableTrack = () => {
+        for (let i = 0; i < v.textTracks.length; i++) {
+          v.textTracks[i].mode = 'showing'
+        }
+      }
+      if (v.readyState >= 1) {
+        enableTrack()
+      } else {
+        v.addEventListener('loadedmetadata', enableTrack, { once: true })
+      }
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close()
@@ -571,8 +584,8 @@ export const YpAthletesComponent: React.FC<YpAthletesBlockType> = ({
               key={activeVideoUrl}
             >
               <source src={activeVideoUrl} type="video/mp4" />
-              {active?.subtitlesUrl && (
-                <track kind="subtitles" srcLang="en" label="English" src={active.subtitlesUrl} default />
+              {active?.subtitles?.url && (
+                <track kind="subtitles" srcLang="en" label="English" src={getMediaUrl(active.subtitles.url)} default />
               )}
             </video>
           )}
