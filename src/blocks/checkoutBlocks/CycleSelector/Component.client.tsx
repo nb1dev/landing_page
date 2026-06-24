@@ -469,7 +469,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
           <button
             type="button"
             className={`nb1-cs-monthly${monthlySelected ? ' on' : ''}`}
-            onClick={() => { setMonthlySelected(true) }}
+            onClick={() => { setMonthlySelected(true); if (monthlyCheckoutHref) window.location.href = monthlyCheckoutHref }}
           >
             {preferFlexibleLabel ?? 'Prefer to stay flexible?'}{' '}
             <span className="nb1-cs-ml">
