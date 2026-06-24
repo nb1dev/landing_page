@@ -166,14 +166,22 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
   useEffect(() => {
     const el = stageRef.current
     if (!el) return
-    const o = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.3 })
+    // Lower threshold so the section counts as "in view" as soon as any part
+    // of it enters the viewport — 0.3 was too high for tall mobile layouts.
+    const o = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.08 })
     o.observe(el)
     return () => o.disconnect()
   }, [])
 
   // auto-advance accordion within the active view
   useEffect(() => {
-    if (!inView || stopped || iCount <= 1) return
+    if (!inView || iCount <= 1) return
+    // Resume auto-advance 6s after the user last clicked an item.
+    let resumeTimer: ReturnType<typeof setTimeout> | null = null
+    if (stopped) {
+      resumeTimer = setTimeout(() => setStopped(false), 6000)
+      return () => { if (resumeTimer) clearTimeout(resumeTimer) }
+    }
     const id = setInterval(() => {
       if (!hoveringRef.current) setActiveItem((i) => (i + 1) % iCount)
     }, 3600)
