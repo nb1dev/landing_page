@@ -26,3 +26,6 @@ node_modules/
 
 # Payload JSON donusturucu (local, commitleme)
 payloadApiJson/
+
+# Claude Code project index (local only, do not commit)
+PROJECT_INDEX.md

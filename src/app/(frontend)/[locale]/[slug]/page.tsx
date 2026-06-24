@@ -19,6 +19,8 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 import { getServerSideURL } from '@/utilities/getURL'
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
+import { getServerCurrency } from '@/utilities/currency'
+import { resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -86,9 +88,20 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout, header: pageHeader, footer: pageFooter, hideHeader, hideFooter } = page as any
+  const { hero: rawHero, layout: rawLayout, header: pageHeader, footer: pageFooter, hideHeader, hideFooter } = page as any
   const headerId = typeof pageHeader === 'object' ? pageHeader?.id : pageHeader
   const footerId = typeof pageFooter === 'object' ? pageFooter?.id : pageFooter
+
+  // Resolve live-price tokens — incl. arithmetic like
+  // {{(price:core:4-price:core:12)*12}} — in EVERY field of EVERY block (and the
+  // hero), once, in the visitor's currency. This makes tokens work everywhere in
+  // page content without per-block wiring. No-op (returns input) when a section
+  // has no tokens, so it's cheap for token-free pages.
+  const currency = await getServerCurrency(locale)
+  const [hero, layout] = await Promise.all([
+    resolvePriceTokensDeep(rawHero, currency, locale),
+    resolvePriceTokensDeep(rawLayout, currency, locale),
+  ])
 
   const absoluteUrl =
     decodedSlug === 'home'
