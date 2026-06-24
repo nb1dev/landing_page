@@ -5028,7 +5028,15 @@ export interface TheCaseBlock {
   lede?: string | null;
   stats?:
     | {
+        /**
+         * On: enter the stat for each currency — visitors see it in their selected currency. Off: one value for everyone.
+         */
+        useCurrency?: boolean | null;
         stat?: string | null;
+        statEUR?: string | null;
+        statGBP?: string | null;
+        statAED?: string | null;
+        statCHF?: string | null;
         unit?: string | null;
         tag?: string | null;
         frontBody?: string | null;
@@ -8107,7 +8115,12 @@ export interface TheCaseBlockSelect<T extends boolean = true> {
   stats?:
     | T
     | {
+        useCurrency?: T;
         stat?: T;
+        statEUR?: T;
+        statGBP?: T;
+        statAED?: T;
+        statCHF?: T;
         unit?: T;
         tag?: T;
         frontBody?: T;
