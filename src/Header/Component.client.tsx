@@ -134,6 +134,17 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
 
   // Mobile sheet
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [locPopOpen, setLocPopOpen] = useState(false)
+  const locPopTriggerRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!locPopOpen) return
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setLocPopOpen(false); locPopTriggerRef.current?.focus() }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [locPopOpen])
   useEffect(() => {
     if (sheetOpen) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = ''
@@ -284,11 +295,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     .nb1-sheet a:hover { color:rgb(10,143,176); }
     .nb1-sheet-cta { margin:18px 24px 0 !important; padding:16px !important; text-align:center; border-radius:100px; background:#C6FF5B; color:#0B1E33 !important; font-weight:700 !important; font-size:15.5px; border-bottom:none !important; display:block; }
     .nb1-sheet-cta:hover { background:#b8f04a; color:#0B1E33 !important; }
-    .nb1-sheet-loc { padding:18px 24px 4px; }
-    .nb1-sheet-loc h5 { margin:0 0 9px; font-size:10.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:rgba(18,49,77,.42); }
-    .nb1-sheet-chips { display:flex; flex-wrap:wrap; gap:7px; }
-    .nb1-sheet-chip { font-family:inherit; font-size:14px; font-weight:600; color:rgb(18,49,77); background:rgba(18,49,77,.06); border:1px solid rgba(18,49,77,.12); border-radius:100px; padding:8px 14px; cursor:pointer; }
-    .nb1-sheet-chip.sel { background:rgba(10,143,176,.14); border-color:rgba(10,143,176,.4); color:#0A8FB0; }
+    .nb1-sheet-loc { margin:14px 24px 0; padding:16px 0 2px; border-top:1px solid rgba(18,49,77,.10); }
+    .nb1-sheet-locbtn { display:flex; align-items:center; gap:9px; width:100%; font:inherit; font-size:14px; font-weight:500; color:rgba(18,49,77,.6); background:transparent; border:1px solid rgba(18,49,77,.16); border-radius:100px; padding:11px 16px; cursor:pointer; transition:color .15s,border-color .15s; }
+    .nb1-sheet-locbtn:hover { color:#12314D; border-color:rgba(18,49,77,.3); }
+    .nb1-sheet-locbtn .glb { width:15px; height:15px; opacity:.55; flex:none; }
+    .nb1-sheet-locbtn .chev { width:12px; height:12px; opacity:.5; margin-left:auto; flex:none; }
+    .nb1-sheet-locval { font-weight:600; letter-spacing:.01em; }
+    .nb1-locpop { position:fixed; inset:0; z-index:9200; display:flex; align-items:flex-end; justify-content:center; background:rgba(11,26,43,.5); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); opacity:0; visibility:hidden; transition:opacity .22s,visibility .22s; }
+    .nb1-locpop.open { opacity:1; visibility:visible; }
+    .nb1-locpop-card { width:100%; max-width:520px; background:#fff; border-radius:22px 22px 0 0; padding:22px 22px calc(22px + env(safe-area-inset-bottom)); box-shadow:0 -20px 60px -20px rgba(12,30,52,.5); transform:translateY(14px); transition:transform .26s cubic-bezier(.16,.84,.44,1); }
+    .nb1-locpop.open .nb1-locpop-card { transform:none; }
+    .nb1-locpop-card h5 { margin:4px 6px 8px; font-size:10.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:rgba(18,49,77,.42); }
+    .nb1-locpop-card h5:not(:first-child) { margin-top:14px; border-top:1px solid rgba(18,49,77,.08); padding-top:14px; }
     @media (max-width:860px) { .nb1-burger{display:flex;} .nb1-nav-links{display:none;} .nb1-nav-right .nb1-nav-login{display:none;} .nb1-nav-right .nb1-nav-cta{display:none;} .nb1-nav-right .nb1-loc{display:none;} }
     @media (min-width:861px) { .nb1-sheet,.nb1-scrim,.nb1-burger{display:none !important;} }
   `
@@ -412,39 +430,71 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           <a href={`/${curLang}${ctaUrl.startsWith('/') ? ctaUrl : `/${ctaUrl}`}`} className="nb1-sheet-cta" onClick={() => setSheetOpen(false)}>{ctaLabel}</a>
         )}
         <div className="nb1-sheet-loc">
+          <button
+            ref={locPopTriggerRef}
+            type="button"
+            className="nb1-sheet-locbtn"
+            aria-haspopup="dialog"
+            onClick={(e) => { e.stopPropagation(); setLocPopOpen(true) }}
+          >
+            <svg className="glb" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+              <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/>
+            </svg>
+            <span className="nb1-sheet-locval">
+              {langs.find(([c]) => c === curLang)?.[1] ?? curLang.toUpperCase()} · {curSym(curCur)}
+            </span>
+            <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      {/* Locale bottom-sheet popup */}
+      <div
+        className={`nb1-locpop${locPopOpen ? ' open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Language and currency"
+        onClick={(e) => { if (e.target === e.currentTarget) { setLocPopOpen(false); locPopTriggerRef.current?.focus() } }}
+        onKeyDown={(e) => { if (e.key === 'Escape') { setLocPopOpen(false); locPopTriggerRef.current?.focus() } }}
+      >
+        <div className="nb1-locpop-card">
           <h5>{dict.header.language}</h5>
-          <div className="nb1-sheet-chips">
-            {langs.map(([code]) => (
+          <div className="nb1-loc-grid">
+            {langs.map(([code, label]) => (
               <button
                 key={code}
                 type="button"
-                className={`nb1-sheet-chip${curLang === code ? ' sel' : ''}`}
-                onClick={() => applyLang(code)}
+                className={`nb1-loc-opt${curLang === code ? ' sel' : ''}`}
+                onClick={(e) => { e.stopPropagation(); applyLang(code) }}
               >
-                {code.toUpperCase()}
+                {label}
               </button>
             ))}
           </div>
-        </div>
-        <div className="nb1-sheet-loc">
           <h5>{dict.header.currency}</h5>
-          <div className="nb1-sheet-chips">
+          <div className="nb1-loc-grid">
             {allowedCurs().map(([code, sym, name]) => (
               <button
                 key={code}
                 type="button"
-                className={`nb1-sheet-chip${curCur === code ? ' sel' : ''}`}
-                onClick={() => applyCur(code)}
+                className={`nb1-loc-opt${curCur === code ? ' sel' : ''}`}
+                onClick={(e) => { e.stopPropagation(); applyCur(code) }}
               >
-                {sym} {name}
+                <span className="nb1-cur-sym">{sym}</span>{name}
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            className="nb1-loc-done"
+            onClick={() => { setLocPopOpen(false); locPopTriggerRef.current?.focus() }}
+          >
+            {dict.header.apply}
+          </button>
         </div>
-        <div className="nb1-sheet-loc">
-          <button type="button" className="nb1-loc-done" onClick={() => setSheetOpen(false)}>{dict.header.apply}</button>
-        </div>
-      </nav>
+      </div>
     </>
   )
 }
