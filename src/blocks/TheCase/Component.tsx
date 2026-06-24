@@ -3,13 +3,114 @@
 import React, { useState, useEffect, useRef } from 'react'
 import RichText from '@/components/RichText'
 import { getDictionary } from '@/i18n/getDictionary'
+import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 
 type Stat = {
   stat?: string | null
+  useCurrency?: boolean | null
   unit?: string | null
   tag?: string | null
   frontBody?: string | null
   backBody?: string | null
+  // Per-currency values (statEUR, statGBP, …) when useCurrency is on.
+  [key: string]: string | boolean | null | undefined
+}
+
+/** Parse "€180B" → { pre:'€', suf:'B', target:180, dec:0, useGrouping:false }. */
+function parseStat(raw: string) {
+  const m = raw.match(/^(\D*)([\d.,]+)(.*)$/)
+  if (!m) return null
+  const [, pre, numStr, suf] = m
+  const target = parseFloat(numStr.replace(/,/g, ''))
+  if (!Number.isFinite(target)) return null
+  return {
+    pre,
+    suf,
+    target,
+    dec: (numStr.split('.')[1] ?? '').length,
+    useGrouping: numStr.indexOf(',') > -1,
+  }
+}
+
+/**
+ * A single stat number that counts up from 0 to its target when scrolled into
+ * view. The target is parsed from the `value` prop (NOT read back from the DOM),
+ * and the display is React state — so re-renders, card flips and live-preview
+ * refreshes never corrupt the target or freeze it mid-animation. Ends exactly
+ * on `value`. Re-animates when `value` changes (e.g. currency switch).
+ */
+const AnimatedStat: React.FC<{ value: string }> = ({ value }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const parsed = parseStat(value)
+  const canAnimate = !!parsed && parsed.target !== 0
+  const fmt = (v: number) => {
+    if (!parsed) return value
+    let n = v.toFixed(parsed.dec)
+    if (parsed.useGrouping) n = Number(n).toLocaleString('en-US')
+    return parsed.pre + n + parsed.suf
+  }
+  // Start at 0 (count-up). Deterministic across SSR + first client render, so
+  // no hydration mismatch. Non-animatable values (no number, or 0) show as-is.
+  const [display, setDisplay] = useState(() => (canAnimate ? fmt(0) : value))
+
+  useEffect(() => {
+    if (!canAnimate || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setDisplay(value)
+      return
+    }
+    const el = ref.current
+    if (!el) {
+      setDisplay(value)
+      return
+    }
+    const target = parsed!.target
+    let raf = 0
+    let started = false
+    const dur = 1150
+    const run = () => {
+      if (started) return
+      started = true
+      setDisplay(fmt(0))
+      let t0: number | null = null
+      const step = (ts: number) => {
+        if (t0 == null) t0 = ts
+        const p = Math.min((ts - t0) / dur, 1)
+        const e = 1 - Math.pow(1 - p, 3)
+        // Last frame snaps to the exact original string.
+        setDisplay(p < 1 ? fmt(target * e) : value)
+        if (p < 1) raf = requestAnimationFrame(step)
+      }
+      raf = requestAnimationFrame(step)
+    }
+    // Count up if the card is already on screen now (covers the live-preview
+    // iframe, where the observer is unreliable) and/or when it's scrolled into
+    // view. The `started` guard keeps it to a single run.
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) run()
+    const obs = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            run()
+            obs.unobserve(entry.target)
+          }
+        }),
+      { threshold: 0, rootMargin: '0px 0px -12% 0px' },
+    )
+    obs.observe(el)
+    return () => {
+      obs.disconnect()
+      if (raf) cancelAnimationFrame(raf)
+    }
+    // parsed/fmt/canAnimate all derive from `value`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
+  return (
+    <div className="n" ref={ref}>
+      {display}
+    </div>
+  )
 }
 
 type Props = {
@@ -25,57 +126,25 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
   const [flipped, setFlipped] = useState<Set<number>>(new Set())
   const sectionRef = useRef<HTMLDivElement>(null)
 
+  // Visitor's selected currency (nb1_cur cookie), for per-currency stats.
+  const [currency, setCurrency] = useState<CurrencyCode>('EUR')
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const section = sectionRef.current
-    if (!section) return
+    setCurrency(getClientCurrency(locale || 'en'))
+    const onCur = (e: Event) => setCurrency((e as CustomEvent<CurrencyCode>).detail)
+    window.addEventListener('nb1:currencychange', onCur)
+    return () => window.removeEventListener('nb1:currencychange', onCur)
+  }, [locale])
 
-    const dur = 1150
-    const observers: IntersectionObserver[] = []
-
-    section.querySelectorAll<HTMLElement>('.cstat-front .n').forEach((el) => {
-      const raw = el.textContent?.trim() ?? ''
-      const m = raw.match(/^(\D*)([\d.,]+)(.*)$/)
-      if (!m) return
-      const [, pre, numStr, suf] = m
-      const target = parseFloat(numStr.replace(/,/g, ''))
-      if (target === 0) return
-      const dec = (numStr.split('.')[1] ?? '').length
-      const useGrouping = numStr.indexOf(',') > -1
-
-      el.dataset['cv'] = raw
-      el.textContent = pre + '0' + suf
-
-      const fmt = (v: number) => {
-        let n = v.toFixed(dec)
-        if (useGrouping) n = Number(n).toLocaleString('en-US')
-        return pre + n + suf
-      }
-
-      const run = () => {
-        let t0: number | null = null
-        const step = (ts: number) => {
-          if (!t0) t0 = ts
-          const p = Math.min((ts - t0) / dur, 1)
-          const e = 1 - Math.pow(1 - p, 3)
-          el.textContent = fmt(target * e)
-          if (p < 1) requestAnimationFrame(step)
-          else el.textContent = raw
-        }
-        requestAnimationFrame(step)
-      }
-
-      const obs = new IntersectionObserver(
-        (entries) => entries.forEach((entry) => { if (entry.isIntersecting) { run(); obs.unobserve(entry.target) } }),
-        { threshold: 0, rootMargin: '0px 0px -12% 0px' },
-      )
-      obs.observe(el)
-      observers.push(obs)
-    })
-
-    return () => observers.forEach((o) => o.disconnect())
-  }, [stats])
+  // Pick the stat string to show: per-currency value (falling back to EUR, then
+  // the single value) when the toggle is on; otherwise the single value.
+  const statFor = (item: Stat): string => {
+    if (item.useCurrency) {
+      const byCur = item[`stat${currency}`]
+      const eur = item.statEUR
+      return (typeof byCur === 'string' && byCur) || (typeof eur === 'string' && eur) || item.stat || ''
+    }
+    return item.stat || ''
+  }
 
   const toggle = (i: number) => setFlipped((prev) => {
     const next = new Set(prev)
@@ -227,8 +296,10 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
           transform: rotateY(180deg);
         }
 
-        /* front face typography */
-        .n {
+        /* front face typography — .n lives in the <AnimatedStat> child component,
+           so it doesn't get this block's styled-jsx scope hash; target it with
+           :global, anchored under the scoped .cstat-front so it can't leak. */
+        .cstat-front :global(.n) {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
           font-size: clamp(34px, 4vw, 46px);
@@ -360,7 +431,7 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
                   <div className={`cstat-inner${flipped.has(i) ? ' flipped' : ''}`}>
                     {/* front */}
                     <div className="cstat-face cstat-front">
-                      <div className="n">{item.stat}</div>
+                      <AnimatedStat value={statFor(item)} />
                       {item.unit && <div className="unit">{item.unit}</div>}
                       {item.tag && <div className="tag">{item.tag}</div>}
                       {item.frontBody && <p className="exp">{item.frontBody}</p>}

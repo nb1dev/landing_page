@@ -78,6 +78,7 @@ import * as migration_20260619_130708 from './20260619_130708';
 import * as migration_20260622_110351 from './20260622_110351';
 import * as migration_20260624_082045 from './20260624_082045';
 import * as migration_20260624_122000 from './20260624_122000';
+import * as migration_20260624_130615_theCase_currency_stats from './20260624_130615_theCase_currency_stats';
 import * as migration_20260624_plan_sticky_bar from './20260624_plan_sticky_bar';
 
 export const migrations = [
@@ -480,6 +481,11 @@ export const migrations = [
     up: migration_20260624_122000.up,
     down: migration_20260624_122000.down,
     name: '20260624_122000',
+  },
+  {
+    up: migration_20260624_130615_theCase_currency_stats.up,
+    down: migration_20260624_130615_theCase_currency_stats.down,
+    name: '20260624_130615_theCase_currency_stats',
   },
   {
     up: migration_20260624_plan_sticky_bar.up,
