@@ -27,6 +27,11 @@ type Props = {
   locale?: string
 }
 
+/**
+ * Live-price tokens (incl. arithmetic like {{(price:core:4-price:core:12)*12}})
+ * in this block's copy are resolved page-wide on the server — see the page
+ * component's resolvePriceTokensDeep call — so this block just forwards props.
+ */
 export const CyclesPricingGridComponent: React.FC<Props> = (props) => {
   return <CyclesPricingGridClient {...props} />
 }
