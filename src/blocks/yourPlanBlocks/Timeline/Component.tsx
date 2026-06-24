@@ -374,11 +374,8 @@ export const YpTimelineComponent: React.FC<YpTimelineBlockType> = ({
           overflow: hidden;
           padding: 0;
           background: #0a1b2e;
-          /* Fixed proportion so the photo keeps its size and never stretches.
-             4/5 on desktop & phone, 16/11 on tablet (below). */
           aspect-ratio: 4/5;
         }
-        /* Desktop: photo fills the fixed-ratio card (absolute + full height). */
         .time-photo {
           position: absolute;
           inset: 0;
@@ -472,6 +469,7 @@ export const YpTimelineComponent: React.FC<YpTimelineBlockType> = ({
           transition: width 1.1s cubic-bezier(0.16, 0.84, 0.44, 1);
         }
 
+
         @media (prefers-reduced-motion: no-preference) {
           .time-track::before {
             background: rgba(18, 49, 77, 0.1) !important;
@@ -532,25 +530,18 @@ export const YpTimelineComponent: React.FC<YpTimelineBlockType> = ({
           .time-body {
             grid-template-columns: 1fr;
             gap: 24px;
-            /* stacked: don't stretch — let the photo keep its own ratio */
             align-items: start;
           }
-          /* Smaller than desktop: the photo flows in-flow (not absolute, not
-             stretched). The source image is a tall 4:5 (~487px on a phone),
-             which leaves a big empty top and overruns into the next section —
-             so cap it to a compact strip and cover-crop. The card wraps it;
-             stats overlay the bottom. relative (not static) keeps that overlay
-             anchored to the card; not sticky on mobile. */
           .time-stats {
             position: relative;
             top: auto;
-
             aspect-ratio: auto;
           }
           .time-photo {
             position: static;
             height: auto;
-            max-height: 340px;
+            min-height: 460px;
+            max-height: 520px;
           }
         }
       `}</style>
