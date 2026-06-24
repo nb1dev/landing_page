@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useField, useAllFormFields } from '@payloadcms/ui'
+import { useField, useAllFormFields, useLocale } from '@payloadcms/ui'
 
 type Props = { path: string }
 
@@ -17,6 +17,7 @@ export const CardFeatures: React.FC<Props> = ({ path }) => {
   type CellValue = boolean | string | TwoLine
   const { value, setValue } = useField<Record<string, CellValue>>({ path })
   const [fields] = useAllFormFields()
+  const { code: locale } = useLocale()
 
   // path = ...comparison.cards.<n>.features  →  sectionsBase = ...comparison.sections
   const idx = path.indexOf('.cards.')
@@ -37,18 +38,32 @@ export const CardFeatures: React.FC<Props> = ({ path }) => {
   const getVal = (p: string): any => (fields as any)?.[p]?.value
 
   const map = value || {}
-  const setVal = (key: string, v: CellValue) => {
+
+  // For checkbox rows the value is shared across locales (true/false).
+  // For text rows (oneLine / twoLine) we write to a locale-suffixed key so
+  // each language gets its own value without needing a localized JSON field.
+  const localeKey = (key: string, cell: string) =>
+    cell === 'checkbox' ? key : `${key}__${locale}`
+
+  const getLocaleVal = (key: string, cell: string): CellValue | undefined => {
+    const lk = localeKey(key, cell)
+    return map[lk] !== undefined ? map[lk] : map[key]
+  }
+
+  const setVal = (key: string, cell: string, v: CellValue) => {
+    const k = localeKey(key, cell)
     const next = { ...map }
-    if (v === false || v === '' || v == null) delete next[key]
-    else next[key] = v
+    if (v === false || v === '' || v == null) delete next[k]
+    else next[k] = v
     setValue(next)
   }
   const setTwoLine = (key: string, part: 'v' | 'sub', text: string) => {
-    const cur = (typeof map[key] === 'object' && map[key]) || {}
+    const k = localeKey(key, 'twoLine')
+    const cur = (typeof map[k] === 'object' && map[k]) || {}
     const merged: TwoLine = { ...(cur as TwoLine), [part]: text }
     const next = { ...map }
-    if (!merged.v && !merged.sub) delete next[key]
-    else next[key] = merged
+    if (!merged.v && !merged.sub) delete next[k]
+    else next[k] = merged
     setValue(next)
   }
 
@@ -92,7 +107,7 @@ export const CardFeatures: React.FC<Props> = ({ path }) => {
           const cell = getVal(`${sectionsBase}.${s}.rows.${r}.cell`) || 'checkbox'
           const sectionTitle = getVal(`${sectionsBase}.${s}.title`) || `Section ${s + 1}`
           const key: string = (id as string) || `${s}:${r}`
-          const raw = map[key]
+          const raw = getLocaleVal(key, cell)
           const two: TwoLine = raw && typeof raw === 'object' ? (raw as TwoLine) : {}
           const showHeader = s !== lastSection
           lastSection = s
@@ -126,25 +141,31 @@ export const CardFeatures: React.FC<Props> = ({ path }) => {
                   <input
                     type="checkbox"
                     checked={raw === true}
-                    onChange={(e) => setVal(key, e.target.checked)}
+                    onChange={(e) => setVal(key, cell, e.target.checked)}
                     style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer' }}
                   />
                   <span>{text}</span>
                 </label>
               ) : cell === 'oneLine' ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 13, lineHeight: 1.3 }}>{text}</span>
+                  <span style={{ fontSize: 13, lineHeight: 1.3 }}>
+                    {text}
+                    <span style={{ fontSize: 11, opacity: 0.5, marginLeft: 6 }}>({locale})</span>
+                  </span>
                   <input
                     type="text"
                     value={typeof raw === 'string' ? raw : ''}
-                    onChange={(e) => setVal(key, e.target.value)}
+                    onChange={(e) => setVal(key, cell, e.target.value)}
                     placeholder="Value (e.g. On demand)"
                     style={inputStyle}
                   />
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  <span style={{ fontSize: 13, lineHeight: 1.3 }}>{text}</span>
+                  <span style={{ fontSize: 13, lineHeight: 1.3 }}>
+                    {text}
+                    <span style={{ fontSize: 11, opacity: 0.5, marginLeft: 6 }}>({locale})</span>
+                  </span>
                   <input
                     type="text"
                     value={two.v || ''}

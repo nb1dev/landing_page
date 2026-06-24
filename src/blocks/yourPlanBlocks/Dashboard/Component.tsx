@@ -221,14 +221,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           color: #ffffff;
         }
         .wt-sec::after {
-          content: '';
-          position: absolute;
-          top: -15%;
-          right: -8%;
-          width: 50%;
-          height: 130%;
-          background: radial-gradient(circle, rgba(10, 143, 176, 0.08), transparent 65%);
-          pointer-events: none;
+          display: none;
         }
         .grain::before {
           content: '';
@@ -356,6 +349,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
         .wt-list {
           position: relative;
           padding-left: 22px;
+          overflow: hidden;
         }
         .wt-rail {
           position: absolute;
@@ -374,6 +368,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           top: 0;
           width: 100%;
           height: 0;
+          max-height: 100%;
           background: #0a8fb0;
           border-radius: 3px;
           transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
