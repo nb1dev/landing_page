@@ -64,6 +64,9 @@ export const ReinforceCtaComponent: React.FC<Props> = ({
         .nb1-rc-faces img {
           width: 38px;
           height: 38px;
+          min-width: 38px;
+          min-height: 38px;
+          flex-shrink: 0;
           border-radius: 50%;
           object-fit: cover;
           object-position: center top;

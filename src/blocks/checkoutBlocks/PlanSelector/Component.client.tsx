@@ -294,14 +294,13 @@ export const PlanSelectorClient: React.FC<Props> = ({
         .nb1-ps-monthly {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          font-size: 13.5px;
-          font-weight: 600;
+          font-size: 13px;
+          font-weight: 400;
           color: #0a8fb0;
           margin-top: 10px;
           text-decoration: none;
+          cursor: default;
         }
-        .nb1-ps-monthly:hover { opacity: 0.8; }
         .nb1-ps-monthly-ghost { visibility: hidden; }
         .nb1-ps-bullets {
           list-style: none;
@@ -539,13 +538,9 @@ export const PlanSelectorClient: React.FC<Props> = ({
                 {plan.minNote && <div className="nb1-ps-min">{plan.minNote}</div>}
 
                 {plan.monthlyLinkText ? (
-                  <a
-                    href={plan.monthlyLinkHref ?? '#'}
-                    className="nb1-ps-monthly"
-                    onClick={(e) => e.stopPropagation()}
-                  >
+                  <span className="nb1-ps-monthly">
                     {plan.monthlyLinkText}
-                  </a>
+                  </span>
                 ) : (
                   <span className="nb1-ps-monthly nb1-ps-monthly-ghost">&nbsp;</span>
                 )}
