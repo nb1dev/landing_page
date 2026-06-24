@@ -1990,37 +1990,19 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             </div>
             <div className="nb1-acc-body">
               <div className="nb1-ship-opts">
-                {(
-                  [
-                    {
-                      val: 'standard',
-                      name: t.shipping.standardName,
-                      sub: t.shipping.standardSub,
-                      price: t.shipping.standardPrice,
-                    },
-                    {
-                      val: 'express',
-                      name: t.shipping.expressName,
-                      sub: t.shipping.expressSub,
-                      price: expressPriceLabel,
-                    },
-                  ] as const
-                ).map((opt) => (
-                  <div
-                    key={opt.val}
-                    className={`nb1-ship-opt${shipping === opt.val ? ' sel' : ''}`}
-                    onClick={() => setShipping(opt.val)}
-                  >
-                    <div className="nb1-ship-radio">
-                      <div className="nb1-ship-radio-dot" />
-                    </div>
-                    <div className="nb1-ship-info">
-                      <div className="nb1-ship-name">{opt.name}</div>
-                      <div className="nb1-ship-sub">{opt.sub}</div>
-                    </div>
-                    <div className="nb1-ship-price">{opt.price}</div>
+                <div
+                  className="nb1-ship-opt sel"
+                  onClick={() => setShipping('standard')}
+                >
+                  <div className="nb1-ship-radio">
+                    <div className="nb1-ship-radio-dot" />
                   </div>
-                ))}
+                  <div className="nb1-ship-info">
+                    <div className="nb1-ship-name">{t.shipping.standardName}</div>
+                    <div className="nb1-ship-sub">{t.shipping.standardSub}</div>
+                  </div>
+                  <div className="nb1-ship-price">{t.shipping.standardPrice}</div>
+                </div>
               </div>
               <button type="button" className="nb1-acc-next" onClick={nextShipping}>
                 {t.next}
