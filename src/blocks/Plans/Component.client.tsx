@@ -75,6 +75,8 @@ export const PlansClient: React.FC<Props> = (props) => {
   const dict = getDictionary(locale)
   const secRef = useRef<HTMLElement>(null)
   const collapseRef = useRef<HTMLDivElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const [activeDot, setActiveDot] = useState(0)
   const [visible, setVisible] = useState(false)
   const [corePrice, setCorePrice] = useState<string | null>(null)
   const [advPrice, setAdvPrice] = useState<string | null>(null)
@@ -137,6 +139,17 @@ export const PlansClient: React.FC<Props> = (props) => {
     if (!el) return
     el.style.maxHeight = compareOpen ? el.scrollHeight + 'px' : '0px'
   }, [compareOpen])
+
+  useEffect(() => {
+    const grid = gridRef.current
+    if (!grid) return
+    const onScroll = () => {
+      const idx = Math.round(grid.scrollLeft / grid.offsetWidth)
+      setActiveDot(idx)
+    }
+    grid.addEventListener('scroll', onScroll, { passive: true })
+    return () => grid.removeEventListener('scroll', onScroll)
+  }, [])
 
   let rows: CompareRow[] = []
   if (compareRowsJson) {
@@ -522,7 +535,7 @@ export const PlansClient: React.FC<Props> = (props) => {
           </div>
 
           {/* Plan cards */}
-          <div className={`pl-grid r-up${visible ? ' in' : ''}`} style={{ transitionDelay: '0.1s' }}>
+          <div ref={gridRef} className={`pl-grid r-up${visible ? ' in' : ''}`} style={{ transitionDelay: '0.1s' }}>
             {/* Core */}
             <div className="pl-card core">
               <div className="pl-key">{coreLabel || 'Core'}</div>
@@ -583,7 +596,7 @@ export const PlansClient: React.FC<Props> = (props) => {
 
           {/* Mobile dots */}
           <div className="pl-dots" aria-hidden="true">
-            <span className="on" /><span />
+            <span className={activeDot === 0 ? 'on' : ''} /><span className={activeDot === 1 ? 'on' : ''} />
           </div>
 
           {/* Compare toggle + table */}

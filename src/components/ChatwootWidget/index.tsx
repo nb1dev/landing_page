@@ -88,10 +88,23 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
       document.head.appendChild(script)
     }
 
-    return () => {
-      // No teardown here because this component is intended to live
-      // for the whole app lifecycle inside RootLayout.
+    const applyBubblePosition = () => {
+      const bubble = document.getElementById('cw-bubble-holder') ?? document.querySelector<HTMLElement>('.woot--bubble-holder')
+      if (!bubble) return false
+      bubble.style.setProperty('z-index', '80', 'important')
+      bubble.style.setProperty('bottom', '80px', 'important')
+      return true
     }
+
+    // Try immediately in case already injected, then poll until found
+    if (!applyBubblePosition()) {
+      const interval = setInterval(() => {
+        if (applyBubblePosition()) clearInterval(interval)
+      }, 300)
+      setTimeout(() => clearInterval(interval), 10000)
+    }
+
+    return () => {}
   }, [locale])
 
   useEffect(() => {

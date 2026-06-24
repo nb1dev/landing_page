@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import RichText from '@/components/RichText'
 import { getDictionary } from '@/i18n/getDictionary'
 
@@ -22,9 +22,66 @@ type Props = {
 
 export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotHtml, locale }) => {
   const dict = getDictionary(locale)
-  const [flipped, setFlipped] = useState<number | null>(null)
+  const [flipped, setFlipped] = useState<Set<number>>(new Set())
+  const sectionRef = useRef<HTMLDivElement>(null)
 
-  const toggle = (i: number) => setFlipped((prev) => (prev === i ? null : i))
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const section = sectionRef.current
+    if (!section) return
+
+    const dur = 1150
+    const observers: IntersectionObserver[] = []
+
+    section.querySelectorAll<HTMLElement>('.cstat-front .n').forEach((el) => {
+      const raw = el.textContent?.trim() ?? ''
+      const m = raw.match(/^(\D*)([\d.,]+)(.*)$/)
+      if (!m) return
+      const [, pre, numStr, suf] = m
+      const target = parseFloat(numStr.replace(/,/g, ''))
+      if (target === 0) return
+      const dec = (numStr.split('.')[1] ?? '').length
+      const useGrouping = numStr.indexOf(',') > -1
+
+      el.dataset['cv'] = raw
+      el.textContent = pre + '0' + suf
+
+      const fmt = (v: number) => {
+        let n = v.toFixed(dec)
+        if (useGrouping) n = Number(n).toLocaleString('en-US')
+        return pre + n + suf
+      }
+
+      const run = () => {
+        let t0: number | null = null
+        const step = (ts: number) => {
+          if (!t0) t0 = ts
+          const p = Math.min((ts - t0) / dur, 1)
+          const e = 1 - Math.pow(1 - p, 3)
+          el.textContent = fmt(target * e)
+          if (p < 1) requestAnimationFrame(step)
+          else el.textContent = raw
+        }
+        requestAnimationFrame(step)
+      }
+
+      const obs = new IntersectionObserver(
+        (entries) => entries.forEach((entry) => { if (entry.isIntersecting) { run(); obs.unobserve(entry.target) } }),
+        { threshold: 0, rootMargin: '0px 0px -12% 0px' },
+      )
+      obs.observe(el)
+      observers.push(obs)
+    })
+
+    return () => observers.forEach((o) => o.disconnect())
+  }, [stats])
+
+  const toggle = (i: number) => setFlipped((prev) => {
+    const next = new Set(prev)
+    next.has(i) ? next.delete(i) : next.add(i)
+    return next
+  })
 
   return (
     <>
@@ -280,7 +337,7 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
         }
       `}</style>
 
-      <section className="case" data-screen-label="The case">
+      <section className="case" data-screen-label="The case" ref={sectionRef}>
         <div className="case-in">
 
           <div className="mast">
@@ -296,11 +353,11 @@ export const TheCaseComponent: React.FC<Props> = ({ heading, lede, stats, pivotH
                   className="cstat"
                   type="button"
                   role="button"
-                  aria-expanded={flipped === i}
+                  aria-expanded={flipped.has(i)}
                   onClick={() => toggle(i)}
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i) } }}
                 >
-                  <div className={`cstat-inner${flipped === i ? ' flipped' : ''}`}>
+                  <div className={`cstat-inner${flipped.has(i) ? ' flipped' : ''}`}>
                     {/* front */}
                     <div className="cstat-face cstat-front">
                       <div className="n">{item.stat}</div>
