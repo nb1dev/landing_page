@@ -79,6 +79,7 @@ import { ReinforceCta } from '@/blocks/checkoutBlocks/ReinforceCta/config'
 import { PlanPivot } from '@/blocks/checkoutBlocks/PlanPivot/config'
 import { StickyCtaBar } from '@/blocks/checkoutBlocks/StickyCtaBar/config'
 import { PlanSelector } from '@/blocks/checkoutBlocks/PlanSelector/config'
+import { PlanStickyBar } from '@/blocks/checkoutBlocks/PlanStickyBar/config'
 import { CycleSelector } from '@/blocks/checkoutBlocks/CycleSelector/config'
 import { CheckoutForm } from '@/blocks/checkoutBlocks/CheckoutForm/config'
 import { HomepageHeroBlock } from '@/blocks/HomepageHero/config'
@@ -269,6 +270,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 PlanPivot,
                 StickyCtaBar,
                 PlanSelector,
+                PlanStickyBar,
                 CycleSelector,
                 CheckoutForm,
                 HomepageHeroBlock,
