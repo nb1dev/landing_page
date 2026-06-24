@@ -255,8 +255,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     .nb1-nav-cta { display:inline-flex; align-items:center; font-size:14px; font-weight:700; border-radius:100px; padding:10px 20px; background:#C6FF5B; color:#0B1E33; white-space:nowrap; transition:background .15s; text-decoration:none; }
     .nb1-nav-cta:hover { background:#b8f04a; }
     .nb1-loc { position:relative; }
-    .nb1-loc-btn { display:inline-flex; align-items:center; gap:7px; font-family:inherit; font-size:13.5px; font-weight:600; color:${locBtnColor}; background:none; border:none; border-radius:0; padding:4px 2px; cursor:pointer; transition:opacity .15s; white-space:nowrap; }
-    .nb1-loc-btn:hover { opacity:.75; }
+    .nb1-loc-btn { display:inline-flex; align-items:center; gap:7px; font-family:inherit; font-size:13.5px; font-weight:600; color:${locBtnColor}; background:none; border:1px solid transparent; border-radius:100px; padding:7px 13px; cursor:pointer; transition:background .15s,border-color .15s; white-space:nowrap; }
+    .nb1-loc-btn:hover { border-color:${locBtnBorder}; background:${isTransparent ? 'rgba(255,255,255,0.13)' : 'rgba(18,49,77,0.05)'}; }
     .nb1-loc-btn svg.glb { opacity:.75; }
     .nb1-loc-btn svg.chev { opacity:.6; transition:transform .2s; }
     .nb1-loc.open .nb1-loc-btn svg.chev { transform:rotate(180deg); }
