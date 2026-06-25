@@ -36,7 +36,10 @@ export const HomepageHeroComponent: React.FC<Props> = ({
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const next = useCallback(() => setActiveIdx((i) => (i + 1) % items.length), [items.length])
-  const prev = useCallback(() => setActiveIdx((i) => (i - 1 + items.length) % items.length), [items.length])
+  const prev = useCallback(
+    () => setActiveIdx((i) => (i - 1 + items.length) % items.length),
+    [items.length],
+  )
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
@@ -46,7 +49,9 @@ export const HomepageHeroComponent: React.FC<Props> = ({
   useEffect(() => {
     if (items.length < 2) return
     startTimer()
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+    }
   }, [items.length, startTimer])
 
   const nudge = useCallback(() => {
@@ -71,13 +76,13 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           position: relative;
           overflow: hidden;
           isolation: isolate;
-          background: #0E2740;
+          background: #0e2740;
         }
         .hero-bg {
           position: absolute;
           inset: 0;
           z-index: 0;
-          background-color: #0B1A2B;
+          background-color: #0b1a2b;
           background-image: ${bgUrl ? `url("${bgUrl}")` : 'none'};
           background-position: center center;
           background-size: cover;
@@ -91,8 +96,8 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           pointer-events: none;
           opacity: 0.5;
           background-image:
-            linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
           background-size: 78px 78px;
           -webkit-mask-image: radial-gradient(120% 95% at 72% 0%, #000 0%, transparent 72%);
           mask-image: radial-gradient(120% 95% at 72% 0%, #000 0%, transparent 72%);
@@ -125,11 +130,11 @@ export const HomepageHeroComponent: React.FC<Props> = ({
         }
         .hero-text :global(h1 em) {
           font-style: normal;
-          color: #13A6CC;
+          color: #13a6cc;
         }
         .hero-sub {
           font-size: 18px;
-          color: rgba(255,255,255,.70);
+          color: rgba(255, 255, 255, 0.7);
           line-height: 1.6;
           max-width: 460px;
           margin-top: 22px;
@@ -145,21 +150,26 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          font-family: 'Inter', -apple-system, sans-serif;
+          font-family:
+            'Inter',
+            -apple-system,
+            sans-serif;
           font-weight: 700;
           font-size: 16px;
           padding: 16px 30px;
           border: none;
           border-radius: 100px;
-          background: #C6FF5B;
-          color: #0E2740;
+          background: #c6ff5b;
+          color: #0e2740;
           text-decoration: none;
           cursor: pointer;
           white-space: nowrap;
-          transition: background 0.18s ease, transform 0.18s ease;
+          transition:
+            background 0.18s ease,
+            transform 0.18s ease;
         }
         .btn-pill:hover {
-          background: #AAEA42;
+          background: #aaea42;
           transform: translateY(-1px);
         }
 
@@ -167,9 +177,9 @@ export const HomepageHeroComponent: React.FC<Props> = ({
         .hero-trust {
           position: relative;
           z-index: 3;
-          background: #0A1A2C;
-          border-top: 1px solid rgba(255,255,255,.07);
-          border-bottom: 1px solid rgba(255,255,255,.07);
+          background: #0a1a2c;
+          border-top: 1px solid rgba(255, 255, 255, 0.07);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
         .hero-trust-in {
           max-width: 1200px;
@@ -188,13 +198,13 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           gap: 9px;
         }
         .ht-stars {
-          color: #E8A93B;
+          color: #e8a93b;
           letter-spacing: 1.5px;
           font-size: 13px;
         }
         .ht-text {
           font-size: 12.5px;
-          color: rgba(255,255,255,.60);
+          color: rgba(255, 255, 255, 0.6);
         }
         .ht-text :global(b) {
           color: #fff;
@@ -204,7 +214,7 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: rgba(255,255,255,.25);
+          background: rgba(255, 255, 255, 0.25);
           flex-shrink: 0;
         }
         .ht-nav {
@@ -216,7 +226,7 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           background: none;
           border: none;
           cursor: pointer;
-          color: rgba(18,49,77,.40);
+          color: rgba(18, 49, 77, 0.4);
           padding: 0;
           -webkit-tap-highlight-color: transparent;
         }
@@ -261,10 +271,14 @@ export const HomepageHeroComponent: React.FC<Props> = ({
             inset: auto;
             top: 0;
             width: 100%;
-            height: 100dvh;
+            height: 100svh;
             min-height: 520px;
             z-index: 0;
-            background-image: ${bgMobileUrl ? `url("${bgMobileUrl}")` : (bgUrl ? `url("${bgUrl}")` : 'none')};
+            background-image: ${bgMobileUrl
+              ? `url("${bgMobileUrl}")`
+              : bgUrl
+                ? `url("${bgUrl}")`
+                : 'none'};
             background-position: center center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -277,13 +291,13 @@ export const HomepageHeroComponent: React.FC<Props> = ({
             position: relative;
             z-index: 2;
             background: #fff;
-            min-height: calc(100dvh - 54px);
+            min-height: calc(100svh - 54px);
             padding: 0 24px;
             display: flex;
             flex-direction: column;
             margin-top: -26px;
             border-radius: 26px 26px 0 0;
-            box-shadow: 0 -16px 38px -18px rgba(0,0,0,.5);
+            box-shadow: 0 -16px 38px -18px rgba(0, 0, 0, 0.5);
             grid-template-columns: none;
           }
           .hero-text {
@@ -296,13 +310,13 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           }
           .hero-text :global(h1) {
             font-size: clamp(34px, 9vw, 46px);
-            color: #12314D;
+            color: #12314d;
             line-height: 1.02;
             letter-spacing: -0.025em;
             margin: 0;
           }
           .hero-text :global(h1 em) {
-            color: #0A8FB0;
+            color: #0a8fb0;
           }
           .hero-sub {
             margin: 0;
@@ -310,7 +324,7 @@ export const HomepageHeroComponent: React.FC<Props> = ({
             font-size: 17px;
             line-height: 1.6;
             max-width: 32ch;
-            color: rgba(18,49,77,.70);
+            color: rgba(18, 49, 77, 0.7);
           }
           .hero-cta {
             margin: 0;
@@ -319,7 +333,7 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           /* trust strip: white on mobile */
           .hero-trust {
             background: #fff;
-            border-top: 1px solid rgba(18,49,77,.10);
+            border-top: 1px solid rgba(18, 49, 77, 0.1);
             border-bottom: none;
           }
           .hero-trust-in {
@@ -351,12 +365,14 @@ export const HomepageHeroComponent: React.FC<Props> = ({
             pointer-events: auto;
           }
           .ht-text {
-            color: rgba(18,49,77,.55);
+            color: rgba(18, 49, 77, 0.55);
             font-size: 13px;
           }
-          .ht-text :global(b) { color: #12314D; }
+          .ht-text :global(b) {
+            color: #12314d;
+          }
           .ht-stars {
-            color: #E8A93B;
+            color: #e8a93b;
           }
           .ht-sep {
             display: none;
@@ -367,10 +383,10 @@ export const HomepageHeroComponent: React.FC<Props> = ({
             top: 50%;
             transform: translateY(-50%);
             z-index: 2;
-            color: rgba(18,49,77,.40);
+            color: rgba(18, 49, 77, 0.4);
           }
           .ht-nav:active {
-            color: #0A8FB0;
+            color: #0a8fb0;
           }
           .ht-nav.prev {
             left: 4px;
@@ -391,7 +407,9 @@ export const HomepageHeroComponent: React.FC<Props> = ({
               {subheading && <p className="hero-sub">{subheading}</p>}
               {ctaLabel && (
                 <div className="hero-cta">
-                  <a className="btn-pill" href={ctaHref ?? '#'}>{ctaLabel}</a>
+                  <a className="btn-pill" href={ctaHref ?? '#'}>
+                    {ctaLabel}
+                  </a>
                 </div>
               )}
             </div>
@@ -402,16 +420,36 @@ export const HomepageHeroComponent: React.FC<Props> = ({
           <div className="hero-trust">
             <div
               className="hero-trust-in"
-              onTouchStart={(e) => { x0Ref.current = e.touches[0].clientX }}
+              onTouchStart={(e) => {
+                x0Ref.current = e.touches[0].clientX
+              }}
               onTouchEnd={(e) => {
                 if (x0Ref.current === null) return
                 const dx = e.changedTouches[0].clientX - x0Ref.current
-                if (Math.abs(dx) > 36) { dx < 0 ? next() : prev(); nudge() }
+                if (Math.abs(dx) > 36) {
+                  dx < 0 ? next() : prev()
+                  nudge()
+                }
                 x0Ref.current = null
               }}
             >
-              <button className="ht-nav prev" type="button" aria-label="Previous" onClick={() => { prev(); nudge() }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <button
+                className="ht-nav prev"
+                type="button"
+                aria-label="Previous"
+                onClick={() => {
+                  prev()
+                  nudge()
+                }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M15 5l-7 7 7 7" />
                 </svg>
               </button>
@@ -426,8 +464,23 @@ export const HomepageHeroComponent: React.FC<Props> = ({
                 </React.Fragment>
               ))}
 
-              <button className="ht-nav next" type="button" aria-label="Next" onClick={() => { next(); nudge() }}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <button
+                className="ht-nav next"
+                type="button"
+                aria-label="Next"
+                onClick={() => {
+                  next()
+                  nudge()
+                }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M9 5l7 7-7 7" />
                 </svg>
               </button>
