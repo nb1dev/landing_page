@@ -213,7 +213,6 @@ export function ConfirmationScreen({
             <path d="M4 12l5 5L20 6" />
           </svg>
         </div>
-        <div className="nb1-conf-eyebrow">{td.eyebrow} NB1-XXXXXX</div>
         <h1>{td.heading}{fn ? `, ${fn}` : ''}.</h1>
         <p>{td.body}</p>
       </header>
