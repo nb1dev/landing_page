@@ -1,0 +1,76 @@
+{
+  "title": "Order — Cycle Advanced",
+  "slug": "order-cycle-advanced",
+  "_status": "published",
+  "hero": { "type": "none" },
+  "layout": [
+    {
+      "blockType": "orderStepHero",
+      "headline": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "How long do you want to ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "give it?", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "subtitle": "We work in cycles of four months, the shortest window your biology actually shows real change in. Pick the length you're ready to commit to, the longer the cycle, the less you pay each month.",
+      "showSeals": false
+    },
+    {
+      "blockType": "cycleSelector",
+      "planName": "Advanced",
+      "switchLinkLabel": "Switch to Core →",
+      "switchLinkHref": "/order-cycle-core",
+      "tiers": [
+        {
+          "months": "4 months",
+          "monthlyRate": "€149",
+          "saveLabel": "",
+          "isBestValue": false,
+          "checkoutHref": "/order-details?plan=advanced&cycle=4"
+        },
+        {
+          "months": "8 months",
+          "monthlyRate": "€141",
+          "saveLabel": "Save €64 / cycle",
+          "isBestValue": false,
+          "checkoutHref": "/order-details?plan=advanced&cycle=8"
+        },
+        {
+          "months": "12 months",
+          "monthlyRate": "€134",
+          "saveLabel": "Save €180 / cycle",
+          "isBestValue": true,
+          "checkoutHref": "/order-details?plan=advanced&cycle=12"
+        }
+      ],
+      "showMonthlyOption": false,
+      "monthlyRate": "",
+      "monthlyCheckoutHref": "",
+      "faqTitle": "Choosing your duration",
+      "faqItems": [
+        {
+          "question": "Am I locked in for the whole cycle?",
+          "answer": "On a 4, 8 or 12-month cycle, yes. You're committing to that term, and it's billed monthly across it, you can't cancel partway through. Advanced doesn't offer a flexible monthly option — the protocol is built to evolve across full cycles."
+        },
+        {
+          "question": "When am I first charged?",
+          "answer": "Nothing today. Your first payment only happens once your diagnostic is back and your formula goes into manufacture, usually around week three. If anything looks off in your results before then, you won't be charged at all."
+        },
+        {
+          "question": "Can I change my cycle later?",
+          "answer": "You can extend to a longer cycle anytime to bring your monthly price down. To move to a shorter cycle, you'll switch once your current term ends. Your dashboard handles it in a couple of taps."
+        },
+        {
+          "question": "Does a longer cycle change what Advanced does?",
+          "answer": "No. Advanced rebuilds your formula every cycle regardless of length. A longer cycle simply earns you a better monthly rate while your biology gets more time to shift between reads."
+        }
+      ]
+    }
+  ]
+}

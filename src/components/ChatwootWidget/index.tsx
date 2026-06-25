@@ -88,9 +88,71 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
       document.head.appendChild(script)
     }
 
+    // Z-index budget:
+    //   Modals (scientist/report): 300–1000
+    //   Sticky bars (yp-sticky, checkout bars): 55
+    //   Chatwoot bubble: 54 — sits below sticky bars so it never overlaps them
+    //   Chatwoot widget window: 200 — above sticky bars but below site modals
+    const BUBBLE_Z = '54'
+    const WIDGET_Z = '200'
+    const BUBBLE_BOTTOM_DEFAULT = '20px'
+    const BUBBLE_BOTTOM_WITH_BAR = '80px'
+
+    const getStickyBar = () =>
+      document.querySelector<HTMLElement>('.yp-sticky, .nb1-sticky-cta, .nb1-plan-sticky')
+
+    const applyStyles = () => {
+      const bubble =
+        document.getElementById('cw-bubble-holder') ??
+        document.querySelector<HTMLElement>('.woot--bubble-holder')
+      const widget =
+        document.getElementById('chatwoot-widget') ??
+        document.querySelector<HTMLElement>('.woot-widget-holder, #woot-widget-wrapper')
+
+      if (!bubble) return false
+
+      bubble.style.setProperty('z-index', BUBBLE_Z, 'important')
+      if (widget) widget.style.setProperty('z-index', WIDGET_Z, 'important')
+
+      const bar = getStickyBar()
+      const barVisible = bar?.classList.contains('show')
+      bubble.style.setProperty(
+        'bottom',
+        barVisible ? BUBBLE_BOTTOM_WITH_BAR : BUBBLE_BOTTOM_DEFAULT,
+        'important',
+      )
+      return true
+    }
+
+    // Poll until the bubble is injected by the SDK, then observe the sticky bar
+    let pollInterval: ReturnType<typeof setInterval> | null = null
+    let mutationObs: MutationObserver | null = null
+    let pollTimeout: ReturnType<typeof setTimeout> | null = null
+
+    const startObserver = () => {
+      // Re-run whenever the sticky bar gains/loses the 'show' class
+      const bar = getStickyBar()
+      if (!bar) return
+      mutationObs = new MutationObserver(applyStyles)
+      mutationObs.observe(bar, { attributes: true, attributeFilter: ['class'] })
+    }
+
+    pollInterval = setInterval(() => {
+      if (applyStyles()) {
+        if (pollInterval) clearInterval(pollInterval)
+        pollInterval = null
+        startObserver()
+      }
+    }, 300)
+
+    pollTimeout = setTimeout(() => {
+      if (pollInterval) clearInterval(pollInterval)
+    }, 12000)
+
     return () => {
-      // No teardown here because this component is intended to live
-      // for the whole app lifecycle inside RootLayout.
+      if (pollInterval) clearInterval(pollInterval)
+      if (pollTimeout) clearTimeout(pollTimeout)
+      mutationObs?.disconnect()
     }
   }, [locale])
 

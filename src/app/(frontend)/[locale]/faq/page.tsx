@@ -3,6 +3,12 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { JsonLd } from '@/components/JsonLd'
 import { buildFAQPageSchema } from '@/utilities/buildFAQPageSchema'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
+
+// ISR: cache the page and re-render at most every 10 min instead of querying the
+// FAQ global from the DB on every request.
+export const revalidate = 600
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -40,6 +46,7 @@ export default async function FAQPage({ params }: Props) {
 
   return (
     <>
+      <Header locale={locale} />
       <JsonLd data={jsonLd} />
 
       <main style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
@@ -63,6 +70,7 @@ export default async function FAQPage({ params }: Props) {
           </section>
         ))}
       </main>
+      <Footer locale={locale} />
     </>
   )
 }

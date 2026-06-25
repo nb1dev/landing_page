@@ -3,13 +3,19 @@ import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
+
+// ISR: cache product pages — the DB query becomes a cache hit after the first
+// render, re-validated every 10 min, instead of a live query per request.
+export const revalidate = 600
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
 }
 
 export default async function ProductPage({ params }: Props) {
-  const { slug } = await params
+  const { slug, locale } = await params
 
   const payload = await getPayload({ config })
 
@@ -26,6 +32,8 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      <Header locale={locale} />
+
       {/* ✅ Per-product JSON-LD */}
       <JsonLd data={productJsonLd} />
 
@@ -33,6 +41,8 @@ export default async function ProductPage({ params }: Props) {
         <h1>{product.name}</h1>
         <p>{product.description}</p>
       </main>
+
+      <Footer locale={locale} />
     </>
   )
 }

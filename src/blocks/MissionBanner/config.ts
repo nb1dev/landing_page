@@ -5,8 +5,6 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-
 export const MissionBanner: Block = {
   slug: 'mission-banner',
   interfaceName: 'MissionBannerBlock',
@@ -20,7 +18,6 @@ export const MissionBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature(),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),
@@ -35,7 +32,6 @@ export const MissionBanner: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature(),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
         ],
       }),

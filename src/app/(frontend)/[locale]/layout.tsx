@@ -7,8 +7,6 @@ import { GeistSans } from 'geist/font/sans'
 import React, { cache } from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
-import { Footer } from '@/Footer/Component'
-import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -57,6 +55,9 @@ export default async function RootLayout({
   const resolved = await params
   const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
+  const ketchLocaleMap: Record<AppLocale, string> = { en: 'en', de: 'de-DE' }
+  const ketchLang = ketchLocaleMap[locale] ?? locale
+
   let organizationJsonLd: JsonLdValue = null
 
   try {
@@ -77,20 +78,39 @@ export default async function RootLayout({
         <InitTheme />
 
         {/* Google Tag Manager */}
-        <Script id="gtm-head" strategy="beforeInteractive">
-          {`
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <Script id="gtm-head" strategy="beforeInteractive">{`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=!0;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-5F7G4N5K');
-          `}
-        </Script>
+            })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}');
+          `}</Script>
+        )}
         {/* End Google Tag Manager */}
 
+        <Script id="ketch-lang" strategy="beforeInteractive">{`
+          (function() {
+            var lang = '${ketchLang}';
+            try {
+              Object.defineProperty(navigator, 'language', { get: function() { return lang; }, configurable: true });
+              Object.defineProperty(navigator, 'languages', { get: function() { return [lang]; }, configurable: true });
+            } catch(e) {}
+            window.ketch_lang = lang;
+            window.ketchConfig = window.ketchConfig || {};
+            window.ketchConfig.language = lang;
+            window.semaphore = window.semaphore || [];
+            window.ketch = window.ketch || function() { window.semaphore.push(Array.from(arguments)); };
+            window.ketch('setLanguage', lang);
+            window.ketch('on', 'willShowExperience', function(experience, next) {
+              if (experience && next) { experience.language = lang; next(experience); }
+            });
+          })();
+        `}</Script>
         <Script
           src="https://global.ketchcdn.com/web/v3/config/nb1_health/website_smart_tag/boot.js"
           strategy="beforeInteractive"
+          data-ketch-lang={ketchLang}
         />
 
         <Script id="gtag-consent-mode" strategy="beforeInteractive">
@@ -107,8 +127,8 @@ export default async function RootLayout({
           `}
         </Script>
 
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`
+        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+          <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -117,10 +137,10 @@ export default async function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '995005843276561');
+            fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
             fbq('track', 'PageView');
-          `}
-        </Script>
+          `}</Script>
+        )}
 
         <script
           dangerouslySetInnerHTML={{
@@ -139,25 +159,29 @@ export default async function RootLayout({
 
       <body suppressHydrationWarning>
         <StyledJsxRegistry>
-          <noscript>
-            <img
-              height="1"
-              width="1"
-              style={{ display: 'none' }}
-              src="https://www.facebook.com/tr?id=995005843276561&ev=PageView&noscript=1"
-              alt=""
-            />
-          </noscript>
+          {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+            <noscript>
+              <img
+                height="1"
+                width="1"
+                style={{ display: 'none' }}
+                src={`https://www.facebook.com/tr?id=${process.env.NEXT_PUBLIC_META_PIXEL_ID}&ev=PageView&noscript=1`}
+                alt=""
+              />
+            </noscript>
+          )}
 
           {/* Google Tag Manager (noscript) */}
-          <noscript>
-            <iframe
-              src="https://www.googletagmanager.com/ns.html?id=GTM-5F7G4N5K"
-              height="0"
-              width="0"
-              style={{ display: 'none', visibility: 'hidden' }}
-            />
-          </noscript>
+          {process.env.NEXT_PUBLIC_GTM_ID && (
+            <noscript>
+              <iframe
+                src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
+                height="0"
+                width="0"
+                style={{ display: 'none', visibility: 'hidden' }}
+              />
+            </noscript>
+          )}
           {/* End Google Tag Manager (noscript) */}
 
           <Providers>
@@ -167,13 +191,23 @@ export default async function RootLayout({
               }}
             />
 
-            <Header locale={locale} />
-
             {children}
 
             <Script id="ketch-consent-bridge" strategy="afterInteractive">
               {`
                 window.__nb1Consent = window.__nb1Consent || {};
+
+                // Ensure Ketch banner language matches the page
+                var pageLang = '${ketchLang}';
+                if (pageLang && typeof window.ketch === 'function') {
+                  window.ketch('setLanguage', pageLang);
+                  window.ketch('on', 'willShowExperience', function(experience, next) {
+                    if (experience && next) {
+                      experience.language = pageLang;
+                      next(experience);
+                    }
+                  });
+                }
 
                 function applyKetchConsent(consent) {
                   if (typeof gtag !== 'function') return;
@@ -325,7 +359,6 @@ export default async function RootLayout({
             `}
             </Script>
 
-            <Footer locale={locale} />
           </Providers>
         </StyledJsxRegistry>
       </body>

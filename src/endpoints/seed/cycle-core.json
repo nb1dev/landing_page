@@ -1,0 +1,76 @@
+{
+  "title": "Order — Cycle Core",
+  "slug": "order-cycle-core",
+  "_status": "published",
+  "hero": { "type": "none" },
+  "layout": [
+    {
+      "blockType": "orderStepHero",
+      "headline": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "How long do you want to ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "give it?", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "subtitle": "We work in cycles of four months, the shortest window your biology actually shows real change in. Pick the length you're ready to commit to, the longer the cycle, the less you pay each month.",
+      "showSeals": false
+    },
+    {
+      "blockType": "cycleSelector",
+      "planName": "Core",
+      "switchLinkLabel": "Switch to Advanced →",
+      "switchLinkHref": "/order-cycle-advanced",
+      "tiers": [
+        {
+          "months": "4 months",
+          "monthlyRate": "€99",
+          "saveLabel": "",
+          "isBestValue": false,
+          "checkoutHref": "/order-details?plan=core&cycle=4"
+        },
+        {
+          "months": "8 months",
+          "monthlyRate": "€94",
+          "saveLabel": "Save €40 / cycle",
+          "isBestValue": false,
+          "checkoutHref": "/order-details?plan=core&cycle=8"
+        },
+        {
+          "months": "12 months",
+          "monthlyRate": "€89",
+          "saveLabel": "Save €120 / cycle",
+          "isBestValue": true,
+          "checkoutHref": "/order-details?plan=core&cycle=12"
+        }
+      ],
+      "showMonthlyOption": true,
+      "monthlyRate": "€109",
+      "monthlyCheckoutHref": "/order-details?plan=core&cycle=monthly",
+      "faqTitle": "Choosing your duration",
+      "faqItems": [
+        {
+          "question": "Am I locked in for the whole cycle?",
+          "answer": "On a 4, 8 or 12-month cycle, yes. You're committing to that term, and it's billed monthly across it, you can't cancel partway through. A flexible monthly option is also available: a little more per month, but you can cancel before any month renews."
+        },
+        {
+          "question": "When am I first charged?",
+          "answer": "Nothing today. Your first payment only happens once your diagnostic is back and your formula goes into manufacture, usually around week three. If anything looks off in your results before then, you won't be charged at all."
+        },
+        {
+          "question": "Can I change my cycle later?",
+          "answer": "You can extend to a longer cycle anytime to bring your monthly price down. To move to a shorter cycle or flexible monthly, you'll switch once your current term ends. Your dashboard handles both in a couple of taps."
+        },
+        {
+          "question": "Does a longer cycle change my formula?",
+          "answer": "No. Your Core formula is built from your initial diagnostic, and the cycle only sets your price and planning window, not what's in your pack. A longer cycle simply earns you a better monthly rate. (Want a formula that rebuilds from fresh data each cycle? That's what Advanced adds.)"
+        }
+      ]
+    }
+  ]
+}

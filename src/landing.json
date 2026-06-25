@@ -1,0 +1,2793 @@
+{
+  "_status": "published",
+  "layout": [
+    {
+      "id": "69f47f4e328b51726a19858c",
+      "backgroundColor": "light",
+      "backgroundColorCustom": null,
+      "backgroundType": "color",
+      "backgroundImage": null,
+      "price": "€99/month",
+
+      "form": {
+        "id": 2,
+        "title": "Early Access Form",
+
+        "fields": [
+          {
+            "id": "69cb937feba0351222ed7521",
+            "name": "email",
+            "width": 100,
+            "required": true,
+            "blockName": null,
+            "blockType": "email",
+            "label": "Enter your e-mail"
+          }
+        ],
+        "submitButtonLabel": "Get Early Access",
+        "confirmationType": "message",
+
+        "confirmationMessage": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Your email registred.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": null,
+                "textStyle": "",
+                "textFormat": 0
+              }
+            ],
+            "direction": null
+          }
+        },
+
+        "redirect": {
+          "url": null
+        },
+
+        "emails": [],
+        "updatedAt": "2026-04-01T11:34:03.045Z",
+        "createdAt": "2026-03-31T09:28:08.188Z"
+      },
+      "blockName": "Hero",
+
+      "trustItems": [
+        {
+          "id": "69f47f4e328b51726a198585",
+          "label": "HYROX World Champions"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198586",
+          "label": "Leading science board"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198587",
+          "label": "Diagnostic included free"
+        }
+      ],
+
+      "outcomes": [
+        {
+          "id": "69f47f4e328b51726a198588",
+
+          "icon": {
+            "id": 119,
+            "alt": "steady energy",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:48:30.756Z",
+            "createdAt": "2026-05-01T10:48:30.756Z",
+            "url": "/cms/api/media/file/steady-energy.png",
+            "thumbnailURL": null,
+            "filename": "steady-energy.png",
+            "mimeType": "image/png",
+            "filesize": 10511,
+            "width": 75,
+            "height": 103,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Steady energy",
+          "anchor": "through the afternoon"
+        },
+
+        {
+          "id": "69f47f4e328b51726a198589",
+
+          "icon": {
+            "id": 120,
+            "alt": "sharper focus",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:49:04.083Z",
+            "createdAt": "2026-05-01T10:49:04.083Z",
+            "url": "/cms/api/media/file/sharper-focus.png",
+            "thumbnailURL": null,
+            "filename": "sharper-focus.png",
+            "mimeType": "image/png",
+            "filesize": 13541,
+            "width": 78,
+            "height": 78,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Sharper focus",
+          "anchor": "supported by your data"
+        },
+
+        {
+          "id": "69f47f4e328b51726a19858a",
+
+          "icon": {
+            "id": 121,
+            "alt": "digestive comfort",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:49:23.446Z",
+            "createdAt": "2026-05-01T10:49:23.446Z",
+            "url": "/cms/api/media/file/digestive-comfort.png",
+            "thumbnailURL": null,
+            "filename": "digestive-comfort.png",
+            "mimeType": "image/png",
+            "filesize": 7809,
+            "width": 68,
+            "height": 80,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "claim": "Digestive comfort",
+          "anchor": "mapped to your species"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a19858b",
+          "variantKey": "dark",
+          "backgroundColor": "dark",
+          "backgroundColorCustom": null,
+          "backgroundType": "image",
+
+          "backgroundImage": {
+            "id": 122,
+            "alt": "hero banner background dark",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:52:58.154Z",
+            "createdAt": "2026-05-01T10:52:58.154Z",
+            "url": "/cms/api/media/file/hero-banner-background-dark.jpeg",
+            "thumbnailURL": "/cms/api/media/file/hero-banner-background-dark-300x131.jpg",
+            "filename": "hero-banner-background-dark.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 108927,
+            "width": 1376,
+            "height": 600,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-300x131.jpg",
+                "width": 300,
+                "height": 131,
+                "mimeType": "image/jpeg",
+                "filesize": 3560,
+                "filename": "hero-banner-background-dark-300x131.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 21189,
+                "filename": "hero-banner-background-dark-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-600x262.jpg",
+                "width": 600,
+                "height": 262,
+                "mimeType": "image/jpeg",
+                "filesize": 14436,
+                "filename": "hero-banner-background-dark-600x262.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-900x392.jpg",
+                "width": 900,
+                "height": 392,
+                "mimeType": "image/jpeg",
+                "filesize": 37028,
+                "filename": "hero-banner-background-dark-900x392.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/hero-banner-background-dark-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 71418,
+                "filename": "hero-banner-background-dark-1200x630.jpg"
+              }
+            }
+          },
+          "pillText": null,
+          "heading": null,
+          "description": null,
+          "ctaButtonText": null
+        }
+      ],
+      "blockType": "heroBanner",
+
+      "pillText": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Phase 1 · Limited to 1,000 kits",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h1",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "The supplement subscription that's ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "actually yours.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "pricePrefix": "From",
+      "priceSuffix": ". Diagnostic included.",
+
+      "description": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "NB¹ is a supplement subscription built from your biology, not someone else’s average. We sequence your gut microbiome from a sample at home, then build and ship your daily protocol every month.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "ctaButtonText": "Reserve my kit →",
+      "launchDate": "Launching Summer 2026",
+      "formFootNote": "Reserve to lock launch pricing and ship in the first batch.",
+      "successMessage": "You’re on the list. Your kit ships two weeks before public launch.",
+      "outcomesHeading": "What you’ll feel — within 16 weeks",
+      "outcomesFooter": "Backed by your retest data — every cycle."
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985ac",
+      "backgroundColor": "light",
+      "backgroundColorCustom": null,
+      "blockName": "Process Diagram",
+
+      "steps": [
+        {
+          "id": "69f47f4e328b51726a198593",
+          "number": "01",
+          "visualType": "image",
+
+          "image": {
+            "id": 112,
+            "alt": "Stool Kit",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:06.532Z",
+            "createdAt": "2026-05-01T10:19:06.532Z",
+            "url": "/cms/api/media/file/stool-kit-1.png",
+            "thumbnailURL": null,
+            "filename": "stool-kit-1.png",
+            "mimeType": "image/png",
+            "filesize": 78328,
+            "width": 258,
+            "height": 259,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "imageUrl": null,
+
+          "mockRows": [],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a19858d",
+              "marker": "1",
+              "text": "Receive your kit at home",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19858e",
+              "marker": "2",
+              "text": "Provide a sample",
+              "subLine": null,
+              "dose": "2 minutes",
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19858f",
+              "marker": "3",
+              "text": "Ship it back",
+              "subLine": null,
+              "dose": "postage covered",
+              "benefit": null
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a198590",
+              "label": "Free shipping"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198591",
+              "label": "GMP-certified lab"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198592",
+              "label": "~3 weeks"
+            }
+          ],
+          "timelineEyebrow": "Diagnostic",
+          "timelineName": "Sample your biology",
+          "panelTag": "Step 01 · Diagnostic Kit",
+          "panelHeading": "Your biology, sampled at home",
+          "panelBody": "A free shotgun-metagenomic kit ships within 48 hours. A two-minute stool sample reads the full DNA of every organism in your gut — species and strain level, not the genus-level estimate most consumer tests give you.",
+          "imageAlt": null,
+          "mockEyebrow": null,
+          "mockFootLabel": null,
+          "mockFootText": null,
+          "strainCaption": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a19859f",
+          "number": "02",
+          "visualType": "mockReport",
+          "image": null,
+          "imageUrl": null,
+
+          "mockRows": [
+            {
+              "id": "69f47f4e328b51726a198594",
+              "percentage": 78,
+              "status": "ok",
+              "label": "Fibre-processors"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198595",
+              "percentage": 64,
+              "status": "ok",
+              "label": "Bifidobacteria"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198596",
+              "percentage": 38,
+              "status": "low",
+              "label": "Cross-feeders"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198597",
+              "percentage": 42,
+              "status": "low",
+              "label": "Butyrate producers"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198598",
+              "percentage": 71,
+              "status": "ok",
+              "label": "Mucus-layer"
+            },
+
+            {
+              "id": "69f47f4e328b51726a198599",
+              "percentage": 55,
+              "status": "low",
+              "label": "Protein-fermenters"
+            }
+          ],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a19859a",
+              "marker": "—",
+              "text": "200–400 species identified",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859b",
+              "marker": "—",
+              "text": "Six functional teams scored",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859c",
+              "marker": "—",
+              "text": "Wellness index against 8,069 metagenomes",
+              "subLine": null,
+              "dose": null,
+              "benefit": null
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a19859d",
+              "label": "Shotgun metagenomics"
+            },
+
+            {
+              "id": "69f47f4e328b51726a19859e",
+              "label": "Species-level"
+            }
+          ],
+          "timelineEyebrow": "Sequencing",
+          "timelineName": "We map your gut",
+          "panelTag": "Step 02 · Health Report",
+          "panelHeading": "Your gut, mapped",
+          "panelBody": "Your sample is sequenced and read against 8,069 reference metagenomes. We don’t return a species list — we return six functional teams, four metabolic ratios, and the gaps your formula needs to address.",
+          "imageAlt": null,
+          "mockEyebrow": "Six functional teams",
+          "mockFootLabel": "Status",
+          "mockFootText": "3 of 6 teams flagged",
+          "strainCaption": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985aa",
+          "number": "03",
+          "visualType": "image",
+
+          "image": {
+            "id": 114,
+            "alt": "Your Formula",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:40.181Z",
+            "createdAt": "2026-05-01T10:19:40.180Z",
+            "url": "/cms/api/media/file/Your-Formula-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/Your-Formula-1-300x238.jpg",
+            "filename": "Your-Formula-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 91235,
+            "width": 640,
+            "height": 508,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Your-Formula-1-300x238.jpg",
+                "width": 300,
+                "height": 238,
+                "mimeType": "image/jpeg",
+                "filesize": 14386,
+                "filename": "Your-Formula-1-300x238.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Your-Formula-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 43972,
+                "filename": "Your-Formula-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Your-Formula-1-600x476.jpg",
+                "width": 600,
+                "height": 476,
+                "mimeType": "image/jpeg",
+                "filesize": 48695,
+                "filename": "Your-Formula-1-600x476.jpg"
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "imageUrl": null,
+
+          "mockRows": [],
+
+          "listItems": [
+            {
+              "id": "69f47f4e328b51726a1985a0",
+              "marker": "—",
+              "text": "Probiotic blend",
+              "subLine": null,
+              "dose": "50B CFU",
+              "benefit": "Calmer digestion"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a1",
+              "marker": "—",
+              "text": "Omega-3 EPA + DHA",
+              "subLine": null,
+              "dose": "712mg",
+              "benefit": "Steady mood"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a2",
+              "marker": "—",
+              "text": "Curcumin + piperine",
+              "subLine": null,
+              "dose": "505mg",
+              "benefit": "Faster recovery"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a3",
+              "marker": "—",
+              "text": "Magnesium bisglycinate",
+              "subLine": null,
+              "dose": "750mg",
+              "benefit": "Deeper sleep"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a4",
+              "marker": "—",
+              "text": "Polyphenol blend",
+              "subLine": null,
+              "dose": "250mg",
+              "benefit": "Lasting resilience"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a5",
+              "marker": "—",
+              "text": "Prebiotic powder",
+              "subLine": null,
+              "dose": "4g",
+              "benefit": "Regularity & comfort"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a6",
+              "marker": "+",
+              "text": "adaptogen complex (where indicated)",
+              "subLine": null,
+              "dose": null,
+              "benefit": "Stress resilience"
+            }
+          ],
+
+          "pills": [
+            {
+              "id": "69f47f4e328b51726a1985a7",
+              "label": "Pharma-grade"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a8",
+              "label": "No fillers"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985a9",
+              "label": "Shipped monthly"
+            }
+          ],
+          "timelineEyebrow": "Formulation",
+          "timelineName": "Your formula ships",
+          "panelTag": "Step 03 · Your Formula",
+          "panelHeading": "Your formula, manufactured",
+          "panelBody": "Up to seven units, blister-packed for morning and evening. Every ingredient, every dose, every exclusion is a decision tied to your data. Nothing produced until everything is known.",
+          "imageAlt": null,
+          "mockEyebrow": null,
+          "mockFootLabel": null,
+          "mockFootText": null,
+          "strainCaption": null
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985ab",
+          "variantKey": "dark",
+          "backgroundColor": "custom",
+          "backgroundColorCustom": "#FAF8F2",
+          "eyebrow": null,
+          "heading": null
+        }
+      ],
+      "blockType": "processDiagram",
+      "eyebrow": "How NB¹ works",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "From your kit. To your data. To ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "your formula.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985ae",
+      "backgroundColor": "dark",
+      "backgroundColorCustom": null,
+      "blockName": "Gut Break",
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985ad",
+          "variantKey": "dark",
+          "backgroundColor": "cream",
+          "backgroundColorCustom": null,
+          "statNumber": null,
+          "statSuffix": null,
+          "headingLine1": null,
+          "headingLine2": null,
+          "highlightedWord": null,
+          "headingAfter": null
+        }
+      ],
+      "blockType": "statBreak",
+      "statNumber": "150",
+      "statSuffix": "×",
+      "headingLine1": "more genetic material than your DNA.",
+      "headingLine2": "All of it in your",
+      "highlightedWord": "gut",
+      "headingAfter": "."
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985b4",
+      "backgroundColor": "white",
+      "backgroundColorCustom": null,
+      "blockName": "Outcomes Section",
+
+      "outcomeCards": [
+        {
+          "id": "69f47f4e328b51726a1985af",
+
+          "image": {
+            "id": 115,
+            "alt": "Calmer Digestion",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:21:53.326Z",
+            "createdAt": "2026-05-01T10:21:53.326Z",
+            "url": "/cms/api/media/file/Calmer-Digestion.png",
+            "thumbnailURL": "/cms/api/media/file/Calmer-Digestion-300x488.jpg",
+            "filename": "Calmer-Digestion.png",
+            "mimeType": "image/png",
+            "filesize": 23964,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Calmer-Digestion-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 17791,
+                "filename": "Calmer-Digestion-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Calmer-Digestion-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 23125,
+                "filename": "Calmer-Digestion-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Calmer\ndigestion",
+          "backEyebrow": "What shifts",
+          "backTitle": "Calmer digestion",
+          "backBody": "Less bloating. Better regularity. The species causing your discomfort, addressed specifically — not a generic probiotic.",
+          "backFoot": "Tap to flip back"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b0",
+
+          "image": {
+            "id": 116,
+            "alt": "Steady Mood",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:22:25.716Z",
+            "createdAt": "2026-05-01T10:22:25.716Z",
+            "url": "/cms/api/media/file/Steady-Mood.png",
+            "thumbnailURL": "/cms/api/media/file/Steady-Mood-300x488.jpg",
+            "filename": "Steady-Mood.png",
+            "mimeType": "image/png",
+            "filesize": 29172,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Steady-Mood-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 21902,
+                "filename": "Steady-Mood-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Steady-Mood-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 29409,
+                "filename": "Steady-Mood-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Steady\nmood",
+          "backEyebrow": "What shifts",
+          "backTitle": "Steady mood",
+          "backBody": "Stress markers acknowledged in your formula. Adaptogens chosen from your data, not guesswork. Days feel less reactive.",
+          "backFoot": "Tap to flip back"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b1",
+
+          "image": {
+            "id": 117,
+            "alt": "Sustained Energy",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:22:46.376Z",
+            "createdAt": "2026-05-01T10:22:46.375Z",
+            "url": "/cms/api/media/file/Sustained-Energy.png",
+            "thumbnailURL": "/cms/api/media/file/Sustained-Energy-300x488.jpg",
+            "filename": "Sustained-Energy.png",
+            "mimeType": "image/png",
+            "filesize": 17653,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Sustained-Energy-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 13423,
+                "filename": "Sustained-Energy-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Sustained-Energy-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 19382,
+                "filename": "Sustained-Energy-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Sustained\nenergy",
+          "backEyebrow": "What shifts",
+          "backTitle": "Sustained energy",
+          "backBody": "No 3pm crash. The mitochondrial cofactors and B-vitamins your biology actually needs — at the doses your data calls for.",
+          "backFoot": "Tap to flip back"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b2",
+
+          "image": {
+            "id": 118,
+            "alt": "Lasting Resilience",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:23:05.786Z",
+            "createdAt": "2026-05-01T10:23:05.786Z",
+            "url": "/cms/api/media/file/Lasting-Resilience.png",
+            "thumbnailURL": "/cms/api/media/file/Lasting-Resilience-300x488.jpg",
+            "filename": "Lasting-Resilience.png",
+            "mimeType": "image/png",
+            "filesize": 34620,
+            "width": 320,
+            "height": 520,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Lasting-Resilience-300x488.jpg",
+                "width": 300,
+                "height": 488,
+                "mimeType": "image/jpeg",
+                "filesize": 26841,
+                "filename": "Lasting-Resilience-300x488.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Lasting-Resilience-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 33599,
+                "filename": "Lasting-Resilience-500x500.jpg"
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "frontName": "Lasting\nresilience",
+          "backEyebrow": "What shifts",
+          "backTitle": "Lasting resilience",
+          "backBody": "Skin, immune, recovery — the systems your gut barrier supports. As your microbiome rebuilds, the rest follows.",
+          "backFoot": "Tap to flip back"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985b3",
+          "variantKey": "dark",
+          "backgroundColor": "dark",
+          "backgroundColorCustom": null,
+          "eyebrow": null,
+          "heading": null,
+          "subText": null
+        }
+      ],
+      "blockType": "outcomesSection",
+      "eyebrow": "Real outcomes",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Sleep deeper. Steady energy. ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Mood that holds.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 2,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subText": "Real outcomes, not promises. Every cycle, we re-sequence your biology, rebuild your formula, and show you exactly what shifted — across sleep, energy, digestion, mood, and recovery. Markers, not guesses."
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985c7",
+      "cycle1Tag": "Cycle 01",
+      "cycle1Version": "Baseline",
+      "cycle2Tag": "Cycle 02",
+      "cycle2Version": "Re-formulated",
+      "blockName": "Evolution Band",
+
+      "cycle1Items": [
+        {
+          "id": "69f47f4e328b51726a1985b5",
+          "dose": "50B CFU",
+          "name": "Probiotic blend",
+          "detail": "5 strains",
+          "benefit": "Calmer digestion"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b6",
+          "dose": "712mg",
+          "name": "Omega-3 EPA + DHA",
+          "detail": null,
+          "benefit": "Steady mood"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b7",
+          "dose": "505mg",
+          "name": "Curcumin + piperine",
+          "detail": null,
+          "benefit": "Faster recovery"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b8",
+          "dose": "750mg",
+          "name": "Magnesium bisglycinate",
+          "detail": null,
+          "benefit": "Deeper sleep"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985b9",
+          "dose": "250mg",
+          "name": "Polyphenol blend",
+          "detail": null,
+          "benefit": "Lasting resilience"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985ba",
+          "dose": "4g",
+          "name": "Prebiotic powder",
+          "detail": "FOS + inulin",
+          "benefit": "Regularity & comfort"
+        }
+      ],
+
+      "biologyGroups": [
+        {
+          "id": "69f47f4e328b51726a1985bf",
+
+          "rows": [
+            {
+              "id": "69f47f4e328b51726a1985bb",
+              "delta": "+22%",
+              "direction": "up",
+              "label": "Cross-feeders"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985bc",
+              "delta": "+14%",
+              "direction": "up",
+              "label": "Akkermansia"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985bd",
+              "delta": "−9%",
+              "direction": "down",
+              "label": "Inflammation"
+            },
+
+            {
+              "id": "69f47f4e328b51726a1985be",
+              "delta": "New",
+              "direction": "new",
+              "label": "Stress markers"
+            }
+          ],
+          "eyebrow": "Your biology shifted"
+        }
+      ],
+
+      "cycle2Items": [
+        {
+          "id": "69f47f4e328b51726a1985c0",
+          "dose": "25B CFU",
+          "status": "down",
+          "name": "Probiotic blend",
+          "detail": "3 strains · diversity recovered"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c1",
+          "dose": "712mg",
+          "status": "unchanged",
+          "name": "Omega-3 EPA + DHA",
+          "detail": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c2",
+          "dose": "505mg",
+          "status": "removed",
+          "name": "Curcumin",
+          "detail": "resolved · inflammation cleared"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c3",
+          "dose": "1000mg",
+          "status": "up",
+          "name": "Magnesium bisglycinate",
+          "detail": "sleep markers shifted"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c4",
+          "dose": "500mg",
+          "status": "up",
+          "name": "Polyphenol blend",
+          "detail": "cross-feeders need substrate"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c5",
+          "dose": "4g",
+          "status": "unchanged",
+          "name": "Prebiotic powder FOS + inulin",
+          "detail": null
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985c6",
+          "dose": "300mg",
+          "status": "added",
+          "name": "Adaptogen complex",
+          "detail": "added · stress markers elevated"
+        }
+      ],
+
+      "variants": [],
+      "blockType": "evolutionBand",
+      "eyebrow": "Your formula evolves",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "This is what ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "evolves with your biology",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 2,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": " actually looks like.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subtext": "Two cycles, eight months apart. Same person, re-sequenced, re-formulated. Some things resolved. Some new things showed up. The formula tracked all of it.",
+      "cycle1Name": "Your starting formula",
+      "cycle1Footer": "3 of 6 teams flagged. Protocol targets the gaps.",
+      "cycle2Name": "Your formula, updated",
+      "cycle2Footer": "Same protocol size. Different composition. Your biology moved."
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985c9",
+      "backgroundColor": "dark",
+      "backgroundColorCustom": null,
+      "priceNumber": "€99",
+      "priceUnit": "month",
+      "blockName": "Price Break",
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985c8",
+          "variantKey": "dark",
+          "backgroundColor": "cream",
+          "backgroundColorCustom": null,
+          "priceNumber": null,
+          "priceUnit": null,
+          "headingLine1": null,
+          "headingLine2": null
+        }
+      ],
+      "blockType": "priceBreak",
+
+      "headingLine1": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "The same as a premium greens powder.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+
+      "headingLine2": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Built from your biology, not someone else’s average.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985d5",
+      "darkMode": false,
+      "blockName": "Science Board",
+
+      "members": [
+        {
+          "id": "69f47f4e328b51726a1985ca",
+
+          "photo": {
+            "id": 111,
+            "alt": "Polina",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:42.213Z",
+            "createdAt": "2026-05-01T10:18:42.212Z",
+            "url": "/cms/api/media/file/polina-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/polina-1-300x300.jpg",
+            "filename": "polina-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 33001,
+            "width": 400,
+            "height": 400,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/polina-1-300x300.jpg",
+                "width": 300,
+                "height": 300,
+                "mimeType": "image/jpeg",
+                "filesize": 15405,
+                "filename": "polina-1-300x300.jpg"
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Polina Novikova",
+          "tag": null,
+          "institution": null,
+          "role": "Chief Scientific Officer",
+          "meta": "PhD Bioinformatics · University of Luxembourg · Microbiome & Multi-Omics",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Polina leads the science behind NB1’s personalised supplementation product — from microbiome analysis and metabolic modelling to the algorithm that maps individual gut data into a precise, clinically grounded protocol. She holds a PhD in Bioinformatics from the University of Luxembourg (2020–2024) and an MS in Integrated Systems Biology. Her doctoral research built computational workflows using graphs, time series models, and deep learning to identify patterns in gut microbiome and multi-omics data.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985cb",
+
+          "photo": {
+            "id": 109,
+            "alt": "Dirk Haller",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:02.416Z",
+            "createdAt": "2026-05-01T10:18:02.416Z",
+            "url": "/cms/api/media/file/Dirk-Haller-1.webp",
+            "thumbnailURL": "/cms/api/media/file/Dirk-Haller-1-300x200.webp",
+            "filename": "Dirk-Haller-1.webp",
+            "mimeType": "image/webp",
+            "filesize": 14620,
+            "width": 458,
+            "height": 305,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Dirk-Haller-1-300x200.webp",
+                "width": 300,
+                "height": 200,
+                "mimeType": "image/webp",
+                "filesize": 9002,
+                "filename": "Dirk-Haller-1-300x200.webp"
+              },
+
+              "square": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "small": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Prof. Dr. Dirk Haller",
+          "tag": null,
+          "institution": null,
+          "role": "Nutrition & Immunology · TU Munich",
+          "meta": "ZIEL Institute Director · UEG Research Prize winner",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Prof. Haller holds the Chair of Nutrition and Immunology at TU Munich and directs the ZIEL Institute for Food & Health. His research focuses on how the gut microbiome influences chronic disease susceptibility and how diet shapes microbial communities at the molecular level. He has been recognised with the distinguished €100,000 United European Gastroenterology Research Prize.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985cc",
+
+          "photo": {
+            "id": 110,
+            "alt": "Koen Venema",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:18:25.227Z",
+            "createdAt": "2026-05-01T10:18:25.227Z",
+            "url": "/cms/api/media/file/koen-venema-1.jpg",
+            "thumbnailURL": "/cms/api/media/file/koen-venema-1-300x200.jpg",
+            "filename": "koen-venema-1.jpg",
+            "mimeType": "image/jpeg",
+            "filesize": 75764,
+            "width": 640,
+            "height": 427,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/koen-venema-1-300x200.jpg",
+                "width": 300,
+                "height": 200,
+                "mimeType": "image/jpeg",
+                "filesize": 13432,
+                "filename": "koen-venema-1-300x200.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/koen-venema-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 37170,
+                "filename": "koen-venema-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/koen-venema-1-600x400.jpg",
+                "width": 600,
+                "height": 400,
+                "mimeType": "image/jpeg",
+                "filesize": 37394,
+                "filename": "koen-venema-1-600x400.jpg"
+              },
+
+              "medium": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              }
+            }
+          },
+          "photoUrl": null,
+          "name": "Prof. Dr. Koen Venema",
+          "tag": null,
+          "institution": null,
+          "role": "Gut Microbiology · Wageningen",
+          "meta": "254 publications · 17,000+ citations · Editor-in-chief, Beneficial Microbes",
+
+          "bio": {
+            "root": {
+              "type": "root",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "type": "paragraph",
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "Prof. Venema is one of Europe’s most cited microbiome researchers, with 25 years of experience and 254 publications with more than 17,000 citations. Founder and CEO of Beneficial Microbes Consultancy, and editor-in-chief of the journal Beneficial Microbes.",
+                      "type": "text",
+                      "style": "",
+                      "detail": 0,
+                      "format": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": "ltr",
+                  "textStyle": "",
+                  "textFormat": 0
+                }
+              ],
+              "direction": "ltr"
+            }
+          }
+        }
+      ],
+
+      "stats": [
+        {
+          "id": "69f47f4e328b51726a1985d0",
+          "target": 250,
+          "suffix": "+",
+          "label": "Peer-reviewed studies referenced"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d1",
+          "target": 170,
+          "suffix": "+",
+          "label": "Biomarkers analysed"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d2",
+          "target": 170,
+          "suffix": "+",
+          "label": "Clinically vetted compounds"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d3",
+          "target": 6,
+          "suffix": "",
+          "label": "Scientists on the board"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985d4",
+          "variantKey": "dark",
+          "darkMode": true
+        }
+      ],
+      "blockType": "scienceBoard",
+      "eyebrow": "The science board",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Built by the people who ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "publish the research.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subLead": "NB¹ doesn’t auto-generate your formula.",
+
+      "subCredits": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "paragraph",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "The algorithm — built by six researchers from TU Munich, Wageningen, Luxembourg, and Zurich — turns your diagnostic into a draft. A qualified nutritionist on the board then reads it, validates it against your data, and signs off. Only then does it get manufactured.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "textStyle": "",
+              "textFormat": 0
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985dd",
+      "backgroundColor": "cream",
+      "backgroundColorCustom": null,
+      "blockName": "Athlete Banner",
+
+      "athleteCards": [
+        {
+          "id": "69f47f4e328b51726a1985d6",
+
+          "image": {
+            "id": 113,
+            "alt": "Tim Wenisch",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:19:24.122Z",
+            "createdAt": "2026-05-01T10:19:24.122Z",
+            "url": "/cms/api/media/file/Tim-Wenisch-1.jpeg",
+            "thumbnailURL": "/cms/api/media/file/Tim-Wenisch-1-300x375.jpg",
+            "filename": "Tim-Wenisch-1.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 158805,
+            "width": 1000,
+            "height": 1250,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-300x375.jpg",
+                "width": 300,
+                "height": 375,
+                "mimeType": "image/jpeg",
+                "filesize": 16467,
+                "filename": "Tim-Wenisch-1-300x375.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 31002,
+                "filename": "Tim-Wenisch-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-600x750.jpg",
+                "width": 600,
+                "height": 750,
+                "mimeType": "image/jpeg",
+                "filesize": 45740,
+                "filename": "Tim-Wenisch-1-600x750.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-900x1125.jpg",
+                "width": 900,
+                "height": 1125,
+                "mimeType": "image/jpeg",
+                "filesize": 90386,
+                "filename": "Tim-Wenisch-1-900x1125.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/Tim-Wenisch-1-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 60865,
+                "filename": "Tim-Wenisch-1-1200x630.jpg"
+              }
+            }
+          },
+          "tag": "2025 World Champion",
+          "name": "Tim Wenisch",
+          "title": "Singles & Doubles · NB¹ athlete",
+          "quoteBody": "“For the first time, my supplement stack runs on the same data as my training. Not what worked for someone else — what works for me.”",
+          "quoteAttr": "Tim Wenisch · 2025 HYROX Singles & Doubles World Champion"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d7",
+
+          "image": {
+            "id": 108,
+            "alt": "Alexander Roncevic",
+            "caption": null,
+            "folder": null,
+            "updatedAt": "2026-05-01T10:17:45.274Z",
+            "createdAt": "2026-05-01T10:17:45.272Z",
+            "url": "/cms/api/media/file/Alexander-Roncevic-1.jpeg",
+            "thumbnailURL": "/cms/api/media/file/Alexander-Roncevic-1-300x375.jpg",
+            "filename": "Alexander-Roncevic-1.jpeg",
+            "mimeType": "image/jpeg",
+            "filesize": 135054,
+            "width": 904,
+            "height": 1130,
+            "focalX": 50,
+            "focalY": 50,
+
+            "sizes": {
+              "thumbnail": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-300x375.jpg",
+                "width": 300,
+                "height": 375,
+                "mimeType": "image/jpeg",
+                "filesize": 17120,
+                "filename": "Alexander-Roncevic-1-300x375.jpg"
+              },
+
+              "square": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-500x500.jpg",
+                "width": 500,
+                "height": 500,
+                "mimeType": "image/jpeg",
+                "filesize": 32520,
+                "filename": "Alexander-Roncevic-1-500x500.jpg"
+              },
+
+              "small": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-600x750.jpg",
+                "width": 600,
+                "height": 750,
+                "mimeType": "image/jpeg",
+                "filesize": 52010,
+                "filename": "Alexander-Roncevic-1-600x750.jpg"
+              },
+
+              "medium": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-900x1125.jpg",
+                "width": 900,
+                "height": 1125,
+                "mimeType": "image/jpeg",
+                "filesize": 98825,
+                "filename": "Alexander-Roncevic-1-900x1125.jpg"
+              },
+
+              "large": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "xlarge": {
+                "url": null,
+                "width": null,
+                "height": null,
+                "mimeType": null,
+                "filesize": null,
+                "filename": null
+              },
+
+              "og": {
+                "url": "/cms/api/media/file/Alexander-Roncevic-1-1200x630.jpg",
+                "width": 1200,
+                "height": 630,
+                "mimeType": "image/jpeg",
+                "filesize": 60030,
+                "filename": "Alexander-Roncevic-1-1200x630.jpg"
+              }
+            }
+          },
+          "tag": "2024 World Champion",
+          "name": "Alexander Rončević",
+          "title": "Singles · NB¹ athlete",
+          "quoteBody": "“At this level, the margins are small. NB1 is the first thing in my routine that’s actually built from my biology — not a coach’s best guess.”",
+          "quoteAttr": "Alexander Rončević · 2024 HYROX World Champion"
+        }
+      ],
+
+      "uspItems": [
+        {
+          "id": "69f47f4e328b51726a1985d8",
+          "iconType": "checkCircle",
+          "heading": "Diagnostic included",
+          "subtext": "Not charged separately"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985d9",
+          "iconType": "pulse",
+          "heading": "Re-tested every cycle",
+          "subtext": "Formula evolves with you"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985da",
+          "iconType": "checkSquare",
+          "heading": "Pharma-grade",
+          "subtext": "GMP · third-party tested"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985db",
+          "iconType": "checkCircle",
+          "heading": "Cancel anytime",
+          "subtext": "Monthly billing"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985dc",
+          "iconType": "plus",
+          "heading": "From €99/month",
+          "subtext": "Lock launch pricing"
+        }
+      ],
+
+      "variants": [],
+      "blockType": "athleteBanner",
+      "eyebrow": "What the world’s best actually take",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "They could afford anything. ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "They chose data over convention.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      }
+    },
+
+    {
+      "id": "69f47f4e328b51726a1985e2",
+      "backgroundColor": "white",
+      "backgroundColorCustom": null,
+
+      "form": {
+        "id": 2,
+        "title": "Early Access Form",
+
+        "fields": [
+          {
+            "id": "69cb937feba0351222ed7521",
+            "name": "email",
+            "width": 100,
+            "required": true,
+            "blockName": null,
+            "blockType": "email",
+            "label": "Enter your e-mail"
+          }
+        ],
+        "submitButtonLabel": "Get Early Access",
+        "confirmationType": "message",
+
+        "confirmationMessage": {
+          "root": {
+            "type": "root",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+
+            "children": [
+              {
+                "type": "paragraph",
+                "format": "",
+                "indent": 0,
+                "version": 1,
+
+                "children": [
+                  {
+                    "mode": "normal",
+                    "text": "Your email registred.",
+                    "type": "text",
+                    "style": "",
+                    "detail": 0,
+                    "format": 0,
+                    "version": 1
+                  }
+                ],
+                "direction": null,
+                "textStyle": "",
+                "textFormat": 0
+              }
+            ],
+            "direction": null
+          }
+        },
+
+        "redirect": {
+          "url": null
+        },
+
+        "emails": [],
+        "updatedAt": "2026-04-01T11:34:03.045Z",
+        "createdAt": "2026-03-31T09:28:08.188Z"
+      },
+      "blockName": "Reserve CTA",
+
+      "recapItems": [
+        {
+          "id": "69f47f4e328b51726a1985de",
+          "label": "Diagnostic included"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985df",
+          "label": "Re-tested every cycle"
+        },
+
+        {
+          "id": "69f47f4e328b51726a1985e0",
+          "label": "Cancel anytime"
+        }
+      ],
+
+      "variants": [
+        {
+          "id": "69f47f4e328b51726a1985e1",
+          "variantKey": "dark",
+          "backgroundColor": "custom",
+          "backgroundColorCustom": "#FAF8F2",
+          "pillText": null,
+          "heading": null,
+          "subText": null,
+          "ctaButtonText": null
+        }
+      ],
+      "blockType": "reserveCta",
+      "pillText": "Phase 1 · 1,000 kits",
+
+      "heading": {
+        "root": {
+          "type": "root",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "tag": "h2",
+              "type": "heading",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Reserve ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "one of 1,000.",
+                  "type": "text",
+                  "style": "color: #0a8fb0;",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "direction": "ltr"
+        }
+      },
+      "subText": "Phase 1 closes when 1,000 are claimed. Your kit ships two weeks before public launch.",
+      "ctaButtonText": "Reserve my kit →",
+      "footNoteText": "From €99/month",
+      "footNoteHighlight": "Diagnostic included.",
+      "successMessage": "You’re on the list. Your kit ships two weeks before public launch."
+    },
+
+    {
+      "id": "69f85738cf5957388f553fe6",
+      "text": "Get your kit",
+      "highlightedText": "2 weeks before anyone else",
+      "buttonText": "Reserve my kit →",
+      "buttonHref": "#reserve",
+      "heroSelector": ".hero",
+      "reserveSelector": "#reserve",
+      "blockName": null,
+      "blockType": "floatingCTA"
+    }
+  ]
+}

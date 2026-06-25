@@ -7,6 +7,7 @@ import NextImage from 'next/image'
 import React from 'react'
 
 import type { Props as MediaProps } from '../types'
+import type { Media as MediaType } from '@/payload-types'
 
 import { cssVariables } from '@/cssVariables'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
@@ -51,10 +52,10 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       url,
       width: fullWidth,
       updatedAt,
-    } = resource as any
+    } = resource as MediaType
 
-    width = fullWidth
-    height = fullHeight
+    width = fullWidth ?? undefined
+    height = fullHeight ?? undefined
     alt = altFromResource || ''
 
     // Bust caches when media changes

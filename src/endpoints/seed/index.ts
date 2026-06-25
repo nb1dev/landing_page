@@ -1,5 +1,5 @@
 // src/endpoints/seed/index.ts
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, Payload, PayloadRequest, File } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -18,11 +18,9 @@ const collections: CollectionSlug[] = [
   'search',
 ]
 
-// ✅ FIX 1: make this a literal tuple so TS narrows to "header" | "footer"
-const globals = ['header', 'footer'] as const satisfies GlobalSlug[]
-type SeedGlobal = (typeof globals)[number]
+// Header and Footer are now collections, not globals — no globals to seed here
 
-const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
+const categories =['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
 // Next.js revalidation errors are normal when seeding the database without a server running
 // i.e. running `yarn seed` locally instead of using the admin UI within an active app
@@ -39,21 +37,7 @@ export const seed = async ({
 
   payload.logger.info(`— Clearing collections and globals...`)
 
-  // clear globals
-  await Promise.all(
-    (globals as readonly SeedGlobal[]).map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  )
+  // no globals to clear (Header/Footer moved to collections)
 
   // clear collections (excluding posts)
   await Promise.all(
@@ -94,7 +78,7 @@ export const seed = async ({
     ),
   ])
 
-  const [demoUser, image1Doc, image2Doc, imageHomeDoc] = await Promise.all([
+  const [demoUser, _image1Doc, image2Doc, imageHomeDoc] = await Promise.all([
     payload.create({
       collection: 'users',
       data: {
@@ -141,7 +125,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding pages...`)
 
-  const [_, contactPage] = await Promise.all([
+  const [_, _contactPage] = await Promise.all([
     payload.create({
       collection: 'pages',
       depth: 0,
@@ -154,64 +138,7 @@ export const seed = async ({
     }),
   ])
 
-  payload.logger.info(`— Seeding globals...`)
-
-  await Promise.all([
-    payload.updateGlobal({
-      slug: 'header',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
-            },
-          },
-          {
-            link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
-            },
-          },
-        ],
-      },
-    }),
-    payload.updateGlobal({
-      slug: 'footer',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
-        ],
-      },
-    }),
-  ])
+  payload.logger.info(`— Skipping globals (Header/Footer are now collections)...`)
 
   payload.logger.info('Seeded database successfully!')
 }

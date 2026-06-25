@@ -52,6 +52,48 @@ import { AthleteBannerBlock } from '@/blocks/newLandingBlocks/AthleteBanner/conf
 import { PriceBreakBlock } from '@/blocks/PriceBreakBlock/config'
 import { ScienceBoardBlock } from '@/blocks/ScienceBoardBlock/config'
 import { FloatingCTABlock } from '@/blocks/FloatingCTA/config'
+import { YpHeroBlock } from '@/blocks/yourPlanBlocks/Hero/config'
+import { YpPlansBlock } from '@/blocks/yourPlanBlocks/Plans/config'
+import { YpThreeComponentsBlock } from '@/blocks/yourPlanBlocks/ThreeComponents/config'
+import { YpDashboardBlock } from '@/blocks/yourPlanBlocks/Dashboard/config'
+import { YpTimelineBlock } from '@/blocks/yourPlanBlocks/Timeline/config'
+import { YpScienceBoardBlock } from '@/blocks/yourPlanBlocks/ScienceBoard/config'
+import { YpAthletesBlock } from '@/blocks/yourPlanBlocks/Athletes/config'
+import { YpBreakupBlock } from '@/blocks/yourPlanBlocks/Breakup/config'
+import { YpFaqBlock } from '@/blocks/yourPlanBlocks/Faq/config'
+import { YpStickyBuyBlock } from '@/blocks/yourPlanBlocks/StickyBuy/config'
+import { YpReassuranceBlock } from '@/blocks/yourPlanBlocks/Reassurance/config'
+import { YpBuyBoxBlock } from '@/blocks/yourPlanBlocks/BuyBox/config'
+import { OrderStepHero } from '@/blocks/checkoutBlocks/OrderStepHero/config'
+import { OrderStepNav } from '@/blocks/checkoutBlocks/OrderStepNav/config'
+import { LegalStrip } from '@/blocks/checkoutBlocks/LegalStrip/config'
+import { TrustSealsBar } from '@/blocks/checkoutBlocks/TrustSealsBar/config'
+import { OrderTimeline } from '@/blocks/checkoutBlocks/OrderTimeline/config'
+import { FormulaKit } from '@/blocks/checkoutBlocks/FormulaKit/config'
+import { CheckoutFaq } from '@/blocks/checkoutBlocks/CheckoutFaq/config'
+import { EndCard } from '@/blocks/checkoutBlocks/EndCard/config'
+import { PlanSummaryCard } from '@/blocks/checkoutBlocks/PlanSummaryCard/config'
+import { GuaranteeBadges } from '@/blocks/checkoutBlocks/GuaranteeBadges/config'
+import { CyclesPricingGrid } from '@/blocks/checkoutBlocks/CyclesPricingGrid/config'
+import { ReinforceCta } from '@/blocks/checkoutBlocks/ReinforceCta/config'
+import { PlanPivot } from '@/blocks/checkoutBlocks/PlanPivot/config'
+import { StickyCtaBar } from '@/blocks/checkoutBlocks/StickyCtaBar/config'
+import { PlanSelector } from '@/blocks/checkoutBlocks/PlanSelector/config'
+import { PlanStickyBar } from '@/blocks/checkoutBlocks/PlanStickyBar/config'
+import { CycleSelector } from '@/blocks/checkoutBlocks/CycleSelector/config'
+import { CheckoutForm } from '@/blocks/checkoutBlocks/CheckoutForm/config'
+import { HomepageHeroBlock } from '@/blocks/HomepageHero/config'
+import { TheCaseBlock } from '@/blocks/TheCase/config'
+import { TwoModelsBlock } from '@/blocks/TwoModels/config'
+import { GutFirstBlock } from '@/blocks/GutFirst/config'
+import { HowItWorksBlock } from '@/blocks/HowItWorks/config'
+import { WhatArrivesBlock } from '@/blocks/WhatArrives/config'
+import { OutcomesBlock } from '@/blocks/Outcomes/config'
+import { AthletesBlock } from '@/blocks/Athletes/config'
+import { ScienceBoardNewBlock } from '@/blocks/ScienceBoardNew/config'
+import { StandardsBlock } from '@/blocks/Standards/config'
+import { PlansBlock } from '@/blocks/Plans/config'
+import { CloseBandBlock } from '@/blocks/CloseBand/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -77,6 +119,8 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    pagination: { defaultLimit: 5 },
+
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -100,6 +144,49 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'text',
       required: true,
       localized: true,
+    },
+
+    {
+      name: 'header',
+      label: 'Header',
+      type: 'relationship',
+      relationTo: 'headers',
+      required: false,
+      admin: {
+        description: 'Leave blank to use the site default header.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'hideHeader',
+      label: 'Hide Header',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Do not render any header on this page.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'footer',
+      label: 'Footer',
+      type: 'relationship',
+      relationTo: 'footers',
+      required: false,
+      admin: {
+        description: 'Leave blank to use the site default footer.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'hideFooter',
+      label: 'Hide Footer',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Do not render any footer on this page.',
+        position: 'sidebar',
+      },
     },
 
     {
@@ -156,6 +243,48 @@ export const Pages: CollectionConfig<'pages'> = {
                 PriceBreakBlock,
                 ScienceBoardBlock,
                 FloatingCTABlock,
+                YpHeroBlock,
+                YpPlansBlock,
+                YpThreeComponentsBlock,
+                YpDashboardBlock,
+                YpTimelineBlock,
+                YpScienceBoardBlock,
+                YpAthletesBlock,
+                YpBreakupBlock,
+                YpFaqBlock,
+                YpReassuranceBlock,
+                YpBuyBoxBlock,
+                YpStickyBuyBlock,
+                OrderStepNav,
+                LegalStrip,
+                OrderStepHero,
+                TrustSealsBar,
+                OrderTimeline,
+                FormulaKit,
+                CheckoutFaq,
+                EndCard,
+                PlanSummaryCard,
+                GuaranteeBadges,
+                CyclesPricingGrid,
+                ReinforceCta,
+                PlanPivot,
+                StickyCtaBar,
+                PlanSelector,
+                PlanStickyBar,
+                CycleSelector,
+                CheckoutForm,
+                HomepageHeroBlock,
+                TheCaseBlock,
+                TwoModelsBlock,
+                GutFirstBlock,
+                HowItWorksBlock,
+                WhatArrivesBlock,
+                OutcomesBlock,
+                AthletesBlock,
+                ScienceBoardNewBlock,
+                StandardsBlock,
+                PlansBlock,
+                CloseBandBlock,
               ],
               required: true,
               admin: { initCollapsed: true },
@@ -293,9 +422,9 @@ export const Pages: CollectionConfig<'pages'> = {
 
   versions: {
     drafts: {
-      autosave: { interval: 100 },
+      autosave: { interval: 5000 },
       schedulePublish: true,
     },
-    maxPerDoc: 50,
+    maxPerDoc: 10,
   },
 }

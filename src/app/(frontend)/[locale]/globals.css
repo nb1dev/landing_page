@@ -92,7 +92,7 @@
   }
   body {
     @apply text-foreground min-h-[100vh] flex flex-col;
-    background-color: rgba(241, 245, 249, 1);
+    background-color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -100,6 +100,13 @@
 
 html {
   opacity: 0;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 html[data-theme='dark'],
@@ -154,6 +161,16 @@ html[data-theme='light'] {
 /* Remove the built-in bottom-right class behavior */
 #lanyard_fab_button .bottomRight__ILequ {
   inset: auto !important;
+}
+
+/* Chatwoot bubble: behind modals by default */
+.woot-widget-bubble.woot-elements--right {
+  z-index: 80 !important;
+}
+
+/* Push Chatwoot bubble above the sticky CTA bar when it's visible */
+body.nb1-sticky-active .woot-widget-bubble.woot-elements--right {
+  bottom: 80px !important;
 }
 
 

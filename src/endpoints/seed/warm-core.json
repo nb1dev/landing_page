@@ -1,0 +1,213 @@
+{
+  "title": "Order — Warm Core",
+  "slug": "order-warm-core",
+  "_status": "published",
+  "hero": { "type": "none" },
+  "layout": [
+    {
+      "blockType": "orderStepHero",
+      "headline": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "You picked Core. ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "Here’s what that means.", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "subtitle": "Built from your data. Made only after we’ve read it.",
+      "showSeals": false
+    },
+    {
+      "blockType": "trustSealsBar",
+      "seals": [
+        { "type": "stars", "rating": "4.8", "label": "Early access members" },
+        { "type": "dot", "label": "Reviewed by our science board" },
+        { "type": "dot", "label": "Diagnostic included" }
+      ]
+    },
+    {
+      "blockType": "planSummaryCard",
+      "sectionTitle": "Your selection",
+      "planVariant": "core",
+      "planName": "Core",
+      "price": "€99",
+      "priceNote": "4-month minimum · billed monthly",
+      "switchLinkText": "Looking at Advanced instead? →",
+      "switchLinkHref": "/order-warm-advanced",
+      "bullets": [
+        { "text": "Gut sequencing + summary diagnostic report" },
+        { "text": "Personalised formula: Activate, Restore, Nourish" },
+        { "text": "Retest every second cycle" }
+      ],
+      "primaryCtaText": "Start Core · 4-month",
+      "primaryCtaPrice": "€99/mo",
+      "primaryCtaHref": "/order-cycle-core",
+      "secondaryCtaText": "or pay monthly at €109/mo →",
+      "secondaryCtaHref": "/order-cycle-core",
+      "ctaSubText": "Monthly billing · cancel anytime"
+    },
+    {
+      "blockType": "guaranteeBadges",
+      "items": [
+        {
+          "text": {
+            "root": {
+              "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+              "children": [{
+                "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+                "children": [
+                  { "type": "text", "version": 1, "text": "Billed monthly.", "format": 1, "detail": 0, "mode": "normal", "style": "" },
+                  { "type": "text", "version": 1, "text": " No upfront charge.", "format": 0, "detail": 0, "mode": "normal", "style": "" }
+                ]
+              }]
+            }
+          }
+        },
+        {
+          "text": {
+            "root": {
+              "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+              "children": [{
+                "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+                "children": [
+                  { "type": "text", "version": 1, "text": "Pay nothing until your formula is manufactured.", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+                ]
+              }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "blockType": "orderTimeline",
+      "sectionTitle": "From kit to formula in four weeks.",
+      "subtitle": "Here’s exactly what happens when you order Core.",
+      "steps": [
+        { "weekLabel": "Week 0",    "title": "Kit ships",              "description": "a two-minute gut sample, posted back in the prepaid envelope.", "isPaymentStep": false },
+        { "weekLabel": "Weeks 1–2", "title": "Sequencing & sign-off", "description": "read at species level, your formula drafted and approved by a researcher.", "isPaymentStep": false },
+        { "weekLabel": "Week 3",    "title": "First charge",           "description": "only when your one-of-one formula enters manufacture. Never before.", "isPaymentStep": true },
+        { "weekLabel": "Week 4",    "title": "Formula ships",          "description": "30 days, presorted, blister-packed and travel-ready.", "isPaymentStep": false }
+      ],
+      "showAdvancedExtras": false
+    },
+    {
+      "blockType": "formulaKit",
+      "sectionTitle": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "Your full personalised supplement formula, ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "in one kit.", "format": 1, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      },
+      "kitImage": null,
+      "kitImageAlt": "An example kit, built for Leonardo M.",
+      "components": [
+        { "name": "Activate", "icon": "sun",    "timing": "Morning",  "description": "Probiotics and daily cofactors, dosed to your sequencing, for steady energy and focus." },
+        { "name": "Restore",  "icon": "moon",   "timing": "Evening",  "description": "Targeted recovery and sleep support, included only when your diagnostic calls for it." },
+        { "name": "Nourish",  "icon": "shield", "timing": "Anytime",  "description": "A prebiotic powder, sized to your gut to feed the species worth growing." }
+      ]
+    },
+    {
+      "blockType": "cyclesPricingGrid",
+      "sectionTitle": "Cycles of four.",
+      "subtitle": "Four months is the minimum window biological change can be measured in, not a contractual lock. Commit longer and your formula earns the right to evolve with you.",
+      "athleteSealText": "Trained on by HYROX world champions",
+      "athleteImages": [],
+      "planName": "Core",
+      "monthlyNote": "or €109/mo monthly",
+      "rows": [
+        { "months": "4 months",  "rate": "€99", "isBestValue": false },
+        { "months": "8 months",  "rate": "€94", "isBestValue": false },
+        { "months": "12 months", "rate": "€89", "isBestValue": true, "bestValueLabel": "Best value" }
+      ],
+      "footerNote": {
+        "root": {
+          "type": "root", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+          "children": [{
+            "type": "paragraph", "direction": "ltr", "format": "", "indent": 0, "version": 1,
+            "children": [
+              { "type": "text", "version": 1, "text": "Commit to 12 months and save up to ", "format": 0, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": "€120/yr", "format": 1, "detail": 0, "mode": "normal", "style": "" },
+              { "type": "text", "version": 1, "text": ". All commitment lengths billed monthly, choose at checkout.", "format": 0, "detail": 0, "mode": "normal", "style": "" }
+            ]
+          }]
+        }
+      }
+    },
+    {
+      "blockType": "reinforceCta",
+      "ctaText": "Continue with Core →",
+      "ctaHref": "/order-cycle-core",
+      "variant": "core",
+      "seals": [
+        { "boldText": "GMP certified", "regularText": "· 3rd-party tested" },
+        { "boldText": "Secured by Stripe", "regularText": "" }
+      ]
+    },
+    {
+      "blockType": "planPivot",
+      "direction": "upsell",
+      "title": "Want more from your diagnostic?",
+      "subtitle": "Advanced adds blood biomarkers, a formula that rebuilds every cycle, and a deeper read of your biology.",
+      "bullets": [
+        { "text": "Blood biomarker panel from cycle 4 onwards" },
+        { "text": "Formula rebuilds every cycle from your latest diagnostic" },
+        { "text": "140+ premium ingredients on request" },
+        { "text": "Priority support" }
+      ],
+      "ctaText": "Switch to Advanced · €149/mo →",
+      "ctaHref": "/order-warm-advanced"
+    },
+    {
+      "blockType": "checkoutFaq",
+      "sectionTitle": "Common questions",
+      "items": [
+        {
+          "question": "When am I first charged €99?",
+          "answer": "Your card is authorised at order but charged only when your formula enters manufacture, around two weeks after you send back your sample. Nothing before then."
+        },
+        {
+          "question": "What if I don’t return my sample in time?",
+          "answer": "If you never return your sample, a one-time €49 diagnostic-kit fee applies. Return it and there’s no separate charge, your kit goes straight into sequencing and then manufacture. We’ll send reminders, and the kit doesn’t expire."
+        },
+        {
+          "question": "What’s the difference between 4-month and monthly billing?",
+          "answer": "Both bill monthly. The 4-month cycle (€99/mo) reflects the window biology needs to shift; the monthly option (€109/mo) trades a little price for the freedom to cancel anytime."
+        },
+        {
+          "question": "Can I upgrade to Advanced later?",
+          "answer": "Yes. You can move to Advanced at any cycle boundary from your dashboard, your sequencing data carries over, and blood biomarkers are added from your next eligible cycle."
+        },
+        {
+          "question": "How does the diagnostic actually work?",
+          "answer": "Shotgun metagenomic sequencing reads the functional genes in your gut at species level, what your bacteria do, not just which are present, located against 8,069 reference metagenomes."
+        }
+      ]
+    },
+    {
+      "blockType": "endCard",
+      "label": "Ready to start",
+      "title": "Your Core protocol is one step away.",
+      "ctas": [
+        { "text": "Start Core · 4-month · €99/mo →", "href": "/order-cycle-core", "variant": "core-primary" },
+        { "text": "Pay monthly · €109/mo →",          "href": "/order-cycle-core", "variant": "core-alt" }
+      ]
+    },
+    {
+      "blockType": "stickyCtaBar",
+      "primaryCtaText":   "Continue with Core · €99/mo →",
+      "primaryCtaHref":   "/order-cycle-core",
+      "secondaryCtaText": "Pay monthly · €109/mo →",
+      "secondaryCtaHref": "/order-cycle-core"
+    }
+  ]
+}

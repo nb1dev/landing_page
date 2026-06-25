@@ -1,9 +1,8 @@
 'use client'
 
+import { useParams, useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
-import React from 'react'
-
-import { CMSLink } from '@/components/Link'
+import React, { useEffect, useRef } from 'react'
 
 type Theme = 'light' | 'dark'
 
@@ -14,179 +13,200 @@ type FooterVariant = {
   logo?: { url?: string | null; alt?: string | null } | null
 }
 
-type NavItem = {
-  link?: {
-    label?: string | null
-    localizedLabel?: string | null
-    [key: string]: unknown
-  } | null
-}
+type NavLink = { label?: string | null; url?: string | null }
+type LegalLink = { label?: string | null; url?: string | null }
 
 type Props = {
   logo?: { url?: string | null; alt?: string | null } | null
   tagline?: string | null
-  navItems?: NavItem[]
-  address?: string | null
+  subnote?: string | null
+  disclaimer?: string | null
   copyrightText?: string | null
+  instagramUrl?: string | null
+  exploreLinks?: NavLink[]
+  getStartedLinks?: NavLink[]
   defaultTheme?: Theme
   defaultLinkColor?: string | null
   variants?: FooterVariant[]
+  legalLinks?: LegalLink[]
+  formID?: string
+  confirmationType?: string | null
+  redirectUrl?: string | null
 }
 
 export function FooterClient({
   logo,
   tagline,
-  navItems = [],
-  address,
+  subnote,
+  disclaimer,
   copyrightText,
-  defaultTheme = 'light',
+  instagramUrl,
+  exploreLinks = [],
+  getStartedLinks = [],
+  defaultTheme = 'dark',
   defaultLinkColor,
   variants = [],
+  legalLinks = [],
+  formID,
+  confirmationType,
+  redirectUrl,
 }: Props) {
   const searchParams = useSearchParams()
+  const router = useRouter()
+  const params = useParams()
   const variantParam = searchParams.get('v')
+  const klaviyoFormId = params?.locale === 'de' ? 'SadZpb' : 'TPTv44'
+  const klaviyoContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const div = document.createElement('div')
+    div.className = `klaviyo-form-${klaviyoFormId}`
+    klaviyoContainerRef.current?.appendChild(div)
+    return () => { div.remove() }
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const container = klaviyoContainerRef.current?.querySelector(`.klaviyo-form-${klaviyoFormId}`)
+      const hasForm = (container?.childElementCount ?? 0) > 0
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        event: 'klaviyo_form_status',
+        klaviyo_form_loaded: hasForm,
+        klaviyo_script_present: typeof window.klaviyo !== 'undefined',
+        klaviyo_location: 'footer',
+      })
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ type: string; formId: string; metaData?: Record<string, string> }>).detail
+      if (detail?.type !== 'submit' || detail?.formId !== klaviyoFormId) return
+
+      const email = detail?.metaData?.$email
+
+      const now = Date.now()
+      if (!window.__lastLeadTime || now - window.__lastLeadTime > 1000) {
+        window.__lastLeadTime = now
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({ event: 'Lead' })
+      }
+
+      if (formID) {
+        fetch('/cms/api/form-submissions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            form: formID,
+            submissionData: [{ field: 'email', value: email ?? '' }],
+          }),
+        }).catch(console.warn)
+      }
+
+      if (confirmationType === 'redirect' && redirectUrl) {
+        router.push(redirectUrl)
+      }
+    }
+    window.addEventListener('klaviyoForms', handler)
+    return () => window.removeEventListener('klaviyoForms', handler)
+  }, [formID, confirmationType, redirectUrl, router])
 
   let theme: Theme = defaultTheme
-  let linkColor: string | null | undefined = defaultLinkColor
   let resolvedLogo = logo
   if (variantParam) {
     const match = variants.find((v) => v.variantKey === variantParam)
     if (match) {
       theme = match.theme
-      if (match.linkColor) linkColor = match.linkColor
       if (match.logo) resolvedLogo = match.logo
     }
   }
 
   const isDark = theme === 'dark'
-  const resolvedLinkColor = linkColor || (isDark ? 'rgba(255,255,255,0.55)' : 'rgba(18,49,77,0.55)')
 
   return (
     <>
-      <style jsx>{`
-        .nb1-footer {
-          background: ${isDark ? '#0a1e35' : '#ffffff'};
-          border-top: 1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(18,49,77,0.06)'};
-          padding: 3rem 2.5rem;
+      <style jsx global>{`
+        .nbf { background: ${isDark ? '#0B1E33' : '#ffffff'}; color: ${isDark ? '#fff' : '#0B1E33'}; font-family: 'Inter', system-ui, sans-serif; }
+        .nbf * { box-sizing: border-box; }
+        .nbf-in { max-width: 1200px; margin: 0 auto; padding: 72px 32px 36px; }
+        .nbf-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px; padding-bottom: 42px; border-bottom: 1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(18,49,77,0.1)'}; }
+        .nbf-brand { max-width: 390px; }
+        .nbf-logo { height: 30px; width: auto; display: block; }
+        .nbf-tag { font-size: 14px; line-height: 1.6; color: ${isDark ? 'rgba(255,255,255,0.62)' : 'rgba(18,49,77,0.62)'}; margin: 18px 0 22px; }
+        .nbf-subnote { font-size: 12px; color: ${isDark ? 'rgba(255,255,255,0.4)' : 'rgba(18,49,77,0.4)'}; margin-top: 12px; }
+        .nbf-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${isDark ? 'rgba(255,255,255,0.45)' : 'rgba(18,49,77,0.45)'}; margin: 0 0 14px; }
+        .nbf-col a { display: block; font-size: 14px; color: ${isDark ? 'rgba(255,255,255,0.74)' : 'rgba(18,49,77,0.74)'}; text-decoration: none; padding: 7px 0; transition: color 0.15s; }
+        .nbf-col a:hover { color: ${isDark ? '#fff' : '#0B1E33'}; }
+        .nbf-bot { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-top: 26px; }
+        .nbf-copy { font-size: 13px; color: ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(18,49,77,0.5)'}; }
+        .nbf-legal { display: flex; gap: 22px; }
+        .nbf-legal a, .nbf-soc a { font-size: 13px; color: ${isDark ? 'rgba(255,255,255,0.5)' : 'rgba(18,49,77,0.5)'}; text-decoration: none; transition: color 0.15s; }
+        .nbf-legal a:hover, .nbf-soc a:hover { color: ${isDark ? '#fff' : '#0B1E33'}; }
+        .nbf-disc { font-size: 11.5px; line-height: 1.6; color: ${isDark ? 'rgba(255,255,255,0.34)' : 'rgba(18,49,77,0.34)'}; margin: 24px 0 0; max-width: 820px; }
+        @media (max-width: 820px) {
+          .nbf-top { grid-template-columns: 1fr 1fr; }
+          .nbf-brand { grid-column: 1 / -1; max-width: none; }
         }
-        .nb1-footer-inner {
-          max-width: 1180px;
-          margin: 0 auto;
-        }
-        .nb1-foot-bot {
-          display: flex;
-          align-items: flex-start;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 2rem;
-        }
-        .nb1-foot-l {
-          display: flex;
-          align-items: center;
-          gap: 1.25rem;
-        }
-        .nb1-foot-logo {
-          display: flex;
-          align-items: center;
-          text-decoration: none;
-          height: 26px;
-        }
-        .nb1-foot-logo img {
-          height: 100%;
-          width: auto;
-          display: block;
-        }
-        .nb1-foot-meta {
-          font-size: 0.72rem;
-          font-weight: 300;
-          color: ${isDark ? 'rgba(255,255,255,0.45)' : 'rgba(18,49,77,0.45)'};
-        }
-        .nb1-foot-r {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 0.85rem;
-          text-align: right;
-        }
-        .nb1-foot-links {
-          display: flex;
-          align-items: center;
-          gap: 0.55rem;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-        }
-        :global(.nb1-foot-link) {
-          font-size: 0.65rem;
-          font-weight: 400;
-          color: ${resolvedLinkColor};
-          text-decoration: none;
-          letter-spacing: 0.005em;
-          transition: color 0.2s;
-        }
-        :global(.nb1-foot-link:hover) {
-          color: #008498;
-        }
-        .nb1-foot-divider {
-          font-size: 0.72rem;
-          color: ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(18,49,77,0.2)'};
-          user-select: none;
-        }
-        .nb1-foot-legal {
-          font-size: 0.66rem;
-          font-weight: 300;
-          color: ${isDark ? 'rgba(255,255,255,0.35)' : 'rgba(18,49,77,0.35)'};
-          letter-spacing: 0.02em;
-          line-height: 1.6;
+        @media (max-width: 560px) {
+          .nbf-top { grid-template-columns: 1fr; gap: 34px; }
+          .nbf-bot { flex-direction: column; align-items: flex-start; gap: 14px; }
         }
       `}</style>
 
-      <footer className="nb1-footer">
-        <div className="nb1-footer-inner">
-          <div className="nb1-foot-bot">
-            {/* Left: logo + tagline */}
-            <div className="nb1-foot-l">
+      <footer className="nbf">
+        <div className="nbf-in">
+          <div className="nbf-top">
+            {/* Brand column */}
+            <div className="nbf-brand">
               {resolvedLogo?.url && (
-                // eslint-disable-next-line @next/next/no-html-link-for-pages
-                <a href="/" className="nb1-foot-logo">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={resolvedLogo!.url ?? ''}
-                    alt={resolvedLogo!.alt || 'Logo'}
-                    style={{ height: '100%', width: 'auto', display: 'block' }}
-                  />
-                </a>
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="nbf-logo" src={resolvedLogo.url} alt={resolvedLogo.alt || 'NB1'} />
               )}
-              {tagline && <span className="nb1-foot-meta">{tagline}</span>}
+              {tagline && <p className="nbf-tag">{tagline}</p>}
+              <div ref={klaviyoContainerRef} />
+              {subnote && <p className="nbf-subnote">{subnote}</p>}
             </div>
 
-            {/* Right: nav links + legal */}
-            <div className="nb1-foot-r">
-              {navItems.length > 0 && (
-                <div className="nb1-foot-links">
-                  {navItems.map(({ link }, i) => {
-                    if (!link) return null
-                    const label =
-                      typeof link.localizedLabel === 'string' && link.localizedLabel.trim()
-                        ? link.localizedLabel
-                        : link.label
-                    return (
-                      <React.Fragment key={i}>
-                        {i > 0 && <span className="nb1-foot-divider">·</span>}
-                        <CMSLink {...link} label={label} className="nb1-foot-link" />
-                      </React.Fragment>
-                    )
-                  })}
-                </div>
-              )}
+            {/* Explore column */}
+            {exploreLinks.length > 0 && (
+              <nav className="nbf-col">
+                <h4>Explore</h4>
+                {exploreLinks.map((link, i) => (
+                  <a key={i} href={link.url || '#'}>{link.label}</a>
+                ))}
+              </nav>
+            )}
 
-              {(address || copyrightText) && (
-                <div className="nb1-foot-legal">
-                  {address && <div>{address}</div>}
-                  {copyrightText && <div>{copyrightText}</div>}
-                </div>
-              )}
-            </div>
+            {/* Get Started column */}
+            {getStartedLinks.length > 0 && (
+              <nav className="nbf-col">
+                <h4>Get started</h4>
+                {getStartedLinks.map((link, i) => (
+                  <a key={i} href={link.url || '#'}>{link.label}</a>
+                ))}
+              </nav>
+            )}
           </div>
+
+          <div className="nbf-bot">
+            {copyrightText && <span className="nbf-copy">{copyrightText}</span>}
+            {legalLinks.length > 0 && (
+              <div className="nbf-legal">
+                {legalLinks.map((link, i) => (
+                  <a key={i} href={link.url ?? '#'}>{link.label}</a>
+                ))}
+              </div>
+            )}
+            {instagramUrl && (
+              <div className="nbf-soc">
+                <a href={instagramUrl} target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+              </div>
+            )}
+          </div>
+
+          {disclaimer && <p className="nbf-disc">{disclaimer}</p>}
         </div>
       </footer>
     </>

@@ -7,8 +7,6 @@ import {
   StrikethroughFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-
 export const ProductShowcase: Block = {
   slug: 'productShowcase',
   interfaceName: 'ProductShowcaseBlock',
@@ -29,13 +27,6 @@ export const ProductShowcase: Block = {
           ...rootFeatures,
           FixedToolbarFeature(),
           InlineToolbarFeature(),
-          TextColorFeature({
-            colors: [
-              { type: 'button', color: '#000000', label: 'Black' },
-              { type: 'button', color: '#1D1D1D', label: 'Dark' },
-              { type: 'button', color: '#009FB7', label: 'Brand' },
-            ],
-          }),
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
           AlignFeature(),
           StrikethroughFeature(),

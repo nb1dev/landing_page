@@ -5,10 +5,11 @@ import { JsonLd } from '@/components/JsonLd/index'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
 import { draftMode } from 'next/headers'
-import { unstable_noStore as noStore } from 'next/cache'
 import React from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
@@ -18,6 +19,8 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 import { getServerSideURL } from '@/utilities/getURL'
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
+import { getServerCurrency } from '@/utilities/currency'
+import { resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 
 const LOCALES = ['en', 'de'] as const
 type AppLocale = (typeof LOCALES)[number]
@@ -32,6 +35,12 @@ type Args = {
     slug?: string
   }>
 }
+
+// Pages are served from the static / full-route cache and refreshed on publish
+// via the revalidatePage afterChange hook (revalidatePath). This time-based value
+// is just a backstop. Keeps the heavy ~260KB per-page query off the runtime hot
+// path — critical on the 1 vCPU staging DB where it was saturating the pool.
+export const revalidate = 600
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -79,7 +88,20 @@ export default async function Page({ params: paramsPromise }: Args) {
     return <PayloadRedirects url={url} />
   }
 
-  const { hero, layout } = page as any
+  const { hero: rawHero, layout: rawLayout, header: pageHeader, footer: pageFooter, hideHeader, hideFooter } = page as any
+  const headerId = typeof pageHeader === 'object' ? pageHeader?.id : pageHeader
+  const footerId = typeof pageFooter === 'object' ? pageFooter?.id : pageFooter
+
+  // Resolve live-price tokens — incl. arithmetic like
+  // {{(price:core:4-price:core:12)*12}} — in EVERY field of EVERY block (and the
+  // hero), once, in the visitor's currency. This makes tokens work everywhere in
+  // page content without per-block wiring. No-op (returns input) when a section
+  // has no tokens, so it's cheap for token-free pages.
+  const currency = await getServerCurrency(locale)
+  const [hero, layout] = await Promise.all([
+    resolvePriceTokensDeep(rawHero, currency, locale),
+    resolvePriceTokensDeep(rawLayout, currency, locale),
+  ])
 
   const absoluteUrl =
     decodedSlug === 'home'
@@ -92,9 +114,11 @@ export default async function Page({ params: paramsPromise }: Args) {
     <>
       <JsonLd data={pageJsonLd} />
 
+      {!hideHeader && <Header locale={locale} id={headerId} />}
+
       <article
         style={{
-          backgroundColor: 'rgba(241, 245, 249, 1)',
+          backgroundColor: '#ffffff',
           width: '100%',
         }}
       >
@@ -107,6 +131,8 @@ export default async function Page({ params: paramsPromise }: Args) {
         {hero ? <RenderHero {...hero} /> : null}
         <RenderBlocks blocks={layout || []} locale={locale} />
       </article>
+
+      {!hideFooter && <Footer locale={locale} id={footerId} />}
     </>
   )
 }
@@ -171,7 +197,6 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 async function queryPageBySlug({ slug, locale }: { slug: string; locale: AppLocale }) {
-  noStore()
   const { isEnabled: draft } = await draftMode()
   const payload = await getPayload({ config: configPromise })
 

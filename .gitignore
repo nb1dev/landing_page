@@ -16,7 +16,6 @@ package-lock.json
 public/robots.txt
 public/sitemap*.xml
 
-
 # Playwright
 node_modules/
 /test-results/
@@ -24,3 +23,9 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 *.tsbuildinfo
+
+# Payload JSON donusturucu (local, commitleme)
+payloadApiJson/
+
+# Claude Code project index (local only, do not commit)
+PROJECT_INDEX.md

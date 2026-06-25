@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     products: Product;
     authors: Author;
+    headers: Header;
+    footers: Footer;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +100,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     authors: AuthorsSelect<false> | AuthorsSelect<true>;
+    headers: HeadersSelect<false> | HeadersSelect<true>;
+    footers: FootersSelect<false> | FootersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -114,15 +118,11 @@ export interface Config {
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'de' | 'fr') | ('en' | 'de' | 'fr')[];
   globals: {
-    header: Header;
-    footer: Footer;
     navigation: Navigation;
     'site-settings': SiteSetting;
     faq: Faq;
   };
   globalsSelect: {
-    header: HeaderSelect<false> | HeaderSelect<true>;
-    footer: FooterSelect<false> | FooterSelect<true>;
     navigation: NavigationSelect<false> | NavigationSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
@@ -167,6 +167,22 @@ export interface UserAuthOperations {
 export interface Page {
   id: number;
   title: string;
+  /**
+   * Leave blank to use the site default header.
+   */
+  header?: (number | null) | Header;
+  /**
+   * Do not render any header on this page.
+   */
+  hideHeader?: boolean | null;
+  /**
+   * Leave blank to use the site default footer.
+   */
+  footer?: (number | null) | Footer;
+  /**
+   * Do not render any footer on this page.
+   */
+  hideFooter?: boolean | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -255,6 +271,48 @@ export interface Page {
     | PriceBreakBlock
     | ScienceBoardBlock
     | FloatingCTABlock
+    | YpHeroBlock
+    | YpPlansBlock
+    | YpThreeComponentsBlock
+    | YpDashboardBlock
+    | YpTimelineBlock
+    | YpScienceBoardBlock
+    | YpAthletesBlock
+    | YpBreakupBlock
+    | YpFaqBlock
+    | YpReassuranceBlock
+    | YpBuyBoxBlock
+    | YpStickyBuyBlock
+    | OrderStepNavBlock
+    | LegalStripBlock
+    | OrderStepHeroBlock
+    | TrustSealsBarBlock
+    | OrderTimelineBlock
+    | FormulaKitBlock
+    | CheckoutFaqBlock
+    | EndCardBlock
+    | PlanSummaryCardBlock
+    | GuaranteeBadgesBlock
+    | CyclesPricingGridBlock
+    | ReinforceCtaBlock
+    | PlanPivotBlock
+    | StickyCtaBarBlock
+    | PlanSelectorBlock
+    | PlanStickyBarBlock
+    | CycleSelectorBlock
+    | CheckoutFormBlock
+    | HomepageHeroBlock
+    | TheCaseBlock
+    | TwoModelsBlock
+    | GutFirstBlock
+    | HowItWorksBlock
+    | WhatArrivesBlock
+    | OutcomesBlock
+    | AthletesSectionBlock
+    | ScienceBoardSectionBlock
+    | StandardsSectionBlock
+    | PlansSectionBlock
+    | CloseBandBlock
   )[];
   meta?: {
     /**
@@ -301,109 +359,88 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "headers".
  */
-export interface Post {
+export interface Header {
   id: number;
   /**
-   * Max 70 characters (recommended for SEO)
+   * Internal label, e.g. "Default", "Dark Landing", "Checkout".
    */
-  title: string;
-  subtitle?: string | null;
-  heroImage?: (number | null) | Media;
+  name: string;
   /**
-   * Write 2–3 introductory paragraphs. This appears before all content blocks.
+   * Pages that do not select a specific header will use the default.
    */
-  intro: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  schemaMarkup: {
-    type: 'Article' | 'TechArticle' | 'FAQPage';
-    /**
-     * Optional. If empty, the post title will be used.
-     */
-    headline?: string | null;
-    faqItems?:
-      | {
-          question: string;
-          answer: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  relatedArticles?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
-  meta: {
-    /**
-     * SEO title tag. Max 60 characters. " | NB1" is added automatically.
-     */
-    title: string;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    /**
-     * SEO meta description. Max 155 characters.
-     */
-    description: string;
-  };
+  isDefault?: boolean | null;
+  logo?: (number | null) | Media;
   /**
-   * Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.
+   * Shown when theme is dark. Falls back to the light logo if empty.
    */
-  focusKeyword?: string | null;
-  publishedAt?: string | null;
-  authors?: (number | Author)[] | null;
-  populatedAuthors?:
+  logoDark?: (number | null) | Media;
+  /**
+   * Used when no A/B variant matches.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * Nav starts transparent with white text over a dark hero, then frosts on scroll. Enable when the page starts with a dark/image hero.
+   */
+  darkHero?: boolean | null;
+  /**
+   * e.g. "Order your kit". Leave empty to hide the CTA button.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
+   * e.g. "Log in"
+   */
+  loginText?: string | null;
+  loginUrl?: string | null;
+  /**
+   * CSS color override. Falls back to theme default if empty.
+   */
+  loginTextColor?: string | null;
+  navItems?:
     | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+        };
         id?: string | null;
-        name?: string | null;
-        slug?: string | null;
-        credentials?: string | null;
-        avatarUrl?: string | null;
       }[]
     | null;
   /**
-   * Auto-formatted: lowercase + hyphens only. Max 70 characters.
+   * Override header appearance per A/B variant (?v= URL param).
    */
-  slug: string;
-  /**
-   * How this article was created.
-   */
-  source?: ('manual' | 'api') | null;
-  /**
-   * Raw HTML from the content pipeline. Parsed automatically on save.
-   */
-  htmlContent?: string | null;
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param. Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default login text color for this variant.
+         */
+        loginTextColor?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -529,6 +566,112 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  /**
+   * Max 70 characters (recommended for SEO)
+   */
+  title: string;
+  subtitle?: string | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * Write 2–3 introductory paragraphs. This appears before all content blocks.
+   */
+  intro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  schemaMarkup: {
+    type: 'Article' | 'TechArticle' | 'FAQPage';
+    /**
+     * Optional. If empty, the post title will be used.
+     */
+    headline?: string | null;
+    faqItems?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  relatedArticles?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta: {
+    /**
+     * SEO title tag. Max 60 characters. " | NB1" is added automatically.
+     */
+    title: string;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * SEO meta description. Max 155 characters.
+     */
+    description: string;
+  };
+  /**
+   * Primary SEO keyword for this article. For editor reference only; not rendered on the frontend.
+   */
+  focusKeyword?: string | null;
+  publishedAt?: string | null;
+  authors?: (number | Author)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+        slug?: string | null;
+        credentials?: string | null;
+        avatarUrl?: string | null;
+      }[]
+    | null;
+  /**
+   * Auto-formatted: lowercase + hyphens only. Max 70 characters.
+   */
+  slug: string;
+  /**
+   * How this article was created.
+   */
+  source?: ('manual' | 'api') | null;
+  /**
+   * Raw HTML from the content pipeline. Parsed automatically on save.
+   */
+  htmlContent?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -576,6 +719,306 @@ export interface Author {
    * Example: NB1 Health GmbH
    */
   affiliation?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers".
+ */
+export interface Footer {
+  id: number;
+  /**
+   * Internal label, e.g. "Default", "Checkout", "Minimal".
+   */
+  name: string;
+  /**
+   * Pages that do not select a specific footer will use the default.
+   */
+  isDefault?: boolean | null;
+  logo?: (number | null) | Media;
+  /**
+   * Used when no A/B variant matches. Light = white bg, Dark = navy bg.
+   */
+  theme?: ('light' | 'dark') | null;
+  /**
+   * CSS color for nav links (e.g. "rgba(18,49,77,0.55)" or "#303438"). Falls back to theme default if empty.
+   */
+  linkColor?: string | null;
+  /**
+   * Short tagline shown next to logo, e.g. "Sequenced. Then yours."
+   */
+  tagline?: string | null;
+  /**
+   * e.g. "Occasional notes on the science and the product. No spam."
+   */
+  subnote?: string | null;
+  instagramUrl?: string | null;
+  /**
+   * Links shown in the "Explore" column (e.g. Home, The lab, Our plans).
+   */
+  exploreLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Links shown in the "Get Started" column (e.g. Order your kit, Log in, Contact).
+   */
+  getStartedLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Legacy field – use Explore/Get Started columns above instead.
+   */
+  navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Company address shown in the legal section.
+   */
+  address?: string | null;
+  copyrightText?: string | null;
+  /**
+   * Legal disclaimer shown below the bottom bar.
+   */
+  disclaimer?: string | null;
+  /**
+   * Privacy, Terms, Imprint etc. shown in the bottom bar.
+   */
+  legalLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Select the Form Builder form to log Klaviyo submissions in Payload.
+   */
+  form?: (number | null) | Form;
+  /**
+   * Map URL variant keys to a footer theme. A visitor with ?v=<key> in the URL gets the matching theme.
+   */
+  variants?:
+    | {
+        /**
+         * Matches the ?v= URL param (e.g. "dark-page", "eu-b"). Case-sensitive.
+         */
+        variantKey: string;
+        theme: 'light' | 'dark';
+        /**
+         * Overrides the default link color for this variant. Any CSS color value.
+         */
+        linkColor?: string | null;
+        /**
+         * Overrides the default logo for this variant.
+         */
+        logo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: number;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  /**
+   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
+   */
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  /**
+   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
+   */
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        /**
+         * Enter the message that should be sent in this email.
+         */
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -754,180 +1197,6 @@ export interface FormBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "forms".
- */
-export interface Form {
-  id: number;
-  title: string;
-  fields?:
-    | (
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            defaultValue?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'checkbox';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'country';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'email';
-          }
-        | {
-            message?: {
-              root: {
-                type: string;
-                children: {
-                  type: any;
-                  version: number;
-                  [k: string]: unknown;
-                }[];
-                direction: ('ltr' | 'rtl') | null;
-                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                indent: number;
-                version: number;
-              };
-              [k: string]: unknown;
-            } | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'message';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'number';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            placeholder?: string | null;
-            options?:
-              | {
-                  label: string;
-                  value: string;
-                  id?: string | null;
-                }[]
-              | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'select';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'state';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'text';
-          }
-        | {
-            name: string;
-            label?: string | null;
-            width?: number | null;
-            defaultValue?: string | null;
-            required?: boolean | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'textarea';
-          }
-      )[]
-    | null;
-  submitButtonLabel?: string | null;
-  /**
-   * Choose whether to display an on-page message or redirect to a different page after they submit the form.
-   */
-  confirmationType?: ('message' | 'redirect') | null;
-  confirmationMessage?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  redirect?: {
-    url: string;
-  };
-  /**
-   * Send custom emails when the form submits. Use comma separated lists to send the same email to multiple recipients. To reference a value from this form, wrap that field's name with double curly brackets, i.e. {{firstName}}. You can use a wildcard {{*}} to output all data and {{*:table}} to format it as an HTML table in the email.
-   */
-  emails?:
-    | {
-        emailTo?: string | null;
-        cc?: string | null;
-        bcc?: string | null;
-        replyTo?: string | null;
-        emailFrom?: string | null;
-        subject: string;
-        /**
-         * Enter the message that should be sent in this email.
-         */
-        message?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3037,6 +3306,2275 @@ export interface FloatingCTABlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpHeroBlock".
+ */
+export interface YpHeroBlock {
+  /**
+   * Background color for the hero section.
+   */
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  /**
+   * Hex value used when "Custom" is selected (e.g. #1a2b3c).
+   */
+  backgroundColorCustom?: string | null;
+  /**
+   * Choose whether the hero uses a color or a background image.
+   */
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Image shown behind the hero (only used when Background Type is "Image").
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Subtle film-grain noise overlay (matches the source design).
+   */
+  grain?: boolean | null;
+  /**
+   * Main H1. Apply teal text color to a word/phrase for the accent (e.g. "your biology").
+   */
+  heading: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  primaryButton?: {
+    /**
+     * e.g. "Order your kit".
+     */
+    label?: string | null;
+    /**
+     * Destination link for the primary CTA.
+     */
+    url?: string | null;
+  };
+  secondaryLink?: {
+    /**
+     * e.g. "See what arrives" (a → arrow is appended automatically).
+     */
+    label?: string | null;
+    /**
+     * Destination link/anchor for the secondary link (e.g. "#components").
+     */
+    url?: string | null;
+  };
+  /**
+   * Overlapping circular portraits shown in the board strip.
+   */
+  boardFaces?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold line, e.g. "Each formula reviewed by our science board".
+   */
+  boardCopy?: string | null;
+  /**
+   * Lighter line below, e.g. "Six researchers · human sign-off before manufacture".
+   */
+  boardSubCopy?: string | null;
+  /**
+   * Large image on the right (still life / product render).
+   */
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpPlansBlock".
+ */
+export interface YpPlansBlock {
+  /**
+   * Background color for the plans section.
+   */
+  backgroundColor?: ('cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  /**
+   * Hex value used when "Custom" is selected (e.g. #1a2b3c).
+   */
+  backgroundColorCustom?: string | null;
+  /**
+   * Choose whether the section uses a color or a background image.
+   */
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Image shown behind the section (only used when Background Type is "Image").
+   */
+  backgroundImage?: (number | null) | Media;
+  /**
+   * Subtle film-grain noise overlay (matches the source design).
+   */
+  grain?: boolean | null;
+  /**
+   * Small uppercase label above the heading (e.g. "Choose your starting point").
+   */
+  eyebrow?: string | null;
+  /**
+   * Section H2. Apply teal text color to a phrase for the accent (e.g. "One difference.").
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * The pricing cards (e.g. Core and Advanced).
+   */
+  planCards?:
+    | {
+        featured?: boolean | null;
+        /**
+         * Optional lime flag at the top (e.g. "Most informed").
+         */
+        badge?: string | null;
+        /**
+         * e.g. "Core" / "Advanced".
+         */
+        name: string;
+        /**
+         * Short description under the name.
+         */
+        tag?: string | null;
+        /**
+         * Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.
+         */
+        planFamily?: ('core' | 'advanced') | null;
+        /**
+         * Pill under the price. Use a live-price token for any amount, e.g. "or {{price:core:1}}/mo month-to-month · cancel anytime". {{price:core:1}} = Core monthly (month=1); {{price:advanced:4}} = Advanced 4-month rate. Resolves to the visitor’s currency. Leave empty to keep an invisible spacer.
+         */
+        monthly?: string | null;
+        /**
+         * e.g. "4 months is the minimum cycle…". Supports live-price tokens like {{price:core:1}}.
+         */
+        commit?: string | null;
+        /**
+         * e.g. "What's inside" / "Everything in Core, plus".
+         */
+        listLabel?: string | null;
+        listItems?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. "Start with Core".
+         */
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        ctaStyle?: ('out' | 'cta') | null;
+        id?: string | null;
+      }[]
+    | null;
+  showComparison?: boolean | null;
+  comparison?: {
+    /**
+     * e.g. "Compare side by side".
+     */
+    toggleLabelClosed?: string | null;
+    /**
+     * e.g. "Hide full comparison".
+     */
+    toggleLabelOpen?: string | null;
+    /**
+     * Each section is a group header with its own rows underneath.
+     */
+    sections?:
+      | {
+          /**
+           * e.g. "Diagnostics".
+           */
+          title?: string | null;
+          rows?:
+            | {
+                /**
+                 * e.g. "Gut microbiome sequencing, shotgun, species-level".
+                 */
+                text: string;
+                /**
+                 * Checkbox → ✓ / — per card. 1 line → one text value per card. 2 line → main value + smaller sub-line per card (e.g. "4-month min" + "or {{price:core:1}}/mo monthly"). Sub-line supports live-price tokens.
+                 */
+                cell?: ('checkbox' | 'oneLine' | 'twoLine') | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Each card is a column (e.g. Core, Advanced). Tick the rows this column includes.
+     */
+    cards?:
+      | {
+          /**
+           * e.g. "Core".
+           */
+          label?: string | null;
+          /**
+           * Drives the live headline price for this column (the 4-month rate, fetched from the subscriptions API).
+           */
+          planFamily?: ('core' | 'advanced') | null;
+          highlight?: boolean | null;
+          features?:
+            | {
+                [k: string]: unknown;
+              }
+            | unknown[]
+            | string
+            | number
+            | boolean
+            | null;
+          /**
+           * e.g. "Start with Core".
+           */
+          ctaLabel?: string | null;
+          ctaUrl?: string | null;
+          ctaStyle?: ('out' | 'lime') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Up to 3 reassurance items shown below the plans.
+   */
+  guaranteeItems?:
+    | {
+        icon?: ('clock' | 'cycle' | 'capsule' | 'none') | null;
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypPlans';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpThreeComponentsBlock".
+ */
+export interface YpThreeComponentsBlock {
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * e.g. "What arrives at your door".
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Supporting paragraph. Bold a phrase to emphasise (e.g. "140+ ingredients").
+   */
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "One subscription, in place of".
+   */
+  replacesPrefix?: string | null;
+  /**
+   * Struck-through pills (e.g. greens powder, probiotic…).
+   */
+  replacesItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Kit render shown on the left (floats with a 3D tilt).
+   */
+  image?: (number | null) | Media;
+  /**
+   * Each entry is a tab (e.g. Activate, Restore, Nourish). Tabs auto-advance until clicked.
+   */
+  components?:
+    | {
+        tabLabel: string;
+        icon?: ('sun' | 'moon' | 'shield' | 'none') | null;
+        /**
+         * e.g. "Morning protocol · taken with your first meal".
+         */
+        intro?: string | null;
+        /**
+         * Optional featured item with a "why" note and ingredient chips.
+         */
+        lead?: {
+          /**
+           * e.g. "Probiotic Capsule".
+           */
+          name?: string | null;
+          /**
+           * e.g. "5 strains · AM".
+           */
+          dose?: string | null;
+          /**
+           * e.g. "Why it's in Leonardo's formula".
+           */
+          readLabel?: string | null;
+          /**
+           * Bold a phrase to highlight it in teal.
+           */
+          readBody?: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
+          chips?:
+            | {
+                bold: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        /**
+         * Simple name + dose rows. Mark "Excluded" for left-out items.
+         */
+        rows?:
+          | {
+              name: string;
+              dose?: string | null;
+              excluded?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional note shown with a ✕ icon (e.g. why something was left out).
+         */
+        exNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypComponents';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpDashboardBlock".
+ */
+export interface YpDashboardBlock {
+  backgroundColor?: ('off' | 'paper' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Blurred screenshot shown inside the phone (same across all tabs).
+   */
+  phoneImage?: (number | null) | Media;
+  /**
+   * e.g. "See a full sample health report". Opens the sample report modal.
+   */
+  reportLabel?: string | null;
+  /**
+   * e.g. "Sample health report".
+   */
+  reportModalTitle?: string | null;
+  /**
+   * Full sample report image shown in the modal.
+   */
+  reportImage?: (number | null) | Media;
+  /**
+   * Each pill is a tab. Accordion auto-advances; phone card differs per tab.
+   */
+  views?:
+    | {
+        pillLabel: string;
+        title?: string | null;
+        /**
+         * Numbered 01, 02, 03… automatically.
+         */
+        items?:
+          | {
+              heading: string;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        card?: {
+          cardType?: ('gauge' | 'scales' | 'teams' | 'map') | null;
+          /**
+           * Gauge: label above score (e.g. "Overall score"). Others: small uppercase title.
+           */
+          heading?: string | null;
+          /**
+           * e.g. "Excellent".
+           */
+          flag?: string | null;
+          /**
+           * e.g. "85.5". The track fill is computed as score / 100.
+           */
+          score?: string | null;
+          metrics?:
+            | {
+                name: string;
+                /**
+                 * e.g. "18.7". Bar width is computed as value / max.
+                 */
+                value?: string | null;
+                /**
+                 * e.g. "20" → shown as "/20".
+                 */
+                max?: string | null;
+                amber?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+          scales?:
+            | {
+                label: string;
+                /**
+                 * 0–100 (dot position + shown as "%").
+                 */
+                pct?: number | null;
+                amber?: boolean | null;
+                id?: string | null;
+              }[]
+            | null;
+          teams?:
+            | {
+                name: string;
+                pct?: number | null;
+                /**
+                 * e.g. "Healthy" / "Below range" / "Controlled".
+                 */
+                statusLabel?: string | null;
+                statusType?: ('ok' | 'low') | null;
+                id?: string | null;
+              }[]
+            | null;
+          mapRows?:
+            | {
+                key: string;
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  boardFaces?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Reviewed by our science board before manufacture."
+   */
+  boardText?: string | null;
+  /**
+   * e.g. "Meet the board" (→ appended).
+   */
+  boardLinkLabel?: string | null;
+  boardLinkUrl?: string | null;
+  /**
+   * e.g. "A health layer, not just supplementation".
+   */
+  ownLabel?: string | null;
+  ownBody?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypDashboard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpTimelineBlock".
+ */
+export interface YpTimelineBlock {
+  backgroundColor?: ('paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase. Use Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Vertical milestones. Dots/connector animate in on scroll.
+   */
+  items?:
+    | {
+        /**
+         * e.g. "Month 1".
+         */
+        timeWk?: string | null;
+        title: string;
+        /**
+         * Optional teal pill next to the title (e.g. "Advanced").
+         */
+        badge?: string | null;
+        /**
+         * Bold a phrase to emphasise it.
+         */
+        body?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Optional smaller line below the body (e.g. the Core caveat).
+         */
+        note?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Background photo for the stats card.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * e.g. "What early members report".
+   */
+  statsLabel?: string | null;
+  /**
+   * Bar fills to the percentage in Value (e.g. "95%" → 95% bar).
+   */
+  stats?:
+    | {
+        label: string;
+        /**
+         * e.g. "95%".
+         */
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpScienceBoardBlock".
+ */
+export interface YpScienceBoardBlock {
+  backgroundColor?: ('cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal text color to a phrase for the accent.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Each card opens a bio modal on click.
+   */
+  members?:
+    | {
+        photo: number | Media;
+        name: string;
+        /**
+         * Teal line on the card (e.g. "Chief Scientific Officer").
+         */
+        role?: string | null;
+        /**
+         * Credentials line on the card.
+         */
+        detail?: string | null;
+        /**
+         * Small uppercase pill in the modal (e.g. "Science board").
+         */
+        pill?: string | null;
+        /**
+         * Title line under the name in the modal.
+         */
+        modalTitle?: string | null;
+        /**
+         * One or more paragraphs shown in the modal.
+         */
+        bio?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Italic pull-quote at the bottom of the modal.
+         */
+        quote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypScienceBoard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpAthletesBlock".
+ */
+export interface YpAthletesBlock {
+  backgroundColor?: ('off' | 'paper' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Portrait + quote. Optionally a video card with a play/Watch lightbox.
+   */
+  cards?:
+    | {
+        image: number | Media;
+        quote?: string | null;
+        /**
+         * e.g. "Tim Wenisch".
+         */
+        name?: string | null;
+        /**
+         * Bold part after the name (e.g. "2025 HYROX … Champion").
+         */
+        credit?: string | null;
+        isVideo?: boolean | null;
+        watchLabel?: string | null;
+        /**
+         * MP4 played in the lightbox.
+         */
+        video?: (number | null) | Media;
+        /**
+         * Upload a .vtt subtitles file.
+         */
+        subtitles?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Together they hold the Men's Doubles World Record".
+   */
+  recordLeft?: string | null;
+  /**
+   * Teal value (e.g. "47:40").
+   */
+  recordValue?: string | null;
+  /**
+   * e.g. "London 2026".
+   */
+  recordRight?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypAthletes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBreakupBlock".
+ */
+export interface YpBreakupBlock {
+  backgroundColor?: ('navyDeep' | 'inkDeep' | 'navy' | 'off' | 'paper' | 'cream' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Full-bleed image behind the glass card (e.g. athlete at rest).
+   */
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * Optional small teal label above the line.
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase for emphasis.
+   */
+  line?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypBreakup';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpFaqBlock".
+ */
+export interface YpFaqBlock {
+  backgroundColor?: ('cream' | 'off' | 'paper' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Numbers (01, 02 …) are added automatically in order. Question and answer support live-price tokens, e.g. "…month-to-month at {{price:core:1}}/mo … at {{price:core:4}}/mo…" → visitor-currency rates.
+   */
+  items?:
+    | {
+        question: string;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypFaq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpReassuranceBlock".
+ */
+export interface YpReassuranceBlock {
+  /**
+   * Default renders the signature 160° deep-navy gradient + teal glow.
+   */
+  backgroundColor?: ('navyDeep' | 'navy' | 'inkDeep' | 'teal' | 'off' | 'paper' | 'cream' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  eyebrow?: string | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Glass cards (the source uses two: guarantee + commitment).
+   */
+  cards?:
+    | {
+        /**
+         * Teal pill label (e.g. "The guarantee").
+         */
+        tag?: string | null;
+        title?: string | null;
+        body?: string | null;
+        points?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypReassurance';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBuyBoxBlock".
+ */
+export interface YpBuyBoxBlock {
+  backgroundColor?: ('inkDeep' | 'navyDeep' | 'navy' | 'teal' | 'off' | 'paper' | 'cream' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  /**
+   * Full-bleed image behind the dark overlay (e.g. athlete at rest).
+   */
+  backgroundImage?: (number | null) | Media;
+  grain?: boolean | null;
+  /**
+   * Apply teal color to a phrase. Shift+Enter for a line break.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Supports live-price tokens, e.g. "{{price:core:4}}" → visitor-currency rate.
+   */
+  sub?: string | null;
+  /**
+   * Pricing options (the source uses two: Core + Advanced).
+   */
+  options?:
+    | {
+        /**
+         * e.g. "Core".
+         */
+        name: string;
+        /**
+         * Drives the live headline price (the 4-month rate, fetched from the subscriptions API). Leave empty to hide the price.
+         */
+        planFamily?: ('core' | 'advanced') | null;
+        /**
+         * Small text after price (e.g. "/mo").
+         */
+        priceSuffix?: string | null;
+        /**
+         * Optional teal pill. Use a token for the price, e.g. "or {{price:core:1}}/mo, monthly · cancel anytime".
+         */
+        altLabel?: string | null;
+        description?: string | null;
+        /**
+         * e.g. "Order Core kit" — the → arrow is added automatically.
+         */
+        ctaLabel?: string | null;
+        ctaHref?: string | null;
+        recommended?: boolean | null;
+        recFlagLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Supports live-price tokens, e.g. "Core runs month-to-month at {{price:core:1}}." Resolves to the visitor’s currency.
+   */
+  buyNote?: string | null;
+  /**
+   * Checkmarked items in the bottom trust row.
+   */
+  trust?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypBuyBox';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpStickyBuyBlock".
+ */
+export interface YpStickyBuyBlock {
+  backgroundColor?: ('glass' | 'paper' | 'off' | 'cream' | 'navy' | 'navyDeep' | 'teal' | 'custom') | null;
+  backgroundColorCustom?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundImage?: (number | null) | Media;
+  /**
+   * e.g. "Your formula, built from your gut".
+   */
+  leftKey?: string | null;
+  /**
+   * Muted text after the bold part — hidden on small screens. Supports live-price tokens, e.g. "from {{price:core:4}}/mo".
+   */
+  leftValue?: string | null;
+  /**
+   * e.g. "Order your kit". Add an arrow yourself if you want one.
+   */
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  /**
+   * The bar appears once this element scrolls past the top. Falls back to ~700px scrolled if not found.
+   */
+  showAfterSel?: string | null;
+  /**
+   * Comma-separated. The bar hides once any of these enters the viewport.
+   */
+  hideAtSel?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ypStickyBuy';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepNavBlock".
+ */
+export interface OrderStepNavBlock {
+  logo?: (number | null) | Media;
+  logoUrl?: string | null;
+  activeStep: '1' | '2' | '3' | 'done';
+  step1Label?: string | null;
+  step1Url?: string | null;
+  step2Label?: string | null;
+  step2Url?: string | null;
+  step3Label?: string | null;
+  step3Url?: string | null;
+  backLabel?: string | null;
+  backUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderStepNav';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalStripBlock".
+ */
+export interface LegalStripBlock {
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  copyright?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'legalStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepHeroBlock".
+ */
+export interface OrderStepHeroBlock {
+  headline?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subtitle?: string | null;
+  showSeals?: boolean | null;
+  seals?:
+    | {
+        type?: ('stars' | 'dot') | null;
+        rating?: string | null;
+        label?: string | null;
+        shortLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderStepHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustSealsBarBlock".
+ */
+export interface TrustSealsBarBlock {
+  seals?:
+    | {
+        type?: ('stars' | 'dot') | null;
+        rating?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'trustSealsBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderTimelineBlock".
+ */
+export interface OrderTimelineBlock {
+  sectionTitle?: string | null;
+  subtitle?: string | null;
+  steps?:
+    | {
+        weekLabel?: string | null;
+        title?: string | null;
+        description?: string | null;
+        isPaymentStep?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  showAdvancedExtras?: boolean | null;
+  advancedPillLabel?: string | null;
+  advancedExtras?:
+    | {
+        weekLabel?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'orderTimeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaKitBlock".
+ */
+export interface FormulaKitBlock {
+  sectionTitle?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  kitImage?: (number | null) | Media;
+  kitImageAlt?: string | null;
+  components?:
+    | {
+        name?: string | null;
+        icon?: ('sun' | 'moon' | 'shield') | null;
+        timing?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'formulaKit';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFaqBlock".
+ */
+export interface CheckoutFaqBlock {
+  sectionTitle?: string | null;
+  items?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checkoutFaq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EndCardBlock".
+ */
+export interface EndCardBlock {
+  label?: string | null;
+  title: string;
+  ctas?:
+    | {
+        text: string;
+        href: string;
+        variant?: ('advanced' | 'core' | 'core-primary' | 'core-alt') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'endCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSummaryCardBlock".
+ */
+export interface PlanSummaryCardBlock {
+  sectionTitle?: string | null;
+  planVariant: 'core' | 'advanced';
+  planName: string;
+  /**
+   * Drives the live price + the CTA price chip below (fetched from the subscriptions API for this plan variant + cycle). Not editable directly.
+   */
+  cycleMonth: '4' | '8' | '12';
+  priceNote?: string | null;
+  switchLinkText?: string | null;
+  switchLinkHref?: string | null;
+  primaryCtaText: string;
+  primaryCtaHref: string;
+  secondaryCtaText?: string | null;
+  secondaryCtaHref?: string | null;
+  ctaSubText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planSummaryCard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBadgesBlock".
+ */
+export interface GuaranteeBadgesBlock {
+  items?:
+    | {
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'guaranteeBadges';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CyclesPricingGridBlock".
+ */
+export interface CyclesPricingGridBlock {
+  sectionTitle?: string | null;
+  subtitle?: string | null;
+  planName?: string | null;
+  monthlyNote?: string | null;
+  /**
+   * The 4/8/12-month price grid is fetched live from the subscriptions API for this plan family — it is not editable here.
+   */
+  planFamily?: ('core' | 'advanced') | null;
+  ctaText?: string | null;
+  ctaHref?: string | null;
+  showSecondPlan?: boolean | null;
+  planName2?: string | null;
+  monthlyNote2?: string | null;
+  /**
+   * The 4/8/12-month price grid is fetched live from the subscriptions API for this plan family — it is not editable here.
+   */
+  planFamily2?: ('core' | 'advanced') | null;
+  ctaText2?: string | null;
+  ctaHref2?: string | null;
+  footerNote?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  athleteSealText?: string | null;
+  athleteImages?:
+    | {
+        image?: (number | null) | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cyclesPricingGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReinforceCtaBlock".
+ */
+export interface ReinforceCtaBlock {
+  athleteText?: string | null;
+  athleteImages?:
+    | {
+        image: number | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText?: string | null;
+  ctaHref?: string | null;
+  ctaText2?: string | null;
+  ctaHref2?: string | null;
+  seals?:
+    | {
+        boldText?: string | null;
+        regularText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reinforceCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanPivotBlock".
+ */
+export interface PlanPivotBlock {
+  direction?: ('upsell' | 'downsell') | null;
+  title: string;
+  subtitle?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaText: string;
+  ctaHref: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planPivot';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBarBlock".
+ */
+export interface StickyCtaBarBlock {
+  primaryCtaText: string;
+  primaryCtaHref: string;
+  secondaryCtaText?: string | null;
+  secondaryCtaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stickyCtaBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSelectorBlock".
+ */
+export interface PlanSelectorBlock {
+  sectionTitle?: string | null;
+  guaranteeItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  plans?:
+    | {
+        /**
+         * Also drives the live headline price (the 4-month rate, fetched from the subscriptions API) — strikePrice/minNote/monthlyLinkText below stay manually edited.
+         */
+        planKey: 'core' | 'advanced';
+        isRecommended?: boolean | null;
+        name: string;
+        strikePrice?: string | null;
+        minNote?: string | null;
+        monthlyLinkText?: string | null;
+        monthlyLinkHref?: string | null;
+        ctaText: string;
+        ctaHref: string;
+        id?: string | null;
+      }[]
+    | null;
+  scienceBoardLabel?: string | null;
+  scienceBoardSub?: string | null;
+  scienceBoardImages?:
+    | {
+        image?: (number | null) | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  showComparison?: boolean | null;
+  /**
+   * Leave coreValue/advancedValue empty to render as a section header row.
+   */
+  comparisonRows?:
+    | {
+        label: string;
+        coreValue?: string | null;
+        advancedValue?: string | null;
+        corePositive?: boolean | null;
+        advancedPositive?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planSelector';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanStickyBarBlock".
+ */
+export interface PlanStickyBarBlock {
+  defaultPlanKey?: ('core' | 'advanced') | null;
+  plans?:
+    | {
+        planKey: 'core' | 'advanced';
+        selectedLabel: string;
+        switchLinkText?: string | null;
+        /**
+         * Which plan to activate in PlanSelector when switch is clicked
+         */
+        switchToPlanKey?: ('core' | 'advanced') | null;
+        ctaText: string;
+        ctaHref: string;
+        ctaVariant?: ('advanced' | 'core') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'planStickyBar';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CycleSelectorBlock".
+ */
+export interface CycleSelectorBlock {
+  planName: string;
+  switchLinkLabel?: string | null;
+  switchLinkHref?: string | null;
+  /**
+   * The 4/8/12-month price grid below is fetched live from the subscriptions API for this plan family — it is not editable here. Checkout links are generated as /order-details?plan={family}&cycle={month}.
+   */
+  planFamily: 'core' | 'advanced';
+  showMonthlyOption?: boolean | null;
+  monthlyRate?: string | null;
+  monthlyCheckoutHref?: string | null;
+  yourPlanLabel?: string | null;
+  bestValueLabel?: string | null;
+  preferFlexibleLabel?: string | null;
+  chooseFlexiblePrefix?: string | null;
+  continuePrefix?: string | null;
+  cancelAnytimeLabel?: string | null;
+  billedMonthlyShortLabel?: string | null;
+  guaranteeItems?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  faqTitle?: string | null;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cycleSelector';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFormBlock".
+ */
+export interface CheckoutFormBlock {
+  backHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'checkoutForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock".
+ */
+export interface HomepageHeroBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  backgroundImage?: (number | null) | Media;
+  backgroundImageMobile?: (number | null) | Media;
+  trustItems?:
+    | {
+        text?: string | null;
+        showStars?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'homepageHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheCaseBlock".
+ */
+export interface TheCaseBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  stats?:
+    | {
+        /**
+         * On: enter the stat for each currency — visitors see it in their selected currency. Off: one value for everyone.
+         */
+        useCurrency?: boolean | null;
+        stat?: string | null;
+        statEUR?: string | null;
+        statGBP?: string | null;
+        statAED?: string | null;
+        statCHF?: string | null;
+        unit?: string | null;
+        tag?: string | null;
+        frontBody?: string | null;
+        backBody?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Closing paragraph. Supports <strong> and <em> tags.
+   */
+  pivotHtml?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'theCase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoModelsBlock".
+ */
+export interface TwoModelsBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  nb1Logo?: (number | null) | Media;
+  rows?:
+    | {
+        label?: string | null;
+        themValue?: string | null;
+        usValue?: string | null;
+        /**
+         * SVG path data for the NB1 icon (contents of the <svg> tag)
+         */
+        usIconSvg?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'twoModels';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GutFirstBlock".
+ */
+export interface GutFirstBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bodyCopy?: string | null;
+  hintText?: string | null;
+  nodes?:
+    | {
+        key?: string | null;
+        label?: string | null;
+        title?: string | null;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gutFirst';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock".
+ */
+export interface HowItWorksBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  steps?:
+    | {
+        week?: string | null;
+        stepNum?: string | null;
+        stepLabel?: string | null;
+        title?: string | null;
+        /**
+         * SVG path data inside viewBox="0 0 24 24"
+         */
+        iconSvg?: string | null;
+        isGate?: boolean | null;
+        calloutLabel?: string | null;
+        calloutNumber?: string | null;
+        /**
+         * Suffix shown as superscript in teal (e.g. ★)
+         */
+        calloutNumberSuffix?: string | null;
+        calloutText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'howItWorks';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhatArrivesBlock".
+ */
+export interface WhatArrivesBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  replacesLabel?: string | null;
+  replacesItems?:
+    | {
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  cards?:
+    | {
+        /**
+         * Hex color for time-of-day dot (e.g. #E8A93B)
+         */
+        todColor?: string | null;
+        todLabel?: string | null;
+        image?: (number | null) | Media;
+        name?: string | null;
+        timing?: string | null;
+        description?: string | null;
+        /**
+         * Hex color for chip dot
+         */
+        chipColor?: string | null;
+        chipLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  closingText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'whatArrives';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutcomesBlock".
+ */
+export interface OutcomesBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  gaugeScore?: string | null;
+  gaugeMax?: string | null;
+  gaugeLabel?: string | null;
+  deltaLabel?: string | null;
+  deltaFrom?: string | null;
+  builtInText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  feltText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cards?:
+    | {
+        category?: string | null;
+        image?: (number | null) | Media;
+        frontTitle?: string | null;
+        deltaChip?: string | null;
+        valueBefore?: string | null;
+        valueAfter?: string | null;
+        valueUnit?: string | null;
+        /**
+         * CSS left% for track segment start (e.g. 60%)
+         */
+        trackSegLeft?: string | null;
+        /**
+         * CSS right% for track segment end (e.g. 20%)
+         */
+        trackSegRight?: string | null;
+        /**
+         * CSS left% for "before" dot
+         */
+        trackDotBefore?: string | null;
+        /**
+         * CSS left% for "after" dot
+         */
+        trackDotAfter?: string | null;
+        trackFootnote?: string | null;
+        backEyebrow?: string | null;
+        backBody?: string | null;
+        flipAriaLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'outcomes';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthletesSectionBlock".
+ */
+export interface AthletesSectionBlock {
+  quoteText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  quoteAttribution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  recordText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  athletes?:
+    | {
+        name?: string | null;
+        credential?: string | null;
+        photo?: (number | null) | Media;
+        hasVideo?: boolean | null;
+        video?: (number | null) | Media;
+        videoAriaLabel?: string | null;
+        /**
+         * Upload a .vtt subtitles file.
+         */
+        subtitles?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'athletesSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardSectionBlock".
+ */
+export interface ScienceBoardSectionBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  members?:
+    | {
+        photo?: (number | null) | Media;
+        name?: string | null;
+        role?: string | null;
+        detail?: string | null;
+        pill?: string | null;
+        modalTitle?: string | null;
+        bio?:
+          | {
+              paragraph?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        quote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scienceBoardSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StandardsSectionBlock".
+ */
+export interface StandardsSectionBlock {
+  items?:
+    | {
+        iconSvg?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'standardsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlansSectionBlock".
+ */
+export interface PlansSectionBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  coreLabel?: string | null;
+  coreDesc?: string | null;
+  coreMonthly?: string | null;
+  coreCommit?: string | null;
+  coreFeaturesLabel?: string | null;
+  coreFeatures?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  coreCtaLabel?: string | null;
+  coreCtaHref?: string | null;
+  advBadge?: string | null;
+  advLabel?: string | null;
+  advDesc?: string | null;
+  advCommit?: string | null;
+  advFeaturesLabel?: string | null;
+  advFeatures?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  advCtaLabel?: string | null;
+  advCtaHref?: string | null;
+  guarantees?:
+    | {
+        iconSvg?: string | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  compareRowsJson?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'plansSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CloseBandBlock".
+ */
+export interface CloseBandBlock {
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'closeBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -3309,6 +5847,14 @@ export interface PayloadLockedDocument {
         value: number | Author;
       } | null)
     | ({
+        relationTo: 'headers';
+        value: number | Header;
+      } | null)
+    | ({
+        relationTo: 'footers';
+        value: number | Footer;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -3376,6 +5922,10 @@ export interface PayloadMigration {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  header?: T;
+  hideHeader?: T;
+  footer?: T;
+  hideFooter?: T;
   hero?:
     | T
     | {
@@ -3442,6 +5992,48 @@ export interface PagesSelect<T extends boolean = true> {
         priceBreak?: T | PriceBreakBlockSelect<T>;
         scienceBoard?: T | ScienceBoardBlockSelect<T>;
         floatingCTA?: T | FloatingCTABlockSelect<T>;
+        ypHero?: T | YpHeroBlockSelect<T>;
+        ypPlans?: T | YpPlansBlockSelect<T>;
+        ypComponents?: T | YpThreeComponentsBlockSelect<T>;
+        ypDashboard?: T | YpDashboardBlockSelect<T>;
+        ypTimeline?: T | YpTimelineBlockSelect<T>;
+        ypScienceBoard?: T | YpScienceBoardBlockSelect<T>;
+        ypAthletes?: T | YpAthletesBlockSelect<T>;
+        ypBreakup?: T | YpBreakupBlockSelect<T>;
+        ypFaq?: T | YpFaqBlockSelect<T>;
+        ypReassurance?: T | YpReassuranceBlockSelect<T>;
+        ypBuyBox?: T | YpBuyBoxBlockSelect<T>;
+        ypStickyBuy?: T | YpStickyBuyBlockSelect<T>;
+        orderStepNav?: T | OrderStepNavBlockSelect<T>;
+        legalStrip?: T | LegalStripBlockSelect<T>;
+        orderStepHero?: T | OrderStepHeroBlockSelect<T>;
+        trustSealsBar?: T | TrustSealsBarBlockSelect<T>;
+        orderTimeline?: T | OrderTimelineBlockSelect<T>;
+        formulaKit?: T | FormulaKitBlockSelect<T>;
+        checkoutFaq?: T | CheckoutFaqBlockSelect<T>;
+        endCard?: T | EndCardBlockSelect<T>;
+        planSummaryCard?: T | PlanSummaryCardBlockSelect<T>;
+        guaranteeBadges?: T | GuaranteeBadgesBlockSelect<T>;
+        cyclesPricingGrid?: T | CyclesPricingGridBlockSelect<T>;
+        reinforceCta?: T | ReinforceCtaBlockSelect<T>;
+        planPivot?: T | PlanPivotBlockSelect<T>;
+        stickyCtaBar?: T | StickyCtaBarBlockSelect<T>;
+        planSelector?: T | PlanSelectorBlockSelect<T>;
+        planStickyBar?: T | PlanStickyBarBlockSelect<T>;
+        cycleSelector?: T | CycleSelectorBlockSelect<T>;
+        checkoutForm?: T | CheckoutFormBlockSelect<T>;
+        homepageHero?: T | HomepageHeroBlockSelect<T>;
+        theCase?: T | TheCaseBlockSelect<T>;
+        twoModels?: T | TwoModelsBlockSelect<T>;
+        gutFirst?: T | GutFirstBlockSelect<T>;
+        howItWorks?: T | HowItWorksBlockSelect<T>;
+        whatArrives?: T | WhatArrivesBlockSelect<T>;
+        outcomes?: T | OutcomesBlockSelect<T>;
+        athletesSection?: T | AthletesSectionBlockSelect<T>;
+        scienceBoardSection?: T | ScienceBoardSectionBlockSelect<T>;
+        standardsSection?: T | StandardsSectionBlockSelect<T>;
+        plansSection?: T | PlansSectionBlockSelect<T>;
+        closeBand?: T | CloseBandBlockSelect<T>;
       };
   meta?:
     | T
@@ -4631,6 +7223,1173 @@ export interface FloatingCTABlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpHeroBlock_select".
+ */
+export interface YpHeroBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  heading?: T;
+  description?: T;
+  primaryButton?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  secondaryLink?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  boardFaces?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  boardCopy?: T;
+  boardSubCopy?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpPlansBlock_select".
+ */
+export interface YpPlansBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  planCards?:
+    | T
+    | {
+        featured?: T;
+        badge?: T;
+        name?: T;
+        tag?: T;
+        planFamily?: T;
+        monthly?: T;
+        commit?: T;
+        listLabel?: T;
+        listItems?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaUrl?: T;
+        ctaStyle?: T;
+        id?: T;
+      };
+  showComparison?: T;
+  comparison?:
+    | T
+    | {
+        toggleLabelClosed?: T;
+        toggleLabelOpen?: T;
+        sections?:
+          | T
+          | {
+              title?: T;
+              rows?:
+                | T
+                | {
+                    text?: T;
+                    cell?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        cards?:
+          | T
+          | {
+              label?: T;
+              planFamily?: T;
+              highlight?: T;
+              features?: T;
+              ctaLabel?: T;
+              ctaUrl?: T;
+              ctaStyle?: T;
+              id?: T;
+            };
+      };
+  guaranteeItems?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpThreeComponentsBlock_select".
+ */
+export interface YpThreeComponentsBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  replacesPrefix?: T;
+  replacesItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  components?:
+    | T
+    | {
+        tabLabel?: T;
+        icon?: T;
+        intro?: T;
+        lead?:
+          | T
+          | {
+              name?: T;
+              dose?: T;
+              readLabel?: T;
+              readBody?: T;
+              chips?:
+                | T
+                | {
+                    bold?: T;
+                    id?: T;
+                  };
+            };
+        rows?:
+          | T
+          | {
+              name?: T;
+              dose?: T;
+              excluded?: T;
+              id?: T;
+            };
+        exNote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpDashboardBlock_select".
+ */
+export interface YpDashboardBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  phoneImage?: T;
+  reportLabel?: T;
+  reportModalTitle?: T;
+  reportImage?: T;
+  views?:
+    | T
+    | {
+        pillLabel?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              heading?: T;
+              body?: T;
+              id?: T;
+            };
+        card?:
+          | T
+          | {
+              cardType?: T;
+              heading?: T;
+              flag?: T;
+              score?: T;
+              metrics?:
+                | T
+                | {
+                    name?: T;
+                    value?: T;
+                    max?: T;
+                    amber?: T;
+                    id?: T;
+                  };
+              scales?:
+                | T
+                | {
+                    label?: T;
+                    pct?: T;
+                    amber?: T;
+                    id?: T;
+                  };
+              teams?:
+                | T
+                | {
+                    name?: T;
+                    pct?: T;
+                    statusLabel?: T;
+                    statusType?: T;
+                    id?: T;
+                  };
+              mapRows?:
+                | T
+                | {
+                    key?: T;
+                    value?: T;
+                    id?: T;
+                  };
+            };
+        id?: T;
+      };
+  boardFaces?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  boardText?: T;
+  boardLinkLabel?: T;
+  boardLinkUrl?: T;
+  ownLabel?: T;
+  ownBody?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpTimelineBlock_select".
+ */
+export interface YpTimelineBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  items?:
+    | T
+    | {
+        timeWk?: T;
+        title?: T;
+        badge?: T;
+        body?: T;
+        note?: T;
+        id?: T;
+      };
+  photo?: T;
+  statsLabel?: T;
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpScienceBoardBlock_select".
+ */
+export interface YpScienceBoardBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        detail?: T;
+        pill?: T;
+        modalTitle?: T;
+        bio?: T;
+        quote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpAthletesBlock_select".
+ */
+export interface YpAthletesBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  cards?:
+    | T
+    | {
+        image?: T;
+        quote?: T;
+        name?: T;
+        credit?: T;
+        isVideo?: T;
+        watchLabel?: T;
+        video?: T;
+        subtitles?: T;
+        id?: T;
+      };
+  recordLeft?: T;
+  recordValue?: T;
+  recordRight?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBreakupBlock_select".
+ */
+export interface YpBreakupBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  line?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpFaqBlock_select".
+ */
+export interface YpFaqBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpReassuranceBlock_select".
+ */
+export interface YpReassuranceBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  cards?:
+    | T
+    | {
+        tag?: T;
+        title?: T;
+        body?: T;
+        points?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpBuyBoxBlock_select".
+ */
+export interface YpBuyBoxBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  grain?: T;
+  heading?: T;
+  sub?: T;
+  options?:
+    | T
+    | {
+        name?: T;
+        planFamily?: T;
+        priceSuffix?: T;
+        altLabel?: T;
+        description?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        recommended?: T;
+        recFlagLabel?: T;
+        id?: T;
+      };
+  buyNote?: T;
+  trust?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "YpStickyBuyBlock_select".
+ */
+export interface YpStickyBuyBlockSelect<T extends boolean = true> {
+  backgroundColor?: T;
+  backgroundColorCustom?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  leftKey?: T;
+  leftValue?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  showAfterSel?: T;
+  hideAtSel?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepNavBlock_select".
+ */
+export interface OrderStepNavBlockSelect<T extends boolean = true> {
+  logo?: T;
+  logoUrl?: T;
+  activeStep?: T;
+  step1Label?: T;
+  step1Url?: T;
+  step2Label?: T;
+  step2Url?: T;
+  step3Label?: T;
+  step3Url?: T;
+  backLabel?: T;
+  backUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalStripBlock_select".
+ */
+export interface LegalStripBlockSelect<T extends boolean = true> {
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  copyright?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderStepHeroBlock_select".
+ */
+export interface OrderStepHeroBlockSelect<T extends boolean = true> {
+  headline?: T;
+  subtitle?: T;
+  showSeals?: T;
+  seals?:
+    | T
+    | {
+        type?: T;
+        rating?: T;
+        label?: T;
+        shortLabel?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TrustSealsBarBlock_select".
+ */
+export interface TrustSealsBarBlockSelect<T extends boolean = true> {
+  seals?:
+    | T
+    | {
+        type?: T;
+        rating?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OrderTimelineBlock_select".
+ */
+export interface OrderTimelineBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        weekLabel?: T;
+        title?: T;
+        description?: T;
+        isPaymentStep?: T;
+        id?: T;
+      };
+  showAdvancedExtras?: T;
+  advancedPillLabel?: T;
+  advancedExtras?:
+    | T
+    | {
+        weekLabel?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormulaKitBlock_select".
+ */
+export interface FormulaKitBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  kitImage?: T;
+  kitImageAlt?: T;
+  components?:
+    | T
+    | {
+        name?: T;
+        icon?: T;
+        timing?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFaqBlock_select".
+ */
+export interface CheckoutFaqBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EndCardBlock_select".
+ */
+export interface EndCardBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  ctas?:
+    | T
+    | {
+        text?: T;
+        href?: T;
+        variant?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSummaryCardBlock_select".
+ */
+export interface PlanSummaryCardBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  planVariant?: T;
+  planName?: T;
+  cycleMonth?: T;
+  priceNote?: T;
+  switchLinkText?: T;
+  switchLinkHref?: T;
+  primaryCtaText?: T;
+  primaryCtaHref?: T;
+  secondaryCtaText?: T;
+  secondaryCtaHref?: T;
+  ctaSubText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GuaranteeBadgesBlock_select".
+ */
+export interface GuaranteeBadgesBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CyclesPricingGridBlock_select".
+ */
+export interface CyclesPricingGridBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  subtitle?: T;
+  planName?: T;
+  monthlyNote?: T;
+  planFamily?: T;
+  ctaText?: T;
+  ctaHref?: T;
+  showSecondPlan?: T;
+  planName2?: T;
+  monthlyNote2?: T;
+  planFamily2?: T;
+  ctaText2?: T;
+  ctaHref2?: T;
+  footerNote?: T;
+  athleteSealText?: T;
+  athleteImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReinforceCtaBlock_select".
+ */
+export interface ReinforceCtaBlockSelect<T extends boolean = true> {
+  athleteText?: T;
+  athleteImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaHref?: T;
+  ctaText2?: T;
+  ctaHref2?: T;
+  seals?:
+    | T
+    | {
+        boldText?: T;
+        regularText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanPivotBlock_select".
+ */
+export interface PlanPivotBlockSelect<T extends boolean = true> {
+  direction?: T;
+  title?: T;
+  subtitle?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  ctaText?: T;
+  ctaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBarBlock_select".
+ */
+export interface StickyCtaBarBlockSelect<T extends boolean = true> {
+  primaryCtaText?: T;
+  primaryCtaHref?: T;
+  secondaryCtaText?: T;
+  secondaryCtaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanSelectorBlock_select".
+ */
+export interface PlanSelectorBlockSelect<T extends boolean = true> {
+  sectionTitle?: T;
+  guaranteeItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  plans?:
+    | T
+    | {
+        planKey?: T;
+        isRecommended?: T;
+        name?: T;
+        strikePrice?: T;
+        minNote?: T;
+        monthlyLinkText?: T;
+        monthlyLinkHref?: T;
+        ctaText?: T;
+        ctaHref?: T;
+        id?: T;
+      };
+  scienceBoardLabel?: T;
+  scienceBoardSub?: T;
+  scienceBoardImages?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  showComparison?: T;
+  comparisonRows?:
+    | T
+    | {
+        label?: T;
+        coreValue?: T;
+        advancedValue?: T;
+        corePositive?: T;
+        advancedPositive?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlanStickyBarBlock_select".
+ */
+export interface PlanStickyBarBlockSelect<T extends boolean = true> {
+  defaultPlanKey?: T;
+  plans?:
+    | T
+    | {
+        planKey?: T;
+        selectedLabel?: T;
+        switchLinkText?: T;
+        switchToPlanKey?: T;
+        ctaText?: T;
+        ctaHref?: T;
+        ctaVariant?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CycleSelectorBlock_select".
+ */
+export interface CycleSelectorBlockSelect<T extends boolean = true> {
+  planName?: T;
+  switchLinkLabel?: T;
+  switchLinkHref?: T;
+  planFamily?: T;
+  showMonthlyOption?: T;
+  monthlyRate?: T;
+  monthlyCheckoutHref?: T;
+  yourPlanLabel?: T;
+  bestValueLabel?: T;
+  preferFlexibleLabel?: T;
+  chooseFlexiblePrefix?: T;
+  continuePrefix?: T;
+  cancelAnytimeLabel?: T;
+  billedMonthlyShortLabel?: T;
+  guaranteeItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  faqTitle?: T;
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CheckoutFormBlock_select".
+ */
+export interface CheckoutFormBlockSelect<T extends boolean = true> {
+  backHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HomepageHeroBlock_select".
+ */
+export interface HomepageHeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  backgroundImage?: T;
+  backgroundImageMobile?: T;
+  trustItems?:
+    | T
+    | {
+        text?: T;
+        showStars?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TheCaseBlock_select".
+ */
+export interface TheCaseBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  stats?:
+    | T
+    | {
+        useCurrency?: T;
+        stat?: T;
+        statEUR?: T;
+        statGBP?: T;
+        statAED?: T;
+        statCHF?: T;
+        unit?: T;
+        tag?: T;
+        frontBody?: T;
+        backBody?: T;
+        id?: T;
+      };
+  pivotHtml?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TwoModelsBlock_select".
+ */
+export interface TwoModelsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  nb1Logo?: T;
+  rows?:
+    | T
+    | {
+        label?: T;
+        themValue?: T;
+        usValue?: T;
+        usIconSvg?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GutFirstBlock_select".
+ */
+export interface GutFirstBlockSelect<T extends boolean = true> {
+  heading?: T;
+  bodyCopy?: T;
+  hintText?: T;
+  nodes?:
+    | T
+    | {
+        key?: T;
+        label?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock_select".
+ */
+export interface HowItWorksBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  steps?:
+    | T
+    | {
+        week?: T;
+        stepNum?: T;
+        stepLabel?: T;
+        title?: T;
+        iconSvg?: T;
+        isGate?: T;
+        calloutLabel?: T;
+        calloutNumber?: T;
+        calloutNumberSuffix?: T;
+        calloutText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WhatArrivesBlock_select".
+ */
+export interface WhatArrivesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  replacesLabel?: T;
+  replacesItems?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  cards?:
+    | T
+    | {
+        todColor?: T;
+        todLabel?: T;
+        image?: T;
+        name?: T;
+        timing?: T;
+        description?: T;
+        chipColor?: T;
+        chipLabel?: T;
+        id?: T;
+      };
+  closingText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OutcomesBlock_select".
+ */
+export interface OutcomesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  gaugeScore?: T;
+  gaugeMax?: T;
+  gaugeLabel?: T;
+  deltaLabel?: T;
+  deltaFrom?: T;
+  builtInText?: T;
+  feltText?: T;
+  cards?:
+    | T
+    | {
+        category?: T;
+        image?: T;
+        frontTitle?: T;
+        deltaChip?: T;
+        valueBefore?: T;
+        valueAfter?: T;
+        valueUnit?: T;
+        trackSegLeft?: T;
+        trackSegRight?: T;
+        trackDotBefore?: T;
+        trackDotAfter?: T;
+        trackFootnote?: T;
+        backEyebrow?: T;
+        backBody?: T;
+        flipAriaLabel?: T;
+        id?: T;
+      };
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AthletesSectionBlock_select".
+ */
+export interface AthletesSectionBlockSelect<T extends boolean = true> {
+  quoteText?: T;
+  quoteAttribution?: T;
+  recordText?: T;
+  athletes?:
+    | T
+    | {
+        name?: T;
+        credential?: T;
+        photo?: T;
+        hasVideo?: T;
+        video?: T;
+        videoAriaLabel?: T;
+        subtitles?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScienceBoardSectionBlock_select".
+ */
+export interface ScienceBoardSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  members?:
+    | T
+    | {
+        photo?: T;
+        name?: T;
+        role?: T;
+        detail?: T;
+        pill?: T;
+        modalTitle?: T;
+        bio?:
+          | T
+          | {
+              paragraph?: T;
+              id?: T;
+            };
+        quote?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StandardsSectionBlock_select".
+ */
+export interface StandardsSectionBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        iconSvg?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlansSectionBlock_select".
+ */
+export interface PlansSectionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  coreLabel?: T;
+  coreDesc?: T;
+  coreMonthly?: T;
+  coreCommit?: T;
+  coreFeaturesLabel?: T;
+  coreFeatures?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  coreCtaLabel?: T;
+  coreCtaHref?: T;
+  advBadge?: T;
+  advLabel?: T;
+  advDesc?: T;
+  advCommit?: T;
+  advFeaturesLabel?: T;
+  advFeatures?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  advCtaLabel?: T;
+  advCtaHref?: T;
+  guarantees?:
+    | T
+    | {
+        iconSvg?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  compareRowsJson?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CloseBandBlock_select".
+ */
+export interface CloseBandBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -4847,6 +8606,113 @@ export interface AuthorsSelect<T extends boolean = true> {
   website?: T;
   roleTitle?: T;
   affiliation?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers_select".
+ */
+export interface HeadersSelect<T extends boolean = true> {
+  name?: T;
+  isDefault?: T;
+  logo?: T;
+  logoDark?: T;
+  theme?: T;
+  darkHero?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  loginText?: T;
+  loginUrl?: T;
+  loginTextColor?: T;
+  navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              localizedLabel?: T;
+            };
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        loginTextColor?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footers_select".
+ */
+export interface FootersSelect<T extends boolean = true> {
+  name?: T;
+  isDefault?: T;
+  logo?: T;
+  theme?: T;
+  linkColor?: T;
+  tagline?: T;
+  subnote?: T;
+  instagramUrl?: T;
+  exploreLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  getStartedLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              localizedLabel?: T;
+            };
+        id?: T;
+      };
+  address?: T;
+  copyrightText?: T;
+  disclaimer?: T;
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  form?: T;
+  variants?:
+    | T
+    | {
+        variantKey?: T;
+        theme?: T;
+        linkColor?: T;
+        logo?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -5127,146 +8993,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header".
- */
-export interface Header {
-  id: number;
-  logo?: (number | null) | Media;
-  /**
-   * Shown when theme is dark. Falls back to the light logo if empty.
-   */
-  logoDark?: (number | null) | Media;
-  /**
-   * Used when no A/B variant matches.
-   */
-  theme?: ('light' | 'dark') | null;
-  /**
-   * e.g. "Login →"
-   */
-  loginText?: string | null;
-  loginUrl?: string | null;
-  /**
-   * CSS color override. Falls back to theme default if empty.
-   */
-  loginTextColor?: string | null;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Optional translated label. If empty, the default label will be used.
-           */
-          localizedLabel?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Override header appearance per A/B variant (?v= URL param).
-   */
-  variants?:
-    | {
-        /**
-         * Matches the ?v= URL param. Case-sensitive.
-         */
-        variantKey: string;
-        theme: 'light' | 'dark';
-        /**
-         * Overrides the default login text color for this variant.
-         */
-        loginTextColor?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer".
- */
-export interface Footer {
-  id: number;
-  logo?: (number | null) | Media;
-  /**
-   * Used when no A/B variant matches. Light = white bg, Dark = navy bg.
-   */
-  theme?: ('light' | 'dark') | null;
-  /**
-   * CSS color for nav links (e.g. "rgba(18,49,77,0.55)" or "#303438"). Falls back to theme default if empty.
-   */
-  linkColor?: string | null;
-  /**
-   * Short tagline shown next to logo, e.g. "Sequenced. Then yours."
-   */
-  tagline?: string | null;
-  navItems?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Optional translated label. If empty, the default label will be used.
-           */
-          localizedLabel?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Company address shown in the legal section.
-   */
-  address?: string | null;
-  copyrightText?: string | null;
-  /**
-   * Map URL variant keys to a footer theme. A visitor with ?v=<key> in the URL gets the matching theme.
-   */
-  variants?:
-    | {
-        /**
-         * Matches the ?v= URL param (e.g. "dark-page", "eu-b"). Case-sensitive.
-         */
-        variantKey: string;
-        theme: 'light' | 'dark';
-        /**
-         * Overrides the default link color for this variant. Any CSS color value.
-         */
-        linkColor?: string | null;
-        /**
-         * Overrides the default logo for this variant.
-         */
-        logo?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "navigation".
  */
 export interface Navigation {
@@ -5334,83 +9060,6 @@ export interface Faq {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "header_select".
- */
-export interface HeaderSelect<T extends boolean = true> {
-  logo?: T;
-  logoDark?: T;
-  theme?: T;
-  loginText?: T;
-  loginUrl?: T;
-  loginTextColor?: T;
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              localizedLabel?: T;
-            };
-        id?: T;
-      };
-  variants?:
-    | T
-    | {
-        variantKey?: T;
-        theme?: T;
-        loginTextColor?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "footer_select".
- */
-export interface FooterSelect<T extends boolean = true> {
-  logo?: T;
-  theme?: T;
-  linkColor?: T;
-  tagline?: T;
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              localizedLabel?: T;
-            };
-        id?: T;
-      };
-  address?: T;
-  copyrightText?: T;
-  variants?:
-    | T
-    | {
-        variantKey?: T;
-        theme?: T;
-        linkColor?: T;
-        logo?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

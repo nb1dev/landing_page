@@ -7,13 +7,17 @@ import React from 'react'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 import { CardPostData } from '@/components/Card'
+import { Header } from '@/Header/Component'
+import { Footer } from '@/Footer/Component'
 
 type Args = {
+  params?: Promise<{ locale?: string }>
   searchParams: Promise<{
     q: string
   }>
 }
-export default async function Page({ searchParams: searchParamsPromise }: Args) {
+export default async function Page({ params, searchParams: searchParamsPromise }: Args) {
+  const { locale = 'en' } = (await params) ?? {}
   const { q: query } = await searchParamsPromise
   const payload = await getPayload({ config: configPromise })
 
@@ -60,6 +64,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
   })
 
   return (
+    <>
+    <Header locale={locale} />
     <div className="pt-24 pb-24">
       <PageClient />
       <div className="container mb-16">
@@ -78,6 +84,8 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
         <div className="container">No results found.</div>
       )}
     </div>
+    <Footer locale={locale} />
+    </>
   )
 }
 

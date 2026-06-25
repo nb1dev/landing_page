@@ -1,5 +1,25 @@
 import type { Post } from '@/payload-types'
 
+/**
+ * Generic shape for walking serialized Lexical content. The generated `Post.content`
+ * children only expose `type`/`version`, so we describe the extra fields we read.
+ */
+type LexicalNodeLike = {
+  type?: string
+  children?: LexicalNodeLike[]
+  fields?: Record<string, unknown>
+  [k: string]: unknown
+}
+
+type SchemaMarkup = Omit<NonNullable<Post['schemaMarkup']>, 'type'> & {
+  type?: 'Article' | 'TechArticle' | 'FAQPage' | 'MedicalWebPage'
+  medical?: {
+    aboutName?: string
+    aboutType?: string
+    medicalSpecialty?: string
+  }
+}
+
 function absoluteURL(siteURL: string, maybeRelative?: string | null) {
   if (!maybeRelative) return undefined
   try {
@@ -9,10 +29,12 @@ function absoluteURL(siteURL: string, maybeRelative?: string | null) {
   }
 }
 
+function mediaURL(media: Post['heroImage']): string | null | undefined {
+  return media && typeof media === 'object' ? media.url : undefined
+}
+
 function buildAuthors(post: Post, siteURL: string, locale: string) {
-  const authors = (post as any)?.populatedAuthors as
-    | Array<{ name?: string; slug?: string; credentials?: string }>
-    | undefined
+  const authors = post.populatedAuthors ?? undefined
 
   const clean = (authors ?? [])
     .map((a) => ({
@@ -33,19 +55,19 @@ function buildAuthors(post: Post, siteURL: string, locale: string) {
 }
 
 function extractFaqAccordionItems(post: Post) {
-  const content = (post as any)?.content
-  const rootChildren = content?.root?.children
+  const rootChildren = post.content?.root?.children as LexicalNodeLike[] | undefined
   if (!Array.isArray(rootChildren)) return []
 
   const items: Array<{ question: string; answer: string }> = []
 
-  const walk = (node: any) => {
+  const walk = (node: LexicalNodeLike | null | undefined) => {
     if (!node) return
     const children = Array.isArray(node.children) ? node.children : []
 
     // Common Payload Lexical block shape:
     if (node.type === 'block' && node.fields?.blockType === 'faqAccordion') {
-      const arr = Array.isArray(node.fields?.items) ? node.fields.items : []
+      const rawItems = node.fields?.items
+      const arr: Array<Record<string, unknown>> = Array.isArray(rawItems) ? rawItems : []
       for (const it of arr) {
         const q = String(it?.question ?? '').trim()
         const a = String(it?.answer ?? '').trim()
@@ -61,8 +83,7 @@ function extractFaqAccordionItems(post: Post) {
 }
 
 function extractComparisonProducts(post: Post) {
-  const content = (post as any)?.content
-  const rootChildren = content?.root?.children
+  const rootChildren = post.content?.root?.children as LexicalNodeLike[] | undefined
   if (!Array.isArray(rootChildren)) return []
 
   const products: Array<{
@@ -73,7 +94,7 @@ function extractComparisonProducts(post: Post) {
     description?: string
   }> = []
 
-  const walk = (node: any) => {
+  const walk = (node: LexicalNodeLike | null | undefined) => {
     if (!node) return
     const children = Array.isArray(node.children) ? node.children : []
 
@@ -81,7 +102,8 @@ function extractComparisonProducts(post: Post) {
       const generateSchema = Boolean(node.fields?.generateSchema)
       if (!generateSchema) return
 
-      const rows = Array.isArray(node.fields?.rows) ? node.fields.rows : []
+      const rawRows = node.fields?.rows
+      const rows: Array<Record<string, unknown>> = Array.isArray(rawRows) ? rawRows : []
       for (const r of rows) {
         const name = String(r?.productName ?? '').trim()
         if (!name) continue
@@ -116,27 +138,20 @@ export function buildPostSchema({
   const slug = typeof post.slug === 'string' ? post.slug : ''
   const url = `${siteURL}/${locale}/posts/${encodeURIComponent(slug)}`
 
-  const schemaMarkup = (post as any)?.schemaMarkup as
-    | {
-        type?: 'Article' | 'TechArticle' | 'FAQPage' | 'MedicalWebPage'
-        headline?: string
-        faqItems?: Array<{ question?: string; answer?: string }>
-        medical?: any
-      }
-    | undefined
+  const schemaMarkup = post.schemaMarkup as SchemaMarkup | undefined
 
   const schemaType = schemaMarkup?.type || 'Article'
   const headline =
     (schemaMarkup?.headline || '').trim() || (typeof post.title === 'string' ? post.title : '')
 
-  const description = (post as any)?.meta?.description || undefined
+  const description = post.meta?.description || undefined
   const imageURL =
-    absoluteURL(siteURL, (post as any)?.meta?.image?.url) ||
-    absoluteURL(siteURL, (post as any)?.heroImage?.url) ||
+    absoluteURL(siteURL, mediaURL(post.meta?.image)) ||
+    absoluteURL(siteURL, mediaURL(post.heroImage)) ||
     undefined
 
-  const datePublished = (post as any)?.publishedAt || undefined
-  const dateModified = (post as any)?.updatedAt || undefined
+  const datePublished = post.publishedAt || undefined
+  const dateModified = post.updatedAt || undefined
 
   const author = buildAuthors(post, siteURL, locale)
 
@@ -190,7 +205,7 @@ export function buildPostSchema({
       : null
 
   // ✅ Main schema (keeps your previous behavior)
-  let main: any = null
+  let main: Record<string, unknown> | null = null
 
   if (schemaType === 'Article' || schemaType === 'TechArticle') {
     main = {

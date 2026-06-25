@@ -1,4 +1,4 @@
-import type { GlobalConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
@@ -8,12 +8,37 @@ const themeOptions = [
   { label: 'Dark (navy/glass background)', value: 'dark' },
 ]
 
-export const Header: GlobalConfig = {
-  slug: 'header',
+export const Headers: CollectionConfig = {
+  slug: 'headers',
   access: {
     read: () => true,
   },
+  admin: {
+    useAsTitle: 'name',
+    defaultColumns: ['name', 'theme', 'isDefault'],
+  },
+  hooks: {
+    afterChange: [revalidateHeader],
+  },
   fields: [
+    {
+      name: 'name',
+      label: 'Header Name',
+      type: 'text',
+      required: true,
+      admin: {
+        description: 'Internal label, e.g. "Default", "Dark Landing", "Checkout".',
+      },
+    },
+    {
+      name: 'isDefault',
+      label: 'Use as site default',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description: 'Pages that do not select a specific header will use the default.',
+      },
+    },
     {
       name: 'logo',
       label: 'Logo (Light)',
@@ -40,18 +65,43 @@ export const Header: GlobalConfig = {
       },
     },
     {
+      name: 'darkHero',
+      label: 'Dark Hero Mode',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Nav starts transparent with white text over a dark hero, then frosts on scroll. Enable when the page starts with a dark/image hero.',
+      },
+    },
+    {
+      name: 'ctaLabel',
+      label: 'CTA Button Label',
+      type: 'text',
+      localized: true,
+      admin: {
+        description: 'e.g. "Order your kit". Leave empty to hide the CTA button.',
+      },
+    },
+    {
+      name: 'ctaUrl',
+      label: 'CTA Button URL',
+      type: 'text',
+    },
+    {
       name: 'loginText',
       label: 'Login Link Text',
       type: 'text',
       localized: true,
       admin: {
-        description: 'e.g. "Login →"',
+        description: 'e.g. "Log in"',
       },
     },
     {
       name: 'loginUrl',
       label: 'Login Link URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'loginTextColor',
@@ -114,7 +164,4 @@ export const Header: GlobalConfig = {
       },
     },
   ],
-  hooks: {
-    afterChange: [revalidateHeader],
-  },
 }

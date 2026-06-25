@@ -43,6 +43,48 @@ import { AthleteBannerComponent } from './newLandingBlocks/AthleteBanner/Compone
 import { PriceBreakBlockComponent } from './PriceBreakBlock/Component'
 import { ScienceBoardBlockComponent } from './ScienceBoardBlock/Component'
 import { FloatingCTABlockComponent } from './FloatingCTA/Component'
+import { YpHeroComponent } from './yourPlanBlocks/Hero/Component'
+import { YpPlansComponent } from './yourPlanBlocks/Plans/Component'
+import { YpThreeComponentsComponent } from './yourPlanBlocks/ThreeComponents/Component'
+import { YpDashboardComponent } from './yourPlanBlocks/Dashboard/Component'
+import { YpTimelineComponent } from './yourPlanBlocks/Timeline/Component'
+import { YpScienceBoardComponent } from './yourPlanBlocks/ScienceBoard/Component'
+import { YpAthletesComponent } from './yourPlanBlocks/Athletes/Component'
+import { YpBreakupComponent } from './yourPlanBlocks/Breakup/Component'
+import { YpFaqComponent } from './yourPlanBlocks/Faq/Component'
+import { YpStickyBuyComponent } from './yourPlanBlocks/StickyBuy/Component'
+import { YpReassuranceComponent } from './yourPlanBlocks/Reassurance/Component'
+import { YpBuyBoxComponent } from './yourPlanBlocks/BuyBox/Component'
+import { OrderStepHeroComponent } from './checkoutBlocks/OrderStepHero/Component'
+import { OrderStepNavComponent } from './checkoutBlocks/OrderStepNav/Component'
+import { LegalStripComponent } from './checkoutBlocks/LegalStrip/Component'
+import { TrustSealsBarComponent } from './checkoutBlocks/TrustSealsBar/Component'
+import { OrderTimelineComponent } from './checkoutBlocks/OrderTimeline/Component'
+import { FormulaKitComponent } from './checkoutBlocks/FormulaKit/Component'
+import { CheckoutFaqComponent } from './checkoutBlocks/CheckoutFaq/Component'
+import { EndCardComponent } from './checkoutBlocks/EndCard/Component'
+import { PlanSummaryCardComponent } from './checkoutBlocks/PlanSummaryCard/Component'
+import { GuaranteeBadgesComponent } from './checkoutBlocks/GuaranteeBadges/Component'
+import { CyclesPricingGridComponent } from './checkoutBlocks/CyclesPricingGrid/Component'
+import { ReinforceCtaComponent } from './checkoutBlocks/ReinforceCta/Component'
+import { PlanPivotComponent } from './checkoutBlocks/PlanPivot/Component'
+import { StickyCtaBarComponent } from './checkoutBlocks/StickyCtaBar/Component'
+import { PlanSelectorComponent } from './checkoutBlocks/PlanSelector/Component'
+import { PlanStickyBarComponent } from './checkoutBlocks/PlanStickyBar/Component'
+import { CycleSelectorComponent } from './checkoutBlocks/CycleSelector/Component'
+import { CheckoutFormComponent } from './checkoutBlocks/CheckoutForm/Component'
+import { HomepageHeroComponent } from './HomepageHero/Component'
+import { TheCaseComponent } from './TheCase/Component'
+import { TwoModelsComponent } from './TwoModels/Component'
+import { GutFirstComponent } from './GutFirst/Component'
+import { HowItWorksComponent } from './HowItWorks/Component'
+import { WhatArrivesComponent } from './WhatArrives/Component'
+import { OutcomesComponent } from './Outcomes/Component'
+import { AthletesComponent } from './Athletes/Component'
+import { ScienceBoardNewComponent } from './ScienceBoardNew/Component'
+import { StandardsComponent } from './Standards/Component'
+import { PlansComponent } from './Plans/Component'
+import { CloseBandComponent } from './CloseBand/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -85,6 +127,48 @@ const blockComponents: Record<string, React.FC<any>> = {
   priceBreak: PriceBreakBlockComponent,
   scienceBoard: ScienceBoardBlockComponent,
   floatingCTA: FloatingCTABlockComponent,
+  ypHero: YpHeroComponent,
+  ypPlans: YpPlansComponent,
+  ypComponents: YpThreeComponentsComponent,
+  ypDashboard: YpDashboardComponent,
+  ypTimeline: YpTimelineComponent,
+  ypScienceBoard: YpScienceBoardComponent,
+  ypAthletes: YpAthletesComponent,
+  ypBreakup: YpBreakupComponent,
+  ypFaq: YpFaqComponent,
+  ypReassurance: YpReassuranceComponent,
+  ypBuyBox: YpBuyBoxComponent,
+  ypStickyBuy: YpStickyBuyComponent,
+  orderStepNav: OrderStepNavComponent,
+  legalStrip: LegalStripComponent,
+  orderStepHero: OrderStepHeroComponent,
+  trustSealsBar: TrustSealsBarComponent,
+  orderTimeline: OrderTimelineComponent,
+  formulaKit: FormulaKitComponent,
+  checkoutFaq: CheckoutFaqComponent,
+  endCard: EndCardComponent,
+  planSummaryCard: PlanSummaryCardComponent,
+  guaranteeBadges: GuaranteeBadgesComponent,
+  cyclesPricingGrid: CyclesPricingGridComponent,
+  reinforceCta: ReinforceCtaComponent,
+  planPivot: PlanPivotComponent,
+  stickyCtaBar: StickyCtaBarComponent,
+  planSelector: PlanSelectorComponent,
+  planStickyBar: PlanStickyBarComponent,
+  cycleSelector: CycleSelectorComponent,
+  checkoutForm: CheckoutFormComponent,
+  homepageHero: HomepageHeroComponent,
+  theCase: TheCaseComponent,
+  twoModels: TwoModelsComponent,
+  gutFirst: GutFirstComponent,
+  howItWorks: HowItWorksComponent,
+  whatArrives: WhatArrivesComponent,
+  outcomes: OutcomesComponent,
+  athletesSection: AthletesComponent,
+  scienceBoardSection: ScienceBoardNewComponent,
+  standardsSection: StandardsComponent,
+  plansSection: PlansComponent,
+  closeBand: CloseBandComponent,
 }
 
 export const RenderBlocks: React.FC<{

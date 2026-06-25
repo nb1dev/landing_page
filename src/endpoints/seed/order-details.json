@@ -1,0 +1,15 @@
+{
+  "slug": "order-details",
+  "title": "Order Details",
+  "_status": "published",
+  "meta": {
+    "title": "Checkout — NB1",
+    "description": "Complete your personalised supplement order."
+  },
+  "layout": [
+    {
+      "blockType": "checkoutForm",
+      "backHref": null
+    }
+  ]
+}

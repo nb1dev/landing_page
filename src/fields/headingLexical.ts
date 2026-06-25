@@ -5,16 +5,12 @@ import {
   InlineToolbarFeature,
   ItalicFeature,
   ParagraphFeature,
+  TextStateFeature,
   UnderlineFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { TextColorFeature, type Color } from 'payloadcms-lexical-ext'
 
-const brandColorSwatches: Color[] = [
-  { type: 'button', label: 'White', color: '#ffffff' },
-  { type: 'button', label: 'Black', color: '#000000' },
-  { type: 'button', label: 'Brand Teal', color: 'rgb(0, 168, 194)' },
-]
+import { brandColors } from './brandColors'
 
 const baseFeatures = [
   ParagraphFeature(),
@@ -23,7 +19,7 @@ const baseFeatures = [
   UnderlineFeature(),
   FixedToolbarFeature(),
   InlineToolbarFeature(),
-  TextColorFeature({ colors: brandColorSwatches }),
+  TextStateFeature({ state: { color: brandColors } }),
 ]
 
 export const makeHeadingEditor = (

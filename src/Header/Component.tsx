@@ -1,16 +1,29 @@
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedHeader } from '@/utilities/getHeaderFooter'
 import React, { Suspense } from 'react'
 
 import type { Media } from '@/payload-types'
+import { getServerCurrency } from '@/utilities/currency'
 import { HeaderClient } from './Component.client'
 
 type HeaderData = {
   logo?: number | Media | null
   logoDark?: number | Media | null
   theme?: 'light' | 'dark' | null
+  darkHero?: boolean | null
   loginText?: string | null
   loginUrl?: string | null
   loginTextColor?: string | null
+  ctaLabel?: string | null
+  ctaUrl?: string | null
+  navItems?: Array<{
+    link?: {
+      label?: string | null
+      localizedLabel?: string | null
+      url?: string | null
+      newTab?: boolean | null
+      [key: string]: unknown
+    } | null
+  }> | null
   variants?: Array<{
     variantKey: string
     theme: 'light' | 'dark'
@@ -26,19 +39,47 @@ function pickMedia(val: number | Media | null | undefined) {
   return null
 }
 
-export async function Header({ locale }: { locale: string }) {
-  const data = (await getCachedGlobal('header', 2, locale)()) as HeaderData
+type Props = {
+  locale: string
+  id?: string | null
+}
+
+export async function Header({ locale, id }: Props) {
+  const data = (await getCachedHeader(id, locale)()) as HeaderData | null
+  // Resolved server-side from the cookie so the initial currency label
+  // matches what HeaderClient hydrates with — previously HeaderClient read
+  // localStorage in its useState initializer, which is unavailable during
+  // SSR (always fell back to 'EUR') but available on the client (the real
+  // stored value), causing a text mismatch on hydration whenever a
+  // returning visitor had a non-EUR currency saved.
+  const initialCurrency = await getServerCurrency(locale)
+
+  if (!data) return null
 
   return (
     <Suspense>
       <HeaderClient
         locale={locale}
+        initialCurrency={initialCurrency}
         logo={pickMedia(data?.logo)}
         logoDark={pickMedia(data?.logoDark)}
         defaultTheme={data?.theme ?? 'light'}
+        darkHero={data?.darkHero ?? false}
         loginText={data?.loginText ?? null}
         loginUrl={data?.loginUrl ?? null}
         loginTextColor={data?.loginTextColor ?? null}
+        ctaLabel={data?.ctaLabel ?? null}
+        ctaUrl={data?.ctaUrl ?? null}
+        navItems={(data?.navItems ?? []).map((item) => ({
+          link: item.link
+            ? {
+                label: item.link.label ?? null,
+                localizedLabel: item.link.localizedLabel ?? null,
+                url: (item.link as any).url ?? (item.link as any).reference?.value?.slug ?? null,
+                newTab: (item.link as any).newTab ?? null,
+              }
+            : null,
+        }))}
         variants={data?.variants ?? []}
       />
     </Suspense>

@@ -5,15 +5,12 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { TextColorFeature } from 'payloadcms-lexical-ext'
-
 const makeEditor = () =>
   lexicalEditor({
     features: ({ rootFeatures }) => [
       ...rootFeatures,
       FixedToolbarFeature(),
       InlineToolbarFeature(),
-      TextColorFeature(),
       HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
     ],
   })
