@@ -2119,7 +2119,23 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                   </div>
                 </div>
 
-                {/* PayPal — hidden */}
+                {/* PayPal */}
+                <div className={`nb1-pm-row${payMethod === 'paypal' ? ' active' : ''}`}>
+                  <button
+                    type="button"
+                    className="nb1-pm-hd"
+                    onClick={() => setPayMethod('paypal')}
+                  >
+                    <div className="nb1-pm-radio">
+                      <div className="nb1-pm-radio-dot" />
+                    </div>
+                    <span style={{ color: '#003087', fontWeight: 700 }}>Pay</span>
+                    <span style={{ color: '#009cde', fontWeight: 700 }}>Pal</span>
+                  </button>
+                  <div className="nb1-pm-body">
+                    <p className="nb1-pm-note">{t.payment.paypalNote}</p>
+                  </div>
+                </div>
 
                 {/* Klarna */}
                 <div className={`nb1-pm-row${payMethod === 'klarna' ? ' active' : ''}`}>
