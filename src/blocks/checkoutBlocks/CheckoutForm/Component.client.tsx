@@ -40,6 +40,8 @@ const COUNTRIES = [
   'France',
   'Luxembourg',
   'Ireland',
+  'United Kingdom',
+  'United Arab Emirates',
 ]
 
 const COUNTRY_CODES: Record<string, string> = {
@@ -50,6 +52,8 @@ const COUNTRY_CODES: Record<string, string> = {
   France: 'FR',
   Luxembourg: 'LU',
   Ireland: 'IE',
+  'United Kingdom': 'GB',
+  'United Arab Emirates': 'AE',
 }
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
