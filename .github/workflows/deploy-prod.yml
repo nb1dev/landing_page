@@ -58,10 +58,17 @@ jobs:
             [[ "$STG_DB"  != *"sslmode"* ]] && STG_DB="${STG_DB}?sslmode=require"
             [[ "$PROD_DB" != *"sslmode"* ]] && PROD_DB="${PROD_DB}?sslmode=require"
             DUMP_FILE="/tmp/stg_to_prod_$(date +%Y%m%d_%H%M%S).sql"
-            # --clean --if-exists: individual DROP IF EXISTS per object (not DROP SCHEMA CASCADE),
-            # so each psql statement runs in its own autocommit transaction — no lock pile-up.
-            pg_dump "$STG_DB" --no-owner --no-privileges --clean --if-exists -f "$DUMP_FILE"
-            psql "$PROD_DB" < "$DUMP_FILE" 2>&1 | grep "^ERROR" || true
+            # Dump STG schema+data WITHOUT --clean. (--clean emits `DROP ... IF EXISTS` with NO
+            # CASCADE, so dropping FK-referenced tables/types/constraints fails → CREATEs then hit
+            # "already exists" → data hits "duplicate key" + FK violations, and PROD↔STG schema
+            # drift (e.g. missing header_id/footer_id) breaks the load.)
+            pg_dump "$STG_DB" --no-owner --no-privileges -f "$DUMP_FILE"
+            # Wipe PROD's public schema (clean slate) on the DIRECT connection, then restore. This
+            # is the SAME approach as scripts/sync-from-stg.sh and also brings STG's schema, so any
+            # schema drift is resolved. ON_ERROR_STOP=1 → fail the deploy loudly on a bad restore
+            # instead of silently continuing onto a broken DB.
+            psql "$PROD_DB" -v ON_ERROR_STOP=1 -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO public;"
+            psql "$PROD_DB" -v ON_ERROR_STOP=1 -f "$DUMP_FILE"
             rm -f "$DUMP_FILE"
             echo ">>> Sync gata: $(psql "$PROD_DB" -t -c 'SELECT COUNT(*) FROM pages;' | tr -d ' ') pagini pe PROD"
 
