@@ -76,6 +76,7 @@ export type CheckoutConfirmOut = {
   billing_started_at: string | null
   sample_return_deadline_at: string | null
   password_setup_email_sent: boolean
+  order_number: string | null
   event_id: string
   external_id: string
   referral_code: string | null
