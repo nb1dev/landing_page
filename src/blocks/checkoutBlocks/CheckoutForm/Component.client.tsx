@@ -2097,6 +2097,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         >
                           <CardElement
                             options={{
+                              hidePostalCode: true,
                               style: {
                                 base: {
                                   fontSize: '15px',
