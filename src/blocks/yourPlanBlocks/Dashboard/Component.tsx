@@ -164,6 +164,30 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
   }, [])
 
   useEffect(() => {
+    if (!revealed) return
+    const section = sectionRef.current
+    if (!section) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    section.querySelectorAll<HTMLElement>('[data-cv]').forEach((el) => {
+      const raw = el.dataset.cv ?? ''
+      const target = parseFloat(raw)
+      if (isNaN(target)) return
+      const dec = (raw.split('.')[1] ?? '').length
+      let t0: number | null = null
+      const dur = 1150
+      const step = (ts: number) => {
+        if (!t0) t0 = ts
+        const p = Math.min((ts - t0) / dur, 1)
+        const e = 1 - Math.pow(1 - p, 3)
+        el.textContent = (target * e).toFixed(dec) + '%'
+        if (p < 1) requestAnimationFrame(step)
+        else el.textContent = raw + '%'
+      }
+      requestAnimationFrame(step)
+    })
+  }, [revealed])
+
+  useEffect(() => {
     const el = stageRef.current
     if (!el) return
     // Lower threshold so the section counts as "in view" as soon as any part
@@ -613,6 +637,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           height: 100%;
           border-radius: 4px;
           background: #13a6cc;
+          transition: width 1s cubic-bezier(.4,0,.2,1);
         }
         .wtg-knob {
           position: absolute;
@@ -623,6 +648,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           border-radius: 50%;
           background: #13a6cc;
           border: 3px solid #0c1f33;
+          transition: left 1s cubic-bezier(.4,0,.2,1);
         }
         .wtg-list {
           display: flex;
@@ -655,6 +681,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           display: block;
           height: 100%;
           background: #13a6cc;
+          transition: width 1s cubic-bezier(.4,0,.2,1);
         }
         .wpr .t i.am {
           background: #e0863c;
@@ -707,6 +734,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           border-radius: 50%;
           background: #13a6cc;
           border: 2px solid #0c1f33;
+          transition: left 1s cubic-bezier(.4,0,.2,1);
         }
         .ws-tr i.am {
           background: #e0863c;
@@ -720,13 +748,16 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
         }
         .wtm {
           display: grid;
-          grid-template-columns: 1fr 70px auto;
+          grid-template-columns: minmax(0, 1fr) 70px auto;
           gap: 12px;
           align-items: center;
           font-size: 13px;
         }
         .wtm-n {
           color: rgba(255, 255, 255, 0.9);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .wtm-bar {
           height: 4px;
@@ -738,9 +769,13 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
           display: block;
           height: 100%;
           background: #13a6cc;
+          transition: width 1s cubic-bezier(.4,0,.2,1);
         }
         .wtm-bar i.am {
           background: #e0863c;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .wtg-track i, .wtg-knob, .wpr .t i, .ws-tr i, .wtm-bar i { transition: none !important; }
         }
         .wtm-s {
           font-size: 11px;
@@ -1105,8 +1140,8 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
                           {card?.score && <span className="wtg-score">{card.score}</span>}
                         </div>
                         <div className="wtg-track">
-                          <i style={{ width: pctStr(numFrom(card?.score)) }} />
-                          <span className="wtg-knob" style={{ left: pctStr(numFrom(card?.score)) }} />
+                          <i style={{ width: revealed ? pctStr(numFrom(card?.score)) : '0%' }} />
+                          <span className="wtg-knob" style={{ left: revealed ? pctStr(numFrom(card?.score)) : '0%' }} />
                         </div>
                         {card?.metrics && card.metrics.length > 0 && (
                           <div className="wtg-list">
@@ -1114,7 +1149,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
                               <div className="wpr" key={i}>
                                 <span className="n">{m.name}</span>
                                 <span className="t">
-                                  <i className={m.amber ? 'am' : ''} style={{ width: pctStr(ratioPct(m.value, m.max)) }} />
+                                  <i className={m.amber ? 'am' : ''} style={{ width: revealed ? pctStr(ratioPct(m.value, m.max)) : '0%', transitionDelay: `${i * 0.06 + 0.12}s` }} />
                                 </span>
                                 <span className="v">
                                   {m.value}
@@ -1135,10 +1170,10 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
                             <div className="ws" key={i}>
                               <div className="ws-t">
                                 <span>{s.label}</span>
-                                <b className={s.amber ? 'am' : ''}>{pctStr(s.pct)}</b>
+                                <b className={s.amber ? 'am' : ''} data-cv={s.pct != null ? String(s.pct) : undefined}>{pctStr(s.pct)}</b>
                               </div>
                               <div className="ws-tr">
-                                <i className={s.amber ? 'am' : ''} style={{ left: pctStr(s.pct) }} />
+                                <i className={s.amber ? 'am' : ''} style={{ left: revealed ? pctStr(s.pct) : '0%', transitionDelay: `${i * 0.06 + 0.12}s` }} />
                               </div>
                             </div>
                           ))}
@@ -1156,7 +1191,7 @@ export const YpDashboardComponent: React.FC<YpDashboardBlockType> = ({
                               <div className="wtm" key={i}>
                                 <span className="wtm-n">{t.name}</span>
                                 <span className="wtm-bar">
-                                  <i className={low ? 'am' : ''} style={{ width: pctStr(t.pct) }} />
+                                  <i className={low ? 'am' : ''} style={{ width: revealed ? pctStr(t.pct) : '0%', transitionDelay: `${i * 0.06 + 0.12}s` }} />
                                 </span>
                                 <span className={['wtm-s', low ? 'low' : 'ok'].join(' ')}>
                                   {t.statusLabel}

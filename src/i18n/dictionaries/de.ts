@@ -217,7 +217,7 @@ export const de = {
         help: 'Brauchen Sie Hilfe?',
       },
       supportLine: 'oder',
-      supportEmail: 'hello@nb1.health',
+      supportEmail: 'support@nb1.health',
       chatUs: '💬 Chatte mit uns',
       survey: {
         eyebrow: 'Hilf uns zu wachsen',

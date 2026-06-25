@@ -18,7 +18,7 @@ function resolveBg(preset?: BgColorPreset | null, custom?: string | null) {
   if (preset === 'darkNavy') return '#0e2640'
   if (preset === 'teal') return '#008498'
   if (preset === 'white') return '#FFFFFF'
-  if (preset === 'cream') return 'linear-gradient(180deg,#FAF8F2 0%,#F2EFE7 100%)'
+  if (preset === 'cream') return '#F7F9FB'
   if (preset === 'custom') return custom || '#FFFFFF'
   return '#FFFFFF'
 }

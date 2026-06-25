@@ -52,9 +52,9 @@ export const HowItWorksComponent: React.FC<Props> = ({ heading, lede, steps }) =
 
   const step = steps?.[selectedIdx]
 
-  // CSS-calc fill: center of col i = (i + 0.5) / N * 100% of rail width
-  // fill width from col 0 to col i = i / N * 100% of rail width
-  const fillPct = stepCount > 1 ? `calc(${selectedIdx} * 100% / ${stepCount})` : '0%'
+  // Fill starts at 0 until the section enters the viewport, then transitions to target.
+  // center-to-center distance from col 0 to col i = i / N * 100% of rail width.
+  const fillPct = visible && stepCount > 1 ? `calc(${selectedIdx} * 100% / ${stepCount})` : '0%'
 
   return (
     <>
@@ -268,6 +268,7 @@ export const HowItWorksComponent: React.FC<Props> = ({ heading, lede, steps }) =
             margin: 40px auto 0;
           }
           .gate-rail::before {
+            display: block;
             content: '';
             position: absolute;
             left: 23px;

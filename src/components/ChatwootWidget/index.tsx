@@ -96,18 +96,13 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
     const BUBBLE_Z = '54'
     const WIDGET_Z = '200'
     const BUBBLE_BOTTOM_DEFAULT = '20px'
-    const BUBBLE_BOTTOM_WITH_BAR = '80px'
 
     const getStickyBar = () =>
       document.querySelector<HTMLElement>('.yp-sticky, .nb1-sticky-cta, .nb1-plan-sticky')
 
     const applyStyles = () => {
-      const bubble =
-        document.getElementById('cw-bubble-holder') ??
-        document.querySelector<HTMLElement>('.woot--bubble-holder')
-      const widget =
-        document.getElementById('chatwoot-widget') ??
-        document.querySelector<HTMLElement>('.woot-widget-holder, #woot-widget-wrapper')
+      const bubble = document.querySelector<HTMLElement>('.woot-widget-bubble')
+      const widget = document.querySelector<HTMLElement>('.woot-widget-holder, #woot-widget-wrapper')
 
       if (!bubble) return false
 
@@ -116,21 +111,22 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
 
       const bar = getStickyBar()
       const barVisible = bar?.classList.contains('show')
+      const barHeight = barVisible && bar ? bar.offsetHeight : 0
       bubble.style.setProperty(
         'bottom',
-        barVisible ? BUBBLE_BOTTOM_WITH_BAR : BUBBLE_BOTTOM_DEFAULT,
+        barHeight > 0 ? `${barHeight + 12}px` : BUBBLE_BOTTOM_DEFAULT,
         'important',
       )
       return true
     }
 
-    // Poll until the bubble is injected by the SDK, then observe the sticky bar
+    // Poll until both the bubble and sticky bar are in the DOM, then observe
     let pollInterval: ReturnType<typeof setInterval> | null = null
     let mutationObs: MutationObserver | null = null
     let pollTimeout: ReturnType<typeof setTimeout> | null = null
 
     const startObserver = () => {
-      // Re-run whenever the sticky bar gains/loses the 'show' class
+      if (mutationObs) return // already observing
       const bar = getStickyBar()
       if (!bar) return
       mutationObs = new MutationObserver(applyStyles)
@@ -138,10 +134,12 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
     }
 
     pollInterval = setInterval(() => {
-      if (applyStyles()) {
+      const bubbleFound = applyStyles()
+      if (bubbleFound) startObserver()
+      // Keep polling until both bubble and bar are wired up
+      if (bubbleFound && getStickyBar()) {
         if (pollInterval) clearInterval(pollInterval)
         pollInterval = null
-        startObserver()
       }
     }, 300)
 
@@ -149,10 +147,14 @@ export function ChatwootWidget({ locale = 'en', user = null }: Props) {
       if (pollInterval) clearInterval(pollInterval)
     }, 12000)
 
+    // Re-apply on scroll — catches cases where the bar slides in during scroll
+    window.addEventListener('scroll', applyStyles, { passive: true })
+
     return () => {
       if (pollInterval) clearInterval(pollInterval)
       if (pollTimeout) clearTimeout(pollTimeout)
       mutationObs?.disconnect()
+      window.removeEventListener('scroll', applyStyles)
     }
   }, [locale])
 

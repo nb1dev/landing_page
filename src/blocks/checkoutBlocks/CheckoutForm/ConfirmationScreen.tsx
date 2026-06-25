@@ -7,6 +7,7 @@ type SurvOpt = { v: string; sub?: string[] }
 type Props = {
   fn: string
   email: string
+  orderNumber: string | null
   planLabel: string
   cycleLabel: string
   priceFormatted: string
@@ -17,15 +18,13 @@ type Props = {
   chargeNotePrefix: string
   chargeNoteSuffix: string
   survOpts: SurvOpt[]
-  referLink: string
-  referMsg: string
 }
 
 export function ConfirmationScreen({
-  fn, email, planLabel, cycleLabel, priceFormatted,
+  fn, email, orderNumber, planLabel, cycleLabel, priceFormatted,
   locale, t, inboxBodyPrefix, inboxBodySuffix,
   chargeNotePrefix, chargeNoteSuffix,
-  survOpts, referLink, referMsg: initialReferMsg,
+  survOpts,
 }: Props) {
   const td = t.done
 
@@ -34,12 +33,6 @@ export function ConfirmationScreen({
   const [activeSurvOpt, setActiveSurvOpt] = useState<SurvOpt | null>(null)
   const [showOther, setShowOther] = useState(false)
   const [otherVal, setOtherVal] = useState('')
-
-  // Referral modal
-  const [referOpen, setReferOpen] = useState(false)
-  const [referMsg, setReferMsg] = useState(initialReferMsg)
-  const [copied, setCopied] = useState(false)
-  const [canShare, setCanShare] = useState(false)
 
   function onTopOpt(opt: SurvOpt) {
     if (opt.sub?.length) {
@@ -56,24 +49,6 @@ export function ConfirmationScreen({
   function onOther() { setShowOther(true); setActiveSurvOpt(null) }
 
   function onSurvSend() { setSurvState('thanks') }
-
-  React.useEffect(() => {
-    if (typeof navigator !== 'undefined' && !!navigator.share) setCanShare(true)
-  }, [])
-
-  function copyLink() {
-    try { navigator.clipboard.writeText(referLink) } catch {}
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1400)
-  }
-
-  async function nativeShare() {
-    try { await navigator.share({ title: 'NB1', text: referMsg, url: referLink }) } catch {}
-  }
-
-  const waHref = `https://wa.me/?text=${encodeURIComponent(`${referMsg} ${referLink}`)}`
-  const emailHref = `mailto:?subject=${encodeURIComponent("Your first month of NB1 is on me")}&body=${encodeURIComponent(`${referMsg} ${referLink}`)}`
-  const referLinkDisplay = referLink.replace(/^https?:\/\//, '')
 
 
   return (
@@ -213,6 +188,9 @@ export function ConfirmationScreen({
             <path d="M4 12l5 5L20 6" />
           </svg>
         </div>
+        {orderNumber && (
+          <div className="nb1-conf-eyebrow">Order <span>{orderNumber}</span></div>
+        )}
         <h1>{td.heading}{fn ? `, ${fn}` : ''}.</h1>
         <p>{td.body}</p>
       </header>
@@ -312,55 +290,6 @@ export function ConfirmationScreen({
         </div>
       </div>
 
-      {/* Referral band */}
-      <div className="nb1-conf-sec">
-        <div className="nb1-refer-band">
-          <div>
-            <h2>{td.refer.heading} <span>{td.refer.headingAccent}</span></h2>
-            <p>{td.refer.body}</p>
-          </div>
-          <button type="button" className="nb1-refer-cta" onClick={() => setReferOpen(true)}>{td.refer.cta}</button>
-        </div>
-      </div>
-
-      {/* Referral modal */}
-      <div className={`nb1-modal-ov${referOpen ? ' show' : ''}`} onClick={e => { if (e.target === e.currentTarget) setReferOpen(false) }}>
-        <div className="nb1-modal">
-          <button type="button" className="nb1-modal-x" onClick={() => setReferOpen(false)}>×</button>
-          <div className="nb1-modal-eyebrow">{td.refer.modal.eyebrow}</div>
-          <h3>{td.refer.modal.heading}</h3>
-          <p className="sub" dangerouslySetInnerHTML={{ __html: td.refer.modal.body }} />
-          <label className="nb1-modal-lbl" htmlFor="nb1-refer-msg">{td.refer.modal.msgLabel}</label>
-          <textarea className="nb1-modal-msg" id="nb1-refer-msg" value={referMsg} onChange={e => setReferMsg(e.target.value)} />
-          <div className="nb1-refer-link">
-            <input readOnly value={referLinkDisplay} />
-            <button type="button" className="nb1-refer-copy" onClick={copyLink}>{copied ? td.refer.modal.copied : td.refer.modal.copy}</button>
-          </div>
-          <div className="nb1-refer-sbtns">
-            {canShare && (
-              <button type="button" className="nb1-refer-sbtn nb1-refer-sbtn-primary" onClick={nativeShare}>
-                <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>
-                {td.refer.modal.share}
-              </button>
-            )}
-            <a className="nb1-refer-sbtn wa" href={waHref} target="_blank" rel="noopener">
-              <svg width={15} height={15} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.5 1.3 5L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 14.8 3.6 13.4 3.6 12 3.6 7.4 7.4 3.6 12 3.6S20.4 7.4 20.4 12 16.6 20.2 12 20.2z"/><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.6-.8-2.6-1.4-3.7-3.2-.3-.5.3-.5.8-1.5.1-.2 0-.3 0-.5 0-.1-.6-1.5-.9-2.1-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.2.7 3 .6.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.4z"/></svg>
-              {td.refer.modal.whatsapp}
-            </a>
-            <a className="nb1-refer-sbtn" href={emailHref} target="_blank" rel="noopener">
-              <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-              {td.refer.modal.email}
-            </a>
-            <button type="button" className="nb1-refer-sbtn" onClick={copyLink}>
-              <svg width={15} height={15} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-              {copied ? td.refer.modal.copied : td.refer.modal.copy}
-            </button>
-          </div>
-          <div className="nb1-modal-actions">
-            <button type="button" className="nb1-modal-skip" onClick={() => setReferOpen(false)}>{td.refer.modal.skip}</button>
-          </div>
-        </div>
-      </div>
       {/* Legal footer */}
       <div className="nb1-conf-legal">
         {[
