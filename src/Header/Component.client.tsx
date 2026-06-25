@@ -165,25 +165,27 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   // Seeded from the server-resolved cookie value (not localStorage) so this
   // matches the SSR HTML exactly — see initialCurrency prop doc above.
   const [curCur, setCurCur] = useState(initialCurrency || 'EUR')
+  // Pending selections — only committed when Apply is clicked.
+  // Initialised to match current applied values; reset again whenever the menu opens.
+  const [pendingLang, setPendingLang] = useState(activeLang)
+  const [pendingCur, setPendingCur] = useState(initialCurrency || 'EUR')
   const [locOpen, setLocOpen] = useState(false)
   const locRef = useRef<HTMLDivElement>(null)
 
-  const allowedCurs = () => {
-    const codes = langCurrencies[curLang] || currencies.map((c) => c[0])
+  const allowedCurs = (lang = pendingLang) => {
+    const codes = langCurrencies[lang] || currencies.map((c) => c[0])
     return currencies.filter((c) => codes.includes(c[0]))
   }
   const curSym = (code: string) => currencies.find((c) => c[0] === code)?.[1] || code
 
-  // enforce valid currency for lang
+  // When pending lang changes, ensure pending currency is valid for that lang
   useEffect(() => {
-    const ac = allowedCurs()
-    if (!ac.some((c) => c[0] === curCur)) {
-      const next = ac[0]?.[0] || 'EUR'
-      setCurCur(next)
-      lsSet('nb1_cur', next)
+    const ac = allowedCurs(pendingLang)
+    if (!ac.some((c) => c[0] === pendingCur)) {
+      setPendingCur(ac[0]?.[0] || 'EUR')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [curLang])
+  }, [pendingLang])
 
   // close loc menu on outside click
   useEffect(() => {
@@ -228,7 +230,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   const activeLogo = isTransparent && logoDark?.url ? logoDark : logo
   const resolvedLoginColor = loginTextColor || (isTransparent ? '#ffffff' : (scrolledDark ? '#ffffff' : 'rgba(18,49,77,0.65)'))
 
-  const linkColor = isTransparent ? '#ffffff' : (scrolledDark ? 'rgba(255,255,255,0.78)' : 'rgba(18,49,77,0.65)')
+  const linkColor = (isTransparent || scrolledDark) ? 'rgba(255,255,255,0.78)' : 'rgba(18,49,77,0.65)'
   const locBtnColor = isTransparent ? '#ffffff' : (scrolledDark ? 'rgba(255,255,255,0.85)' : 'rgba(18,49,77,0.7)')
   const locBtnBg = isTransparent ? 'rgba(255,255,255,0.13)' : (scrolledDark ? 'rgba(255,255,255,0.10)' : 'rgba(18,49,77,0.05)')
   const locBtnBorder = isTransparent ? 'rgba(255,255,255,0.22)' : (scrolledDark ? 'rgba(255,255,255,0.20)' : 'rgba(18,49,77,0.12)')
@@ -259,7 +261,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     .nb1-logo img { height:24px; width:auto; display:block; }
     .nb1-nav-links { display:flex; gap:30px; font-size:14px; font-weight:500; color:${linkColor}; }
     .nb1-nav-links a { color:${linkColor} !important; text-decoration:none; transition:color .2s; }
-    .nb1-nav-links a:hover { color:${isTransparent ? '#fff' : 'rgb(18,49,77)'} !important; }
+    .nb1-nav-links a:hover { color:${(isTransparent || scrolledDark) ? '#ffffff' : '#12314D'} !important; }
     .nb1-nav-right { display:flex; align-items:center; gap:20px; }
     .nb1-nav-login { font-size:14px; font-weight:500; color:${resolvedLoginColor}; text-decoration:none; white-space:nowrap; transition:color .2s; }
     .nb1-nav-login:hover { color:${isTransparent ? '#fff' : 'rgb(18,49,77)'}; }
@@ -349,7 +351,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 aria-haspopup="true"
                 aria-expanded={locOpen}
                 aria-label="Language and currency"
-                onClick={(e) => { e.stopPropagation(); setLocOpen((o) => !o) }}
+                onClick={(e) => { e.stopPropagation(); setLocOpen((o) => { if (!o) { setPendingLang(curLang); setPendingCur(curCur) } return !o }) }}
               >
                 {GLOBE}
                 <span>{curLang.toUpperCase()} · {curSym(curCur)}</span>
@@ -362,8 +364,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                     <button
                       key={code}
                       type="button"
-                      className={`nb1-loc-opt${curLang === code ? ' sel' : ''}`}
-                      onClick={(e) => { e.stopPropagation(); applyLang(code) }}
+                      className={`nb1-loc-opt${pendingLang === code ? ' sel' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setPendingLang(code) }}
                     >
                       {label}
                     </button>
@@ -371,18 +373,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 </div>
                 <h5>{dict.header.currency}</h5>
                 <div className="nb1-loc-grid">
-                  {allowedCurs().map(([code, sym, name]) => (
+                  {allowedCurs(pendingLang).map(([code, sym, name]) => (
                     <button
                       key={code}
                       type="button"
-                      className={`nb1-loc-opt${curCur === code ? ' sel' : ''}`}
-                      onClick={(e) => { e.stopPropagation(); applyCur(code) }}
+                      className={`nb1-loc-opt${pendingCur === code ? ' sel' : ''}`}
+                      onClick={(e) => { e.stopPropagation(); setPendingCur(code) }}
                     >
                       <span className="nb1-cur-sym">{sym}</span>{name}
                     </button>
                   ))}
                 </div>
-                <button type="button" className="nb1-loc-done" onClick={() => setLocOpen(false)}>{dict.header.apply}</button>
+                <button type="button" className="nb1-loc-done" onClick={() => { applyLang(pendingLang); applyCur(pendingCur); setLocOpen(false) }}>{dict.header.apply}</button>
               </div>
             </div>
 
@@ -435,7 +437,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
             type="button"
             className="nb1-sheet-locbtn"
             aria-haspopup="dialog"
-            onClick={(e) => { e.stopPropagation(); setLocPopOpen(true) }}
+            onClick={(e) => { e.stopPropagation(); setPendingLang(curLang); setPendingCur(curCur); setLocPopOpen(true) }}
           >
             <svg className="glb" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
               <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/>
@@ -466,8 +468,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
               <button
                 key={code}
                 type="button"
-                className={`nb1-loc-opt${curLang === code ? ' sel' : ''}`}
-                onClick={(e) => { e.stopPropagation(); applyLang(code) }}
+                className={`nb1-loc-opt${pendingLang === code ? ' sel' : ''}`}
+                onClick={(e) => { e.stopPropagation(); setPendingLang(code) }}
               >
                 {label}
               </button>
@@ -475,12 +477,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           </div>
           <h5>{dict.header.currency}</h5>
           <div className="nb1-loc-grid">
-            {allowedCurs().map(([code, sym, name]) => (
+            {allowedCurs(pendingLang).map(([code, sym, name]) => (
               <button
                 key={code}
                 type="button"
-                className={`nb1-loc-opt${curCur === code ? ' sel' : ''}`}
-                onClick={(e) => { e.stopPropagation(); applyCur(code) }}
+                className={`nb1-loc-opt${pendingCur === code ? ' sel' : ''}`}
+                onClick={(e) => { e.stopPropagation(); setPendingCur(code) }}
               >
                 <span className="nb1-cur-sym">{sym}</span>{name}
               </button>
@@ -489,7 +491,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           <button
             type="button"
             className="nb1-loc-done"
-            onClick={() => { setLocPopOpen(false); locPopTriggerRef.current?.focus() }}
+            onClick={() => { applyLang(pendingLang); applyCur(pendingCur); setLocPopOpen(false); locPopTriggerRef.current?.focus() }}
           >
             {dict.header.apply}
           </button>

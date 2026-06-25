@@ -214,6 +214,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [doneSteps, setDoneSteps] = useState<Set<number>>(new Set())
   const [confirmed, setConfirmed] = useState(false)
   const [paymentFailed, setPaymentFailed] = useState(false)
+  const [orderNumber, setOrderNumber] = useState<string | null>(null)
   const [referralCode, setReferralCode] = useState<string | null>(null)
   const [referralShareUrl, setReferralShareUrl] = useState<string | null>(null)
 
@@ -235,6 +236,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         help.textContent = t.done.helpLink
         back.replaceWith(help)
       }
+
+      // Block back-navigation to checkout steps after confirmation (4.6)
+      history.pushState(null, '', window.location.href)
+      const onPopState = () => { history.pushState(null, '', window.location.href) }
+      window.addEventListener('popstate', onPopState)
+      return () => window.removeEventListener('popstate', onPopState)
     }
   }, [confirmed])
 
@@ -416,6 +423,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
           },
         })
+        setOrderNumber(klarnaConfirmation.order_number ?? null)
         setAccountStatus('sent')
         setConfirmed(true)
       } catch (err) {
@@ -556,7 +564,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           return
         }
         event.complete('success')
-        await checkoutConfirm({
+        const walletConfirmation = await checkoutConfirm({
           setup_intent_id: intent.setup_intent_id,
           idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
           shipping_address: {
@@ -589,6 +597,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             country: COUNTRY_CODES[country] ?? country,
           },
         })
+        setOrderNumber(walletConfirmation.order_number ?? null)
         setAccountStatus('sent')
         setConfirmed(true)
       } catch (err: unknown) {
@@ -894,6 +903,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         },
       })
 
+      setOrderNumber(confirmation.order_number ?? null)
       setAccountStatus('sent')
       setReferralCode(confirmation.referral_code ?? null)
       setReferralShareUrl(confirmation.referral_share_url ?? null)
@@ -1012,14 +1022,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     ]
     const cycleLabel = cycleKey === 'monthly' ? 'Flexible monthly' : `${cycleKey} months`
     const priceFormatted = rate != null ? String(rate) : ''
-    const referLink =
-      referralShareUrl ??
-      (referralCode ? `https://nb1.health/r/${referralCode}` : 'https://nb1.health/r/…')
-    const referMsg = t.done.refer.modal.defaultMsg
     return (
       <ConfirmationScreen
         fn={fn}
         email={email}
+        orderNumber={orderNumber}
         planLabel={planLabel}
         cycleLabel={cycleLabel}
         priceFormatted={priceFormatted}
@@ -1030,8 +1037,6 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         chargeNotePrefix={chargeNotePrefix}
         chargeNoteSuffix={chargeNoteSuffix}
         survOpts={SURV_OPTS}
-        referLink={referLink}
-        referMsg={referMsg}
       />
     )
   }

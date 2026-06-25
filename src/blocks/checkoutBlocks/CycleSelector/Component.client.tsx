@@ -158,7 +158,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
     <section className="nb1-cs-sec">
       <style jsx>{`
         .nb1-cs-sec {
-          padding: 56px 0 56px;
+          padding: 40px 0 40px;
         }
         .nb1-cs-con {
           max-width: 900px;
@@ -291,10 +291,10 @@ export const CycleSelectorClient: React.FC<Props> = ({
           align-items: center;
           justify-content: center;
           gap: 24px;
-          padding: 16px 20px;
+          padding: 14px 20px;
           background: rgba(10, 143, 176, 0.08);
           border-radius: 12px;
-          margin-top: 26px;
+          margin-top: 16px;
           flex-wrap: wrap;
         }
         .nb1-cs-gi {
@@ -318,8 +318,8 @@ export const CycleSelectorClient: React.FC<Props> = ({
           align-items: center;
           justify-content: space-between;
           gap: 18px;
-          margin-top: 26px;
-          padding-top: 24px;
+          margin-top: 16px;
+          padding-top: 16px;
           border-top: 1px solid rgba(18, 49, 77, 0.1);
         }
         .nb1-cs-sel {

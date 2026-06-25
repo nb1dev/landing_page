@@ -208,7 +208,7 @@ export const en = {
         help: 'Need help?',
       },
       supportLine: 'or',
-      supportEmail: 'hello@nb1.health',
+      supportEmail: 'support@nb1.health',
       chatUs: '💬 Chat with us',
       survey: {
         eyebrow: 'Help us grow',
