@@ -53,7 +53,13 @@ export async function generateStaticParams() {
     select: { slug: true },
   })
 
-  const slugs = pages.docs?.filter((doc) => doc.slug !== 'home').map((d) => d.slug) ?? []
+  // Skip 'home' (rendered at the locale root) and any test/clone page (slug starting with
+  // "test", e.g. "test-clone"). Test pages get synced STG → PROD and a single one with bad
+  // block data would otherwise crash the whole `next build` (prerender error). They're not
+  // prerendered now (still reachable on-demand if ever needed); real pages are unaffected.
+  const slugs = pages.docs
+    ?.filter((doc) => doc.slug && doc.slug !== 'home' && !/^test\b/i.test(doc.slug))
+    .map((d) => d.slug) ?? []
 
   return slugs.flatMap((slug) =>
     LOCALES.map((locale) => ({
