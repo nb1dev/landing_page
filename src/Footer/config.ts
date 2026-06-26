@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { revalidateFooter } from './hooks/revalidateFooter'
 
 const themeOptions = [
   { label: 'Light (white background)', value: 'light' },
@@ -11,6 +12,9 @@ export const Footers: CollectionConfig = {
   slug: 'footers',
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateFooter],
   },
   admin: {
     useAsTitle: 'name',
