@@ -14,6 +14,13 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 // restore, and the generated reverse would re-run the dangerous locale re-cast.
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
+  -- DROP/ALTER need ACCESS EXCLUSIVE locks; the live CMS/preview keeps reading
+  -- _pages_v + these block tables (the slow ~30s query), so the DDL waits behind
+  -- it and the DB statement_timeout kills the migration. Disable both timeouts
+  -- for this migration's transaction so it can wait out the in-flight read and
+  -- complete; the connection is short-lived (migrate exits after).
+  SET statement_timeout = 0;
+  SET lock_timeout = 0;
   ALTER TABLE "pages_blocks_cta_links" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "pages_blocks_cta_links_locales" DISABLE ROW LEVEL SECURITY;
   ALTER TABLE "pages_blocks_cta" DISABLE ROW LEVEL SECURITY;
