@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import {
   Elements,
@@ -12,6 +12,8 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
+import PhoneInput, { type Country } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/lib/checkoutApi'
 import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
@@ -57,6 +59,8 @@ const COUNTRY_CODES: Record<string, string> = {
   'United Arab Emirates': 'AE',
 }
 
+const PHONE_COUNTRIES: Country[] = ['DE', 'AT', 'NL', 'BE', 'FR', 'LU', 'IE', 'GB', 'AE']
+
 /* ─── Types ─────────────────────────────────────────────────────────── */
 
 type PayMethod = 'card' | 'paypal' | 'klarna' | 'sepa'
@@ -87,8 +91,24 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const dict = getDictionary(locale)
   const t = dict.checkout
   const searchParams = useSearchParams()
-  const planKey = searchParams?.get('plan') ?? 'core'
-  const cycleKey = searchParams?.get('cycle') ?? '4'
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Snapshot plan/cycle on first render before the URL is cleaned
+  const planKeyRef = useRef(searchParams?.get('plan') ?? 'core')
+  const cycleKeyRef = useRef(searchParams?.get('cycle') ?? '4')
+  const planKey = planKeyRef.current
+  const cycleKey = cycleKeyRef.current
+
+  // Strip plan/cycle from URL once read — keeps Stripe redirect params intact
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams?.toString() ?? '')
+    params.delete('plan')
+    params.delete('cycle')
+    const query = params.toString()
+    router.replace(pathname + (query ? `?${query}` : ''), { scroll: false })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Numeric live prices per (plan, cycle, currency): { core: { '4': { EUR: 99, GBP: 89 } } }
   const [planPrices, setPlanPrices] = useState<
@@ -259,6 +279,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [zip, setZip] = useState('')
   const [city, setCity] = useState('')
   const [phone, setPhone] = useState('')
+  const [phoneCountry, setPhoneCountry] = useState<Country>('DE')
   const [addrErr, setAddrErr] = useState<Record<string, string>>({})
 
   /* step 3 */
@@ -336,6 +357,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [bRegNum, setBRegNum] = useState('')
   const [bEmail, setBEmail] = useState('')
   const [bPhone, setBPhone] = useState('')
+  const [bPhoneCountry, setBPhoneCountry] = useState<Country>('DE')
   const [bA1, setBA1] = useState('')
   const [bA2, setBA2] = useState('')
   const [bZip, setBZip] = useState('')
@@ -346,6 +368,17 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [accountStatus, setAccountStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [accountErr, setAccountErr] = useState('')
   const submittingRef = useRef(false)
+
+  /* sync phone prefix with shipping/billing country when phone field is empty */
+  useEffect(() => {
+    if (!phone) setPhoneCountry((COUNTRY_CODES[country] as Country) ?? 'DE')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country])
+
+  useEffect(() => {
+    if (!bPhone) setBPhoneCountry((COUNTRY_CODES[bCountry] as Country) ?? 'DE')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bCountry])
 
   /* ── Klarna/PayPal redirect return handler ── */
   useEffect(() => {
@@ -1809,6 +1842,68 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             grid-template-columns: 1fr;
           }
         }
+
+        /* ── Phone input (react-phone-number-input overrides) ── */
+        .nb1-phone-wrap .PhoneInput {
+          display: flex;
+          align-items: stretch;
+          border: 1.5px solid rgba(18, 49, 77, 0.1);
+          border-radius: 11px;
+          background: #fff;
+          overflow: hidden;
+          transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .nb1-phone-wrap .PhoneInput--focus {
+          border-color: #0a8fb0;
+          box-shadow: 0 0 0 3px rgba(10, 143, 176, 0.1);
+        }
+        .nb1-phone-wrap .PhoneInputCountry {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 0 10px 0 14px;
+          border-right: 1.5px solid rgba(18, 49, 77, 0.08);
+          background: rgba(18, 49, 77, 0.02);
+          flex-shrink: 0;
+          position: relative;
+        }
+        .nb1-phone-wrap .PhoneInputCountrySelect {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          width: 100%;
+          cursor: pointer;
+        }
+        .nb1-phone-wrap .PhoneInputCountryIcon {
+          width: 22px;
+          height: 16px;
+          border-radius: 2px;
+          overflow: hidden;
+          flex-shrink: 0;
+        }
+        .nb1-phone-wrap .PhoneInputCountrySelectArrow {
+          width: 5px;
+          height: 5px;
+          border-right: 1.5px solid rgba(18, 49, 77, 0.45);
+          border-bottom: 1.5px solid rgba(18, 49, 77, 0.45);
+          transform: rotate(45deg);
+          margin-top: -3px;
+          flex-shrink: 0;
+        }
+        .nb1-phone-wrap .PhoneInputInput {
+          flex: 1;
+          min-width: 0;
+          padding: 13px 15px;
+          border: none;
+          outline: none;
+          font-size: 15px;
+          color: #12314d;
+          font-family: 'Inter', sans-serif;
+          background: transparent;
+        }
+        .nb1-phone-wrap .PhoneInputInput::placeholder {
+          color: rgba(18, 49, 77, 0.35);
+        }
       `}</style>
 
       {/* Hero */}
@@ -2010,14 +2105,20 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     {t.address.phone}{' '}
                     <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                   </label>
-                  <input
-                    id="nb1-phone"
-                    type="tel"
-                    autoComplete="tel"
-                    placeholder={t.address.phonePlaceholder}
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
+                  <div className="nb1-phone-wrap">
+                    <PhoneInput
+                      id="nb1-phone"
+                      countries={PHONE_COUNTRIES}
+                      country={phoneCountry}
+                      onCountryChange={(c) => setPhoneCountry(c ?? 'DE')}
+                      value={phone}
+                      onChange={(val) => setPhone(val ?? '')}
+                      international
+                      countryCallingCodeEditable={false}
+                      autoComplete="tel"
+                      placeholder={t.address.phonePlaceholder}
+                    />
+                  </div>
                 </div>
               </div>
               <button type="button" className="nb1-acc-next" onClick={nextAddr}>
@@ -2341,12 +2442,19 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         {t.address.phone}{' '}
                         <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                       </label>
-                      <input
-                        type="tel"
-                        autoComplete="billing tel"
-                        value={bPhone}
-                        onChange={(e) => setBPhone(e.target.value)}
-                      />
+                      <div className="nb1-phone-wrap">
+                        <PhoneInput
+                          countries={PHONE_COUNTRIES}
+                          country={bPhoneCountry}
+                          onCountryChange={(c) => setBPhoneCountry(c ?? 'DE')}
+                          value={bPhone}
+                          onChange={(val) => setBPhone(val ?? '')}
+                          international
+                          countryCallingCodeEditable={false}
+                          autoComplete="billing tel"
+                          placeholder={t.address.phonePlaceholder}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="nb1-frow full">
