@@ -1,4 +1,4 @@
-type MarketCode = 'de-DE' | 'de-AT' | 'de-CH' | 'en' | 'x-default'
+type MarketCode = 'de-DE' | 'de-AT' | 'de-CH' | 'en' | 'fr-FR' | 'fr-BE' | 'nl-NL' | 'nl-BE' | 'x-default'
 
 function abs(siteURL: string, path: string) {
   // path must start with /
@@ -20,18 +20,26 @@ function abs(siteURL: string, path: string) {
  *    enPath: '/en/microbiome-analysis/',
  *  })
  */
-export function buildHreflangAlternates(args: { siteURL: string; dePath: string; enPath: string }) {
-  const { siteURL, dePath, enPath } = args
+export function buildHreflangAlternates(args: {
+  siteURL: string
+  dePath: string
+  enPath: string
+  frPath?: string
+  nlPath?: string
+}) {
+  const { siteURL, dePath, enPath, frPath, nlPath } = args
 
   const deURL = abs(siteURL, dePath)
   const enURL = abs(siteURL, enPath)
 
-  const languages: Record<MarketCode, string> = {
+  const languages: Partial<Record<MarketCode, string>> = {
     'de-DE': deURL,
     'de-AT': deURL,
     'de-CH': deURL,
     en: enURL,
     'x-default': enURL,
+    ...(frPath ? { 'fr-FR': abs(siteURL, frPath), 'fr-BE': abs(siteURL, frPath) } : {}),
+    ...(nlPath ? { 'nl-NL': abs(siteURL, nlPath), 'nl-BE': abs(siteURL, nlPath) } : {}),
   }
 
   return {
@@ -60,6 +68,8 @@ export function buildHreflangForSharedSlug(args: {
 
   const dePath = `/de${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
   const enPath = `/en${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
+  const frPath = `/fr${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
+  const nlPath = `/nl${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
 
-  return buildHreflangAlternates({ siteURL, dePath, enPath })
+  return buildHreflangAlternates({ siteURL, dePath, enPath, frPath, nlPath })
 }

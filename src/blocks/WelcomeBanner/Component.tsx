@@ -12,7 +12,7 @@ import '@/styles/banner-template.css'
 
 import { CarouselBanner } from './CarouselBanner'
 
-const LOCALES = ['en', 'de'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function detectLocaleFromPath(pathname: string): AppLocale {

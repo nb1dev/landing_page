@@ -12,7 +12,8 @@ import {
   formatSavingsLabel,
   computeSavings,
 } from '@/lib/plans/clientUtils'
-import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
+import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
+import { sendMetaCapiEvent } from '@/lib/meta/browser'
 
 type Tier = {
   months?: string | null
@@ -499,8 +500,14 @@ export const CycleSelectorClient: React.FC<Props> = ({
             const cycleKey = params.get('cycle') ?? '4'
             const planKey = params.get('plan') ?? (planFamily ?? 'core')
             const rate = rateMapRef.current[`${planKey}:${cycleKey}`]
-            if (rate != null)
-              pushEvent('add_to_cart', { ecommerce: { currency: currencyRef.current, value: rate, items: [buildNb1Item(planKey, cycleKey, rate, { planTitle: planTitleRef.current })] } })
+            if (rate != null) {
+              const atcId = mintEventId()
+              const atcItem = buildNb1Item(planKey, cycleKey, rate, { planTitle: planTitleRef.current })
+              pushEvent('add_to_cart', { event_id: atcId, ecommerce: { currency: currencyRef.current, value: rate, items: [atcItem] } })
+              sendMetaCapiEvent('add_to_cart', atcId, {
+                ecommerce: { currency: currencyRef.current, value: rate, items: [{ item_id: atcItem.item_id, item_name: atcItem.item_name, price: atcItem.price, quantity: 1 }] },
+              })
+            }
           }}>
             {continuePrefix ?? 'Continue'} · {activeRate}{perMonth} →
           </a>

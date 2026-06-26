@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { getDictionary } from '@/i18n/getDictionary'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
+import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import {
   fetchPlansClient,
   getClientCurrency,
@@ -560,6 +560,7 @@ export const PlanSelectorClient: React.FC<Props> = ({
                     const cycle = new URL(href, window.location.href).searchParams.get('cycle') ?? '4'
                     const rate = rateMapRef.current[key] ?? 0
                     pushEvent('plan_selected', {
+                      event_id: mintEventId(),
                       ecommerce: {
                         currency: currencyRef.current,
                         value: rate,

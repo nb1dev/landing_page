@@ -49,6 +49,8 @@ export async function fetchPlansClient(): Promise<RawPlanClient[]> {
 const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
   en: ['EUR', 'GBP', 'AED'],
   de: ['EUR', 'CHF'],
+  fr: ['EUR', 'CHF'],
+  nl: ['EUR', 'CHF'],
 }
 
 export function getClientCurrency(locale: string): CurrencyCode {
@@ -59,7 +61,7 @@ export function getClientCurrency(locale: string): CurrencyCode {
 }
 
 export function formatPrice(amount: number, currency: CurrencyCode, locale: string): string {
-  const intlLocale = locale === 'de' ? 'de-DE' : 'en-IE'
+  const intlLocale = locale === 'de' ? 'de-DE' : locale === 'fr' ? 'fr-FR' : locale === 'nl' ? 'nl-NL' : 'en-IE'
   try {
     return new Intl.NumberFormat(intlLocale, {
       style: 'currency',
@@ -129,6 +131,7 @@ const MONTH_LABELS: Record<string, Record<number, string>> = {
   en: { 4: '4 months', 8: '8 months', 12: '12 months' },
   de: { 4: '4 Monate', 8: '8 Monate', 12: '12 Monate' },
   fr: { 4: '4 mois', 8: '8 mois', 12: '12 mois' },
+  nl: { 4: '4 maanden', 8: '8 maanden', 12: '12 maanden' },
 }
 
 export function formatMonthLabel(month: number, locale: string): string {
@@ -138,6 +141,8 @@ export function formatMonthLabel(month: number, locale: string): string {
 const SAVINGS_DICT: Record<string, { prefix: string; suffix: string }> = {
   en: { prefix: 'Save', suffix: '/ cycle' },
   de: { prefix: '', suffix: 'pro Zyklus sparen' },
+  fr: { prefix: 'Économisez', suffix: '/ cycle' },
+  nl: { prefix: 'Bespaar', suffix: '/ cyclus' },
 }
 
 export function formatSavingsLabel(
@@ -154,11 +159,15 @@ export function formatSavingsLabel(
 export const BEST_VALUE_DICT: Record<string, string> = {
   en: 'Best value',
   de: 'Bester Wert',
+  fr: 'Meilleur rapport',
+  nl: 'Beste waarde',
 }
 
 export const PER_MONTH_DICT: Record<string, string> = {
   en: '/mo',
   de: '/Mon.',
+  fr: '/mois',
+  nl: '/mnd',
 }
 
 export function computeSavings(rate: number, baselineRate: number, month: number): number {

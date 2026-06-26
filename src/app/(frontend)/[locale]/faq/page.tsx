@@ -10,7 +10,7 @@ import { Footer } from '@/Footer/Component'
 // FAQ global from the DB on every request.
 export const revalidate = 600
 
-const LOCALES = ['en', 'de'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof LOCALES)[number]
 const isAppLocale = (v: string): v is AppLocale => (LOCALES as readonly string[]).includes(v)
 

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 
-const LOCALES = ['en', 'de']
+const LOCALES = ['en', 'de', 'fr', 'nl']
 
 function normalizeSiteURL(raw?: string) {
   if (!raw) return 'http://localhost:3000'

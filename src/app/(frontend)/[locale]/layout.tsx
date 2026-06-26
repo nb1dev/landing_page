@@ -55,7 +55,12 @@ export default async function RootLayout({
   const resolved = await params
   const locale: AppLocale = isAppLocale(resolved.locale) ? resolved.locale : defaultLocale
 
-  const ketchLocaleMap: Record<AppLocale, string> = { en: 'en', de: 'de-DE' }
+  const ketchLocaleMap: Record<AppLocale, string> = {
+    en: 'en',
+    de: 'de-DE',
+    fr: 'fr-FR',
+    nl: 'nl-NL',
+  }
   const ketchLang = ketchLocaleMap[locale] ?? locale
 
   let organizationJsonLd: JsonLdValue = null
@@ -126,7 +131,7 @@ export default async function RootLayout({
             });
           `}
         </Script>
-
+        {/* 
         {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s)
@@ -140,7 +145,7 @@ export default async function RootLayout({
             fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
             fbq('track', 'PageView');
           `}</Script>
-        )}
+        )} */}
 
         <script
           dangerouslySetInnerHTML={{
@@ -358,7 +363,6 @@ export default async function RootLayout({
               }}();
             `}
             </Script>
-
           </Providers>
         </StyledJsxRegistry>
       </body>
