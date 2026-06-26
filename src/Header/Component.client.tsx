@@ -53,8 +53,8 @@ const CHEV = (
 const DEFAULT_LANGS: Array<[string, string]> = [
   ['en', 'English'],
   ['de', 'Deutsch'],
-  ['fr', 'Français'],
-  ['nl', 'Nederlands'],
+  // ['fr', 'Français'],   // hidden until page translations are ready
+  // ['nl', 'Nederlands'], // hidden until page translations are ready
 ]
 const DEFAULT_CURRENCIES: Array<[string, string, string]> = [
   ['EUR', '€', 'Euro'],
