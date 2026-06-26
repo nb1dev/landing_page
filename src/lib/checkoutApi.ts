@@ -112,3 +112,34 @@ export async function checkoutConfirm(
   }
   return res.json()
 }
+
+export interface CheckoutConfirmMetaSidecar {
+  consent: boolean
+  fbp?: string
+  fbc?: string
+  currency?: string
+  value?: number
+  item_id?: string
+  item_name?: string
+}
+
+/**
+ * Same as checkoutConfirm but routes through our Next.js proxy so the
+ * purchase Meta CAPI event fires server-to-server before the response
+ * returns to the browser.
+ */
+export async function checkoutConfirmProxy(
+  params: CheckoutConfirmIn,
+  meta: CheckoutConfirmMetaSidecar,
+): Promise<CheckoutConfirmOut> {
+  const res = await fetch('/api/checkout/confirm', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', accept: 'application/json' },
+    body: JSON.stringify({ ...params, _meta: meta }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw Object.assign(new Error(err?.detail ?? 'Checkout confirm failed'), { code: 'confirm_failed' })
+  }
+  return res.json()
+}

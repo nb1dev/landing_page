@@ -112,6 +112,7 @@ export default buildConfig({
       { code: 'en', label: 'English (EU)' },
       { code: 'de', label: 'German' },
       { code: 'fr', label: 'French' },
+      { code: 'nl', label: 'Dutch' },
     ],
     defaultLocale: 'en',
     fallback: true,

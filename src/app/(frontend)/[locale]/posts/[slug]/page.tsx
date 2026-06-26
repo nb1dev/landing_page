@@ -23,7 +23,7 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { extractHeadingsFromLexical } from '@/utilities/extractHeadingsFromLexical'
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 
-const LOCALES = ['en', 'de'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isAppLocale(v: string): v is AppLocale {

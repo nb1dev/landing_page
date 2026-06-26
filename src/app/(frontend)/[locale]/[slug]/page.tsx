@@ -22,7 +22,7 @@ import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 import { getServerCurrency } from '@/utilities/currency'
 import { resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 
-const LOCALES = ['en', 'de'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isAppLocale(v: string): v is AppLocale {
@@ -148,7 +148,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const locale: AppLocale = isAppLocale(localeParam) ? localeParam : 'en'
   const decodedSlug = decodeURIComponent(slug)
 
-  const page = await queryPageBySlug({
+  const page = await queryPageMetaBySlug({
     slug: decodedSlug,
     locale,
   })
@@ -220,6 +220,39 @@ async function queryPageBySlug({ slug, locale }: { slug: string; locale: AppLoca
     locale,
     fallbackLocale: 'en',
     depth: 2,
+  })
+
+  return (result.docs?.[0] as RequiredDataFromCollectionSlug<'pages'>) || null
+}
+
+// generateMetadata only needs the SEO group + slug — never the page's blocks.
+// Reusing queryPageBySlug here would run the SAME ~300KB query that LEFT JOINs all
+// ~85 block types (and on the small STG DB that draft query trips the DB-level
+// statement_timeout → "canceling statement due to statement timeout"). `select`
+// keeps this query tiny: just the scalar SEO columns + the meta image relation.
+async function queryPageMetaBySlug({ slug, locale }: { slug: string; locale: AppLocale }) {
+  const { isEnabled: draft } = await draftMode()
+  const payload = await getPayload({ config: configPromise })
+
+  const result = await payload.find({
+    collection: 'pages',
+    draft,
+    limit: 1,
+    pagination: false,
+    overrideAccess: draft,
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
+    locale,
+    fallbackLocale: 'en',
+    depth: 1,
+    select: {
+      slug: true,
+      title: true,
+      meta: true,
+    },
   })
 
   return (result.docs?.[0] as RequiredDataFromCollectionSlug<'pages'>) || null

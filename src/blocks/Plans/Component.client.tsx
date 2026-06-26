@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import RichText from '@/components/RichText'
 import { getDictionary } from '@/i18n/getDictionary'
-import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
+import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import {
   fetchPlansClient,
   getClientCurrency,
@@ -559,7 +559,7 @@ export const PlansClient: React.FC<Props> = (props) => {
               {coreCtaLabel && (
                 <a href={coreCtaHref || '#'} className="pl-btn" onClick={() => {
                   if (coreRateRef.current != null)
-                    { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
+                    { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { event_id: mintEventId(), ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
                 }}>{coreCtaLabel}</a>
               )}
             </div>
@@ -588,7 +588,7 @@ export const PlansClient: React.FC<Props> = (props) => {
               {advCtaLabel && (
                 <a href={advCtaHref || '#'} className="pl-btn" onClick={() => {
                   if (advRateRef.current != null)
-                    { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
+                    { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { event_id: mintEventId(), ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
                 }}>{advCtaLabel}</a>
               )}
             </div>
@@ -659,13 +659,13 @@ export const PlansClient: React.FC<Props> = (props) => {
                       <div className="ccell center">
                         <a href={coreCtaHref || '#'} className="cbtn out" onClick={() => {
                           if (coreRateRef.current != null)
-                            { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
+                            { const c = new URL(coreCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { event_id: mintEventId(), ecommerce: { currency: currencyRef.current, value: coreRateRef.current, items: [buildNb1Item('core', c, coreRateRef.current, { planTitle: planTitlesRef.current.core })] } }) }
                         }}>{coreCtaLabel || 'Start with Core'}</a>
                       </div>
                       <div className="ccell center adv">
                         <a href={advCtaHref || '#'} className="cbtn lime" onClick={() => {
                           if (advRateRef.current != null)
-                            { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
+                            { const c = new URL(advCtaHref || '', window.location.href).searchParams.get('cycle') ?? '4'; pushEvent('plan_selected', { event_id: mintEventId(), ecommerce: { currency: currencyRef.current, value: advRateRef.current, items: [buildNb1Item('advanced', c, advRateRef.current, { planTitle: planTitlesRef.current.advanced })] } }) }
                         }}>{advCtaLabel || 'Start with Advanced'}</a>
                       </div>
                     </div>

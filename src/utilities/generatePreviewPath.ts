@@ -1,4 +1,5 @@
 import { PayloadRequest, CollectionSlug } from 'payload'
+import { appLocales, defaultLocale } from '@/i18n/config'
 
 const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
   posts: '/posts',
@@ -13,9 +14,14 @@ type Props = {
 
 function getLocale(req: PayloadRequest): string {
   const queryLocale = (req.query as Record<string, unknown> | undefined)?.locale
-  const locale = req.locale || req.i18n?.language || (typeof queryLocale === 'string' ? queryLocale : undefined)
+  const candidate =
+    req.locale || req.i18n?.language || (typeof queryLocale === 'string' ? queryLocale : undefined)
 
-  return typeof locale === 'string' && locale.trim() ? locale.trim() : 'en'
+  const locale = typeof candidate === 'string' ? candidate.trim() : ''
+  // Guard against an empty or stale "undefined" admin locale, which would
+  // otherwise produce a `/undefined/<slug>` path and a 404 in the live-preview
+  // iframe. Only real frontend locales (see @/i18n/config) are allowed.
+  return (appLocales as readonly string[]).includes(locale) ? locale : defaultLocale
 }
 
 function getFrontendURL(): string {

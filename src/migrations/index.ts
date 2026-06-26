@@ -80,6 +80,20 @@ import * as migration_20260624_082045 from './20260624_082045';
 import * as migration_20260624_122000 from './20260624_122000';
 import * as migration_20260624_130615_theCase_currency_stats from './20260624_130615_theCase_currency_stats';
 import * as migration_20260624_plan_sticky_bar from './20260624_plan_sticky_bar';
+import * as migration_20260625_122940_faq_legal_contact_blocks from './20260625_122940_faq_legal_contact_blocks';
+import * as migration_20260625_132606_contact_form_labels from './20260625_132606_contact_form_labels';
+import * as migration_20260625_133311_add_nl_locale from './20260625_133311_add_nl_locale';
+import * as migration_20260625_135340_contact_field_toggles from './20260625_135340_contact_field_toggles';
+import * as migration_20260626_070643_legal_summary_bullets from './20260626_070643_legal_summary_bullets';
+import * as migration_20260626_072252_legal_section_content_blocks from './20260626_072252_legal_section_content_blocks';
+import * as migration_20260626_072849_legal_content_type_select from './20260626_072849_legal_content_type_select';
+import * as migration_20260626_073957_legal_table_dynamic_columns from './20260626_073957_legal_table_dynamic_columns';
+import * as migration_20260626_074325_legal_closing_callout from './20260626_074325_legal_closing_callout';
+import * as migration_20260626_080230_legal_content_form_type from './20260626_080230_legal_content_form_type';
+import * as migration_20260626_081902_legal_keyvalue_definitions from './20260626_081902_legal_keyvalue_definitions';
+import * as migration_20260626_084919_legal_section_number_label from './20260626_084919_legal_section_number_label';
+import * as migration_20260626_085918_legal_section_toc_label from './20260626_085918_legal_section_toc_label';
+import * as migration_20260626_122005_drop_unused_pages_blocks from './20260626_122005_drop_unused_pages_blocks';
 
 export const migrations = [
   {
@@ -490,6 +504,76 @@ export const migrations = [
   {
     up: migration_20260624_plan_sticky_bar.up,
     down: migration_20260624_plan_sticky_bar.down,
-    name: '20260624_plan_sticky_bar'
+    name: '20260624_plan_sticky_bar',
+  },
+  {
+    up: migration_20260625_122940_faq_legal_contact_blocks.up,
+    down: migration_20260625_122940_faq_legal_contact_blocks.down,
+    name: '20260625_122940_faq_legal_contact_blocks',
+  },
+  {
+    up: migration_20260625_132606_contact_form_labels.up,
+    down: migration_20260625_132606_contact_form_labels.down,
+    name: '20260625_132606_contact_form_labels',
+  },
+  {
+    up: migration_20260625_133311_add_nl_locale.up,
+    down: migration_20260625_133311_add_nl_locale.down,
+    name: '20260625_133311_add_nl_locale',
+  },
+  {
+    up: migration_20260625_135340_contact_field_toggles.up,
+    down: migration_20260625_135340_contact_field_toggles.down,
+    name: '20260625_135340_contact_field_toggles',
+  },
+  {
+    up: migration_20260626_070643_legal_summary_bullets.up,
+    down: migration_20260626_070643_legal_summary_bullets.down,
+    name: '20260626_070643_legal_summary_bullets',
+  },
+  {
+    up: migration_20260626_072252_legal_section_content_blocks.up,
+    down: migration_20260626_072252_legal_section_content_blocks.down,
+    name: '20260626_072252_legal_section_content_blocks',
+  },
+  {
+    up: migration_20260626_072849_legal_content_type_select.up,
+    down: migration_20260626_072849_legal_content_type_select.down,
+    name: '20260626_072849_legal_content_type_select',
+  },
+  {
+    up: migration_20260626_073957_legal_table_dynamic_columns.up,
+    down: migration_20260626_073957_legal_table_dynamic_columns.down,
+    name: '20260626_073957_legal_table_dynamic_columns',
+  },
+  {
+    up: migration_20260626_074325_legal_closing_callout.up,
+    down: migration_20260626_074325_legal_closing_callout.down,
+    name: '20260626_074325_legal_closing_callout',
+  },
+  {
+    up: migration_20260626_080230_legal_content_form_type.up,
+    down: migration_20260626_080230_legal_content_form_type.down,
+    name: '20260626_080230_legal_content_form_type',
+  },
+  {
+    up: migration_20260626_081902_legal_keyvalue_definitions.up,
+    down: migration_20260626_081902_legal_keyvalue_definitions.down,
+    name: '20260626_081902_legal_keyvalue_definitions',
+  },
+  {
+    up: migration_20260626_084919_legal_section_number_label.up,
+    down: migration_20260626_084919_legal_section_number_label.down,
+    name: '20260626_084919_legal_section_number_label',
+  },
+  {
+    up: migration_20260626_085918_legal_section_toc_label.up,
+    down: migration_20260626_085918_legal_section_toc_label.down,
+    name: '20260626_085918_legal_section_toc_label',
+  },
+  {
+    up: migration_20260626_122005_drop_unused_pages_blocks.up,
+    down: migration_20260626_122005_drop_unused_pages_blocks.down,
+    name: '20260626_122005_drop_unused_pages_blocks'
   },
 ];

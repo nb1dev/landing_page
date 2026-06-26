@@ -3,15 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { WelcomeBannerBlock } from '@/blocks/WelcomeBanner/config'
-import { DetailsBanner } from '@/blocks/DetailsBanner/config'
-import { MissionBanner } from '@/blocks/MissionBanner/config'
-import { FormCustom } from '@/blocks/FormCostom/config'
 import { hero } from '@/heros/config'
 import { BoxCardBlock } from '@/blocks/landingBlocks/BoxCard/config'
 
@@ -28,20 +20,10 @@ import { ReviewCardBlock } from '@/blocks/landingBlocks/ReviewCard/config'
 import { StepsCardBlock } from '@/blocks/landingBlocks/StepsCard/config'
 import { SymptomsCardBlock } from '@/blocks/landingBlocks/SymptomsCard/config'
 import { VideoCardBlock } from '@/blocks/landingBlocks/VideoCard/config'
-import { KeyTakeaways } from '@/blocks/KeyTakeways/config'
-import { FAQBlock } from '@/blocks/FAQ/config'
-import { DataTableBlock } from '@/blocks/DataTable/config'
-import { CtaBlock } from '@/blocks/CTA/config'
-import { BulletListBlock } from '@/blocks/BulletList/config'
-import { ContactFormBlock } from '@/blocks/contactBlocks/ContactForm/config'
-import { ContactInfoBlock } from '@/blocks/contactBlocks/ContactInfo/config'
-import { ContactSectionBlock } from '@/blocks/contactBlocks/ContactSection/config'
 import { BenefitsBanner } from '@/blocks/newLandingBlocks/BenefitsBanner/config'
 import { StepsBanner } from '@/blocks/newLandingBlocks/StepsBanner/config'
 import { ProductBanner } from '@/blocks/newLandingBlocks/ProductBanner/config'
 import { AccessBanner } from '@/blocks/newLandingBlocks/AccessBanner/config'
-import { ProductShowcase } from '@/blocks/ProductShowcase/config'
-import { EarlyAccessBlock } from '@/blocks/EarlyAccessBlock/config'
 import { EvolutionBandBlock } from '@/blocks/EvolutionBandBlock/config'
 import { HeroBannerBlock } from '@/blocks/newLandingBlocks/HeroBanner/config'
 import { OutcomesSectionBlock } from '@/blocks/newLandingBlocks/OutcomesSection/config'
@@ -67,7 +49,6 @@ import { YpBuyBoxBlock } from '@/blocks/yourPlanBlocks/BuyBox/config'
 import { OrderStepHero } from '@/blocks/checkoutBlocks/OrderStepHero/config'
 import { OrderStepNav } from '@/blocks/checkoutBlocks/OrderStepNav/config'
 import { LegalStrip } from '@/blocks/checkoutBlocks/LegalStrip/config'
-import { TrustSealsBar } from '@/blocks/checkoutBlocks/TrustSealsBar/config'
 import { OrderTimeline } from '@/blocks/checkoutBlocks/OrderTimeline/config'
 import { FormulaKit } from '@/blocks/checkoutBlocks/FormulaKit/config'
 import { CheckoutFaq } from '@/blocks/checkoutBlocks/CheckoutFaq/config'
@@ -94,6 +75,9 @@ import { ScienceBoardNewBlock } from '@/blocks/ScienceBoardNew/config'
 import { StandardsBlock } from '@/blocks/Standards/config'
 import { PlansBlock } from '@/blocks/Plans/config'
 import { CloseBandBlock } from '@/blocks/CloseBand/config'
+import { FaqPageBlock } from '@/blocks/FaqPage/config'
+import { LegalDocBlock } from '@/blocks/LegalDoc/config'
+import { ContactPageBlock } from '@/blocks/ContactPage/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -203,15 +187,7 @@ export const Pages: CollectionConfig<'pages'> = {
               name: 'layout',
               type: 'blocks',
               blocks: [
-                CallToAction,
                 Content,
-                MediaBlock,
-                Archive,
-                FormBlock,
-                WelcomeBannerBlock,
-                DetailsBanner,
-                MissionBanner,
-                FormCustom,
                 BoxCardBlock,
                 FormulaCardBlock,
                 ResultsCardBlock,
@@ -219,20 +195,10 @@ export const Pages: CollectionConfig<'pages'> = {
                 StepsCardBlock,
                 SymptomsCardBlock,
                 VideoCardBlock,
-                KeyTakeaways,
-                FAQBlock,
-                DataTableBlock,
-                CtaBlock,
-                BulletListBlock,
-                ContactFormBlock,
-                ContactInfoBlock,
-                ContactSectionBlock,
                 BenefitsBanner,
                 StepsBanner,
                 ProductBanner,
                 AccessBanner,
-                ProductShowcase,
-                EarlyAccessBlock,
                 EvolutionBandBlock,
                 HeroBannerBlock,
                 OutcomesSectionBlock,
@@ -258,7 +224,6 @@ export const Pages: CollectionConfig<'pages'> = {
                 OrderStepNav,
                 LegalStrip,
                 OrderStepHero,
-                TrustSealsBar,
                 OrderTimeline,
                 FormulaKit,
                 CheckoutFaq,
@@ -285,6 +250,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 StandardsBlock,
                 PlansBlock,
                 CloseBandBlock,
+                FaqPageBlock,
+                LegalDocBlock,
+                ContactPageBlock,
               ],
               required: true,
               admin: { initCollapsed: true },

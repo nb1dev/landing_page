@@ -3,12 +3,14 @@
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-const SUPPORTED_LOCALES = ['en', 'de'] as const
+const SUPPORTED_LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof SUPPORTED_LOCALES)[number]
 
 const LOCALE_LABELS: Record<AppLocale, string> = {
   en: 'English',
   de: 'Deutsch',
+  fr: 'Français',
+  nl: 'Nederlands',
 }
 
 function normalizePath(p: string) {
@@ -183,7 +185,7 @@ export const LocaleSwitcher: React.FC<Props> = ({ locale, isDark = false, textCo
 
       {open && (
         <div className="nb1-lang-menu" role="listbox">
-          {SUPPORTED_LOCALES.map((loc) => (
+          {SUPPORTED_LOCALES.filter((loc) => loc !== 'fr' && loc !== 'nl').map((loc) => (
             <button
               key={loc}
               type="button"
