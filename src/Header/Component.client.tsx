@@ -53,6 +53,8 @@ const CHEV = (
 const DEFAULT_LANGS: Array<[string, string]> = [
   ['en', 'English'],
   ['de', 'Deutsch'],
+  ['fr', 'Français'],
+  ['nl', 'Nederlands'],
 ]
 const DEFAULT_CURRENCIES: Array<[string, string, string]> = [
   ['EUR', '€', 'Euro'],
@@ -63,6 +65,8 @@ const DEFAULT_CURRENCIES: Array<[string, string, string]> = [
 const DEFAULT_LANG_CURRENCIES: Record<string, string[]> = {
   en: ['EUR', 'GBP', 'AED'],
   de: ['EUR', 'CHF'],
+  fr: ['EUR', 'CHF'],
+  nl: ['EUR', 'CHF'],
 }
 
 function lsGet(k: string, d: string) {

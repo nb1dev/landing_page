@@ -4,7 +4,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Page } from '../../../payload-types'
 
-const LOCALES = ['en', 'de', 'fr'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 
 function revalidatePagePaths(slug: string | undefined | null, payload: any) {
   if (slug === 'home') {

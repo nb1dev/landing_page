@@ -22,7 +22,7 @@ import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 import { getServerCurrency } from '@/utilities/currency'
 import { resolvePriceTokensDeep } from '@/lib/plans/priceTokens'
 
-const LOCALES = ['en', 'de'] as const
+const LOCALES = ['en', 'de', 'fr', 'nl'] as const
 type AppLocale = (typeof LOCALES)[number]
 
 function isAppLocale(v: string): v is AppLocale {

@@ -13,8 +13,9 @@ import {
 } from '@stripe/react-stripe-js'
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
 import { createFirebaseAccount } from '@/lib/createAccount'
-import { checkoutPaymentIntent, checkoutConfirm } from '@/lib/checkoutApi'
-import { pushEvent, buildNb1Item } from '@/lib/dataLayer'
+import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/lib/checkoutApi'
+import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
+import { sendMetaCapiEvent, getMetaSidecar } from '@/lib/meta/browser'
 import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
@@ -412,6 +413,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           },
         })
         sessionStorage.removeItem('nb1_klarna_setup_intent_id')
+        const klarnaItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
         pushEvent('purchase', {
           event_id: klarnaConfirmation.event_id,
           external_id: klarnaConfirmation.external_id,
@@ -420,7 +422,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             currency,
             value: rateNum,
             shipping: (saved.shipping ?? shipping) === 'express' ? expressShipNum : 0,
-            items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
+            items: [klarnaItem],
+          },
+        })
+        sendMetaCapiEvent('purchase', klarnaConfirmation.event_id, {
+          ecommerce: {
+            transaction_id: klarnaConfirmation.subscription_id,
+            currency,
+            value: rateNum,
+            items: [{ item_id: klarnaItem.item_id, item_name: klarnaItem.item_name, price: klarnaItem.price, quantity: 1 }],
+          },
+          user: {
+            email: saved.email ?? email,
+            first_name: saved.fn ?? fn,
+            last_name: saved.ln ?? ln,
+            city: saved.city ?? city,
+            zip: saved.zip ?? zip,
+            country: COUNTRY_CODES[saved.country ?? country] ?? saved.country ?? country,
+            phone: saved.phone || phone || undefined,
+            external_id: klarnaConfirmation.external_id,
           },
         })
         setOrderNumber(klarnaConfirmation.order_number ?? null)
@@ -448,13 +468,19 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
   /* ── begin_checkout on mount ── */
   useEffect(() => {
+    const bcId = mintEventId()
+    const bcItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
     pushEvent('begin_checkout', {
+      event_id: bcId,
       ecommerce: {
         currency,
         value: rateNum,
         ...(promoApplied ? { coupon: promoApplied } : {}),
-        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
+        items: [bcItem],
       },
+    })
+    sendMetaCapiEvent('begin_checkout', bcId, {
+      ecommerce: { currency, value: rateNum, items: [{ item_id: bcItem.item_id, item_name: bcItem.item_name, price: bcItem.price, quantity: 1 }] },
     })
     // Fire once on mount only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -674,14 +700,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   }
 
   function nextShipping() {
+    const siId = mintEventId()
+    const siItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
     pushEvent('add_shipping_info', {
+      event_id: siId,
       ecommerce: {
         currency,
         value: rateNum,
         ...(promoApplied ? { coupon: promoApplied } : {}),
         shipping_tier: shipping === 'express' ? 'Express' : 'Standard',
-        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
+        items: [siItem],
       },
+    })
+    sendMetaCapiEvent('add_shipping_info', siId, {
+      ecommerce: { currency, value: rateNum, items: [{ item_id: siItem.item_id, item_name: siItem.item_name, price: siItem.price, quantity: 1 }] },
+      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
     })
     markDone(3)
   }
@@ -700,7 +733,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     setAccountStatus('sending')
     setAccountErr('')
 
+    const apiId = mintEventId()
+    const apiItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
     pushEvent('add_payment_info', {
+      event_id: apiId,
       ecommerce: {
         currency,
         value: rateNum,
@@ -715,8 +751,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                 : payMethod === 'sepa'
                   ? 'SEPA Direct Debit'
                   : payMethod,
-        items: [buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })],
+        items: [apiItem],
       },
+    })
+    sendMetaCapiEvent('add_payment_info', apiId, {
+      ecommerce: { currency, value: rateNum, items: [{ item_id: apiItem.item_id, item_name: apiItem.item_name, price: apiItem.price, quantity: 1 }] },
+      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
     })
 
     try {
@@ -885,6 +925,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             },
       })
 
+      const purchaseItem = buildNb1Item(planKey, cycleKey, rateNum, {
+        planTitle: planLabel,
+        discount: promoPreview?.promo_discount,
+      })
       pushEvent('purchase', {
         event_id: confirmation.event_id,
         external_id: confirmation.external_id,
@@ -894,12 +938,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           value: rateNum,
           shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? expressShipNum : 0),
           ...(promoApplied ? { coupon: promoApplied } : {}),
-          items: [
-            buildNb1Item(planKey, cycleKey, rateNum, {
-              planTitle: planLabel,
-              discount: promoPreview?.promo_discount,
-            }),
-          ],
+          items: [purchaseItem],
+        },
+      })
+      sendMetaCapiEvent('purchase', confirmation.event_id, {
+        ecommerce: {
+          transaction_id: confirmation.subscription_id,
+          currency,
+          value: rateNum,
+          items: [{ item_id: purchaseItem.item_id, item_name: purchaseItem.item_name, price: purchaseItem.price, quantity: 1 }],
+        },
+        user: {
+          email,
+          first_name: fn,
+          last_name: ln,
+          city,
+          zip,
+          country: COUNTRY_CODES[country] ?? country,
+          phone,
+          external_id: confirmation.external_id,
         },
       })
 
