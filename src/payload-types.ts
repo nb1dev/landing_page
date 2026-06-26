@@ -236,15 +236,7 @@ export interface Page {
     media?: (number | null) | Media;
   };
   layout: (
-    | CallToActionBlock
     | ContentBlock
-    | MediaBlock
-    | ArchiveBlock
-    | FormBlock
-    | WelcomeBannerBlock
-    | DetailsBannerBlock
-    | MissionBannerBlock
-    | FormCustomBlock
     | BoxCardBlock
     | FormulaCardBlock
     | ResultsCardBlock
@@ -252,20 +244,10 @@ export interface Page {
     | StepsCardBlock
     | SymptomsCardBlock
     | VideoCardBlock
-    | KeyTakeawaysBlock
-    | FAQBlock
-    | DataTableBlock
-    | CtaBlock
-    | BulletListBlock
-    | ContactFormBlock
-    | ContactInfoBlock
-    | ContactSectionBlock
     | BenefitsBannerBlock
     | StepsBannerBlock
     | ProductBannerBlock
     | AccessBannerBlock
-    | ProductShowcaseBlock
-    | EarlyAccessBlock
     | EvolutionBandBlock
     | HeroBannerBlock
     | OutcomesSectionBlock
@@ -291,7 +273,6 @@ export interface Page {
     | OrderStepNavBlock
     | LegalStripBlock
     | OrderStepHeroBlock
-    | TrustSealsBarBlock
     | OrderTimelineBlock
     | FormulaKitBlock
     | CheckoutFaqBlock
@@ -1032,58 +1013,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock".
- */
-export interface CallToActionBlock {
-  richText?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-          /**
-           * Optional translated label. If empty, the default label will be used.
-           */
-          localizedLabel?: string | null;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cta';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -1135,237 +1064,6 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock".
- */
-export interface ArchiveBlock {
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
-  categories?: (number | Category)[] | null;
-  limit?: number | null;
-  selectedDocs?:
-    | {
-        relationTo: 'posts';
-        value: number | Post;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'archive';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock".
- */
-export interface FormBlock {
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'formBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "WelcomeBannerBlock".
- */
-export interface WelcomeBannerBlock {
-  logo: number | Media;
-  heading: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  description: string;
-  backgroundImage: number | Media;
-  backgroundImageMobile: number | Media;
-  copyrightText?: string | null;
-  bannerLabels?:
-    | {
-        textLabel?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  lineText?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'welcome-banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DetailsBannerBlock".
- */
-export interface DetailsBannerBlock {
-  heading: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  /**
-   * Exactly 4 cards (layout expects 4).
-   */
-  content: {
-    title?: string | null;
-    description?: string | null;
-    backgroundImage?: (number | null) | Media;
-    backgroundImageMobile?: (number | null) | Media;
-    imageContent?: (number | null) | Media;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'details-banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MissionBannerBlock".
- */
-export interface MissionBannerBlock {
-  heading: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  logo: number | Media;
-  copyright: string;
-  images: {
-    image: number | Media;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mission-banner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormCustomBlock".
- */
-export interface FormCustomBlock {
-  heading: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  description: string;
-  /**
-   * Select the Form Builder form to submit.
-   */
-  form: number | Form;
-  enableIntro?: boolean | null;
-  introContent?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'form-custom';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1732,227 +1430,6 @@ export interface VideoCardBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "KeyTakeawaysBlock".
- */
-export interface KeyTakeawaysBlock {
-  items: {
-    /**
-     * Bold lead-in phrase, e.g. "Your microbiome filters everything you swallow."
-     */
-    leadIn: string;
-    /**
-     * Normal-weight explanation text, ideally 1–2 sentences.
-     */
-    explanation: string;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'keyTakeaways';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FAQBlock".
- */
-export interface FAQBlock {
-  items: {
-    question: string;
-    answer: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'faq';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DataTableBlock".
- */
-export interface DataTableBlock {
-  sectionTitle?: string | null;
-  variant: 'glossary' | 'comparison';
-  columnHeaders?:
-    | {
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
-  rows: {
-    cells: {
-      value: string;
-      id?: string | null;
-    }[];
-    id?: string | null;
-  }[];
-  /**
-   * Zero-based column index to visually emphasize. Used only for comparison tables.
-   */
-  highlightColumn?: number | null;
-  caption?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'dataTable';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CtaBlock".
- */
-export interface CtaBlock {
-  /**
-   * 1–3 sentences connecting the article topic to the NB1 kit. This is the only editable content.
-   */
-  body: string;
-  buttonUrl: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'ctaBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BulletListBlock".
- */
-export interface BulletListBlock {
-  sectionTitle?: string | null;
-  items: {
-    leadIn: string;
-    body: string;
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'bulletList';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactFormBlock".
- */
-export interface ContactFormBlock {
-  title?: string | null;
-  description?: string | null;
-  formTitle?: string | null;
-  formDescription?: string | null;
-  labels?: {
-    firstName?: string | null;
-    lastName?: string | null;
-    email?: string | null;
-    message?: string | null;
-  };
-  placeholders?: {
-    firstName?: string | null;
-    lastName?: string | null;
-    email?: string | null;
-    message?: string | null;
-  };
-  submitLabel?: string | null;
-  successMessage?: string | null;
-  errorMessage?: string | null;
-  /**
-   * Email address where form submissions will be sent.
-   */
-  recipientEmail?: string | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact-form';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactInfoBlock".
- */
-export interface ContactInfoBlock {
-  title?: string | null;
-  description?: string | null;
-  phone?: string | null;
-  phoneLabel?: string | null;
-  email?: string | null;
-  emailLabel?: string | null;
-  address?: string | null;
-  addressLabel?: string | null;
-  hours?: string | null;
-  hoursLabel?: string | null;
-  socialLinks?:
-    | {
-        platform: string;
-        url: string;
-        id?: string | null;
-      }[]
-    | null;
-  socialsLabel?: string | null;
-  backgroundImage?: (number | null) | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact-info';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactSectionBlock".
- */
-export interface ContactSectionBlock {
-  form?: {
-    title?: string | null;
-    description?: string | null;
-    formTitle?: string | null;
-    formDescription?: string | null;
-    labels?: {
-      firstName?: string | null;
-      lastName?: string | null;
-      email?: string | null;
-      message?: string | null;
-    };
-    placeholders?: {
-      firstName?: string | null;
-      lastName?: string | null;
-      email?: string | null;
-      message?: string | null;
-    };
-    submitLabel?: string | null;
-    successMessage?: string | null;
-    errorMessage?: string | null;
-    /**
-     * Email address where form submissions will be sent.
-     */
-    recipientEmail?: string | null;
-  };
-  info?: {
-    title?: string | null;
-    description?: string | null;
-    phone?: string | null;
-    phoneLabel?: string | null;
-    email?: string | null;
-    emailLabel?: string | null;
-    address?: string | null;
-    addressLabel?: string | null;
-    hours?: string | null;
-    hoursLabel?: string | null;
-    socialLinks?:
-      | {
-          platform: string;
-          url: string;
-          id?: string | null;
-        }[]
-      | null;
-    socialsLabel?: string | null;
-    backgroundImage?: (number | null) | Media;
-  };
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'contact-section';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BenefitsBannerBlock".
  */
 export interface BenefitsBannerBlock {
@@ -2101,132 +1578,6 @@ export interface AccessBannerBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'accessBanner';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductShowcaseBlock".
- */
-export interface ProductShowcaseBlock {
-  title: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  badge?: string | null;
-  panel?: {
-    thumbnails?:
-      | {
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  /**
-   * Each card represents a plan (e.g. Core, Complete).
-   */
-  plans?:
-    | {
-        badgeLabel?: string | null;
-        badgeHighlighted?: boolean | null;
-        cardTitle: string;
-        features?:
-          | {
-              text: string;
-              highlighted?: boolean | null;
-              id?: string | null;
-            }[]
-          | null;
-        prices?:
-          | {
-              durationLabel: string;
-              priceLabel: string;
-              perDayLabel?: string | null;
-              isDefault?: boolean | null;
-              id?: string | null;
-            }[]
-          | null;
-        buttonLabel?: string | null;
-        buttonLink?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  faqItems?:
-    | {
-        question: string;
-        answer?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'productShowcase';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "EarlyAccessBlock".
- */
-export interface EarlyAccessBlock {
-  /**
-   * Main heading shown by default.
-   */
-  title: string;
-  /**
-   * Supporting text below the title.
-   */
-  subtitle?: string | null;
-  /**
-   * Small eyebrow label displayed above the title.
-   */
-  headline?: string | null;
-  /**
-   * Optional. Overrides the submit button label from the selected form.
-   */
-  buttonText?: string | null;
-  /**
-   * Select the Form Builder form to render.
-   */
-  form: number | Form;
-  /**
-   * Each entry overrides content when ?variant=<key> is present in the URL. Leave override fields empty to fall back to the defaults above.
-   */
-  variants?:
-    | {
-        /**
-         * URL param value matched against ?variant=. Example: "existence"
-         */
-        variantKey: string;
-        /**
-         * Replaces the default title for this variant.
-         */
-        title?: string | null;
-        /**
-         * Replaces the default subtitle for this variant.
-         */
-        subtitle?: string | null;
-        /**
-         * Replaces the default headline for this variant.
-         */
-        headline?: string | null;
-        /**
-         * Replaces the default button text for this variant.
-         */
-        buttonText?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'earlyAccess';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -4565,23 +3916,6 @@ export interface OrderStepHeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TrustSealsBarBlock".
- */
-export interface TrustSealsBarBlock {
-  seals?:
-    | {
-        type?: ('stars' | 'dot') | null;
-        rating?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'trustSealsBar';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "OrderTimelineBlock".
  */
 export interface OrderTimelineBlock {
@@ -6224,15 +5558,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
-        mediaBlock?: T | MediaBlockSelect<T>;
-        archive?: T | ArchiveBlockSelect<T>;
-        formBlock?: T | FormBlockSelect<T>;
-        'welcome-banner'?: T | WelcomeBannerBlockSelect<T>;
-        'details-banner'?: T | DetailsBannerBlockSelect<T>;
-        'mission-banner'?: T | MissionBannerBlockSelect<T>;
-        'form-custom'?: T | FormCustomBlockSelect<T>;
         'box-card'?: T | BoxCardBlockSelect<T>;
         'formula-card'?: T | FormulaCardBlockSelect<T>;
         'results-card'?: T | ResultsCardBlockSelect<T>;
@@ -6240,20 +5566,10 @@ export interface PagesSelect<T extends boolean = true> {
         'steps-card'?: T | StepsCardBlockSelect<T>;
         'symptoms-card'?: T | SymptomsCardBlockSelect<T>;
         'video-card'?: T | VideoCardBlockSelect<T>;
-        keyTakeaways?: T | KeyTakeawaysBlockSelect<T>;
-        faq?: T | FAQBlockSelect<T>;
-        dataTable?: T | DataTableBlockSelect<T>;
-        ctaBlock?: T | CtaBlockSelect<T>;
-        bulletList?: T | BulletListBlockSelect<T>;
-        'contact-form'?: T | ContactFormBlockSelect<T>;
-        'contact-info'?: T | ContactInfoBlockSelect<T>;
-        'contact-section'?: T | ContactSectionBlockSelect<T>;
         benefitsBanner?: T | BenefitsBannerBlockSelect<T>;
         stepsBanner?: T | StepsBannerBlockSelect<T>;
         productBanner?: T | ProductBannerBlockSelect<T>;
         accessBanner?: T | AccessBannerBlockSelect<T>;
-        productShowcase?: T | ProductShowcaseBlockSelect<T>;
-        earlyAccess?: T | EarlyAccessBlockSelect<T>;
         evolutionBand?: T | EvolutionBandBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         outcomesSection?: T | OutcomesSectionBlockSelect<T>;
@@ -6279,7 +5595,6 @@ export interface PagesSelect<T extends boolean = true> {
         orderStepNav?: T | OrderStepNavBlockSelect<T>;
         legalStrip?: T | LegalStripBlockSelect<T>;
         orderStepHero?: T | OrderStepHeroBlockSelect<T>;
-        trustSealsBar?: T | TrustSealsBarBlockSelect<T>;
         orderTimeline?: T | OrderTimelineBlockSelect<T>;
         formulaKit?: T | FormulaKitBlockSelect<T>;
         checkoutFaq?: T | CheckoutFaqBlockSelect<T>;
@@ -6330,31 +5645,6 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CallToActionBlock_select".
- */
-export interface CallToActionBlockSelect<T extends boolean = true> {
-  richText?: T;
-  links?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              localizedLabel?: T;
-              appearance?: T;
-            };
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
@@ -6377,111 +5667,6 @@ export interface ContentBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock_select".
- */
-export interface MediaBlockSelect<T extends boolean = true> {
-  media?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ArchiveBlock_select".
- */
-export interface ArchiveBlockSelect<T extends boolean = true> {
-  introContent?: T;
-  populateBy?: T;
-  relationTo?: T;
-  categories?: T;
-  limit?: T;
-  selectedDocs?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormBlock_select".
- */
-export interface FormBlockSelect<T extends boolean = true> {
-  form?: T;
-  enableIntro?: T;
-  introContent?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "WelcomeBannerBlock_select".
- */
-export interface WelcomeBannerBlockSelect<T extends boolean = true> {
-  logo?: T;
-  heading?: T;
-  description?: T;
-  backgroundImage?: T;
-  backgroundImageMobile?: T;
-  copyrightText?: T;
-  bannerLabels?:
-    | T
-    | {
-        textLabel?: T;
-        id?: T;
-      };
-  lineText?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DetailsBannerBlock_select".
- */
-export interface DetailsBannerBlockSelect<T extends boolean = true> {
-  heading?: T;
-  content?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        backgroundImage?: T;
-        backgroundImageMobile?: T;
-        imageContent?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MissionBannerBlock_select".
- */
-export interface MissionBannerBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  logo?: T;
-  copyright?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormCustomBlock_select".
- */
-export interface FormCustomBlockSelect<T extends boolean = true> {
-  heading?: T;
-  description?: T;
-  form?: T;
-  enableIntro?: T;
-  introContent?: T;
   id?: T;
   blockName?: T;
 }
@@ -6679,209 +5864,6 @@ export interface VideoCardBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "KeyTakeawaysBlock_select".
- */
-export interface KeyTakeawaysBlockSelect<T extends boolean = true> {
-  items?:
-    | T
-    | {
-        leadIn?: T;
-        explanation?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FAQBlock_select".
- */
-export interface FAQBlockSelect<T extends boolean = true> {
-  items?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "DataTableBlock_select".
- */
-export interface DataTableBlockSelect<T extends boolean = true> {
-  sectionTitle?: T;
-  variant?: T;
-  columnHeaders?:
-    | T
-    | {
-        label?: T;
-        id?: T;
-      };
-  rows?:
-    | T
-    | {
-        cells?:
-          | T
-          | {
-              value?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  highlightColumn?: T;
-  caption?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CtaBlock_select".
- */
-export interface CtaBlockSelect<T extends boolean = true> {
-  body?: T;
-  buttonUrl?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "BulletListBlock_select".
- */
-export interface BulletListBlockSelect<T extends boolean = true> {
-  sectionTitle?: T;
-  items?:
-    | T
-    | {
-        leadIn?: T;
-        body?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactFormBlock_select".
- */
-export interface ContactFormBlockSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  formTitle?: T;
-  formDescription?: T;
-  labels?:
-    | T
-    | {
-        firstName?: T;
-        lastName?: T;
-        email?: T;
-        message?: T;
-      };
-  placeholders?:
-    | T
-    | {
-        firstName?: T;
-        lastName?: T;
-        email?: T;
-        message?: T;
-      };
-  submitLabel?: T;
-  successMessage?: T;
-  errorMessage?: T;
-  recipientEmail?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactInfoBlock_select".
- */
-export interface ContactInfoBlockSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  phone?: T;
-  phoneLabel?: T;
-  email?: T;
-  emailLabel?: T;
-  address?: T;
-  addressLabel?: T;
-  hours?: T;
-  hoursLabel?: T;
-  socialLinks?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
-        id?: T;
-      };
-  socialsLabel?: T;
-  backgroundImage?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContactSectionBlock_select".
- */
-export interface ContactSectionBlockSelect<T extends boolean = true> {
-  form?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        formTitle?: T;
-        formDescription?: T;
-        labels?:
-          | T
-          | {
-              firstName?: T;
-              lastName?: T;
-              email?: T;
-              message?: T;
-            };
-        placeholders?:
-          | T
-          | {
-              firstName?: T;
-              lastName?: T;
-              email?: T;
-              message?: T;
-            };
-        submitLabel?: T;
-        successMessage?: T;
-        errorMessage?: T;
-        recipientEmail?: T;
-      };
-  info?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        phone?: T;
-        phoneLabel?: T;
-        email?: T;
-        emailLabel?: T;
-        address?: T;
-        addressLabel?: T;
-        hours?: T;
-        hoursLabel?: T;
-        socialLinks?:
-          | T
-          | {
-              platform?: T;
-              url?: T;
-              id?: T;
-            };
-        socialsLabel?: T;
-        backgroundImage?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BenefitsBannerBlock_select".
  */
 export interface BenefitsBannerBlockSelect<T extends boolean = true> {
@@ -6956,82 +5938,6 @@ export interface AccessBannerBlockSelect<T extends boolean = true> {
   formText?: T;
   buttonText?: T;
   form?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ProductShowcaseBlock_select".
- */
-export interface ProductShowcaseBlockSelect<T extends boolean = true> {
-  title?: T;
-  badge?: T;
-  panel?:
-    | T
-    | {
-        thumbnails?:
-          | T
-          | {
-              image?: T;
-              id?: T;
-            };
-      };
-  plans?:
-    | T
-    | {
-        badgeLabel?: T;
-        badgeHighlighted?: T;
-        cardTitle?: T;
-        features?:
-          | T
-          | {
-              text?: T;
-              highlighted?: T;
-              id?: T;
-            };
-        prices?:
-          | T
-          | {
-              durationLabel?: T;
-              priceLabel?: T;
-              perDayLabel?: T;
-              isDefault?: T;
-              id?: T;
-            };
-        buttonLabel?: T;
-        buttonLink?: T;
-        id?: T;
-      };
-  faqItems?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "EarlyAccessBlock_select".
- */
-export interface EarlyAccessBlockSelect<T extends boolean = true> {
-  title?: T;
-  subtitle?: T;
-  headline?: T;
-  buttonText?: T;
-  form?: T;
-  variants?:
-    | T
-    | {
-        variantKey?: T;
-        title?: T;
-        subtitle?: T;
-        headline?: T;
-        buttonText?: T;
-        id?: T;
-      };
   id?: T;
   blockName?: T;
 }
@@ -8018,22 +6924,6 @@ export interface OrderStepHeroBlockSelect<T extends boolean = true> {
         rating?: T;
         label?: T;
         shortLabel?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TrustSealsBarBlock_select".
- */
-export interface TrustSealsBarBlockSelect<T extends boolean = true> {
-  seals?:
-    | T
-    | {
-        type?: T;
-        rating?: T;
-        label?: T;
         id?: T;
       };
   id?: T;
@@ -9596,6 +8486,122 @@ export interface CodeBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'code';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KeyTakeawaysBlock".
+ */
+export interface KeyTakeawaysBlock {
+  items: {
+    /**
+     * Bold lead-in phrase, e.g. "Your microbiome filters everything you swallow."
+     */
+    leadIn: string;
+    /**
+     * Normal-weight explanation text, ideally 1–2 sentences.
+     */
+    explanation: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'keyTakeaways';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  items: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DataTableBlock".
+ */
+export interface DataTableBlock {
+  sectionTitle?: string | null;
+  variant: 'glossary' | 'comparison';
+  columnHeaders?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  rows: {
+    cells: {
+      value: string;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  /**
+   * Zero-based column index to visually emphasize. Used only for comparison tables.
+   */
+  highlightColumn?: number | null;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'dataTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock".
+ */
+export interface CtaBlock {
+  /**
+   * 1–3 sentences connecting the article topic to the NB1 kit. This is the only editable content.
+   */
+  body: string;
+  buttonUrl: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulletListBlock".
+ */
+export interface BulletListBlock {
+  sectionTitle?: string | null;
+  items: {
+    leadIn: string;
+    body: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bulletList';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
