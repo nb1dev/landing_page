@@ -318,6 +318,9 @@ export interface Page {
     | StandardsSectionBlock
     | PlansSectionBlock
     | CloseBandBlock
+    | FaqPageBlock
+    | LegalDocBlock
+    | ContactPageBlock
   )[];
   meta?: {
     /**
@@ -5580,6 +5583,270 @@ export interface CloseBandBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqPageBlock".
+ */
+export interface FaqPageBlock {
+  title: string;
+  subheading?: string | null;
+  /**
+   * Each group becomes a numbered section (01, 02 …, added automatically) and a category chip that jumps to it.
+   */
+  groups?:
+    | {
+        label: string;
+        items?:
+          | {
+              question: string;
+              answer?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  calloutHeading?: string | null;
+  calloutBody?: string | null;
+  calloutCtaLabel?: string | null;
+  calloutCtaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqPage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalDocBlock".
+ */
+export interface LegalDocBlock {
+  title: string;
+  subheading?: string | null;
+  showSummary?: boolean | null;
+  summaryHeading?: string | null;
+  summaryNote?: string | null;
+  /**
+   * One bullet per row. Each bullet is rich text (bold, links, etc.).
+   */
+  summaryItems?:
+    | {
+        text?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Section numbers (1, 2 …) and the sticky table of contents are generated automatically. Inside each section add content blocks: a "Clause" is auto-numbered 1.1, 1.2 …; a "Card" is a bordered box with no number (and can hold a table).
+   */
+  sections?:
+    | {
+        title: string;
+        /**
+         * Optional short label shown in the "On this page" list on the left. Leave empty to use the Section Title.
+         */
+        tocLabel?: string | null;
+        /**
+         * Leave empty for automatic numbering (1, 2 …). Set a custom badge like "6 — Annex" for an annex: it won't be auto-numbered, is hidden from the table of contents, and its clauses show "—" instead of a number.
+         */
+        numberLabel?: string | null;
+        /**
+         * Each item has a "Type" dropdown: Clause (auto-numbered 1.1) or Card (bordered box, optional table).
+         */
+        content?:
+          | {
+              /**
+               * Choose how this item is displayed.
+               */
+              type?: ('clause' | 'card' | 'form' | 'keyvalue' | 'definitions') | null;
+              /**
+               * Card / Key-Value card heading, or the form box title.
+               */
+              title?: string | null;
+              body?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              tableCaption?: string | null;
+              /**
+               * Add as many columns as you need. Order = left → right. First column aligns left, last right, the rest centered.
+               */
+              columns?:
+                | {
+                    heading?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              rows?:
+                | {
+                    /**
+                     * One cell per column, in the same order as the columns above.
+                     */
+                    cells?:
+                      | {
+                          value?: string | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              /**
+               * Small note below the table (card) or below the form box.
+               */
+              footnote?: string | null;
+              /**
+               * For "Key/Value card" and "Definition list". Left = label/term, Right = value/description (rich text).
+               */
+              pairRows?:
+                | {
+                    left: string;
+                    right?: {
+                      root: {
+                        type: string;
+                        children: {
+                          type: any;
+                          version: number;
+                          [k: string]: unknown;
+                        }[];
+                        direction: ('ltr' | 'rtl') | null;
+                        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                        indent: number;
+                        version: number;
+                      };
+                      [k: string]: unknown;
+                    } | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  calloutHeading?: string | null;
+  calloutBody?: string | null;
+  /**
+   * Label / value pairs (e.g. Controller, Address, Email).
+   */
+  calloutRows?:
+    | {
+        label: string;
+        value: string;
+        /**
+         * If set, the value becomes a link. e.g. mailto:support@nb1.com
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'legalDoc';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactPageBlock".
+ */
+export interface ContactPageBlock {
+  title: string;
+  subheading?: string | null;
+  methodsLabel?: string | null;
+  methods?:
+    | {
+        icon?: ('email' | 'chat' | 'location' | 'clock') | null;
+        title: string;
+        body?: string | null;
+        /**
+         * e.g. an email address shown as a link.
+         */
+        linkLabel?: string | null;
+        linkHref?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  legalLinks?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  formHeading?: string | null;
+  formNote?: string | null;
+  /**
+   * Submitting opens the visitor’s mail app addressed here (mailto).
+   */
+  recipientEmail: string;
+  /**
+   * Options for the "What’s it about?" dropdown.
+   */
+  topics?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  submitLabel?: string | null;
+  formHint?: string | null;
+  showName?: boolean | null;
+  nameLabel?: string | null;
+  namePlaceholder?: string | null;
+  showEmail?: boolean | null;
+  emailLabel?: string | null;
+  emailPlaceholder?: string | null;
+  showTopic?: boolean | null;
+  topicLabel?: string | null;
+  showOrder?: boolean | null;
+  orderLabel?: string | null;
+  orderPlaceholder?: string | null;
+  messageLabel?: string | null;
+  messagePlaceholder?: string | null;
+  calloutHeading?: string | null;
+  calloutBody?: string | null;
+  calloutCtaLabel?: string | null;
+  calloutCtaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactPage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -6039,6 +6306,9 @@ export interface PagesSelect<T extends boolean = true> {
         standardsSection?: T | StandardsSectionBlockSelect<T>;
         plansSection?: T | PlansSectionBlockSelect<T>;
         closeBand?: T | CloseBandBlockSelect<T>;
+        faqPage?: T | FaqPageBlockSelect<T>;
+        legalDoc?: T | LegalDocBlockSelect<T>;
+        contactPage?: T | ContactPageBlockSelect<T>;
       };
   meta?:
     | T
@@ -8390,6 +8660,160 @@ export interface CloseBandBlockSelect<T extends boolean = true> {
   subheading?: T;
   ctaLabel?: T;
   ctaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqPageBlock_select".
+ */
+export interface FaqPageBlockSelect<T extends boolean = true> {
+  title?: T;
+  subheading?: T;
+  groups?:
+    | T
+    | {
+        label?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  calloutHeading?: T;
+  calloutBody?: T;
+  calloutCtaLabel?: T;
+  calloutCtaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LegalDocBlock_select".
+ */
+export interface LegalDocBlockSelect<T extends boolean = true> {
+  title?: T;
+  subheading?: T;
+  showSummary?: T;
+  summaryHeading?: T;
+  summaryNote?: T;
+  summaryItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  sections?:
+    | T
+    | {
+        title?: T;
+        tocLabel?: T;
+        numberLabel?: T;
+        content?:
+          | T
+          | {
+              type?: T;
+              title?: T;
+              body?: T;
+              tableCaption?: T;
+              columns?:
+                | T
+                | {
+                    heading?: T;
+                    id?: T;
+                  };
+              rows?:
+                | T
+                | {
+                    cells?:
+                      | T
+                      | {
+                          value?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              footnote?: T;
+              pairRows?:
+                | T
+                | {
+                    left?: T;
+                    right?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  calloutHeading?: T;
+  calloutBody?: T;
+  calloutRows?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        href?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactPageBlock_select".
+ */
+export interface ContactPageBlockSelect<T extends boolean = true> {
+  title?: T;
+  subheading?: T;
+  methodsLabel?: T;
+  methods?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        linkLabel?: T;
+        linkHref?: T;
+        id?: T;
+      };
+  legalLinks?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  formHeading?: T;
+  formNote?: T;
+  recipientEmail?: T;
+  topics?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  submitLabel?: T;
+  formHint?: T;
+  showName?: T;
+  nameLabel?: T;
+  namePlaceholder?: T;
+  showEmail?: T;
+  emailLabel?: T;
+  emailPlaceholder?: T;
+  showTopic?: T;
+  topicLabel?: T;
+  showOrder?: T;
+  orderLabel?: T;
+  orderPlaceholder?: T;
+  messageLabel?: T;
+  messagePlaceholder?: T;
+  calloutHeading?: T;
+  calloutBody?: T;
+  calloutCtaLabel?: T;
+  calloutCtaHref?: T;
   id?: T;
   blockName?: T;
 }

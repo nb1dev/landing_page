@@ -94,6 +94,9 @@ import { ScienceBoardNewBlock } from '@/blocks/ScienceBoardNew/config'
 import { StandardsBlock } from '@/blocks/Standards/config'
 import { PlansBlock } from '@/blocks/Plans/config'
 import { CloseBandBlock } from '@/blocks/CloseBand/config'
+import { FaqPageBlock } from '@/blocks/FaqPage/config'
+import { LegalDocBlock } from '@/blocks/LegalDoc/config'
+import { ContactPageBlock } from '@/blocks/ContactPage/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -285,6 +288,9 @@ export const Pages: CollectionConfig<'pages'> = {
                 StandardsBlock,
                 PlansBlock,
                 CloseBandBlock,
+                FaqPageBlock,
+                LegalDocBlock,
+                ContactPageBlock,
               ],
               required: true,
               admin: { initCollapsed: true },
