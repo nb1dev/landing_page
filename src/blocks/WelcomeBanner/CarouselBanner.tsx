@@ -3,9 +3,11 @@
 import { useIsMobile } from '@/hooks/useIsMobile'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import type { WelcomeBannerBlock as WelcomeBannerBlockProps } from '@/payload-types'
-
-type Props = Pick<WelcomeBannerBlockProps, 'bannerLabels'>
+// The `welcome-banner` block was removed from the Pages collection, but
+// CarouselBanner is still used by the ProductBanner block — so it carries a
+// local shape for its labels instead of the (now-gone) WelcomeBannerBlock type.
+type BannerLabel = { id?: string | null; textLabel?: string | null }
+type Props = { bannerLabels?: BannerLabel[] | null }
 
 export const CarouselBanner: React.FC<Props> = ({ bannerLabels }) => {
   const isMobile = useIsMobile()

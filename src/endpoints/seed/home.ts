@@ -664,7 +664,8 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
           },
         },
       },
-    ],
+      // legacy demo layout uses `archive`/`cta` blocks that were removed from Pages config
+    ] as any,
     meta: {
       description: 'NB1 website',
       image: heroImage.id,
