@@ -85,6 +85,9 @@ import { ScienceBoardNewComponent } from './ScienceBoardNew/Component'
 import { StandardsComponent } from './Standards/Component'
 import { PlansComponent } from './Plans/Component'
 import { CloseBandComponent } from './CloseBand/Component'
+import { FaqPageComponent } from './FaqPage/Component'
+import { LegalDocComponent } from './LegalDoc/Component'
+import { ContactPageComponent } from './ContactPage/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
@@ -169,6 +172,9 @@ const blockComponents: Record<string, React.FC<any>> = {
   standardsSection: StandardsComponent,
   plansSection: PlansComponent,
   closeBand: CloseBandComponent,
+  faqPage: FaqPageComponent,
+  legalDoc: LegalDocComponent,
+  contactPage: ContactPageComponent,
 }
 
 export const RenderBlocks: React.FC<{
