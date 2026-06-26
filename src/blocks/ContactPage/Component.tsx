@@ -386,10 +386,9 @@ export const ContactPageComponent: React.FC<Props> = ({
           font-weight: 600;
           color: #0a8fb0;
           text-decoration: none;
-          border-bottom: 1px solid rgba(10, 143, 176, 0.35);
         }
         .ct-method a.ct-mail:hover {
-          border-bottom-color: #0a8fb0;
+          color: #0a8fb0;
         }
         .ct-legal-row {
           margin-top: 30px;
@@ -525,7 +524,7 @@ export const ContactPageComponent: React.FC<Props> = ({
 
         .lg-callout {
           max-width: 1180px;
-          margin: 0 auto;
+          margin: 0 auto 96px;
           background: #0e2740;
           border-radius: 18px;
           padding: 32px 36px;
