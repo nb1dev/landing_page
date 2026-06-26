@@ -495,8 +495,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 600;
         }
         .lg-sum-list li :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
 
         .lg-sec {
@@ -577,8 +577,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 600;
         }
         .lg-clause-body :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
 
         /* bordered card (no number) */
@@ -612,8 +612,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 600;
         }
         .lg-ctype-body :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
         .lg-ctable {
           width: 100%;
@@ -688,8 +688,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 700;
         }
         .lg-form-body :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
         .lg-form-note {
           margin: 16px 0 0;
@@ -749,8 +749,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 600;
         }
         .lg-drow .v :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
 
         /* definition list (Right to information …) */
@@ -793,8 +793,8 @@ export const LegalDocComponent: React.FC<Props> = ({
           font-weight: 600;
         }
         .lg-right .rd :global(a) {
-          color: #0a8fb0;
-          text-decoration: underline;
+          color: inherit;
+          text-decoration: none;
         }
 
         /* closing contact callout (dark box) */
@@ -850,10 +850,9 @@ export const LegalDocComponent: React.FC<Props> = ({
         .lg-callout a {
           color: #fff;
           text-decoration: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.4);
         }
         .lg-callout a:hover {
-          border-bottom-color: #fff;
+          color: #fff;
         }
 
         .lg-toc-m {
