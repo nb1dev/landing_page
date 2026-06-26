@@ -3,14 +3,9 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 import type { AppLocale } from '@/i18n/config'
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { WelcomeBannerBlock } from '@/blocks/WelcomeBanner/Component'
-import { DetailsBannerBlock } from '@/blocks/DetailsBanner/Component'
-import { MissionBannerBlock } from '@/blocks/MissionBanner/Component'
 import { FormCustomBlock } from '@/blocks/FormCostom/Component'
 import { BoxCardBlock } from '@/blocks/landingBlocks/BoxCard/Component'
 import { FormulaCardBlock } from './landingBlocks/FormulaCard/Component'
@@ -31,7 +26,6 @@ import { BenefitsBannerComponent } from './newLandingBlocks/BenefitsBanner/Compo
 import { StepsBannerComponent } from './newLandingBlocks/StepsBanner/Component'
 import { ProductBannerComponent } from './newLandingBlocks/ProductBanner/Component'
 import { AccessBannerComponent } from './newLandingBlocks/AccessBanner/Component'
-import { ProductShowcaseComponent } from './ProductShowcase/Component'
 import { EarlyAccessBlockComponent } from './EarlyAccessBlock/Component'
 import { EvolutionBandBlockComponent } from './EvolutionBandBlock/Component'
 import { HeroBannerComponent } from './newLandingBlocks/HeroBanner/Component'
@@ -90,14 +84,9 @@ import { LegalDocComponent } from './LegalDoc/Component'
 import { ContactPageComponent } from './ContactPage/Component'
 
 const blockComponents: Record<string, React.FC<any>> = {
-  archive: ArchiveBlock,
   content: ContentBlock,
-  cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-  'welcome-banner': WelcomeBannerBlock,
-  'details-banner': DetailsBannerBlock,
-  'mission-banner': MissionBannerBlock,
   'form-custom': FormCustomBlock,
   'box-card': BoxCardBlock,
   'formula-card': FormulaCardBlock,
@@ -118,7 +107,6 @@ const blockComponents: Record<string, React.FC<any>> = {
   stepsBanner: StepsBannerComponent,
   productBanner: ProductBannerComponent,
   accessBanner: AccessBannerComponent,
-  productShowcase: ProductShowcaseComponent,
   earlyAccess: EarlyAccessBlockComponent,
   evolutionBand: EvolutionBandBlockComponent,
   heroBanner: HeroBannerComponent,

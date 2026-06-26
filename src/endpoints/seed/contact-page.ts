@@ -50,7 +50,8 @@ export const contact: (args: ContactArgs) => RequiredDataFromCollectionSlug<'pag
           },
         },
       },
-    ],
+      // legacy `formBlock` seed; block removed from Pages config (real /contact uses the contactPage block in the DB)
+    ] as any,
     title: 'Contact',
   }
 }

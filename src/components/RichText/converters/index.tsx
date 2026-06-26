@@ -15,7 +15,6 @@ import { textConverter } from './textConverter'
 import type {
   BannerBlock as BannerBlockProps,
   MediaBlock as MediaBlockProps,
-  CallToActionBlock as CTABlockProps,
   KeyTakeawaysBlock as KeyTakeawaysBlockProps,
   FAQBlock as FAQBlockProps,
   DataTableBlock as DataTableBlockProps,
@@ -28,7 +27,6 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { CodeBlock } from '@/blocks/Code/Component'
 import type { CodeBlockProps } from '@/blocks/Code/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 
 // existing modules
 import { TableOfContentsComponent } from '@/blocks/TableOfContents/Component'
@@ -149,10 +147,6 @@ export function createJSXConverter({
 
       code: ({ node }: { node: SerializedBlockNode<CodeBlockProps> }) => (
         <CodeBlock className="col-start-2" {...node.fields} />
-      ),
-
-      cta: ({ node }: { node: SerializedBlockNode<CTABlockProps> }) => (
-        <CallToActionBlock {...node.fields} />
       ),
 
       tableOfContents: ({ node }: { node: SerializedBlockNode }) => {
