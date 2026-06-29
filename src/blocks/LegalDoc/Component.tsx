@@ -819,21 +819,17 @@ export const LegalDocComponent: React.FC<Props> = ({
           margin: 0 0 18px;
           max-width: 520px;
         }
+        /* Grid: etiket sütunu en geniş etikete göre büyür ama 140px'i geçmez
+           (fit-content); aşan etiketler alt satıra sarar. Değerler tek ortak x'te
+           hizalanır. display:contents ile her satırın b/span'i grid hücresi olur. */
         .lg-co-rows {
           display: grid;
-          gap: 10px;
+          grid-template-columns: fit-content(140px) 1fr;
+          column-gap: 20px;
+          align-items: start;
         }
         .lg-co-row {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          align-items: baseline;
-          font-size: 14px;
-          padding: 11px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.12);
-        }
-        .lg-co-row:first-child {
-          border-top: none;
+          display: contents;
         }
         .lg-co-row b {
           font-size: 11px;
@@ -841,11 +837,21 @@ export const LegalDocComponent: React.FC<Props> = ({
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: #13a6cc;
-          flex: none;
-          width: 104px;
+          padding: 12px 0 11px;
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+          white-space: normal;
+          overflow-wrap: anywhere;
         }
         .lg-co-row span {
+          font-size: 14px;
           color: rgba(255, 255, 255, 0.86);
+          padding: 11px 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.12);
+          min-width: 0;
+        }
+        .lg-co-row:first-child b,
+        .lg-co-row:first-child span {
+          border-top: none;
         }
         .lg-callout a {
           color: #fff;

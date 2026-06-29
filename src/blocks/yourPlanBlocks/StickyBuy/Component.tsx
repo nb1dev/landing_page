@@ -19,5 +19,11 @@ export const YpStickyBuyComponent: React.FC<YpStickyBuyBlockType & { locale?: st
     resolvePriceTokens(props.leftValue, currency, locale),
   ])
 
-  return <YpStickyBuyClient {...props} leftKey={leftKey} leftValue={leftValue} />
+  const rawHref = props.ctaHref || ''
+  const ctaHref =
+    rawHref && !rawHref.startsWith(`/${locale}`)
+      ? `/${locale}${rawHref.startsWith('/') ? '' : '/'}${rawHref}`
+      : rawHref
+
+  return <YpStickyBuyClient {...props} leftKey={leftKey} leftValue={leftValue} ctaHref={ctaHref} />
 }

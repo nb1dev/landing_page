@@ -17,6 +17,7 @@ type Props = {
   backgroundImage?: { url?: string | null } | null
   backgroundImageMobile?: { url?: string | null } | null
   trustItems?: TrustItem[] | null
+  locale?: string | null
 }
 
 export const HomepageHeroComponent: React.FC<Props> = ({
@@ -27,7 +28,13 @@ export const HomepageHeroComponent: React.FC<Props> = ({
   backgroundImage,
   backgroundImageMobile,
   trustItems,
+  locale,
 }) => {
+  const rawHref = ctaHref || ''
+  const localizedHref =
+    rawHref && locale && !rawHref.startsWith(`/${locale}`)
+      ? `/${locale}${rawHref.startsWith('/') ? '' : '/'}${rawHref}`
+      : rawHref || '#'
   const bgUrl = backgroundImage?.url ? getMediaUrl(backgroundImage.url) : ''
   const bgMobileUrl = backgroundImageMobile?.url ? getMediaUrl(backgroundImageMobile.url) : bgUrl
 
@@ -407,7 +414,7 @@ export const HomepageHeroComponent: React.FC<Props> = ({
               {subheading && <p className="hero-sub">{subheading}</p>}
               {ctaLabel && (
                 <div className="hero-cta">
-                  <a className="btn-pill" href={ctaHref ?? '#'}>
+                  <a className="btn-pill" href={localizedHref}>
                     {ctaLabel}
                   </a>
                 </div>
