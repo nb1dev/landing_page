@@ -94,6 +94,7 @@ import * as migration_20260626_081902_legal_keyvalue_definitions from './2026062
 import * as migration_20260626_084919_legal_section_number_label from './20260626_084919_legal_section_number_label';
 import * as migration_20260626_085918_legal_section_toc_label from './20260626_085918_legal_section_toc_label';
 import * as migration_20260626_122005_drop_unused_pages_blocks from './20260626_122005_drop_unused_pages_blocks';
+import * as migration_20260629_070111 from './20260629_070111';
 
 export const migrations = [
   {
@@ -574,6 +575,11 @@ export const migrations = [
   {
     up: migration_20260626_122005_drop_unused_pages_blocks.up,
     down: migration_20260626_122005_drop_unused_pages_blocks.down,
-    name: '20260626_122005_drop_unused_pages_blocks'
+    name: '20260626_122005_drop_unused_pages_blocks',
+  },
+  {
+    up: migration_20260629_070111.up,
+    down: migration_20260629_070111.down,
+    name: '20260629_070111'
   },
 ];
