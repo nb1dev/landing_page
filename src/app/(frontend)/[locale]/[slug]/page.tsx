@@ -58,7 +58,7 @@ export async function generateStaticParams() {
   // block data would otherwise crash the whole `next build` (prerender error). They're not
   // prerendered now (still reachable on-demand if ever needed); real pages are unaffected.
   const slugs = pages.docs
-    ?.filter((doc) => doc.slug && doc.slug !== 'home' && !/^test\b/i.test(doc.slug))
+    ?.filter((doc) => doc.slug && doc.slug !== 'home-page' && !/^test\b/i.test(doc.slug))
     .map((d) => d.slug) ?? []
 
   return slugs.flatMap((slug) =>
@@ -71,13 +71,13 @@ export async function generateStaticParams() {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { isEnabled: draft } = await draftMode()
-  const { slug = 'home', locale: localeParam } = await paramsPromise
+  const { slug = 'home-page', locale: localeParam } = await paramsPromise
 
   const locale: AppLocale = isAppLocale(localeParam) ? localeParam : 'en'
   const decodedSlug = decodeURIComponent(slug)
 
   const url =
-    `/${locale}/${decodedSlug === 'home' ? '' : decodedSlug}`.replace(/\/+$/, '') || `/${locale}`
+    `/${locale}/${decodedSlug === 'home-page' ? '' : decodedSlug}`.replace(/\/+$/, '') || `/${locale}`
 
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
@@ -86,7 +86,7 @@ export default async function Page({ params: paramsPromise }: Args) {
     locale,
   })
 
-  if (!page && decodedSlug === 'home') {
+  if (!page && decodedSlug === 'home-page') {
     page = homeStatic as any
   }
 
@@ -144,7 +144,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
-  const { slug = 'home', locale: localeParam } = await paramsPromise
+  const { slug = 'home-page', locale: localeParam } = await paramsPromise
   const locale: AppLocale = isAppLocale(localeParam) ? localeParam : 'en'
   const decodedSlug = decodeURIComponent(slug)
 
@@ -153,20 +153,20 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
     locale,
   })
 
-  if (!page && decodedSlug !== 'home') return {}
+  if (!page && decodedSlug !== 'home-page') return {}
 
   const siteURL = getServerSideURL()
 
   const metaCanonical = (page as any)?.meta?.canonicalURL as string | undefined
   const computedCanonical =
-    decodedSlug === 'home'
+    decodedSlug === 'home-page'
       ? new URL(`/${locale}`, siteURL).toString()
       : new URL(`/${locale}/${encodeURIComponent(decodedSlug)}`, siteURL).toString()
 
   const canonical = metaCanonical || computedCanonical
 
   const alternates =
-    decodedSlug === 'home'
+    decodedSlug === 'home-page'
       ? {
           languages: {
             'de-DE': new URL('/de', siteURL).toString(),
