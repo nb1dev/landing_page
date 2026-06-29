@@ -147,6 +147,7 @@ export const YpHeroBlock: Block = {
           name: 'url',
           label: 'URL',
           type: 'text',
+          localized: true,
           admin: { description: 'Destination link/anchor for the secondary link (e.g. "#components").' },
         },
       ],
