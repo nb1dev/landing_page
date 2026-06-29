@@ -2071,7 +2071,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     language={locale}
                     placeholder={t.address.addressPlaceholder}
                     value={a1}
-                    onValueChange={setA1}
+                    onValueChange={(v) => {
+                      setA1(v)
+                      // Clearing the street invalidates the address → reset postal code + city
+                      // and let autocomplete start fresh.
+                      if (!v.trim()) {
+                        setZip('')
+                        setCity('')
+                      }
+                    }}
                     onPick={handleAddressPick}
                     countries={COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null}
                     className={addrErr.a1 ? 'err' : ''}
