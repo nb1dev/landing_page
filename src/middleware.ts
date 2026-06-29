@@ -2,6 +2,28 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { appLocales, defaultLocale } from '@/i18n/config'
 
+// Maps ISO 3166-1 alpha-2 country codes → { locale, currency }
+// Countries not listed fall back to defaultLocale + EUR
+const GEO_MAP: Record<string, { locale: string; currency: string }> = {
+  CH: { locale: 'de', currency: 'CHF' }, // Switzerland
+  DE: { locale: 'de', currency: 'EUR' }, // Germany
+  AT: { locale: 'de', currency: 'EUR' }, // Austria
+  FR: { locale: 'fr', currency: 'EUR' }, // France
+  GB: { locale: 'en', currency: 'GBP' }, // United Kingdom
+}
+
+const LOCALE_COOKIE = 'nb1_locale'
+const CURRENCY_COOKIE = 'nb1_cur'
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
+
+function geoLocale(req: NextRequest): { locale: string; currency: string } {
+  // Vercel sets this header automatically; falls back to empty string locally
+  const country = req.headers.get('x-vercel-ip-country') ?? ''
+  const result = GEO_MAP[country] ?? { locale: defaultLocale, currency: 'EUR' }
+  console.log(`[geo] country=${country || '(none)'} → locale=${result.locale} currency=${result.currency}`)
+  return result
+}
+
 const ROOT_NON_LOCALIZED_ROUTES = ['/login'] as const
 
 const localePattern = appLocales.join('|')
@@ -134,9 +156,22 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
+  // Determine locale: honour an explicit cookie preference, otherwise use geo
+  const savedLocale = req.cookies.get(LOCALE_COOKIE)?.value
+  const isValidSaved = savedLocale && (appLocales as readonly string[]).includes(savedLocale)
+  const { locale: geoLoc, currency: geoCurrency } = geoLocale(req)
+  const targetLocale = isValidSaved ? savedLocale : geoLoc
+
   const url = req.nextUrl.clone()
-  url.pathname = `/${defaultLocale}${normalizedPath}`
-  return NextResponse.redirect(url, 307)
+  url.pathname = `/${targetLocale}${normalizedPath}`
+  const res = NextResponse.redirect(url, 307)
+
+  // Persist currency for the first visit (don't overwrite a manual selection)
+  if (!req.cookies.get(CURRENCY_COOKIE)) {
+    res.cookies.set(CURRENCY_COOKIE, geoCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+  }
+
+  return res
 }
 
 export const config = {

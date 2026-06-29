@@ -203,6 +203,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   function applyLang(lang: string) {
     setCurLang(lang)
     lsSet('nb1_lang', lang)
+    // Persist in a cookie so middleware can respect manual locale choice
+    // on return visits to a bare path like '/'
+    try {
+      document.cookie = `nb1_locale=${lang}; path=/; max-age=31536000; samesite=lax`
+    } catch { /* noop */ }
     document.documentElement.setAttribute('lang', lang)
     // Navigate to the same page under the new locale
     // pathname is like /en/some-slug — swap the first segment
