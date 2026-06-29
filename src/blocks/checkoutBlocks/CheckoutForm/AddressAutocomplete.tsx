@@ -198,10 +198,10 @@ export default function AddressAutocomplete({
           }}
         >
           {loadingPred && (
-            <div style={{ padding: '10px 12px', fontSize: 13, color: '#6b7280' }}>…</div>
+            <div style={{ padding: '10px 14px', fontSize: 14, color: 'rgba(18,49,77,0.55)', fontFamily: "'Inter', sans-serif" }}>…</div>
           )}
           {!loadingPred && predictions.length === 0 && (
-            <div style={{ padding: '10px 12px', fontSize: 13, color: '#6b7280' }}>No results</div>
+            <div style={{ padding: '10px 14px', fontSize: 14, color: 'rgba(18,49,77,0.55)', fontFamily: "'Inter', sans-serif" }}>No results</div>
           )}
           {!loadingPred &&
             predictions.map((p) => (
@@ -210,11 +210,16 @@ export default function AddressAutocomplete({
                 type="button"
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => pickPrediction(p)}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#f4f7fa')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#fff')}
                 style={{
+                  display: 'block',
                   width: '100%',
                   textAlign: 'left',
-                  padding: '10px 12px',
-                  fontSize: 14,
+                  padding: '11px 14px',
+                  fontSize: 15,
+                  color: '#12314d',
+                  fontFamily: "'Inter', sans-serif",
                   background: '#fff',
                   border: 'none',
                   cursor: 'pointer',
