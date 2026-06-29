@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getDictionary } from '@/i18n/getDictionary'
 
 type BgColorPreset = 'cream' | 'paper' | 'off' | 'navy' | 'navyDeep' | 'teal' | 'custom'
 type BgType = 'color' | 'image'
@@ -46,6 +47,7 @@ export type YpScienceBoardBlockType = {
   heading?: DefaultTypedEditorState | null
   lede?: DefaultTypedEditorState | null
   members?: Member[] | null
+  locale?: string
 }
 
 function imgUrl(img?: MediaLike) {
@@ -63,7 +65,9 @@ export const YpScienceBoardComponent: React.FC<YpScienceBoardBlockType> = ({
   heading,
   lede,
   members,
+  locale,
 }) => {
+  const dict = getDictionary(locale)
   const [revealed, setRevealed] = useState(false)
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
@@ -516,7 +520,7 @@ export const YpScienceBoardComponent: React.FC<YpScienceBoardBlockType> = ({
                   className="sb-card"
                   role="button"
                   tabIndex={0}
-                  aria-label={p.name ? `View bio: ${p.name}` : 'View bio'}
+                  aria-label={p.name ? `${dict.scienceBoard.viewBio}: ${p.name}` : dict.scienceBoard.viewBio}
                   onClick={() => open(i)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -528,7 +532,7 @@ export const YpScienceBoardComponent: React.FC<YpScienceBoardBlockType> = ({
                   <div className="sb-photo">
                     {ph && <img src={ph} alt={p.name || ''} />}
                     <div className="sb-hover">
-                      <span>View bio</span>
+                      <span>{dict.scienceBoard.viewBio}</span>
                     </div>
                   </div>
                   <div className="sb-body">

@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import RichText from '@/components/RichText'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { getDictionary } from '@/i18n/getDictionary'
 
 type BioParagraph = { paragraph?: string | null }
 
@@ -21,9 +22,11 @@ type Props = {
   heading?: any
   subheading?: string | null
   members?: Member[] | null
+  locale?: string
 }
 
-export const ScienceBoardNewComponent: React.FC<Props> = ({ heading, subheading, members }) => {
+export const ScienceBoardNewComponent: React.FC<Props> = ({ heading, subheading, members, locale }) => {
+  const dict = getDictionary(locale)
   const secRef = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
   const [openIdx, setOpenIdx] = useState<number | null>(null)
@@ -288,13 +291,13 @@ export const ScienceBoardNewComponent: React.FC<Props> = ({ heading, subheading,
                     className="sb-card"
                     role="button"
                     tabIndex={0}
-                    aria-label={`View bio: ${m.name}`}
+                    aria-label={`${dict.scienceBoard.viewBio}: ${m.name}`}
                     onClick={() => open(i)}
                     onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i) } }}
                   >
                     <div className="sb-photo">
                       {photoUrl && <img src={photoUrl} alt={m.name || ''} />}
-                      <div className="sb-hover"><span>View bio</span></div>
+                      <div className="sb-hover"><span>{dict.scienceBoard.viewBio}</span></div>
                     </div>
                     <div className="sb-body">
                       <div className="sb-name">{m.name}</div>
