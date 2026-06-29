@@ -185,7 +185,7 @@ export const LocaleSwitcher: React.FC<Props> = ({ locale, isDark = false, textCo
 
       {open && (
         <div className="nb1-lang-menu" role="listbox">
-          {SUPPORTED_LOCALES.filter((loc) => loc !== 'fr' && loc !== 'nl').map((loc) => (
+          {SUPPORTED_LOCALES.map((loc) => (
             <button
               key={loc}
               type="button"
