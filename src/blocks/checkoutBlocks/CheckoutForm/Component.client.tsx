@@ -13,6 +13,7 @@ import {
 } from '@stripe/react-stripe-js'
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
 import PhoneInput, { type Country } from 'react-phone-number-input'
+import AddressAutocomplete, { type GooglePlace } from './AddressAutocomplete'
 import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/lib/checkoutApi'
@@ -58,8 +59,6 @@ const COUNTRY_CODES: Record<string, string> = {
   'United Kingdom': 'GB',
   'United Arab Emirates': 'AE',
 }
-
-const PHONE_COUNTRIES: Country[] = ['DE', 'AT', 'NL', 'BE', 'FR', 'LU', 'IE', 'GB', 'AE']
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 
@@ -333,6 +332,24 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       /* noop */
     }
   }, [email, fn, ln, country, a1, a2, zip, city, phone, shipping, step, doneSteps])
+
+  // Fill the address fields from a Google Places selection: street → a1, postal_code → zip,
+  // locality → city. Country is left as whatever the user picked in the Country select.
+  const handleAddressPick = (place: GooglePlace) => {
+    const comps = place?.address_components || []
+    const get = (type: string) => comps.find((c) => c.types?.includes(type))?.long_name || ''
+    const route = get('route')
+    const num = get('street_number')
+    const line1 =
+      [route, num].filter(Boolean).join(' ').trim() ||
+      (place?.formatted_address || '').split(',')[0].trim()
+    const postal = get('postal_code')
+    const cityName =
+      get('locality') || get('postal_town') || get('administrative_area_level_2') || get('sublocality') || ''
+    if (line1) setA1(line1)
+    if (postal) setZip(postal)
+    if (cityName) setCity(cityName)
+  }
 
   /* wallet (Apple Pay / Google Pay) */
   const [paymentRequest, setPaymentRequest] = useState<ReturnType<
@@ -2033,7 +2050,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                   <select
                     id="nb1-country"
                     value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    onChange={(e) => {
+                      const next = e.target.value
+                      setCountry(next)
+                      // UAE has no postal codes, but the field is required → auto-fill 00000.
+                      // Leaving AE drops that placeholder so a real code is entered.
+                      if (COUNTRY_CODES[next] === 'AE') setZip('00000')
+                      else if (zip === '00000') setZip('')
+                    }}
                   >
                     {COUNTRIES.map((c) => (
                       <option key={c} value={c}>
@@ -2046,13 +2070,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
               <div className="nb1-frow full">
                 <div className="nb1-fg">
                   <label htmlFor="nb1-a1">{t.address.addressLabel}</label>
-                  <input
+                  <AddressAutocomplete
                     id="nb1-a1"
-                    type="text"
-                    autoComplete="address-line1"
+                    apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+                    language={locale}
                     placeholder={t.address.addressPlaceholder}
                     value={a1}
-                    onChange={(e) => setA1(e.target.value)}
+                    onValueChange={(v) => {
+                      setA1(v)
+                      // Clearing the street invalidates the address → reset postal code + city
+                      // and let autocomplete start fresh.
+                      if (!v.trim()) {
+                        // UAE keeps the 00000 placeholder (no postal codes); others clear.
+                        setZip(COUNTRY_CODES[country] === 'AE' ? '00000' : '')
+                        setCity('')
+                        setA2('')
+                      }
+                    }}
+                    onPick={handleAddressPick}
+                    countries={COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null}
                     className={addrErr.a1 ? 'err' : ''}
                   />
                   {addrErr.a1 && <span className="nb1-err">{addrErr.a1}</span>}
@@ -2108,13 +2144,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                   <div className="nb1-phone-wrap">
                     <PhoneInput
                       id="nb1-phone"
-                      countries={PHONE_COUNTRIES}
                       country={phoneCountry}
                       onCountryChange={(c) => setPhoneCountry(c ?? 'DE')}
                       value={phone}
                       onChange={(val) => setPhone(val ?? '')}
                       international
-                      countryCallingCodeEditable={false}
                       autoComplete="tel"
                       placeholder={t.address.phonePlaceholder}
                     />
@@ -2444,13 +2478,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       </label>
                       <div className="nb1-phone-wrap">
                         <PhoneInput
-                          countries={PHONE_COUNTRIES}
                           country={bPhoneCountry}
                           onCountryChange={(c) => setBPhoneCountry(c ?? 'DE')}
                           value={bPhone}
                           onChange={(val) => setBPhone(val ?? '')}
                           international
-                          countryCallingCodeEditable={false}
                           autoComplete="billing tel"
                           placeholder={t.address.phonePlaceholder}
                         />
