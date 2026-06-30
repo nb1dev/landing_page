@@ -8,9 +8,15 @@ type Props = {
   subheading?: string | null
   ctaLabel?: string | null
   ctaHref?: string | null
+  locale?: string | null
 }
 
-export const CloseBandComponent: React.FC<Props> = ({ heading, subheading, ctaLabel, ctaHref }) => {
+export const CloseBandComponent: React.FC<Props> = ({ heading, subheading, ctaLabel, ctaHref, locale }) => {
+  const rawHref = ctaHref || ''
+  const localizedHref =
+    rawHref && locale && !rawHref.startsWith(`/${locale}`)
+      ? `/${locale}${rawHref.startsWith('/') ? '' : '/'}${rawHref}`
+      : rawHref || '#'
   const secRef = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(false)
 
@@ -108,7 +114,7 @@ export const CloseBandComponent: React.FC<Props> = ({ heading, subheading, ctaLa
           )}
           {ctaLabel && (
             <a
-              href={ctaHref || '#'}
+              href={localizedHref}
               className={`cb-cta r-up${visible ? ' in' : ''}`}
               style={{ transitionDelay: '0.18s' }}
             >

@@ -22,6 +22,7 @@ export type YpStickyBuyBlockType = {
   leftValue?: string | null
   ctaLabel?: string | null
   ctaHref?: string | null
+  locale?: string | null
   showAfterSel?: string | null
   hideAtSel?: string | null
 }
@@ -42,7 +43,13 @@ export const YpStickyBuyClient: React.FC<YpStickyBuyBlockType> = ({
   ctaHref,
   showAfterSel,
   hideAtSel,
+  locale,
 }) => {
+  const rawHref = ctaHref || ''
+  const localizedHref =
+    rawHref && locale && !rawHref.startsWith(`/${locale}`)
+      ? `/${locale}${rawHref.startsWith('/') ? '' : '/'}${rawHref}`
+      : rawHref || '#'
   const [show, setShow] = useState(false)
   const [scrollingUp, setScrollingUp] = useState(false)
   const barRef = useRef<HTMLDivElement | null>(null)
@@ -260,7 +267,7 @@ export const YpStickyBuyClient: React.FC<YpStickyBuyBlockType> = ({
         {leftValue && <span className="nb1-sk-v">{leftValue}</span>}
       </div>
       {ctaLabel && (
-        <a className="nb1-sk-cta" href={ctaHref || '#'}>
+        <a className="nb1-sk-cta" href={localizedHref}>
           {ctaLabel}
         </a>
       )}
