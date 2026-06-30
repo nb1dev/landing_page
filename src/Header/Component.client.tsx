@@ -341,7 +341,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
               {navItems.map(({ link }, i) => {
                 if (!link) return null
                 const label = link.localizedLabel || link.label || ''
-                const href = link.url || '#'
+                const raw = link.url || ''
+                const href = raw && raw.startsWith('/') && !raw.startsWith(`/${curLang}`)
+                  ? `/${curLang}${raw}`
+                  : raw || '#'
                 return (
                   <a key={i} href={href} target={link.newTab ? '_blank' : undefined} rel={link.newTab ? 'noopener noreferrer' : undefined}>
                     {label}
@@ -430,8 +433,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
         {navItems.map(({ link }, i) => {
           if (!link) return null
           const label = link.localizedLabel || link.label || ''
+          const rawM = link.url || ''
+          const hrefM = rawM && rawM.startsWith('/') && !rawM.startsWith(`/${curLang}`)
+            ? `/${curLang}${rawM}`
+            : rawM || '#'
           return (
-            <a key={i} href={link.url || '#'} onClick={() => setSheetOpen(false)}>{label}</a>
+            <a key={i} href={hrefM} onClick={() => setSheetOpen(false)}>{label}</a>
           )
         })}
         {loginText && loginUrl && (
