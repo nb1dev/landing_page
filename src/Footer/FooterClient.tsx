@@ -56,6 +56,12 @@ export function FooterClient({
   const params = useParams()
   const variantParam = searchParams.get('v')
   const klaviyoFormId = params?.locale === 'de' ? 'SadZpb' : 'TPTv44'
+  const locale = (params?.locale as string) || 'en'
+  const localizeHref = (url?: string | null) => {
+    if (!url) return '#'
+    if (url.startsWith('/') && !url.startsWith(`/${locale}`)) return `/${locale}${url}`
+    return url
+  }
   const klaviyoContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -174,7 +180,7 @@ export function FooterClient({
               <nav className="nbf-col">
                 <h4>Explore</h4>
                 {exploreLinks.map((link, i) => (
-                  <a key={i} href={link.url || '#'}>{link.label}</a>
+                  <a key={i} href={localizeHref(link.url)}>{link.label}</a>
                 ))}
               </nav>
             )}
@@ -184,7 +190,7 @@ export function FooterClient({
               <nav className="nbf-col">
                 <h4>Get started</h4>
                 {getStartedLinks.map((link, i) => (
-                  <a key={i} href={link.url || '#'}>{link.label}</a>
+                  <a key={i} href={localizeHref(link.url)}>{link.label}</a>
                 ))}
               </nav>
             )}
@@ -195,7 +201,7 @@ export function FooterClient({
             {legalLinks.length > 0 && (
               <div className="nbf-legal">
                 {legalLinks.map((link, i) => (
-                  <a key={i} href={link.url ?? '#'}>{link.label}</a>
+                  <a key={i} href={localizeHref(link.url)}>{link.label}</a>
                 ))}
               </div>
             )}
