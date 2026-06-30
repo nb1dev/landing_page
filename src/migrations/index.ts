@@ -96,6 +96,7 @@ import * as migration_20260626_085918_legal_section_toc_label from './20260626_0
 import * as migration_20260626_122005_drop_unused_pages_blocks from './20260626_122005_drop_unused_pages_blocks';
 import * as migration_20260629_070111 from './20260629_070111';
 import * as migration_20260630_094013 from './20260630_094013';
+import * as migration_20260630_095807 from './20260630_095807';
 
 export const migrations = [
   {
@@ -586,6 +587,11 @@ export const migrations = [
   {
     up: migration_20260630_094013.up,
     down: migration_20260630_094013.down,
-    name: '20260630_094013'
+    name: '20260630_094013',
+  },
+  {
+    up: migration_20260630_095807.up,
+    down: migration_20260630_095807.down,
+    name: '20260630_095807'
   },
 ];
