@@ -59,8 +59,9 @@ export function FooterClient({
   const locale = (params?.locale as string) || 'en'
   const localizeHref = (url?: string | null) => {
     if (!url) return '#'
-    if (url.startsWith('/') && !url.startsWith(`/${locale}`)) return `/${locale}${url}`
-    return url
+    const isExternal = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('#')
+    if (isExternal || url.startsWith(`/${locale}`)) return url
+    return `/${locale}${url.startsWith('/') ? url : `/${url}`}`
   }
   const klaviyoContainerRef = useRef<HTMLDivElement>(null)
 
