@@ -342,8 +342,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 if (!link) return null
                 const label = link.localizedLabel || link.label || ''
                 const raw = link.url || ''
-                const href = raw && raw.startsWith('/') && !raw.startsWith(`/${curLang}`)
-                  ? `/${curLang}${raw}`
+                const isExternal = raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('#')
+                const href = raw && !isExternal && !raw.startsWith(`/${curLang}`)
+                  ? `/${curLang}${raw.startsWith('/') ? raw : `/${raw}`}`
                   : raw || '#'
                 return (
                   <a key={i} href={href} target={link.newTab ? '_blank' : undefined} rel={link.newTab ? 'noopener noreferrer' : undefined}>
@@ -434,8 +435,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           if (!link) return null
           const label = link.localizedLabel || link.label || ''
           const rawM = link.url || ''
-          const hrefM = rawM && rawM.startsWith('/') && !rawM.startsWith(`/${curLang}`)
-            ? `/${curLang}${rawM}`
+          const isExternalM = rawM.startsWith('http://') || rawM.startsWith('https://') || rawM.startsWith('#')
+          const hrefM = rawM && !isExternalM && !rawM.startsWith(`/${curLang}`)
+            ? `/${curLang}${rawM.startsWith('/') ? rawM : `/${rawM}`}`
             : rawM || '#'
           return (
             <a key={i} href={hrefM} onClick={() => setSheetOpen(false)}>{label}</a>
