@@ -41,6 +41,6 @@ export const PlansBlock: Block = {
       { name: 'title', type: 'text', localized: true },
       { name: 'description', type: 'text', localized: true },
     ]},
-    { name: 'compareRowsJson', type: 'textarea' },
+    { name: 'compareRowsJson', type: 'textarea', localized: true },
   ],
 }

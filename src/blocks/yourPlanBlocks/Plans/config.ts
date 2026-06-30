@@ -349,6 +349,7 @@ export const YpPlansBlock: Block = {
               name: 'features',
               label: 'Included rows',
               type: 'json',
+              localized: true,
               admin: {
                 components: {
                   Field: {
