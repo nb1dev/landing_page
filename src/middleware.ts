@@ -20,7 +20,6 @@ function geoLocale(req: NextRequest): { locale: string; currency: string } {
   // Vercel sets this header automatically; falls back to empty string locally
   const country = req.headers.get('x-vercel-ip-country') ?? ''
   const result = GEO_MAP[country] ?? { locale: defaultLocale, currency: 'EUR' }
-  console.log(`[geo] country=${country || '(none)'} → locale=${result.locale} currency=${result.currency}`)
   return result
 }
 
