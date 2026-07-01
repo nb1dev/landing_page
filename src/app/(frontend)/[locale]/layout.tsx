@@ -60,6 +60,10 @@ export default async function RootLayout({
     de: 'de-DE',
     fr: 'fr-FR',
     nl: 'nl-NL',
+    ch: 'de-CH',
+    be: 'nl-BE',
+    uk: 'en-GB',
+    uae: 'en-AE',
   }
   const ketchLang = ketchLocaleMap[locale] ?? locale
 
