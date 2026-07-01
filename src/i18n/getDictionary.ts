@@ -11,8 +11,15 @@ const dictionaries = {
   nl,
 } as const
 
+type DictLocale = keyof typeof dictionaries
+
+function toDictLocale(locale?: string): DictLocale {
+  if (locale === 'de' || locale === 'ch') return 'de'
+  if (locale === 'fr') return 'fr'
+  if (locale === 'nl' || locale === 'be') return 'nl'
+  return 'en' // en, uk, uae, unknown
+}
+
 export function getDictionary(locale?: string) {
-  const safeLocale: AppLocale =
-    locale === 'de' ? 'de' : locale === 'fr' ? 'fr' : locale === 'nl' ? 'nl' : defaultLocale
-  return dictionaries[safeLocale]
+  return dictionaries[toDictLocale(locale)]
 }
