@@ -9,7 +9,7 @@
  */
 import { cookies } from 'next/headers'
 
-export const CURRENCY_COOKIE = 'nb1_cur'
+export const CURRENCY_COOKIE = 'nb1_currency'
 
 export type CurrencyCode = 'EUR' | 'GBP' | 'AED' | 'CHF'
 
@@ -23,6 +23,24 @@ export const CURRENCIES: Array<[CurrencyCode, string, string]> = [
 export const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
   en: ['EUR', 'GBP', 'AED'],
   de: ['EUR', 'CHF'],
+  fr: ['EUR', 'CHF'],
+  nl: ['EUR'],
+  ch: ['CHF'],
+  be: ['EUR'],
+  uk: ['GBP'],
+  uae: ['AED'],
+}
+
+// Default currency for each locale path when no cookie is set
+const LOCALE_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
+  en: 'EUR',
+  de: 'EUR',
+  ch: 'CHF',
+  fr: 'EUR',
+  nl: 'EUR',
+  be: 'EUR',
+  uk: 'GBP',
+  uae: 'AED',
 }
 
 const DEFAULT_CURRENCY: CurrencyCode = 'EUR'
@@ -31,11 +49,12 @@ function isCurrencyCode(value: string): value is CurrencyCode {
   return CURRENCIES.some(([code]) => code === value)
 }
 
-/** Validate a currency against the allow-list for a given locale, falling back to EUR. */
+/** Validate a currency against the allow-list for a given locale, falling back to the locale's default. */
 export function resolveCurrency(value: string | undefined | null, locale: string): CurrencyCode {
+  const localDefault = LOCALE_DEFAULT_CURRENCY[locale] ?? DEFAULT_CURRENCY
   const allowed = LANG_CURRENCIES[locale] ?? CURRENCIES.map(([code]) => code)
   if (value && isCurrencyCode(value) && allowed.includes(value)) return value
-  return allowed.includes(DEFAULT_CURRENCY) ? DEFAULT_CURRENCY : allowed[0]
+  return localDefault
 }
 
 /**

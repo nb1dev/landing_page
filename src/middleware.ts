@@ -5,22 +5,26 @@ import { appLocales, defaultLocale } from '@/i18n/config'
 // Maps ISO 3166-1 alpha-2 country codes → { locale, currency }
 // Countries not listed fall back to defaultLocale + EUR
 const GEO_MAP: Record<string, { locale: string; currency: string }> = {
-  CH: { locale: 'de', currency: 'CHF' }, // Switzerland
+  CH: { locale: 'ch', currency: 'CHF' }, // Switzerland
   DE: { locale: 'de', currency: 'EUR' }, // Germany
   AT: { locale: 'de', currency: 'EUR' }, // Austria
   FR: { locale: 'fr', currency: 'EUR' }, // France
-  GB: { locale: 'en', currency: 'GBP' }, // United Kingdom
+  BE: { locale: 'be', currency: 'EUR' }, // Belgium
+  NL: { locale: 'nl', currency: 'EUR' }, // Netherlands
+  GB: { locale: 'uk', currency: 'GBP' }, // United Kingdom
+  AE: { locale: 'uae', currency: 'AED' }, // UAE
 }
 
 const LOCALE_COOKIE = 'nb1_locale'
-const CURRENCY_COOKIE = 'nb1_cur'
+const CURRENCY_COOKIE = 'nb1_currency'
+const COUNTRY_COOKIE = 'nb1_country'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
-function geoLocale(req: NextRequest): { locale: string; currency: string } {
+function geoLocale(req: NextRequest): { locale: string; currency: string; country: string } {
   // Vercel sets this header automatically; falls back to empty string locally
   const country = req.headers.get('x-vercel-ip-country') ?? ''
   const result = GEO_MAP[country] ?? { locale: defaultLocale, currency: 'EUR' }
-  return result
+  return { ...result, country }
 }
 
 const ROOT_NON_LOCALIZED_ROUTES = ['/login'] as const
@@ -151,23 +155,34 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  const { locale: geoLoc, currency: geoCurrency, country: geoCountry } = geoLocale(req)
+
   if (isLocalePath(normalizedPath)) {
-    return NextResponse.next()
+    const res = NextResponse.next()
+    // Set geo cookies even on direct locale-path hits so the switcher can read them
+    if (!req.cookies.get(COUNTRY_COOKIE) && geoCountry) {
+      res.cookies.set(COUNTRY_COOKIE, geoCountry, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+    }
+    if (!req.cookies.get(CURRENCY_COOKIE)) {
+      res.cookies.set(CURRENCY_COOKIE, geoCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+    }
+    return res
   }
 
   // Determine locale: honour an explicit cookie preference, otherwise use geo
   const savedLocale = req.cookies.get(LOCALE_COOKIE)?.value
   const isValidSaved = savedLocale && (appLocales as readonly string[]).includes(savedLocale)
-  const { locale: geoLoc, currency: geoCurrency } = geoLocale(req)
   const targetLocale = isValidSaved ? savedLocale : geoLoc
 
   const url = req.nextUrl.clone()
   url.pathname = `/${targetLocale}${normalizedPath}`
   const res = NextResponse.redirect(url, 307)
 
-  // Persist currency for the first visit (don't overwrite a manual selection)
   if (!req.cookies.get(CURRENCY_COOKIE)) {
     res.cookies.set(CURRENCY_COOKIE, geoCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+  }
+  if (!req.cookies.get(COUNTRY_COOKIE) && geoCountry) {
+    res.cookies.set(COUNTRY_COOKIE, geoCountry, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
   }
 
   return res

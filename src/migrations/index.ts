@@ -97,6 +97,7 @@ import * as migration_20260626_122005_drop_unused_pages_blocks from './20260626_
 import * as migration_20260629_070111 from './20260629_070111';
 import * as migration_20260630_094013 from './20260630_094013';
 import * as migration_20260630_095807 from './20260630_095807';
+import * as migration_20260630_120603_add_locales_ch_be_uk_uae from './20260630_120603_add_locales_ch_be_uk_uae';
 
 export const migrations = [
   {
@@ -592,6 +593,11 @@ export const migrations = [
   {
     up: migration_20260630_095807.up,
     down: migration_20260630_095807.down,
-    name: '20260630_095807'
+    name: '20260630_095807',
+  },
+  {
+    up: migration_20260630_120603_add_locales_ch_be_uk_uae.up,
+    down: migration_20260630_120603_add_locales_ch_be_uk_uae.down,
+    name: '20260630_120603_add_locales_ch_be_uk_uae'
   },
 ];
