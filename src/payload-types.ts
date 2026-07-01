@@ -120,8 +120,8 @@ export interface Config {
     | ('false' | 'none' | 'null')
     | false
     | null
-    | ('en' | 'de' | 'fr' | 'nl')
-    | ('en' | 'de' | 'fr' | 'nl')[];
+    | ('en' | 'de' | 'fr' | 'nl' | 'ch' | 'be' | 'uk' | 'uae')
+    | ('en' | 'de' | 'fr' | 'nl' | 'ch' | 'be' | 'uk' | 'uae')[];
   globals: {
     navigation: Navigation;
     'site-settings': SiteSetting;
@@ -132,7 +132,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
   };
-  locale: 'en' | 'de' | 'fr' | 'nl';
+  locale: 'en' | 'de' | 'fr' | 'nl' | 'ch' | 'be' | 'uk' | 'uae';
   user: User & {
     collection: 'users';
   };

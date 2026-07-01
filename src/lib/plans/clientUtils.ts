@@ -50,14 +50,25 @@ const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
   en: ['EUR', 'GBP', 'AED'],
   de: ['EUR', 'CHF'],
   fr: ['EUR', 'CHF'],
-  nl: ['EUR', 'CHF'],
+  nl: ['EUR'],
+  ch: ['CHF'],
+  be: ['EUR'],
+  uk: ['GBP'],
+  uae: ['AED'],
+}
+
+const LOCALE_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
+  en: 'EUR', de: 'EUR', fr: 'EUR', nl: 'EUR',
+  ch: 'CHF', uk: 'GBP', uae: 'AED', be: 'EUR',
 }
 
 export function getClientCurrency(locale: string): CurrencyCode {
-  if (typeof document === 'undefined') return 'EUR'
-  const cookie = document.cookie.match(/nb1_cur=([^;]+)/)?.[1] as CurrencyCode | undefined
+  if (typeof document === 'undefined') return LOCALE_DEFAULT_CURRENCY[locale] ?? 'EUR'
+  const cookie = document.cookie.match(/nb1_currency=([^;]+)/)?.[1] as CurrencyCode | undefined
   const valid = LANG_CURRENCIES[locale] ?? (['EUR', 'GBP', 'AED', 'CHF'] as CurrencyCode[])
-  return cookie && valid.includes(cookie) ? cookie : 'EUR'
+  const result = cookie && valid.includes(cookie) ? cookie : (LOCALE_DEFAULT_CURRENCY[locale] ?? 'EUR')
+  console.log('[getClientCurrency]', { locale, cookie, valid, result })
+  return result
 }
 
 export function formatPrice(amount: number, currency: CurrencyCode, locale: string): string {

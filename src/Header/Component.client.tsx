@@ -54,7 +54,7 @@ const DEFAULT_LANGS: Array<[string, string]> = [
   ['en', 'English'],
   ['de', 'Deutsch'],
   ['fr', 'Français'],
-  ['nl', 'Nederlands'],
+  ['nl', 'Dutch'],
 ]
 const DEFAULT_CURRENCIES: Array<[string, string, string]> = [
   ['EUR', '€', 'Euro'],
@@ -66,7 +66,43 @@ const DEFAULT_LANG_CURRENCIES: Record<string, string[]> = {
   en: ['EUR', 'GBP', 'AED'],
   de: ['EUR', 'CHF'],
   fr: ['EUR', 'CHF'],
-  nl: ['EUR', 'CHF'],
+  nl: ['EUR'],
+}
+
+// Maps locale path segments that aren't themselves display languages back to their language
+const LOCALE_TO_LANG: Record<string, string> = {
+  ch: 'de',
+  uk: 'en',
+  uae: 'en',
+  be: 'nl',
+}
+
+// Fixed default currency per locale — overrides cookie when the cookie value isn't valid for that locale
+const LOCALE_DEFAULT_CURRENCY: Record<string, string> = {
+  ch: 'CHF',
+  uk: 'GBP',
+  uae: 'AED',
+  be: 'EUR',
+  nl: 'EUR',
+  fr: 'EUR',
+  de: 'EUR',
+  en: 'EUR',
+}
+
+// Currencies allowed per locale
+const LOCALE_ALLOWED_CURRENCIES: Record<string, string[]> = {
+  en: ['EUR', 'GBP', 'AED'],
+  de: ['EUR', 'CHF'],
+  fr: ['EUR', 'CHF'],
+  nl: ['EUR'],
+  ch: ['CHF'],
+  be: ['EUR'],
+  uk: ['GBP'],
+  uae: ['AED'],
+}
+
+function localeToLang(locale: string): string {
+  return LOCALE_TO_LANG[locale] ?? locale
 }
 
 function lsGet(k: string, d: string) {
@@ -159,7 +195,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   // always reflects the page the user is actually on, regardless of localStorage.
   const langFromPath = pathname.split('/')[1]
   const validLangCodes = langs.map(([code]) => code)
-  const activeLang = validLangCodes.includes(langFromPath) ? langFromPath : (locale || 'en')
+  const resolvedLang = localeToLang(langFromPath)
+  const activeLang = validLangCodes.includes(resolvedLang) ? resolvedLang : localeToLang(locale || 'en')
   const dict = getDictionary(activeLang)
   const [curLang, setCurLang] = useState(activeLang)
   useEffect(() => {
@@ -169,6 +206,23 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
   // Seeded from the server-resolved cookie value (not localStorage) so this
   // matches the SSR HTML exactly — see initialCurrency prop doc above.
   const [curCur, setCurCur] = useState(initialCurrency || 'EUR')
+  // On mount, sync curCur from cookie — but validate it against the current locale.
+  // If the cookie currency isn't allowed for this locale, use the locale's default.
+  useEffect(() => {
+    try {
+      const currentLocale = pathname.split('/')[1] || 'en'
+      const allowed = LOCALE_ALLOWED_CURRENCIES[currentLocale]
+      const localDefault = LOCALE_DEFAULT_CURRENCY[currentLocale]
+      const match = document.cookie.match(/(?:^|; )nb1_currency=([^;]*)/)
+      const cookieCur = match ? decodeURIComponent(match[1]) : ''
+      const resolved = cookieCur && allowed?.includes(cookieCur) ? cookieCur : (localDefault || 'EUR')
+      if (resolved !== curCur) setCurCur(resolved)
+      // Always write back so the next locale page sees the correct currency in the cookie
+      if (resolved !== cookieCur) {
+        document.cookie = `nb1_currency=${resolved}; path=/; max-age=31536000; samesite=lax`
+      }
+    } catch { /* noop */ }
+  }, [pathname])
   // Pending selections — only committed when Apply is clicked.
   // Initialised to match current applied values; reset again whenever the menu opens.
   const [pendingLang, setPendingLang] = useState(activeLang)
@@ -200,32 +254,59 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     return () => document.removeEventListener('click', handler)
   }, [])
 
+  function resolveTargetLocale(lang: string, cur: string): string {
+    if (lang === 'en') {
+      if (cur === 'GBP') return 'uk'
+      if (cur === 'AED') return 'uae'
+      return 'en'
+    }
+    if (lang === 'de') {
+      if (cur === 'CHF') return 'ch'
+      return 'de'
+    }
+    if (lang === 'fr') return 'fr'
+    if (lang === 'nl') {
+      // Resolve nl vs be via geo country cookie; if neither, fall back to nl
+      const country = (() => {
+        try { return document.cookie.match(/(?:^|; )nb1_country=([^;]*)/)?.[1] || '' } catch { return '' }
+      })()
+      if (country === 'BE') return 'be'
+      return 'nl'
+    }
+    return 'en'
+  }
+
   function applyLang(lang: string) {
+    const targetLocale = resolveTargetLocale(lang, pendingCur)
+    // Use pendingCur if it's valid for the target locale, otherwise fall back to locale default.
+    // This lets FR+CHF work while still resetting e.g. GBP→EUR when switching to French.
+    const allowed = LOCALE_ALLOWED_CURRENCIES[targetLocale]
+    const targetCurrency = allowed && allowed.includes(pendingCur)
+      ? pendingCur
+      : (LOCALE_DEFAULT_CURRENCY[targetLocale] ?? pendingCur)
     setCurLang(lang)
     lsSet('nb1_lang', lang)
-    // Persist in a cookie so middleware can respect manual locale choice
-    // on return visits to a bare path like '/'
+    lsSet('nb1_currency', targetCurrency)
     try {
-      document.cookie = `nb1_locale=${lang}; path=/; max-age=31536000; samesite=lax`
+      document.cookie = `nb1_locale=${targetLocale}; path=/; max-age=31536000; samesite=lax`
+      document.cookie = `nb1_currency=${targetCurrency}; path=/; max-age=31536000; samesite=lax`
     } catch { /* noop */ }
     document.documentElement.setAttribute('lang', lang)
-    // Navigate to the same page under the new locale
-    // pathname is like /en/some-slug — swap the first segment
     const segments = pathname.split('/')
-    segments[1] = lang
-    router.push(segments.join('/'))
+    segments[1] = targetLocale
+    window.location.href = segments.join('/')
     setLocOpen(false)
   }
   function applyCur(cur: string) {
     setCurCur(cur)
-    lsSet('nb1_cur', cur)
+    lsSet('nb1_currency', cur)
     // Mirror the selection into a cookie so server components (e.g. live
     // pricing blocks) can read it on the next render — localStorage isn't
     // visible to the server. router.refresh() re-renders server components
     // with the new cookie value without a full page reload or losing the
     // client state of components further down the tree.
     try {
-      document.cookie = `nb1_cur=${cur}; path=/; max-age=31536000; samesite=lax`
+      document.cookie = `nb1_currency=${cur}; path=/; max-age=31536000; samesite=lax`
     } catch {
       /* noop */
     }
@@ -397,7 +478,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                     </button>
                   ))}
                 </div>
-                <button type="button" className="nb1-loc-done" onClick={() => { applyLang(pendingLang); applyCur(pendingCur); setLocOpen(false) }}>{dict.header.apply}</button>
+                <button type="button" className="nb1-loc-done" onClick={() => { applyLang(pendingLang); setLocOpen(false) }}>{dict.header.apply}</button>
               </div>
             </div>
 
@@ -509,7 +590,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           <button
             type="button"
             className="nb1-loc-done"
-            onClick={() => { applyLang(pendingLang); applyCur(pendingCur); setLocPopOpen(false); locPopTriggerRef.current?.focus() }}
+            onClick={() => { applyLang(pendingLang); setLocPopOpen(false); locPopTriggerRef.current?.focus() }}
           >
             {dict.header.apply}
           </button>
