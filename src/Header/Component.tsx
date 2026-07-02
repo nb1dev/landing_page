@@ -76,8 +76,12 @@ export async function Header({ locale, id }: Props) {
                 label: item.link.label ?? null,
                 localizedLabel: item.link.localizedLabel ?? null,
                 url: (() => {
-                  const customUrl = (item.link as any).url
-                  if (customUrl) return customUrl
+                  const linkType = (item.link as any).type
+                  if (linkType === 'custom') {
+                    const customUrl = (item.link as any).url
+                    return customUrl ?? null
+                  }
+                  // Internal link — resolve the referenced page's localized slug
                   const rawSlug = (item.link as any).reference?.value?.slug
                   if (!rawSlug) return null
                   const slug = typeof rawSlug === 'string' ? rawSlug : (rawSlug as any)?.[locale] ?? (rawSlug as any)?.['en']
