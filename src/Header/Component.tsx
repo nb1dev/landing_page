@@ -78,14 +78,22 @@ export async function Header({ locale, id }: Props) {
                 url: (() => {
                   const linkType = (item.link as any).type
                   if (linkType === 'custom') {
-                    const customUrl = (item.link as any).url
-                    return customUrl ?? null
+                    const customUrl = (item.link as any).url as string | null | undefined
+                    if (!customUrl) return null
+                    // Ensure absolute path — a relative value like 'be/slug' would
+                    // resolve incorrectly in the browser relative to the current locale URL.
+                    return customUrl.startsWith('/') || customUrl.startsWith('http') ? customUrl : `/${customUrl}`
                   }
-                  // Internal link — resolve the referenced page's localized slug
-                  const rawSlug = (item.link as any).reference?.value?.slug
+                  // Internal link — resolve the referenced page's localized slug.
+                  // Payload returns polymorphic relationships as { relationTo, value }
+                  // but guard against direct-document population as well.
+                  const ref = (item.link as any).reference
+                  const refDoc = ref?.value ?? ref
+                  const rawSlug = typeof refDoc === 'object' && refDoc !== null ? refDoc.slug : undefined
                   if (!rawSlug) return null
                   const slug = typeof rawSlug === 'string' ? rawSlug : (rawSlug as any)?.[locale] ?? (rawSlug as any)?.['en']
-                  return slug ? `/${locale}/${slug}` : null
+                  if (!slug || slug === 'home-page') return `/${locale}`
+                  return `/${locale}/${slug}`
                 })(),
                 newTab: (item.link as any).newTab ?? null,
               }
