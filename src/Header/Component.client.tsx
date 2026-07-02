@@ -431,8 +431,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
                 const label = link.localizedLabel || link.label || ''
                 const raw = link.url || ''
                 const isExternal = raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('#')
-                const href = raw && !isExternal && !raw.startsWith(`/${curLang}`)
-                  ? `/${curLang}${raw.startsWith('/') ? raw : `/${raw}`}`
+                // Use the locale from the URL path (e.g. 'be'), not curLang (e.g. 'nl'),
+                // to avoid double-prefixing when locale differs from language code.
+                const localeFromPath = pathname.split('/')[1] || locale
+                const href = raw && !isExternal && !raw.startsWith(`/${localeFromPath}`)
+                  ? `/${localeFromPath}${raw.startsWith('/') ? raw : `/${raw}`}`
                   : raw || '#'
                 return (
                   <a key={i} href={href} target={link.newTab ? '_blank' : undefined} rel={link.newTab ? 'noopener noreferrer' : undefined}>
@@ -524,8 +527,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
           const label = link.localizedLabel || link.label || ''
           const rawM = link.url || ''
           const isExternalM = rawM.startsWith('http://') || rawM.startsWith('https://') || rawM.startsWith('#')
-          const hrefM = rawM && !isExternalM && !rawM.startsWith(`/${curLang}`)
-            ? `/${curLang}${rawM.startsWith('/') ? rawM : `/${rawM}`}`
+          const localeFromPathM = pathname.split('/')[1] || locale
+          const hrefM = rawM && !isExternalM && !rawM.startsWith(`/${localeFromPathM}`)
+            ? `/${localeFromPathM}${rawM.startsWith('/') ? rawM : `/${rawM}`}`
             : rawM || '#'
           return (
             <a key={i} href={hrefM} onClick={() => setSheetOpen(false)}>{label}</a>
