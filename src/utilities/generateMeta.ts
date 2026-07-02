@@ -17,31 +17,34 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   return url
 }
 
-/**
- * Build a clean canonical URL:
- * - absolute
- * - no query params
- * - trailing slash handled by Next config
- */
-function buildCanonicalURL(doc: Partial<Page> | Partial<Post> | null) {
+function buildCanonicalURL(doc: Partial<Page> | Partial<Post> | null, locale?: string) {
   const base = getServerSideURL()
+  const localePath = locale ? `/${locale}` : ''
 
-  if (!doc?.slug) return base
+  if (!doc?.slug) return `${base}${localePath}`
 
-  // slug can be string or string[] depending on setup
-  const path = Array.isArray(doc.slug) ? doc.slug.join('/') : doc.slug
+  // Slug may be a localized object { en: '...', de: '...' } or a plain string
+  const rawSlug = doc.slug as unknown
+  const slug =
+    typeof rawSlug === 'string'
+      ? rawSlug
+      : typeof rawSlug === 'object' && rawSlug !== null
+        ? ((rawSlug as Record<string, string>)[locale ?? 'en'] ?? (rawSlug as Record<string, string>)['en'])
+        : null
 
-  // ensure leading slash
-  return `${base}/${path}`.replace(/\/+/g, '/').replace(':/', '://')
+  if (!slug || slug === 'home' || slug === 'home-page') return `${base}${localePath}`
+
+  return `${base}${localePath}/${slug}`.replace(/\/+/g, '/').replace(':/', '://')
 }
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
+  locale?: string
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, locale } = args
 
   const ogImage = getImageURL(doc?.meta?.image)
-  const canonical = buildCanonicalURL(doc)
+  const canonical = buildCanonicalURL(doc, locale)
 
   const title = doc?.meta?.title ? doc.meta.title + ' | NB1' : 'NB1'
 
@@ -49,7 +52,6 @@ export const generateMeta = async (args: {
     title,
     description: doc?.meta?.description,
 
-    // ✅ canonical without query params
     alternates: {
       canonical,
     },
@@ -57,7 +59,7 @@ export const generateMeta = async (args: {
     openGraph: mergeOpenGraph({
       title,
       description: doc?.meta?.description || '',
-      url: canonical, // ✅ og:url must be canonical
+      url: canonical,
       images: ogImage
         ? [
             {

@@ -3,13 +3,9 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
 
-const LOCALES = ['en', 'de', 'fr', 'nl'] as const
-type AppLocale = (typeof LOCALES)[number] // "en" | "de" | "fr"
-type PayloadLocale = AppLocale | 'all'
+import { isAppLocale, type AppLocale } from '@/i18n/config'
 
-function isAppLocale(value: string): value is AppLocale {
-  return (LOCALES as readonly string[]).includes(value)
-}
+type PayloadLocale = AppLocale | 'all'
 
 function getSiteURL() {
   const raw =

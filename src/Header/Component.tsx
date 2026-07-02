@@ -75,7 +75,14 @@ export async function Header({ locale, id }: Props) {
             ? {
                 label: item.link.label ?? null,
                 localizedLabel: item.link.localizedLabel ?? null,
-                url: (item.link as any).url ?? (item.link as any).reference?.value?.slug ?? null,
+                url: (() => {
+                  const customUrl = (item.link as any).url
+                  if (customUrl) return customUrl
+                  const rawSlug = (item.link as any).reference?.value?.slug
+                  if (!rawSlug) return null
+                  const slug = typeof rawSlug === 'string' ? rawSlug : (rawSlug as any)?.[locale] ?? (rawSlug as any)?.['en']
+                  return slug ? `/${locale}/${slug}` : null
+                })(),
                 newTab: (item.link as any).newTab ?? null,
               }
             : null,

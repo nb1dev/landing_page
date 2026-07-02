@@ -8,7 +8,7 @@ const collectionPrefixMap: Partial<Record<CollectionSlug, string>> = {
 
 type Props = {
   collection: keyof typeof collectionPrefixMap
-  slug: string
+  slug: string | Partial<Record<string, string>> | null | undefined
   req: PayloadRequest
 }
 
@@ -37,11 +37,16 @@ function getFrontendURL(): string {
 export const generatePreviewPath = ({ collection, slug, req }: Props) => {
   if (slug === undefined || slug === null) return null
 
-  const cleanSlug = String(slug)
+  const locale = getLocale(req)
+  const resolvedSlug =
+    typeof slug === 'string'
+      ? slug
+      : (slug[locale] ?? slug['en'] ?? '')
+
+  const cleanSlug = resolvedSlug
     .trim()
     .replace(/^\/+|\/+$/g, '')
   const prefix = collectionPrefixMap[collection] ?? ''
-  const locale = getLocale(req)
 
   const path = `/${locale}${prefix}/${cleanSlug}`.replace(/\/+/g, '/')
 

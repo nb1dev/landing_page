@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
+import { appLocales } from '@/i18n/config'
 
-const LOCALES = ['en', 'de', 'fr', 'nl']
+const LOCALES = appLocales
 
 function normalizeSiteURL(raw?: string) {
   if (!raw) return 'http://localhost:3000'

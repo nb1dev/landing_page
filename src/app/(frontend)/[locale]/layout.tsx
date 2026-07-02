@@ -71,7 +71,7 @@ export default async function RootLayout({
 
   try {
     const site = await getSiteSettings(locale)
-    organizationJsonLd = ((site as any)?.organizationJsonLd ?? null) as JsonLdValue
+    organizationJsonLd = (site?.organizationJsonLd ?? null) as JsonLdValue
   } catch {
     organizationJsonLd = null
   }

@@ -365,7 +365,7 @@ export const Pages: CollectionConfig<'pages'> = {
       admin: { position: 'sidebar' },
     },
 
-    costomSlugField(),
+    costomSlugField({ localized: true, collection: 'pages' }),
   ],
 
   hooks: {
