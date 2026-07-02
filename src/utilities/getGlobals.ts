@@ -5,13 +5,9 @@ import { unstable_cache } from 'next/cache'
 
 type Global = keyof Config['globals']
 
-const LOCALES = ['en', 'de', 'fr', 'nl'] as const
-type AppLocale = (typeof LOCALES)[number]
-type PayloadLocale = AppLocale | 'all'
+import { isAppLocale, type AppLocale } from '@/i18n/config'
 
-function isAppLocale(v: string): v is AppLocale {
-  return (LOCALES as readonly string[]).includes(v)
-}
+type PayloadLocale = AppLocale | 'all'
 
 async function getGlobal(slug: Global, depth = 0, locale?: string) {
   const payload = await getPayload({ config: configPromise })

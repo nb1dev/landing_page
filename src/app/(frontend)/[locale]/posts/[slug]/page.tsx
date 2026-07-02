@@ -69,8 +69,15 @@ export default async function PostPage({ params: paramsPromise }: Args) {
 
   const siteURL = getServerSideURL()
   const jsonLd = buildPostSchema({ post, siteURL, locale })
-  const headings = extractHeadingsFromLexical(post.content as any, 'h3')
-  const populatedAuthors = (post as any).populatedAuthors || []
+  const headings = extractHeadingsFromLexical(post.content, 'h3')
+  const populatedAuthors = (post.populatedAuthors || [])
+    .filter((author) => Boolean(author.name))
+    .map((author) => ({
+      name: author.name as string,
+      slug: author.slug ?? undefined,
+      credentials: author.credentials ?? undefined,
+      avatarUrl: author.avatarUrl ?? undefined,
+    }))
 
   return (
     <>
@@ -133,7 +140,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   })
 
   return {
-    ...generateMeta({ doc: post }),
+    ...generateMeta({ doc: post, locale }),
     alternates: {
       canonical: new URL(`/${locale}/posts/${encodeURIComponent(decodedSlug)}`, siteURL).toString(),
       ...alternates,

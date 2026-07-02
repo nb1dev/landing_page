@@ -58,6 +58,40 @@ export function buildHreflangAlternates(args: {
 }
 
 /**
+ * Build hreflang alternates when each locale has its own translated slug.
+ * `slugsByLocale` is a map of locale → slug (e.g. `{ en: 'our-plans', de: 'unsere-plaene' }`).
+ * Falls back to the `en` slug for any locale not present in the map.
+ */
+export function buildHreflangForLocalizedSlugs(args: {
+  siteURL: string
+  slugsByLocale: Partial<Record<string, string>>
+  basePath?: string
+  trailingSlash?: boolean
+}) {
+  const { siteURL, slugsByLocale, basePath = '', trailingSlash = false } = args
+  const prefix = basePath ? `/${basePath}` : ''
+  const suffix = trailingSlash ? '/' : ''
+  const fallback = slugsByLocale['en'] ?? ''
+
+  const path = (locale: string) => {
+    const slug = slugsByLocale[locale] ?? fallback
+    return `/${locale}${prefix}/${encodeURIComponent(slug)}${suffix}`.replace(/\/+/g, '/')
+  }
+
+  return buildHreflangAlternates({
+    siteURL,
+    dePath: path('de'),
+    enPath: path('en'),
+    frPath: path('fr'),
+    nlPath: path('nl'),
+    chPath: path('ch'),
+    bePath: path('be'),
+    ukPath: path('uk'),
+    uaePath: path('uae'),
+  })
+}
+
+/**
  * Convenience helper when all locales share the same slug.
  */
 export function buildHreflangForSharedSlug(args: {

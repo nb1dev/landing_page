@@ -294,6 +294,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     document.documentElement.setAttribute('lang', lang)
     const segments = pathname.split('/')
     segments[1] = targetLocale
+    // If the page injected a per-locale slug map, use the target locale's slug
+    // instead of keeping the current locale's slug (which would 404 on the new locale).
+    const pageSlugs = (window as any).__NB1_PAGE_SLUGS__ as Partial<Record<string, string>> | undefined
+    if (pageSlugs) {
+      const targetSlug = pageSlugs[targetLocale] ?? pageSlugs['en']
+      if (targetSlug && segments[2] !== undefined) segments[2] = targetSlug
+    }
     window.location.href = segments.join('/')
     setLocOpen(false)
   }

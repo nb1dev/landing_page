@@ -2,16 +2,10 @@ import { getServerSideSitemap } from 'next-sitemap'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { unstable_cache } from 'next/cache'
-
-const LOCALES = ['en', 'de', 'fr', 'nl'] as const
-type AppLocale = (typeof LOCALES)[number] // "en" | "de" | "fr"
+import { isAppLocale, type AppLocale } from '@/i18n/config'
 
 // Payload types in your project also accept "all"
 type PayloadLocale = AppLocale | 'all'
-
-function isAppLocale(value: string): value is AppLocale {
-  return (LOCALES as readonly string[]).includes(value)
-}
 
 function getSiteURL() {
   const raw =
