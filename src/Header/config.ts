@@ -87,6 +87,7 @@ export const Headers: CollectionConfig = {
       name: 'ctaUrl',
       label: 'CTA Button URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'loginText',
