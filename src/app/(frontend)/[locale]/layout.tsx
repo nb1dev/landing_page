@@ -23,7 +23,7 @@ import '@fontsource/instrument-sans/600.css'
 import Script from 'next/script'
 
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
-import { ChatwootWidget } from '@/components/ChatwootWidget'
+// import { ChatwootWidget } from '@/components/ChatwootWidget' // Chatwoot disabled
 import StyledJsxRegistry from './registry'
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -329,7 +329,7 @@ export default async function RootLayout({
               `}
             </Script>
 
-            <ChatwootWidget locale={locale} />
+            {/* Chatwoot disabled — <ChatwootWidget locale={locale} /> */}
 
             <Script
               src="https://static.klaviyo.com/onsite/js/WwW2Hy/klaviyo.js?company_id=WwW2Hy"
