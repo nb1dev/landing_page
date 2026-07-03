@@ -78,6 +78,7 @@ export const OrderStepNav: Block = {
       name: 'backUrl',
       label: 'Back / Right Link URL',
       type: 'text',
+      localized: true,
     },
   ],
 }
