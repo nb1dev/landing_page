@@ -100,6 +100,7 @@ import * as migration_20260630_095807 from './20260630_095807';
 import * as migration_20260630_120603_add_locales_ch_be_uk_uae from './20260630_120603_add_locales_ch_be_uk_uae';
 import * as migration_20260701_075620 from './20260701_075620';
 import * as migration_20260703_072734 from './20260703_072734';
+import * as migration_20260703_074935 from './20260703_074935';
 
 export const migrations = [
   {
@@ -610,6 +611,11 @@ export const migrations = [
   {
     up: migration_20260703_072734.up,
     down: migration_20260703_072734.down,
-    name: '20260703_072734'
+    name: '20260703_072734',
+  },
+  {
+    up: migration_20260703_074935.up,
+    down: migration_20260703_074935.down,
+    name: '20260703_074935'
   },
 ];
