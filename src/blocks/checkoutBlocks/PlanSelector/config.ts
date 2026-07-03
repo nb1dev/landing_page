@@ -109,6 +109,7 @@ export const PlanSelector: Block = {
           type: 'text',
           label: 'CTA href',
           required: true,
+          localized: true,
         },
       ],
     },

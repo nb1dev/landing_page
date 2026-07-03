@@ -109,10 +109,14 @@ export default buildConfig({
   },
   localization: {
     locales: [
-      { code: 'en', label: 'English (EU)' },
-      { code: 'de', label: 'German' },
-      { code: 'fr', label: 'French' },
-      { code: 'nl', label: 'Dutch' },
+      { code: 'en', label: 'English (EU / Rest of World)' },
+      { code: 'de', label: 'German (Germany & Austria)' },
+      { code: 'fr', label: 'French (France)' },
+      { code: 'nl', label: 'Dutch (Netherlands)' },
+      { code: 'ch', label: 'German (Switzerland)', fallbackLocale: 'de' },
+      { code: 'be', label: 'Dutch (Belgium)', fallbackLocale: 'nl' },
+      { code: 'uk', label: 'English (United Kingdom)', fallbackLocale: 'en' },
+      { code: 'uae', label: 'English (UAE)', fallbackLocale: 'en' },
     ],
     defaultLocale: 'en',
     fallback: true,

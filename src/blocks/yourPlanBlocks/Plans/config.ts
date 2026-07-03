@@ -217,6 +217,7 @@ export const YpPlansBlock: Block = {
           name: 'ctaUrl',
           label: 'CTA URL',
           type: 'text',
+          localized: true,
         },
         {
           name: 'ctaStyle',
@@ -370,6 +371,7 @@ export const YpPlansBlock: Block = {
               name: 'ctaUrl',
               label: 'Column CTA URL',
               type: 'text',
+              localized: true,
             },
             {
               name: 'ctaStyle',

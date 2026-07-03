@@ -3,7 +3,8 @@ const SITE_URL =
   process.env.VERCEL_PROJECT_PRODUCTION_URL ||
   'https://example.com'
 
-const LOCALES = ['en', 'de', 'fr', 'nl']
+import { appLocales } from '@/i18n/config'
+const LOCALES = appLocales
 
 function normalizeSiteURL(url: string) {
   if (!url) return 'https://example.com'

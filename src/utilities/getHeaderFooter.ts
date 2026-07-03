@@ -2,11 +2,10 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 
-const LOCALES = ['en', 'de', 'fr', 'nl'] as const
-type AppLocale = (typeof LOCALES)[number]
+import { appLocales, isAppLocale, type AppLocale } from '@/i18n/config'
 
 function safeLocale(locale?: string): AppLocale {
-  return (LOCALES as readonly string[]).includes(locale ?? '') ? (locale as AppLocale) : 'en'
+  return isAppLocale(locale ?? '') ? (locale as AppLocale) : 'en'
 }
 
 async function fetchHeaderById(id: string, locale?: string) {

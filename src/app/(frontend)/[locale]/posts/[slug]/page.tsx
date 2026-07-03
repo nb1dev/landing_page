@@ -23,12 +23,8 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { extractHeadingsFromLexical } from '@/utilities/extractHeadingsFromLexical'
 import { buildHreflangForSharedSlug } from '@/utilities/hreflang'
 
-const LOCALES = ['en', 'de', 'fr', 'nl'] as const
-type AppLocale = (typeof LOCALES)[number]
-
-function isAppLocale(v: string): v is AppLocale {
-  return (LOCALES as readonly string[]).includes(v)
-}
+import { appLocales, isAppLocale, type AppLocale } from '@/i18n/config'
+const LOCALES = appLocales
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -73,8 +69,15 @@ export default async function PostPage({ params: paramsPromise }: Args) {
 
   const siteURL = getServerSideURL()
   const jsonLd = buildPostSchema({ post, siteURL, locale })
-  const headings = extractHeadingsFromLexical(post.content as any, 'h3')
-  const populatedAuthors = (post as any).populatedAuthors || []
+  const headings = extractHeadingsFromLexical(post.content, 'h3')
+  const populatedAuthors = (post.populatedAuthors || [])
+    .filter((author) => Boolean(author.name))
+    .map((author) => ({
+      name: author.name as string,
+      slug: author.slug ?? undefined,
+      credentials: author.credentials ?? undefined,
+      avatarUrl: author.avatarUrl ?? undefined,
+    }))
 
   return (
     <>
@@ -137,7 +140,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   })
 
   return {
-    ...generateMeta({ doc: post }),
+    ...generateMeta({ doc: post, locale }),
     alternates: {
       canonical: new URL(`/${locale}/posts/${encodeURIComponent(decodedSlug)}`, siteURL).toString(),
       ...alternates,

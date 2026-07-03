@@ -1,24 +1,29 @@
-type MarketCode = 'de-DE' | 'de-AT' | 'de-CH' | 'en' | 'fr-FR' | 'fr-BE' | 'nl-NL' | 'nl-BE' | 'x-default'
+type MarketCode =
+  | 'de-DE'
+  | 'de-AT'
+  | 'de-CH'
+  | 'en'
+  | 'en-GB'
+  | 'en-AE'
+  | 'fr-FR'
+  | 'nl-NL'
+  | 'nl-BE'
+  | 'x-default'
 
 function abs(siteURL: string, path: string) {
-  // path must start with /
   return new URL(path, siteURL).toString()
 }
 
 /**
- * Build hreflang alternates according to your table:
- * - de-DE / de-AT / de-CH => same /de/ URL
- * - en => /en/
- * - x-default => /en/
- *
- * Pass the *same page path* for each locale (no need to have Pages collection).
- *
- * Example:
- *  buildHreflangAlternates({
- *    siteURL,
- *    dePath: '/de/mikrobiom-analyse/',
- *    enPath: '/en/microbiome-analysis/',
- *  })
+ * Build hreflang alternates for all 8 market paths:
+ *   /de  Germany & Austria
+ *   /ch  Switzerland
+ *   /fr  France
+ *   /nl  Netherlands
+ *   /be  Belgium
+ *   /uk  United Kingdom
+ *   /uae UAE
+ *   /en  Rest of World (x-default)
  */
 export function buildHreflangAlternates(args: {
   siteURL: string
@@ -26,8 +31,12 @@ export function buildHreflangAlternates(args: {
   enPath: string
   frPath?: string
   nlPath?: string
+  chPath?: string
+  bePath?: string
+  ukPath?: string
+  uaePath?: string
 }) {
-  const { siteURL, dePath, enPath, frPath, nlPath } = args
+  const { siteURL, dePath, enPath, frPath, nlPath, chPath, bePath, ukPath, uaePath } = args
 
   const deURL = abs(siteURL, dePath)
   const enURL = abs(siteURL, enPath)
@@ -35,41 +44,77 @@ export function buildHreflangAlternates(args: {
   const languages: Partial<Record<MarketCode, string>> = {
     'de-DE': deURL,
     'de-AT': deURL,
-    'de-CH': deURL,
+    'de-CH': chPath ? abs(siteURL, chPath) : deURL,
     en: enURL,
     'x-default': enURL,
-    ...(frPath ? { 'fr-FR': abs(siteURL, frPath), 'fr-BE': abs(siteURL, frPath) } : {}),
-    ...(nlPath ? { 'nl-NL': abs(siteURL, nlPath), 'nl-BE': abs(siteURL, nlPath) } : {}),
+    ...(frPath ? { 'fr-FR': abs(siteURL, frPath) } : {}),
+    ...(nlPath ? { 'nl-NL': abs(siteURL, nlPath) } : {}),
+    ...(bePath ? { 'nl-BE': abs(siteURL, bePath) } : nlPath ? { 'nl-BE': abs(siteURL, nlPath) } : {}),
+    ...(ukPath ? { 'en-GB': abs(siteURL, ukPath) } : {}),
+    ...(uaePath ? { 'en-AE': abs(siteURL, uaePath) } : {}),
   }
 
-  return {
-    languages,
-  } as const
+  return { languages } as const
 }
 
 /**
- * Convenience: if you only know the current locale + slug and your slugs are NOT localized,
- * you can generate both paths automatically:
- *
- * - /de/<basePath>/<slug>
- * - /en/<basePath>/<slug>
- *
- * basePath examples: 'posts', 'products', '' (for root pages)
+ * Build hreflang alternates when each locale has its own translated slug.
+ * `slugsByLocale` is a map of locale → slug (e.g. `{ en: 'our-plans', de: 'unsere-plaene' }`).
+ * Falls back to the `en` slug for any locale not present in the map.
+ */
+export function buildHreflangForLocalizedSlugs(args: {
+  siteURL: string
+  slugsByLocale: Partial<Record<string, string>>
+  basePath?: string
+  trailingSlash?: boolean
+}) {
+  const { siteURL, slugsByLocale, basePath = '', trailingSlash = false } = args
+  const prefix = basePath ? `/${basePath}` : ''
+  const suffix = trailingSlash ? '/' : ''
+  const fallback = slugsByLocale['en'] ?? ''
+
+  const path = (locale: string) => {
+    const slug = slugsByLocale[locale] ?? fallback
+    return `/${locale}${prefix}/${encodeURIComponent(slug)}${suffix}`.replace(/\/+/g, '/')
+  }
+
+  return buildHreflangAlternates({
+    siteURL,
+    dePath: path('de'),
+    enPath: path('en'),
+    frPath: path('fr'),
+    nlPath: path('nl'),
+    chPath: path('ch'),
+    bePath: path('be'),
+    ukPath: path('uk'),
+    uaePath: path('uae'),
+  })
+}
+
+/**
+ * Convenience helper when all locales share the same slug.
  */
 export function buildHreflangForSharedSlug(args: {
   siteURL: string
-  basePath?: string // e.g. 'posts'
-  slug: string // already encoded if needed
+  basePath?: string
+  slug: string
   trailingSlash?: boolean
 }) {
   const { siteURL, basePath = '', slug, trailingSlash = false } = args
   const prefix = basePath ? `/${basePath}` : ''
   const suffix = trailingSlash ? '/' : ''
+  const path = (locale: string) =>
+    `/${locale}${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
 
-  const dePath = `/de${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
-  const enPath = `/en${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
-  const frPath = `/fr${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
-  const nlPath = `/nl${prefix}/${slug}${suffix}`.replace(/\/+/g, '/')
-
-  return buildHreflangAlternates({ siteURL, dePath, enPath, frPath, nlPath })
+  return buildHreflangAlternates({
+    siteURL,
+    dePath: path('de'),
+    enPath: path('en'),
+    frPath: path('fr'),
+    nlPath: path('nl'),
+    chPath: path('ch'),
+    bePath: path('be'),
+    ukPath: path('uk'),
+    uaePath: path('uae'),
+  })
 }

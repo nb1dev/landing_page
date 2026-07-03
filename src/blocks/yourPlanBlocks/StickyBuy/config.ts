@@ -76,7 +76,7 @@ export const YpStickyBuyBlock: Block = {
       localized: true,
       admin: { description: 'e.g. "Order your kit". Add an arrow yourself if you want one.' },
     },
-    { name: 'ctaHref', label: 'CTA URL', type: 'text', defaultValue: '#' },
+    { name: 'ctaHref', label: 'CTA URL', type: 'text', localized: true, defaultValue: '#' },
     // ── Behaviour (advanced) ────────────────────────────────────
     {
       name: 'showAfterSel',

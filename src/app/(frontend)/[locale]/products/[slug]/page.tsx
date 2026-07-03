@@ -28,7 +28,7 @@ export default async function ProductPage({ params }: Props) {
   const product = res.docs?.[0]
   if (!product) return notFound()
 
-  const productJsonLd: JsonLdValue = ((product as any)?.jsonLd ?? null) as JsonLdValue
+  const productJsonLd: JsonLdValue = (product?.jsonLd ?? null) as JsonLdValue
 
   return (
     <>

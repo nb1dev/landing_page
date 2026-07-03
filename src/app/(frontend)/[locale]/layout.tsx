@@ -60,6 +60,10 @@ export default async function RootLayout({
     de: 'de-DE',
     fr: 'fr-FR',
     nl: 'nl-NL',
+    ch: 'de-CH',
+    be: 'nl-BE',
+    uk: 'en-GB',
+    uae: 'en-AE',
   }
   const ketchLang = ketchLocaleMap[locale] ?? locale
 
@@ -67,7 +71,7 @@ export default async function RootLayout({
 
   try {
     const site = await getSiteSettings(locale)
-    organizationJsonLd = ((site as any)?.organizationJsonLd ?? null) as JsonLdValue
+    organizationJsonLd = (site?.organizationJsonLd ?? null) as JsonLdValue
   } catch {
     organizationJsonLd = null
   }

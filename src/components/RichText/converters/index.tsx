@@ -100,8 +100,16 @@ export function createJSXConverter({
 
     const { value, relationTo } = doc
     if (typeof value !== 'object') throw new Error('Expected value to be an object')
-    const slug = (value as { slug?: string }).slug
 
+    const rawSlug = (value as { slug?: unknown }).slug
+    const slug =
+      typeof rawSlug === 'string'
+        ? rawSlug
+        : typeof rawSlug === 'object' && rawSlug !== null
+          ? ((rawSlug as Record<string, string>)[safeLocale] ?? (rawSlug as Record<string, string>)['en'])
+          : undefined
+
+    if (!slug) return prefix
     return relationTo === 'posts' ? `${prefix}/posts/${slug}` : `${prefix}/${slug}`
   }
 

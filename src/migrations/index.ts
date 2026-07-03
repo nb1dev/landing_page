@@ -97,6 +97,13 @@ import * as migration_20260626_122005_drop_unused_pages_blocks from './20260626_
 import * as migration_20260629_070111 from './20260629_070111';
 import * as migration_20260630_094013 from './20260630_094013';
 import * as migration_20260630_095807 from './20260630_095807';
+import * as migration_20260630_120603_add_locales_ch_be_uk_uae from './20260630_120603_add_locales_ch_be_uk_uae';
+import * as migration_20260701_075620 from './20260701_075620';
+import * as migration_20260703_072734 from './20260703_072734';
+import * as migration_20260703_074935 from './20260703_074935';
+import * as migration_20260703_083349 from './20260703_083349';
+import * as migration_20260703_090809 from './20260703_090809';
+import * as migration_20260703_093100 from './20260703_093100';
 
 export const migrations = [
   {
@@ -592,6 +599,41 @@ export const migrations = [
   {
     up: migration_20260630_095807.up,
     down: migration_20260630_095807.down,
-    name: '20260630_095807'
+    name: '20260630_095807',
+  },
+  {
+    up: migration_20260630_120603_add_locales_ch_be_uk_uae.up,
+    down: migration_20260630_120603_add_locales_ch_be_uk_uae.down,
+    name: '20260630_120603_add_locales_ch_be_uk_uae',
+  },
+  {
+    up: migration_20260701_075620.up,
+    down: migration_20260701_075620.down,
+    name: '20260701_075620',
+  },
+  {
+    up: migration_20260703_072734.up,
+    down: migration_20260703_072734.down,
+    name: '20260703_072734',
+  },
+  {
+    up: migration_20260703_074935.up,
+    down: migration_20260703_074935.down,
+    name: '20260703_074935',
+  },
+  {
+    up: migration_20260703_083349.up,
+    down: migration_20260703_083349.down,
+    name: '20260703_083349',
+  },
+  {
+    up: migration_20260703_090809.up,
+    down: migration_20260703_090809.down,
+    name: '20260703_090809',
+  },
+  {
+    up: migration_20260703_093100.up,
+    down: migration_20260703_093100.down,
+    name: '20260703_093100'
   },
 ];

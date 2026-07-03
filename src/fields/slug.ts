@@ -1,5 +1,5 @@
 // src/fields/slug.ts
-import type { Field } from 'payload'
+import type { Field, PayloadRequest } from 'payload'
 
 const MAX_SLUG_LENGTH = 70
 
@@ -38,6 +38,8 @@ export function normalizeSlug(input: string, maxLength = MAX_SLUG_LENGTH) {
  * - Auto-generates from `from` field if empty
  * - Normalizes to lowercase + hyphens only
  * - Enforces max 70 chars
+ * - When `localized: true`, stores a slug per locale and validates uniqueness per locale
+ *   instead of using a DB-level unique constraint (which doesn't work per-locale).
  */
 export function costomSlugField({
   name = 'slug',
@@ -47,6 +49,8 @@ export function costomSlugField({
   required = true,
   sidebar = true,
   maxLength = MAX_SLUG_LENGTH,
+  localized = false,
+  collection,
 }: {
   name?: string
   label?: string
@@ -55,25 +59,58 @@ export function costomSlugField({
   required?: boolean
   sidebar?: boolean
   maxLength?: number
+  /** When true, stores one slug value per locale. Disables DB unique constraint
+   *  and replaces it with a per-locale uniqueness validate hook. */
+  localized?: boolean
+  /** Collection slug used for per-locale uniqueness check (required when localized=true). */
+  collection?: string
 } = {}): Field {
   return {
     name,
     label,
     type: 'text',
     required,
-    unique,
+    // When localized, skip the DB-level unique constraint — it enforces uniqueness
+    // across ALL locales globally, which would reject e.g. de="unsere-plaene" if
+    // another locale already has "unsere-plaene". Per-locale uniqueness is checked
+    // in the validate hook below instead.
+    unique: localized ? false : unique,
     index: true,
+    ...(localized ? { localized: true } : {}),
 
     admin: {
       ...(sidebar ? { position: 'sidebar' as const } : {}),
       description: `Auto-formatted: lowercase + hyphens only. Max ${maxLength} characters.`,
     },
 
-    validate: (value: unknown) => {
+    validate: async (
+      value: unknown,
+      options: { req: PayloadRequest; id?: string | number; operation?: string },
+    ) => {
       if (typeof value !== 'string') return true
       if (value.length > maxLength) {
         return `Slug must be ${maxLength} characters or less (currently ${value.length}).`
       }
+
+      if (localized && collection && value && options?.req?.payload) {
+        const locale = options.req.locale as string | undefined
+        const existing = await options.req.payload.find({
+          collection: collection as 'pages',
+          where: {
+            [name]: { equals: value },
+            ...(options.id ? { id: { not_equals: options.id } } : {}),
+          },
+          locale: locale as 'en' | undefined,
+          overrideAccess: true,
+          limit: 1,
+          pagination: false,
+          select: { id: true } as Record<string, true>,
+        })
+        if (existing.totalDocs > 0) {
+          return `Slug "${value}" is already in use for the ${locale ?? 'current'} locale.`
+        }
+      }
+
       return true
     },
 

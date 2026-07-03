@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 
 declare global {
   interface Window {
-    semaphore?: any[]
-    ketch?: (...args: any[]) => void
+    semaphore?: unknown[]
+    ketch?: (...args: unknown[]) => void
   }
 }
 
@@ -15,7 +15,7 @@ export function KetchScriptLoader() {
 
     // from your original snippet
     window.semaphore = window.semaphore || []
-    window.ketch = function (...args: any[]) {
+    window.ketch = function (...args: unknown[]) {
       window.semaphore!.push(args)
     }
 
