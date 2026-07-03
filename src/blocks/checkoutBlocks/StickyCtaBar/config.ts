@@ -18,6 +18,7 @@ export const StickyCtaBar: Block = {
       type: 'text',
       label: 'Primary CTA href',
       required: true,
+      localized: true,
     },
     {
       name: 'secondaryCtaText',
@@ -30,6 +31,7 @@ export const StickyCtaBar: Block = {
       name: 'secondaryCtaHref',
       type: 'text',
       label: 'Secondary CTA href',
+      localized: true,
     },
   ],
 }

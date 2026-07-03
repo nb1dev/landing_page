@@ -56,6 +56,7 @@ export const PlanPivot: Block = {
       type: 'text',
       label: 'CTA href',
       required: true,
+      localized: true,
     },
   ],
 }

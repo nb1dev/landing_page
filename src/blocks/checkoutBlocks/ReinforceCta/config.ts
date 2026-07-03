@@ -33,6 +33,7 @@ export const ReinforceCta: Block = {
       name: 'ctaHref',
       type: 'text',
       label: 'Primary CTA href',
+      localized: true,
     },
     {
       name: 'ctaText2',
@@ -45,6 +46,7 @@ export const ReinforceCta: Block = {
       name: 'ctaHref2',
       type: 'text',
       label: 'Secondary CTA href',
+      localized: true,
     },
     {
       name: 'seals',

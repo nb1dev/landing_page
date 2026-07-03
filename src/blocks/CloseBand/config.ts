@@ -8,6 +8,6 @@ export const CloseBandBlock: Block = {
     { name: 'heading', type: 'richText', localized: true, editor: makeHeadingEditor() },
     { name: 'subheading', type: 'textarea', localized: true },
     { name: 'ctaLabel', type: 'text', localized: true },
-    { name: 'ctaHref', type: 'text' },
+    { name: 'ctaHref', type: 'text', localized: true },
   ],
 }

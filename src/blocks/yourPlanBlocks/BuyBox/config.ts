@@ -116,7 +116,7 @@ export const YpBuyBoxBlock: Block = {
         { name: 'altLabel', label: 'Alt Pill Label', type: 'text', localized: true, admin: { description: 'Optional teal pill. Use a token for the price, e.g. "or {{price:core:1}}/mo, monthly · cancel anytime".' } },
         { name: 'description', label: 'Description', type: 'textarea', localized: true },
         { name: 'ctaLabel', label: 'CTA Label', type: 'text', localized: true, admin: { description: 'e.g. "Order Core kit" — the → arrow is added automatically.' } },
-        { name: 'ctaHref', label: 'CTA URL', type: 'text', defaultValue: '#' },
+        { name: 'ctaHref', label: 'CTA URL', type: 'text', localized: true, defaultValue: '#' },
         { name: 'recommended', label: 'Recommended (lime accent)', type: 'checkbox', defaultValue: false },
         { name: 'recFlagLabel', label: 'Recommended Flag Label', type: 'text', localized: true, defaultValue: 'Recommended', admin: { condition: (_, s) => !!s?.recommended } },
       ],

@@ -95,6 +95,7 @@ export const PlanSelector: Block = {
           name: 'monthlyLinkHref',
           type: 'text',
           label: 'Monthly option link href',
+          localized: true,
         },
         {
           name: 'ctaText',
