@@ -25,7 +25,7 @@ export const PlansBlock: Block = {
     { name: 'coreFeaturesLabel', type: 'text', localized: true },
     { name: 'coreFeatures', type: 'array', fields: [{ name: 'item', type: 'text', localized: true }] },
     { name: 'coreCtaLabel', type: 'text', localized: true },
-    { name: 'coreCtaHref', type: 'text' },
+    { name: 'coreCtaHref', type: 'text', localized: true },
     { name: 'advBadge', type: 'text', localized: true },
     { name: 'advLabel', type: 'text', localized: true },
     { name: 'advDesc', type: 'text', localized: true },
@@ -35,7 +35,7 @@ export const PlansBlock: Block = {
     { name: 'advFeaturesLabel', type: 'text', localized: true },
     { name: 'advFeatures', type: 'array', fields: [{ name: 'item', type: 'text', localized: true }] },
     { name: 'advCtaLabel', type: 'text', localized: true },
-    { name: 'advCtaHref', type: 'text' },
+    { name: 'advCtaHref', type: 'text', localized: true },
     { name: 'guarantees', type: 'array', fields: [
       { name: 'iconSvg', type: 'textarea' },
       { name: 'title', type: 'text', localized: true },
