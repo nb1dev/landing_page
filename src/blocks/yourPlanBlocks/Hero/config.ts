@@ -127,6 +127,7 @@ export const YpHeroBlock: Block = {
           name: 'url',
           label: 'URL',
           type: 'text',
+          localized: true,
           admin: { description: 'Destination link for the primary CTA.' },
         },
       ],

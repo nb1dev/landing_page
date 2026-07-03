@@ -66,6 +66,7 @@ export const PlanStickyBar: Block = {
           type: 'text',
           label: 'CTA button href',
           required: true,
+          localized: true,
         },
         {
           name: 'ctaVariant',

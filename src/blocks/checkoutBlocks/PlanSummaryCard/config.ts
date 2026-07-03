@@ -74,6 +74,7 @@ export const PlanSummaryCard: Block = {
       name: 'switchLinkHref',
       type: 'text',
       label: 'Switch plan link href',
+      localized: true,
     },
     {
       name: 'primaryCtaText',
@@ -91,6 +92,7 @@ export const PlanSummaryCard: Block = {
       type: 'text',
       label: 'Primary CTA href',
       required: true,
+      localized: true,
     },
     {
       name: 'secondaryCtaText',
@@ -103,6 +105,7 @@ export const PlanSummaryCard: Block = {
       name: 'secondaryCtaHref',
       type: 'text',
       label: 'Secondary CTA href',
+      localized: true,
     },
     {
       name: 'ctaSubText',

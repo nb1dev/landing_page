@@ -17,6 +17,7 @@ export const OrderStepNav: Block = {
       label: 'Logo Link URL',
       type: 'text',
       defaultValue: '/',
+      localized: true,
     },
     {
       name: 'activeStep',
@@ -42,6 +43,7 @@ export const OrderStepNav: Block = {
       name: 'step1Url',
       label: 'Step 1 URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'step2Label',
@@ -54,6 +56,7 @@ export const OrderStepNav: Block = {
       name: 'step2Url',
       label: 'Step 2 URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'step3Label',
@@ -66,6 +69,7 @@ export const OrderStepNav: Block = {
       name: 'step3Url',
       label: 'Step 3 URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'backLabel',
