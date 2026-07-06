@@ -400,6 +400,9 @@ export const YpTimelineComponent: React.FC<YpTimelineBlockType> = ({
           );
         }
         .ts-data {
+          /* Hidden per design direction — stats + progress bar no longer shown.
+             Fields stay editable in Payload; they simply never render. */
+          display: none !important;
           position: absolute;
           left: 16px;
           right: 16px;
