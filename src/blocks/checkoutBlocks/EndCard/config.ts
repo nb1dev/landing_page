@@ -38,6 +38,7 @@ export const EndCard: Block = {
           type: 'text',
           label: 'Link href',
           required: true,
+          localized: true,
         },
         {
           name: 'variant',

@@ -17,6 +17,7 @@ export const OrderStepNav: Block = {
       label: 'Logo Link URL',
       type: 'text',
       defaultValue: '/',
+      localized: true,
     },
     {
       name: 'activeStep',
@@ -42,6 +43,11 @@ export const OrderStepNav: Block = {
       name: 'step1Url',
       label: 'Step 1 URL',
       type: 'text',
+      localized: true,
+      admin: {
+        description:
+          'Single URL, or multiple comma-separated URLs to pick from based on "core"/"advanced" in the current page URL (e.g. "/order-step-core, /order-step-advanced"). If only one URL is given, it is always used.',
+      },
     },
     {
       name: 'step2Label',
@@ -54,6 +60,11 @@ export const OrderStepNav: Block = {
       name: 'step2Url',
       label: 'Step 2 URL',
       type: 'text',
+      localized: true,
+      admin: {
+        description:
+          'Single URL, or multiple comma-separated URLs to pick from based on "core"/"advanced" in the current page URL (e.g. "/order-step-2-core, /order-step-2-advanced"). If only one URL is given, it is always used.',
+      },
     },
     {
       name: 'step3Label',
@@ -66,6 +77,7 @@ export const OrderStepNav: Block = {
       name: 'step3Url',
       label: 'Step 3 URL',
       type: 'text',
+      localized: true,
     },
     {
       name: 'backLabel',

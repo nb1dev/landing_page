@@ -24,6 +24,7 @@ export const CycleSelector: Block = {
       name: 'switchLinkHref',
       type: 'text',
       label: 'Switch plan link href',
+      localized: true,
       admin: { placeholder: '/order-cycle-advanced' },
     },
     {
@@ -61,6 +62,7 @@ export const CycleSelector: Block = {
       name: 'monthlyCheckoutHref',
       type: 'text',
       label: 'Flexible monthly checkout href',
+      localized: true,
       admin: {
         condition: (_, siblingData) => siblingData?.showMonthlyOption,
         placeholder: '/order-details?plan=core&cycle=monthly',

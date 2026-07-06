@@ -44,6 +44,7 @@ const planFields = (suffix: '' | '2') => [
     name: `ctaHref${suffix}`,
     type: 'text' as const,
     label: suffix ? 'CTA link (2nd column)' : 'CTA link',
+    localized: true,
     admin: { placeholder: '/order-cycle-core' },
   },
 ]

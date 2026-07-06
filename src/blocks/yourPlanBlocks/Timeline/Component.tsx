@@ -455,6 +455,8 @@ export const YpTimelineComponent: React.FC<YpTimelineBlockType> = ({
           color: #13a6cc;
         }
         .stat-bar {
+          /* Hidden per design direction — progress bar no longer shown, stat label/value stay. */
+          display: none !important;
           height: 4px;
           border-radius: 3px;
           background: rgba(255, 255, 255, 0.1);

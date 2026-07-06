@@ -11,7 +11,7 @@ export const LegalStrip: Block = {
       type: 'array',
       fields: [
         { name: 'label', type: 'text', required: true, localized: true },
-        { name: 'url', type: 'text', required: true },
+        { name: 'url', type: 'text', required: true, localized: true },
       ],
     },
     {

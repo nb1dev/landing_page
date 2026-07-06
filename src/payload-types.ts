@@ -3851,8 +3851,14 @@ export interface OrderStepNavBlock {
   logoUrl?: string | null;
   activeStep: '1' | '2' | '3' | 'done';
   step1Label?: string | null;
+  /**
+   * Single URL, or multiple comma-separated URLs to pick from based on "core"/"advanced" in the current page URL (e.g. "/order-step-core, /order-step-advanced"). If only one URL is given, it is always used.
+   */
   step1Url?: string | null;
   step2Label?: string | null;
+  /**
+   * Single URL, or multiple comma-separated URLs to pick from based on "core"/"advanced" in the current page URL (e.g. "/order-step-2-core, /order-step-2-advanced"). If only one URL is given, it is always used.
+   */
   step2Url?: string | null;
   step3Label?: string | null;
   step3Url?: string | null;
