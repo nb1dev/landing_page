@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 type Props = {
   logo?: { url?: string | null; alt?: string | null } | number | null
@@ -34,6 +35,20 @@ export const OrderStepNavComponent: React.FC<Props> = ({
   const logoMedia = typeof logo === 'object' && logo !== null ? logo : null
   const active = Number(activeStep === 'done' ? 4 : activeStep)
 
+  const pathname = usePathname() || ''
+  const variant = pathname.includes('advanced') ? 'advanced' : pathname.includes('core') ? 'core' : null
+
+  function resolveUrl(raw?: string | null) {
+    if (!raw) return raw
+    const urls = raw.split(',').map((u) => u.trim()).filter(Boolean)
+    if (urls.length <= 1) return urls[0] ?? raw
+    const match = urls.find((u) => (variant ? u.toLowerCase().includes(variant) : false))
+    return match || urls[0]
+  }
+
+  const resolvedStep1Url = resolveUrl(step1Url)
+  const resolvedStep2Url = resolveUrl(step2Url)
+
   function stepClass(n: number) {
     if (activeStep === 'done') return 'osn-step done'
     if (n < active) return 'osn-step done'
@@ -42,8 +57,8 @@ export const OrderStepNavComponent: React.FC<Props> = ({
   }
 
   const steps = [
-    { n: 1, label: step1Label, url: step1Url },
-    { n: 2, label: step2Label, url: step2Url },
+    { n: 1, label: step1Label, url: resolvedStep1Url },
+    { n: 2, label: step2Label, url: resolvedStep2Url },
     { n: 3, label: step3Label, url: step3Url },
   ]
 
