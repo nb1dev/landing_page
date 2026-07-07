@@ -2,6 +2,8 @@ import type { CollectionAfterChangeHook } from 'payload'
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 
+import { appLocales } from '@/i18n/config'
+
 export const revalidateHeader: CollectionAfterChangeHook = ({ doc, req: { payload, context } }) => {
   if (!context.disableRevalidate) {
     payload.logger.info(`Revalidating header ${doc.id}`)
@@ -14,11 +16,13 @@ export const revalidateHeader: CollectionAfterChangeHook = ({ doc, req: { payloa
     revalidateTag('header_default')
     // revalidateTag only busts the Data Cache entry — it doesn't reliably
     // force already-statically-generated (ISR) route HTML to regenerate when
-    // the data came from unstable_cache rather than a plain fetch(). Mirrors
-    // the same fix already applied in revalidateFooter.ts, but covers every
-    // locale via the dynamic segment pattern instead of listing them one by
-    // one (that version only covers '/' and '/de').
-    revalidatePath('/[locale]', 'layout')
+    // the data came from unstable_cache rather than a plain fetch(). Uses the
+    // same concrete-literal-path-per-locale pattern already proven to work
+    // in revalidatePage.ts (a dynamic '/[locale]' pattern is not reliable
+    // here), covering every locale — revalidateFooter.ts only covers 2 of 8.
+    appLocales.forEach((locale) => {
+      revalidatePath(`/${locale}`, 'layout')
+    })
   }
 
   return doc
