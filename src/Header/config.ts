@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { link } from '@/fields/link'
+import { enforceSingleDefault } from './hooks/enforceSingleDefault'
 import { revalidateHeader } from './hooks/revalidateHeader'
 
 const themeOptions = [
@@ -18,7 +19,7 @@ export const Headers: CollectionConfig = {
     defaultColumns: ['name', 'theme', 'isDefault'],
   },
   hooks: {
-    afterChange: [revalidateHeader],
+    afterChange: [enforceSingleDefault, revalidateHeader],
   },
   fields: [
     {
