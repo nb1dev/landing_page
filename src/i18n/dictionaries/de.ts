@@ -183,7 +183,7 @@ export const de = {
     whatsNext: {
       heading: 'Was als Nächstes passiert',
       step1:
-        'Dein Kit wird versandt – eine zweiminütige Darmprobe, zurückgeschickt im vorfrankierten Umschlag.',
+        'Dein Kit wird verschickt. Dann: Eine kurze Stuhlprobe. Du versiegelst sie im Beutel und sendest sie in der Box zurück.',
       step2:
         'Wir sequenzieren dein Mikrobiom und unser Wissenschafts- und Forschungsteam gibt deine NB1-Formel frei.',
       step3: 'Erste Abbuchung, dann wird deine maßgeschneiderte Formel versandt.',
@@ -218,7 +218,7 @@ export const de = {
         help: 'Brauchst du Hilfe?',
       },
       supportLine: 'oder',
-      supportEmail: 'support@nb1.health',
+      supportEmail: 'support@nb1.com',
       chatUs: '💬 Chatte mit uns',
       survey: {
         eyebrow: 'Hilf uns zu wachsen',
@@ -243,7 +243,7 @@ export const de = {
         step2: {
           label: '~3 Tage',
           title: 'Dein Kit kommt an',
-          body: 'Eine zweiminütige Darmprobe, zurückgeschickt im vorfrankierten Umschlag, plus ein kurzer Gesundheitsfragebogen online.',
+          body: 'Eine kleine Darmprobe - dauert zwei Minuten - im Beutel versiegeln, in der Box zurücksenden und online einen kurzen Gesundheitsfragebogen ausfüllen.',
         },
         step3: {
           label: 'Wochen 1–2',

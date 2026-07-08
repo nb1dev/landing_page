@@ -3,6 +3,7 @@ export const nl = {
     language: 'Taal',
     currency: 'Valuta',
     apply: 'Toepassen',
+    onThisPage: 'Op deze pagina',
   },
   theCase: {
     readMore: 'Lees meer',
@@ -208,7 +209,7 @@ export const nl = {
         help: 'Hulp nodig?',
       },
       supportLine: 'of',
-      supportEmail: 'support@nb1.health',
+      supportEmail: 'support@nb1.com',
       chatUs: '💬 Chat met ons',
       survey: {
         eyebrow: 'Help ons groeien',
