@@ -3,6 +3,7 @@ export const de = {
     language: 'Sprache',
     currency: 'Währung',
     apply: 'Übernehmen',
+    onThisPage: 'Auf dieser Seite',
   },
   theCase: {
     readMore: 'Mehr lesen',
@@ -176,15 +177,15 @@ export const de = {
         ' zu und willigst ein, dass NB1 deine biologische Probe verarbeitet. Deine erste Abbuchung erfolgt etwa zwei Wochen nach Rücksendung deiner Probe, erst wenn deine Formel in die Herstellung geht. Eine einmalige Gebühr von ',
       feeBold: '€49',
       legalEnd: 'fällt nur an, wenn deine Probe nicht innerhalb von 4 Wochen zurückgeschickt wird.',
-      accountExists:
-        'Für diese E-Mail-Adresse existiert bereits ein Konto. Bitte melde dich an.',
+      accountExists: 'Für diese E-Mail-Adresse existiert bereits ein Konto. Bitte melde dich an.',
       accountError: 'Dein Konto konnte nicht erstellt werden. Bitte versuche es erneut.',
     },
     whatsNext: {
       heading: 'Was als Nächstes passiert',
       step1:
         'Dein Kit wird versandt – eine zweiminütige Darmprobe, zurückgeschickt im vorfrankierten Umschlag.',
-      step2: 'Wir sequenzieren sie, und ein Forscher gibt deine Formel frei.',
+      step2:
+        'Wir sequenzieren dein Mikrobiom und unser Wissenschafts- und Forschungsteam gibt deine NB1-Formel frei.',
       step3: 'Erste Abbuchung, dann wird deine maßgeschneiderte Formel versandt.',
     },
     summary: {
@@ -247,7 +248,7 @@ export const de = {
         step3: {
           label: 'Wochen 1–2',
           title: 'Wir sequenzieren deine Probe',
-          body: 'Auf Speziesebene ausgelesen, dann entwirft ein Forscher deine personalisierte Formel aus deinen Daten.',
+          body: 'Detailliert auf Spezies-Level ausgelesen. Auf Basis dieser Bio-Daten stellt unser Wissenschaftsteam deine personalisierte NB1-Formel dann zusammen.',
         },
         step4: {
           label: 'Woche 3',
