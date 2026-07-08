@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react'
 
+// Same backend base the checkout blocks use.
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://apistg.nb1.com'
+
 type Method = {
   icon?: string | null
   title?: string | null
@@ -114,20 +117,55 @@ export const ContactPageComponent: React.FC<Props> = ({
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<any>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const onSubmit = (e: React.FormEvent) => {
+  // Sends through the backend (POST /contact/public → Postmark) instead of a
+  // mailto: link — mailto silently does nothing on devices without a default
+  // mail app, which read as "the button is broken".
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const to = recipientEmail || 'support@nb1.com'
-    const subject =
-      (topicOn ? `[${form.topic}] ` : '') + (nameOn && form.name ? form.name : 'Website message')
-    const body =
-      (nameOn ? `Name: ${form.name}\n` : '') +
-      (emailOn ? `Email: ${form.email}\n` : '') +
-      (topicOn ? `Topic: ${form.topic}\n` : '') +
-      (orderOn && form.order ? `Order: ${form.order}\n` : '') +
-      `\n${form.message}\n`
-    window.location.href = `mailto:${to}?subject=${encodeURIComponent(
-      subject,
-    )}&body=${encodeURIComponent(body)}`
+    if (sending) return
+    setError(null)
+
+    const email = form.email.trim()
+    const message = form.message.trim()
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    if (!message) {
+      setError('Please write a message.')
+      return
+    }
+
+    // "Jane van Doe" → firstName "Jane", lastName "van Doe"
+    const nameParts = form.name.trim().split(/\s+/).filter(Boolean)
+
+    setSending(true)
+    try {
+      const res = await fetch(`${BACKEND_URL}/contact/public`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: nameParts[0] || undefined,
+          lastName: nameParts.slice(1).join(' ') || undefined,
+          email,
+          message,
+          about: topicOn ? form.topic : undefined,
+          kit_number: orderOn && form.order.trim() ? form.order.trim() : undefined,
+        }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setSent(true)
+    } catch {
+      setError(
+        `Something went wrong — please try again, or email us directly at ${recipientEmail || 'support@nb1.com'}.`,
+      )
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -186,6 +224,11 @@ export const ContactPageComponent: React.FC<Props> = ({
           <div className="ct-form-card">
             {formHeading && <h2>{formHeading}</h2>}
             {formNote && <p className="ct-form-note">{formNote}</p>}
+            {sent ? (
+              <div className="ct-status ct-status--success">
+                Thank you! Your message has been sent — we usually reply within 1–2 working days.
+              </div>
+            ) : (
             <form onSubmit={onSubmit} noValidate>
               {(nameOn || emailOn) && (
                 <div className={nameOn && emailOn ? 'ct-row2' : undefined}>
@@ -250,8 +293,14 @@ export const ContactPageComponent: React.FC<Props> = ({
                   onChange={set('message')}
                 />
               </div>
-              <button className="ct-send" type="submit">
-                {submitLabel || 'Open email to send'}
+              {error && <div className="ct-status ct-status--error">{error}</div>}
+              <button
+                className="ct-send"
+                type="submit"
+                disabled={sending}
+                style={sending ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}
+              >
+                {sending ? 'Sending…' : submitLabel || 'Send message'}
                 <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" />
                   <path d="m13 6 6 6-6 6" />
@@ -259,6 +308,7 @@ export const ContactPageComponent: React.FC<Props> = ({
               </button>
               {formHint && <p className="ct-hint">{formHint}</p>}
             </form>
+            )}
           </div>
         </div>
       </div>
