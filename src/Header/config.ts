@@ -131,6 +131,81 @@ export const Headers: CollectionConfig = {
       },
     },
     {
+      name: 'sectionNavEnabled',
+      label: 'Enable "On this page" section nav',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Shows a jump-to-section dropdown next to the logo once the visitor scrolls past the top of the page. Highlights the section currently in view and scrolls to a section on click. Intended for long single-page layouts (e.g. "The Lab").',
+      },
+    },
+    {
+      name: 'sectionNavItems',
+      label: 'On-This-Page Sections',
+      type: 'array',
+      admin: {
+        initCollapsed: true,
+        condition: (_, siblingData) => Boolean(siblingData?.sectionNavEnabled),
+        description:
+          'Each row maps a section\'s DOM id (the id attribute on that section, e.g. "reads") to the label shown in the dropdown.',
+      },
+      fields: [
+        {
+          name: 'sectionId',
+          label: 'Section ID',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'Must match the id attribute of the target section, e.g. "reads".',
+          },
+        },
+        {
+          name: 'label',
+          label: 'Label',
+          type: 'text',
+          required: true,
+          localized: true,
+        },
+      ],
+    },
+    {
+      name: 'discoverNavEnabled',
+      label: 'Enable "Discover" page-navigation dropdown',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Shows a dropdown pill to the left of the language/currency switcher, listing links to other pages on the site (e.g. "The ingredient library", "The science board"). Independent of the "On this page" section nav above — that one jumps to sections on the current page, this one links to other pages entirely.',
+      },
+    },
+    {
+      name: 'discoverNavLabel',
+      label: 'Discover Button Label',
+      type: 'text',
+      localized: true,
+      defaultValue: 'Discover',
+      admin: {
+        condition: (_, siblingData) => Boolean(siblingData?.discoverNavEnabled),
+      },
+    },
+    {
+      name: 'discoverNavItems',
+      label: 'Discover Links',
+      type: 'array',
+      localized: true,
+      fields: [
+        link({
+          appearances: false,
+        }),
+      ],
+      maxRows: 8,
+      admin: {
+        initCollapsed: true,
+        condition: (_, siblingData) => Boolean(siblingData?.discoverNavEnabled),
+      },
+    },
+    {
       name: 'variants',
       label: 'A/B Variants',
       type: 'array',
