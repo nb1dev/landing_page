@@ -47,7 +47,7 @@ export async function fetchPlansClient(): Promise<RawPlanClient[]> {
 }
 
 const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
-  en: ['EUR', 'GBP', 'AED'],
+  en: ['EUR', 'GBP', 'AED', 'CHF'],
   de: ['EUR', 'CHF'],
   fr: ['EUR', 'CHF'],
   nl: ['EUR'],
