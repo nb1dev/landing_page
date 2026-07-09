@@ -406,7 +406,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     .nb1-locpop.open .nb1-locpop-card { transform:none; }
     .nb1-locpop-card h5 { margin:4px 6px 8px; font-size:10.5px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:rgba(18,49,77,.42); }
     .nb1-locpop-card h5:not(:first-child) { margin-top:14px; border-top:1px solid rgba(18,49,77,.08); padding-top:14px; }
-    @media (max-width:860px) { .nb1-burger{display:flex;} .nb1-nav-links{display:none;} .nb1-nav-right .nb1-nav-login{display:none;} .nb1-nav-right .nb1-nav-cta{display:none;} .nb1-nav-right .nb1-loc{display:none;} }
+    @media (max-width:860px) { .nb1-burger{display:flex;} .nb1-nav-links{display:none;} .nb1-nav-right .nb1-nav-login{display:none;} .nb1-nav-right .nb1-nav-cta{display:none;} .nb1-nav-right .nb1-loc{display:none;} .nb1-sheet-cta{display:none;} }
     @media (min-width:861px) { .nb1-sheet,.nb1-scrim,.nb1-burger{display:none !important;} }
   `
 

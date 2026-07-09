@@ -3,6 +3,7 @@ export const fr = {
     language: 'Langue',
     currency: 'Devise',
     apply: 'Appliquer',
+    onThisPage: 'Sur cette page',
   },
   theCase: {
     readMore: 'Lire la suite',
@@ -208,7 +209,7 @@ export const fr = {
         help: "Besoin d'aide ?",
       },
       supportLine: 'ou',
-      supportEmail: 'support@nb1.health',
+      supportEmail: 'support@nb1.com',
       chatUs: '💬 Discuter avec nous',
       survey: {
         eyebrow: 'Aide-nous à grandir',

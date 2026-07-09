@@ -3,6 +3,7 @@ export const en = {
     language: 'Language',
     currency: 'Currency',
     apply: 'Apply',
+    onThisPage: 'On this page',
   },
   theCase: {
     readMore: 'Read more',
@@ -175,8 +176,8 @@ export const en = {
     },
     whatsNext: {
       heading: 'What happens next',
-      step1: 'Your kit ships — a two-minute gut sample, posted back in the prepaid envelope.',
-      step2: 'We sequence it and a researcher approves your formula.',
+      step1: 'Your kit ships. Then: a quick gut sample. You seal it in the bag and send it back in the box.',
+      step2: 'We sequence it and our science team approves your formula.',
       step3: 'First charge, then your one-of-one formula ships.',
     },
     summary: {
@@ -208,7 +209,7 @@ export const en = {
         help: 'Need help?',
       },
       supportLine: 'or',
-      supportEmail: 'support@nb1.health',
+      supportEmail: 'support@nb1.com',
       chatUs: '💬 Chat with us',
       survey: {
         eyebrow: 'Help us grow',
@@ -226,8 +227,8 @@ export const en = {
       timeline: {
         heading: 'What happens next',
         step1: { label: 'Today', title: 'Order confirmed', body: 'Check your inbox, we\'ve emailed your receipt and a link to set your password and follow your kit\'s tracking.' },
-        step2: { label: '~3 days', title: 'Your kit arrives', body: 'A two-minute gut sample, posted back in the prepaid envelope, plus a short health questionnaire online.' },
-        step3: { label: 'Weeks 1–2', title: 'We sequence your sample', body: 'Read at species level, then a researcher drafts your personalised formula from your data.' },
+        step2: { label: '~3 days', title: 'Your kit arrives', body: 'A two-minute gut sample, sealed in its bag and sent back in the box, plus a short health questionnaire online.' },
+        step3: { label: 'Weeks 1–2', title: 'We sequence your sample', body: 'Read at species level, then our science team drafts your personalised formula from your data.' },
         step4: { label: 'Week 3', title: 'Formula approved · first charge', badge: 'First charge', body: 'Your formula is signed off and your first payment is taken, only now, once it enters manufacture. Never before.' },
         step5: { label: 'Week 4', title: 'Your formula ships', body: 'Activate, Restore and Nourish, blister-packed for 30 days, travel-ready. Your first cycle begins.' },
       },
