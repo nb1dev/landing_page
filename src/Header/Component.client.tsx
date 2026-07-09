@@ -63,7 +63,7 @@ const DEFAULT_CURRENCIES: Array<[string, string, string]> = [
   ['CHF', 'CHF', 'Franc'],
 ]
 const DEFAULT_LANG_CURRENCIES: Record<string, string[]> = {
-  en: ['EUR', 'GBP', 'AED'],
+  en: ['EUR', 'GBP', 'AED', 'CHF'],
   de: ['EUR', 'CHF'],
   fr: ['EUR', 'CHF'],
   nl: ['EUR'],
@@ -91,7 +91,7 @@ const LOCALE_DEFAULT_CURRENCY: Record<string, string> = {
 
 // Currencies allowed per locale
 const LOCALE_ALLOWED_CURRENCIES: Record<string, string[]> = {
-  en: ['EUR', 'GBP', 'AED'],
+  en: ['EUR', 'GBP', 'AED', 'CHF'],
   de: ['EUR', 'CHF'],
   fr: ['EUR', 'CHF'],
   nl: ['EUR'],
