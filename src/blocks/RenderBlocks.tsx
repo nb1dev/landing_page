@@ -70,8 +70,31 @@ import { CheckoutFormComponent } from './checkoutBlocks/CheckoutForm/Component'
 import { HomepageHeroComponent } from './HomepageHero/Component'
 import { TheCaseComponent } from './TheCase/Component'
 import { TwoModelsComponent } from './TwoModels/Component'
+import { BiologyHeroComponent } from './BiologyHero/Component'
+import { BiologyTwoPeopleComponent } from './BiologyTwoPeople/Component'
+import { BiologyClearestReadComponent } from './BiologyClearestRead/Component'
+import { BiologyReadingToFormulaComponent } from './BiologyReadingToFormula/Component'
+import { BiologyIndustryFlipComponent } from './BiologyIndustryFlip/Component'
+import { ProtocolHeroComponent } from './ProtocolHero/Component'
+import { ProtocolJourneyComponent } from './ProtocolJourney/Component'
+import { ProtocolKitComponent } from './ProtocolKit/Component'
+import { ProtocolFormulaUnitsComponent } from './ProtocolFormulaUnits/Component'
+import { ProtocolLibraryComponent } from './ProtocolLibrary/Component'
+import { ProtocolCredStripComponent } from './ProtocolCredStrip/Component'
+import { ProtocolWhatArrivesComponent } from './ProtocolWhatArrives/Component'
+import { ProtocolLivingLifelineComponent } from './ProtocolLivingLifeline/Component'
 import { GutFirstComponent } from './GutFirst/Component'
 import { HowItWorksComponent } from './HowItWorks/Component'
+import { LabHeroComponent } from './LabHero/Component'
+import { LabRoadmapComponent } from './LabRoadmap/Component'
+import { LabReadsComponent } from './LabReads/Component'
+import { LabComparisonComponent } from './LabComparison/Component'
+import { LabBandComponent } from './LabBand/Component'
+import { LabReadingPanelComponent } from './LabReadingPanel/Component'
+import { LabFormulaComponent } from './LabFormula/Component'
+import { LabProtocolComponent } from './LabProtocol/Component'
+import { LabJourneyComponent } from './LabJourney/Component'
+import { LabScienceBoardComponent } from './LabScienceBoard/Component'
 import { WhatArrivesComponent } from './WhatArrives/Component'
 import { OutcomesComponent } from './Outcomes/Component'
 import { AthletesComponent } from './Athletes/Component'
@@ -153,6 +176,29 @@ const blockComponents: Record<string, React.FC<any>> = {
   twoModels: TwoModelsComponent,
   gutFirst: GutFirstComponent,
   howItWorks: HowItWorksComponent,
+  biologyHero: BiologyHeroComponent,
+  biologyTwoPeople: BiologyTwoPeopleComponent,
+  biologyClearestRead: BiologyClearestReadComponent,
+  biologyReadingToFormula: BiologyReadingToFormulaComponent,
+  biologyIndustryFlip: BiologyIndustryFlipComponent,
+  protocolHero: ProtocolHeroComponent,
+  protocolJourney: ProtocolJourneyComponent,
+  protocolKit: ProtocolKitComponent,
+  protocolFormulaUnits: ProtocolFormulaUnitsComponent,
+  protocolLibrary: ProtocolLibraryComponent,
+  protocolCredStrip: ProtocolCredStripComponent,
+  protocolWhatArrives: ProtocolWhatArrivesComponent,
+  protocolLivingLifeline: ProtocolLivingLifelineComponent,
+  labHero: LabHeroComponent,
+  labRoadmap: LabRoadmapComponent,
+  labReads: LabReadsComponent,
+  labComparison: LabComparisonComponent,
+  labBand: LabBandComponent,
+  labReadingPanel: LabReadingPanelComponent,
+  labFormula: LabFormulaComponent,
+  labProtocol: LabProtocolComponent,
+  labJourney: LabJourneyComponent,
+  labScienceBoard: LabScienceBoardComponent,
   whatArrives: WhatArrivesComponent,
   outcomes: OutcomesComponent,
   athletesSection: AthletesComponent,

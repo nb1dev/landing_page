@@ -5,6 +5,14 @@ import type { Media } from '@/payload-types'
 import { getServerCurrency } from '@/utilities/currency'
 import { HeaderClient } from './Component.client'
 
+type RawLink = {
+  label?: string | null
+  localizedLabel?: string | null
+  url?: string | null
+  newTab?: boolean | null
+  [key: string]: unknown
+} | null
+
 type HeaderData = {
   logo?: number | Media | null
   logoDark?: number | Media | null
@@ -15,20 +23,45 @@ type HeaderData = {
   loginTextColor?: string | null
   ctaLabel?: string | null
   ctaUrl?: string | null
-  navItems?: Array<{
-    link?: {
-      label?: string | null
-      localizedLabel?: string | null
-      url?: string | null
-      newTab?: boolean | null
-      [key: string]: unknown
-    } | null
-  }> | null
+  navItems?: Array<{ link?: RawLink }> | null
   variants?: Array<{
     variantKey: string
     theme: 'light' | 'dark'
     loginTextColor?: string | null
   }> | null
+  sectionNavEnabled?: boolean | null
+  sectionNavItems?: Array<{
+    sectionId: string
+    label: string
+  }> | null
+  discoverNavEnabled?: boolean | null
+  discoverNavLabel?: string | null
+  discoverNavItems?: Array<{ link?: RawLink }> | null
+}
+
+// Shared by navItems and discoverNavItems — both use the same `link()` field
+// shape (internal page reference vs custom URL), so the slug/URL resolution
+// logic only needs to live once.
+function resolveNavLink(link: RawLink, locale: string) {
+  if (!link) return null
+  const linkType = (link as any).type
+  let url: string | null = null
+  if (linkType === 'custom') {
+    const customUrl = (link as any).url as string | null | undefined
+    url = customUrl ? (customUrl.startsWith('/') || customUrl.startsWith('http') ? customUrl : `/${customUrl}`) : null
+  } else {
+    const ref = (link as any).reference
+    const refDoc = ref?.value ?? ref
+    const rawSlug = typeof refDoc === 'object' && refDoc !== null ? refDoc.slug : undefined
+    const slug = typeof rawSlug === 'string' ? rawSlug : (rawSlug as any)?.[locale] ?? (rawSlug as any)?.['en']
+    url = slug ? (slug === 'home-page' ? `/${locale}` : `/${locale}/${slug}`) : null
+  }
+  return {
+    label: link.label ?? null,
+    localizedLabel: link.localizedLabel ?? null,
+    url,
+    newTab: (link as any).newTab ?? null,
+  }
 }
 
 function pickMedia(val: number | Media | null | undefined) {
@@ -70,36 +103,16 @@ export async function Header({ locale, id }: Props) {
         loginTextColor={data?.loginTextColor ?? null}
         ctaLabel={data?.ctaLabel ?? null}
         ctaUrl={data?.ctaUrl ?? null}
-        navItems={(data?.navItems ?? []).map((item) => ({
-          link: item.link
-            ? {
-                label: item.link.label ?? null,
-                localizedLabel: item.link.localizedLabel ?? null,
-                url: (() => {
-                  const linkType = (item.link as any).type
-                  if (linkType === 'custom') {
-                    const customUrl = (item.link as any).url as string | null | undefined
-                    if (!customUrl) return null
-                    // Ensure absolute path — a relative value like 'be/slug' would
-                    // resolve incorrectly in the browser relative to the current locale URL.
-                    return customUrl.startsWith('/') || customUrl.startsWith('http') ? customUrl : `/${customUrl}`
-                  }
-                  // Internal link — resolve the referenced page's localized slug.
-                  // Payload returns polymorphic relationships as { relationTo, value }
-                  // but guard against direct-document population as well.
-                  const ref = (item.link as any).reference
-                  const refDoc = ref?.value ?? ref
-                  const rawSlug = typeof refDoc === 'object' && refDoc !== null ? refDoc.slug : undefined
-                  if (!rawSlug) return null
-                  const slug = typeof rawSlug === 'string' ? rawSlug : (rawSlug as any)?.[locale] ?? (rawSlug as any)?.['en']
-                  if (!slug || slug === 'home-page') return `/${locale}`
-                  return `/${locale}/${slug}`
-                })(),
-                newTab: (item.link as any).newTab ?? null,
-              }
-            : null,
-        }))}
+        navItems={(data?.navItems ?? []).map((item) => ({ link: resolveNavLink(item.link ?? null, locale) }))}
+        discoverNavEnabled={data?.discoverNavEnabled ?? false}
+        discoverNavLabel={data?.discoverNavLabel ?? null}
+        discoverNavItems={(data?.discoverNavItems ?? []).map((item) => ({ link: resolveNavLink(item.link ?? null, locale) }))}
         variants={data?.variants ?? []}
+        sectionNavEnabled={data?.sectionNavEnabled ?? false}
+        sectionNavItems={(data?.sectionNavItems ?? []).map((item) => ({
+          sectionId: item.sectionId,
+          label: item.label,
+        }))}
       />
     </Suspense>
   )

@@ -105,6 +105,35 @@ import * as migration_20260703_083349 from './20260703_083349';
 import * as migration_20260703_090809 from './20260703_090809';
 import * as migration_20260703_093100 from './20260703_093100';
 import * as migration_20260703_121831 from './20260703_121831';
+import * as migration_20260707_065052 from './20260707_065052';
+import * as migration_20260707_065513 from './20260707_065513';
+import * as migration_20260707_065935 from './20260707_065935';
+import * as migration_20260707_071515 from './20260707_071515';
+import * as migration_20260707_071826 from './20260707_071826';
+import * as migration_20260707_072906 from './20260707_072906';
+import * as migration_20260707_073652 from './20260707_073652';
+import * as migration_20260707_083130 from './20260707_083130';
+import * as migration_20260707_084216 from './20260707_084216';
+import * as migration_20260707_084620 from './20260707_084620';
+import * as migration_20260707_122641 from './20260707_122641';
+import * as migration_20260707_123555 from './20260707_123555';
+import * as migration_20260707_125755 from './20260707_125755';
+import * as migration_20260707_130258 from './20260707_130258';
+import * as migration_20260707_165910_header_section_nav from './20260707_165910_header_section_nav';
+import * as migration_20260707_181754_biology_hero_block from './20260707_181754_biology_hero_block';
+import * as migration_20260707_183338_biology_two_people_block from './20260707_183338_biology_two_people_block';
+import * as migration_20260708_065428_biology_clearest_read_block from './20260708_065428_biology_clearest_read_block';
+import * as migration_20260708_071133_biology_reading_to_formula_block from './20260708_071133_biology_reading_to_formula_block';
+import * as migration_20260708_080802_biology_industry_flip_block from './20260708_080802_biology_industry_flip_block';
+import * as migration_20260708_145940_protocol_hero_block from './20260708_145940_protocol_hero_block';
+import * as migration_20260708_203801_protocol_journey_block from './20260708_203801_protocol_journey_block';
+import * as migration_20260708_210537_protocol_kit_block from './20260708_210537_protocol_kit_block';
+import * as migration_20260709_105415_protocol_formula_units_block from './20260709_105415_protocol_formula_units_block';
+import * as migration_20260709_105801_protocol_library_block from './20260709_105801_protocol_library_block';
+import * as migration_20260709_111426_protocol_cred_strip_block from './20260709_111426_protocol_cred_strip_block';
+import * as migration_20260709_112908_protocol_what_arrives_block from './20260709_112908_protocol_what_arrives_block';
+import * as migration_20260709_115454_protocol_living_lifeline_block from './20260709_115454_protocol_living_lifeline_block';
+import * as migration_20260709_150108_header_discover_nav from './20260709_150108_header_discover_nav';
 
 export const migrations = [
   {
@@ -640,6 +669,151 @@ export const migrations = [
   {
     up: migration_20260703_121831.up,
     down: migration_20260703_121831.down,
-    name: '20260703_121831'
+    name: '20260703_121831',
+  },
+  {
+    up: migration_20260707_065052.up,
+    down: migration_20260707_065052.down,
+    name: '20260707_065052',
+  },
+  {
+    up: migration_20260707_065513.up,
+    down: migration_20260707_065513.down,
+    name: '20260707_065513',
+  },
+  {
+    up: migration_20260707_065935.up,
+    down: migration_20260707_065935.down,
+    name: '20260707_065935',
+  },
+  {
+    up: migration_20260707_071515.up,
+    down: migration_20260707_071515.down,
+    name: '20260707_071515',
+  },
+  {
+    up: migration_20260707_071826.up,
+    down: migration_20260707_071826.down,
+    name: '20260707_071826',
+  },
+  {
+    up: migration_20260707_072906.up,
+    down: migration_20260707_072906.down,
+    name: '20260707_072906',
+  },
+  {
+    up: migration_20260707_073652.up,
+    down: migration_20260707_073652.down,
+    name: '20260707_073652',
+  },
+  {
+    up: migration_20260707_083130.up,
+    down: migration_20260707_083130.down,
+    name: '20260707_083130',
+  },
+  {
+    up: migration_20260707_084216.up,
+    down: migration_20260707_084216.down,
+    name: '20260707_084216',
+  },
+  {
+    up: migration_20260707_084620.up,
+    down: migration_20260707_084620.down,
+    name: '20260707_084620'
+  },
+  {
+    up: migration_20260707_122641.up,
+    down: migration_20260707_122641.down,
+    name: '20260707_122641'
+  },
+  {
+    up: migration_20260707_123555.up,
+    down: migration_20260707_123555.down,
+    name: '20260707_123555'
+  },
+  {
+    up: migration_20260707_125755.up,
+    down: migration_20260707_125755.down,
+    name: '20260707_125755'
+  },
+  {
+    up: migration_20260707_130258.up,
+    down: migration_20260707_130258.down,
+    name: '20260707_130258'
+  },
+  {
+    up: migration_20260707_165910_header_section_nav.up,
+    down: migration_20260707_165910_header_section_nav.down,
+    name: '20260707_165910_header_section_nav'
+  },
+  {
+    up: migration_20260707_181754_biology_hero_block.up,
+    down: migration_20260707_181754_biology_hero_block.down,
+    name: '20260707_181754_biology_hero_block'
+  },
+  {
+    up: migration_20260707_183338_biology_two_people_block.up,
+    down: migration_20260707_183338_biology_two_people_block.down,
+    name: '20260707_183338_biology_two_people_block'
+  },
+  {
+    up: migration_20260708_065428_biology_clearest_read_block.up,
+    down: migration_20260708_065428_biology_clearest_read_block.down,
+    name: '20260708_065428_biology_clearest_read_block'
+  },
+  {
+    up: migration_20260708_071133_biology_reading_to_formula_block.up,
+    down: migration_20260708_071133_biology_reading_to_formula_block.down,
+    name: '20260708_071133_biology_reading_to_formula_block'
+  },
+  {
+    up: migration_20260708_080802_biology_industry_flip_block.up,
+    down: migration_20260708_080802_biology_industry_flip_block.down,
+    name: '20260708_080802_biology_industry_flip_block'
+  },
+  {
+    up: migration_20260708_145940_protocol_hero_block.up,
+    down: migration_20260708_145940_protocol_hero_block.down,
+    name: '20260708_145940_protocol_hero_block'
+  },
+  {
+    up: migration_20260708_203801_protocol_journey_block.up,
+    down: migration_20260708_203801_protocol_journey_block.down,
+    name: '20260708_203801_protocol_journey_block'
+  },
+  {
+    up: migration_20260708_210537_protocol_kit_block.up,
+    down: migration_20260708_210537_protocol_kit_block.down,
+    name: '20260708_210537_protocol_kit_block'
+  },
+  {
+    up: migration_20260709_105415_protocol_formula_units_block.up,
+    down: migration_20260709_105415_protocol_formula_units_block.down,
+    name: '20260709_105415_protocol_formula_units_block'
+  },
+  {
+    up: migration_20260709_105801_protocol_library_block.up,
+    down: migration_20260709_105801_protocol_library_block.down,
+    name: '20260709_105801_protocol_library_block'
+  },
+  {
+    up: migration_20260709_111426_protocol_cred_strip_block.up,
+    down: migration_20260709_111426_protocol_cred_strip_block.down,
+    name: '20260709_111426_protocol_cred_strip_block'
+  },
+  {
+    up: migration_20260709_112908_protocol_what_arrives_block.up,
+    down: migration_20260709_112908_protocol_what_arrives_block.down,
+    name: '20260709_112908_protocol_what_arrives_block'
+  },
+  {
+    up: migration_20260709_115454_protocol_living_lifeline_block.up,
+    down: migration_20260709_115454_protocol_living_lifeline_block.down,
+    name: '20260709_115454_protocol_living_lifeline_block'
+  },
+  {
+    up: migration_20260709_150108_header_discover_nav.up,
+    down: migration_20260709_150108_header_discover_nav.down,
+    name: '20260709_150108_header_discover_nav'
   },
 ];
