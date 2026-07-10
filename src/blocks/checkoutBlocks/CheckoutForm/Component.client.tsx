@@ -2782,8 +2782,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       {/* Legal footer */}
       <div className="nb1-det-legal">
-        <a href="#">{t.legal.privacy}</a>·<a href="#">{t.legal.terms}</a>·
-        <a href="#">{t.legal.imprint}</a>·<a href="#">{t.legal.gdpr}</a>· {t.legal.copyright}
+        <a href={`https://nb1.com/${locale || 'en'}/privacy-policy`}>{t.legal.privacy}</a>·
+        <a href={`https://nb1.com/${locale || 'en'}/terms-conditions`}>{t.legal.terms}</a>·
+        <a href={`https://nb1.com/${locale || 'en'}/imprint`}>{t.legal.imprint}</a>·
+        <a href="#">{t.legal.gdpr}</a>· {t.legal.copyright}
       </div>
     </div>
   )
