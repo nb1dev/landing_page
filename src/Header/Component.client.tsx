@@ -728,7 +728,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
 
           <div className="nb1-nav-right">
             {hasDiscoverNav && (
-              <div className="nb1-disc" ref={discRef}>
+              <div className={`nb1-disc${discOpen ? ' open' : ''}`} ref={discRef}>
                 <button
                   ref={discBtnRef}
                   className="nb1-disc-btn"

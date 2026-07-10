@@ -41,6 +41,7 @@ export const ProtocolCredStripComponent: React.FC<ProtocolCredStripBlockType> = 
     <section className="pcs-sec" ref={sectionRef}>
       <style jsx>{`
         .pcs-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           background: #fff;
           padding: 40px 0;
           border-top: 1px solid rgba(18, 49, 77, 0.1);

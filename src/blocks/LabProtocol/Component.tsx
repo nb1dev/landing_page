@@ -73,12 +73,12 @@ export const LabProtocolComponent: React.FC<LabProtocolBlockType> = ({
           font-family: 'Instrument Sans', 'Inter', sans-serif;
           color: var(--ink);
           background: #fff;
-          padding: 94px 0;
+          padding: 66px 0;
         }
         .wrap {
-          max-width: 1080px;
+          max-width: 1180px;
           margin: 0 auto;
-          padding: 0 32px;
+          padding: 0 40px;
         }
         .eyebrow {
           font-size: 12px;
@@ -100,10 +100,10 @@ export const LabProtocolComponent: React.FC<LabProtocolBlockType> = ({
         .lab-protocol :global(h2) {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
-          font-size: clamp(32px, 4.4vw, 52px);
-          line-height: 1.04;
-          letter-spacing: -0.03em;
-          margin: 0;
+          font-size: clamp(30px, 4vw, 46px);
+          line-height: 1.08;
+          letter-spacing: -0.015em;
+          margin: 0 0 20px;
         }
         .lab-protocol :global(em) {
           font-style: normal;
@@ -111,10 +111,9 @@ export const LabProtocolComponent: React.FC<LabProtocolBlockType> = ({
         }
         .lede {
           font-size: 17px;
-          line-height: 1.6;
+          line-height: 1.62;
           color: var(--ink-soft);
           max-width: 66ch;
-          margin-top: 22px;
         }
         .driver {
           margin-top: 38px;
@@ -288,6 +287,9 @@ export const LabProtocolComponent: React.FC<LabProtocolBlockType> = ({
           font-weight: 600;
         }
         @media (max-width: 860px) {
+          .wrap {
+            padding: 0 20px;
+          }
           .layer {
             grid-template-columns: auto 1fr;
           }

@@ -83,6 +83,7 @@ export const ProtocolLibraryComponent: React.FC<ProtocolLibraryBlockType> = ({
     <section className="plb-sec" id="library" ref={sectionRef}>
       <style jsx>{`
         .plb-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 0 0 88px;
           background: #f6f9fc;

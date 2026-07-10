@@ -131,6 +131,7 @@ export const ProtocolLivingLifelineComponent: React.FC<ProtocolLivingLifelineBlo
     <section className="pll-sec" id="plans" ref={sectionRef}>
       <style jsx>{`
         .pll-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 88px 0;
           background: #f6f9fc;

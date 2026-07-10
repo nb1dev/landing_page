@@ -89,7 +89,7 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
           color: #12314d;
           text-wrap: balance;
           max-width: 900px;
-          margin: 0;
+          margin: 20px 0 0;
         }
         .sci-hero-sub {
           font-size: clamp(17px, 1.9vw, 20px);
@@ -101,7 +101,7 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
         .sci-hero-cta {
           display: flex;
           gap: 13px;
-          margin-top: 36px;
+          margin-top: 34px;
           flex-wrap: wrap;
           align-items: center;
         }
@@ -110,12 +110,12 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
           align-items: center;
           gap: 8px;
           font-family: 'Inter', sans-serif;
-          font-size: 15px;
+          font-size: 16px;
           font-weight: 700;
-          padding: 15px 28px;
+          padding: 16px 30px;
           border-radius: 100px;
-          background: #c4f23e;
-          color: #12314d;
+          background: #c6ff5b;
+          color: #0e2740;
           text-decoration: none;
           transition:
             background 0.18s ease,
@@ -123,7 +123,7 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
           white-space: nowrap;
         }
         .btn-pill:hover {
-          background: #aee52e;
+          background: #aaea42;
           transform: translateY(-1px);
         }
         .sci-trust {
@@ -132,7 +132,7 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
           gap: 18px;
           margin-top: 46px;
           padding-top: 30px;
-          border-top: 1px solid var(--line, #e7ecef);
+          border-top: 1px solid rgba(18, 49, 77, 0.1);
           flex-wrap: wrap;
         }
         .sci-trust-faces {
@@ -158,6 +158,7 @@ export const LabHeroComponent: React.FC<LabHeroBlockType> = ({
           line-height: 1.55;
           color: rgba(18, 49, 77, 0.55);
           max-width: 438px;
+          text-wrap: pretty;
         }
         .sci-trust-txt b {
           color: #12314d;

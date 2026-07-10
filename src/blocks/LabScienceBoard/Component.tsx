@@ -151,7 +151,10 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
         .sbx {
           background: #f6f9fc;
           padding: 94px 0 0;
-          font-family: 'Instrument Sans', 'Inter', sans-serif;
+          /* Mockup base font for this section is --font (Inter); only display
+             elements (h2, .sbx-stat .n, .mono, names, statement) use Instrument
+             Sans, and they set it explicitly below. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         .wrap {
           max-width: 1080px;
@@ -165,7 +168,7 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
           line-height: 1.06;
           letter-spacing: -0.01em;
           color: #12314d;
-          margin: 0;
+          margin: 18px 0 0;
           max-width: 16ch;
         }
         .sbx :global(em) {
@@ -250,6 +253,10 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
           display: grid;
           place-items: center;
           font-family: 'Instrument Sans', 'Inter', sans-serif;
+          /* Mockup ships Instrument Sans only at 500/600/700; its weight-400
+             display text resolves up to 500. We load a real 400, so pin 500
+             explicitly to match the mockup's thickness. */
+          font-weight: 500;
           font-size: clamp(24px, 3vw, 40px);
           color: #9dbbd0;
           letter-spacing: 0.04em;
@@ -322,7 +329,7 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
         }
         .sbx-hero .name {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 400;
+          font-weight: 500;
           font-size: 30px;
           line-height: 1.05;
           color: #12314d;
@@ -408,7 +415,7 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
         }
         .sbx-statement {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 400;
+          font-weight: 500;
           font-size: clamp(24px, 3.2vw, 36px);
           line-height: 1.2;
           letter-spacing: -0.01em;
@@ -417,7 +424,7 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
           max-width: 26ch;
         }
         .sbx-statement :global(strong) {
-          font-weight: 400;
+          font-weight: 500;
           color: #0a8fb0;
         }
         .sbx-statementsub {
@@ -449,7 +456,7 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
         }
         .vald .name {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 400;
+          font-weight: 500;
           font-size: 21px;
           color: #12314d;
           line-height: 1.12;

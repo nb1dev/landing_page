@@ -396,7 +396,9 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
         .section-head :global(p.head-h) {
           margin-top: 18px;
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 600;
+          /* Mockup design system sets h1/h2/h3 to 500 (only the shipped
+             Instrument Sans weight for headings); 600 read too bold vs mockup. */
+          font-weight: 500;
           letter-spacing: -0.03em;
           line-height: 1.02;
           font-size: clamp(32px, 4vw, 52px);

@@ -93,6 +93,7 @@ export const ProtocolKitComponent: React.FC<ProtocolKitBlockType> = ({
     <section className="pr-kit-sec" id="kit" ref={sectionRef}>
       <style jsx>{`
         .pr-kit-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 88px 0;
           background: #fff;

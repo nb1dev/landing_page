@@ -182,6 +182,9 @@ export const ProtocolHeroComponent: React.FC<ProtocolHeroBlockType> = ({
     <section className="pr-hero">
       <style jsx>{`
         .pr-hero {
+          /* Mockup body font is --font (Inter); app global is Geist, so set it
+             explicitly here. Headings override to Instrument Sans below. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 132px 0 96px;
           overflow: hidden;

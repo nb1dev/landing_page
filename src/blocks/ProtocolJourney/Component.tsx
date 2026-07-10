@@ -101,6 +101,7 @@ export const ProtocolJourneyComponent: React.FC<ProtocolJourneyBlockType> = ({
     <section className="pr-journey" id="journey" ref={sectionRef}>
       <style jsx>{`
         .pr-journey {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 88px 0;
           background: #f6f9fc;

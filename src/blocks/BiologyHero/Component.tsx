@@ -305,7 +305,7 @@ export const BiologyHeroComponent: React.FC<BiologyHeroBlockType> = ({
         }
         .bio-hero-copy :global(h1) {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
-          font-weight: 600;
+          font-weight: 500;
           font-size: clamp(2.6rem, 5.6vw, 4.7rem);
           letter-spacing: -0.038em;
           line-height: 1;
