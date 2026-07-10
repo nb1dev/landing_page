@@ -292,6 +292,29 @@ export interface Page {
     | TwoModelsBlock
     | GutFirstBlock
     | HowItWorksBlock
+    | BiologyHeroBlock
+    | BiologyTwoPeopleBlock
+    | BiologyClearestReadBlock
+    | BiologyReadingToFormulaBlock
+    | BiologyIndustryFlipBlock
+    | ProtocolHeroBlock
+    | ProtocolJourneyBlock
+    | ProtocolKitBlock
+    | ProtocolFormulaUnitsBlock
+    | ProtocolLibraryBlock
+    | ProtocolCredStripBlock
+    | ProtocolWhatArrivesBlock
+    | ProtocolLivingLifelineBlock
+    | LabHeroBlock
+    | LabRoadmapBlock
+    | LabReadsBlock
+    | LabComparisonBlock
+    | LabBandBlock
+    | LabReadingPanelBlock
+    | LabFormulaBlock
+    | LabProtocolBlock
+    | LabJourneyBlock
+    | LabScienceBoardBlock
     | WhatArrivesBlock
     | OutcomesBlock
     | AthletesSectionBlock
@@ -388,6 +411,52 @@ export interface Header {
    */
   loginTextColor?: string | null;
   navItems?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Optional translated label. If empty, the default label will be used.
+           */
+          localizedLabel?: string | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shows a jump-to-section dropdown next to the logo once the visitor scrolls past the top of the page. Highlights the section currently in view and scrolls to a section on click. Intended for long single-page layouts (e.g. "The Lab").
+   */
+  sectionNavEnabled?: boolean | null;
+  /**
+   * Each row maps a section's DOM id (the id attribute on that section, e.g. "reads") to the label shown in the dropdown.
+   */
+  sectionNavItems?:
+    | {
+        /**
+         * Must match the id attribute of the target section, e.g. "reads".
+         */
+        sectionId: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Shows a dropdown pill to the left of the language/currency switcher, listing links to other pages on the site (e.g. "The ingredient library", "The science board"). Independent of the "On this page" section nav above — that one jumps to sections on the current page, this one links to other pages entirely.
+   */
+  discoverNavEnabled?: boolean | null;
+  discoverNavLabel?: string | null;
+  discoverNavItems?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -4534,6 +4603,1916 @@ export interface HowItWorksBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyHeroBlock".
+ */
+export interface BiologyHeroBlock {
+  /**
+   * Apply the "Brand Teal" text color to "more microbe", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
+   * Bold the "6-person science board" phrase, matching the mockup.
+   */
+  proofText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  proofAvatars?:
+    | {
+        image: number | Media;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Your genome, to scale"
+   */
+  cardLabel?: string | null;
+  /**
+   * e.g. "20,000 GENES"
+   */
+  genomeValue?: string | null;
+  /**
+   * e.g. "YOUR GENOME"
+   */
+  genomeLabel?: string | null;
+  /**
+   * e.g. "3.3 MILLION GENES"
+   */
+  microbiomeValue?: string | null;
+  /**
+   * e.g. "YOUR GUT MICROBIOME"
+   */
+  microbiomeLabel?: string | null;
+  /**
+   * The number the big stat counts up to, e.g. 165 (renders as "165 : 1").
+   */
+  ratioTarget?: number | null;
+  ratioCaption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'biologyHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyTwoPeopleBlock".
+ */
+export interface BiologyTwoPeopleBlock {
+  /**
+   * Apply "Brand Teal" color to "and almost none of their gut.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  body?: string | null;
+  /**
+   * Apply "Brand Teal" color to "read at completely different levels.", matching the mockup emphasis.
+   */
+  note?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  personALabel?: string | null;
+  personAMeta?: string | null;
+  personBLabel?: string | null;
+  personBMeta?: string | null;
+  dnaCaption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'biologyTwoPeople';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyClearestReadBlock".
+ */
+export interface BiologyClearestReadBlock {
+  /**
+   * Apply "Brand Teal" color to "and not you.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  image: number | Media;
+  items?:
+    | {
+        /**
+         * Apply "Brand Teal" color to the lead word (e.g. "Absorption."), matching the mockup.
+         */
+        title?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  closingText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'biologyClearestRead';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyReadingToFormulaBlock".
+ */
+export interface BiologyReadingToFormulaBlock {
+  /**
+   * Apply "Brand Teal" color to "The formula is built around it.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  readingTitle?: string | null;
+  readingSubtitle?: string | null;
+  bloodTitle?: string | null;
+  bloodBadge?: string | null;
+  bloodSubtitle?: string | null;
+  bloodNotePrefix?: string | null;
+  bloodNoteBadge?: string | null;
+  bloodNoteSuffix?: string | null;
+  bloodMeasuredLabel?: string | null;
+  /**
+   * Each signal reveals in sequence, then emits its formula component(s) into the "Building your formula" card. Gut signals go in the top card; blood signals (Advanced) go in the bloodwork card and only show a name — no bar/pill.
+   */
+  signals?:
+    | {
+        kind: 'gut' | 'blood';
+        /**
+         * e.g. "The fibre feeders"
+         */
+        gutName?: string | null;
+        gutSub?: string | null;
+        /**
+         * e.g. "running low"
+         */
+        pillLabel?: string | null;
+        pillVariant?: ('low' | 'ok') | null;
+        fillPercent?: number | null;
+        /**
+         * e.g. "Your omega-3 levels"
+         */
+        bloodName?: string | null;
+        /**
+         * Component(s) this signal adds to the formula card. Leave empty if this signal only produces the "hold" note below.
+         */
+        outputs?:
+          | {
+              name: string;
+              dose: string;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * e.g. "Protein fermentation" — shown instead of a normal output when this signal is balanced, not added to.
+         */
+        holdLabel?: string | null;
+        /**
+         * e.g. "balanced by your fibre. Nothing added."
+         */
+        holdText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  supportDividerLabel?: string | null;
+  /**
+   * Always-included components added after the signal-driven ones (e.g. "Morning Wellness Capsule").
+   */
+  supportItems?:
+    | {
+        name: string;
+        dose: string;
+        id?: string | null;
+      }[]
+    | null;
+  moreLabel?: string | null;
+  moreDetail?: string | null;
+  formulaTitle?: string | null;
+  formulaEmptyText?: string | null;
+  formulaLinkLabel?: string | null;
+  formulaLinkUrl?: string | null;
+  captionText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'biologyReadingToFormula';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyIndustryFlipBlock".
+ */
+export interface BiologyIndustryFlipBlock {
+  /**
+   * Italicize "identical?" (or the equivalent emphasized word) — the mockup renders italic text in teal here, matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  /**
+   * Click/tap (or Enter/Space when focused) flips the card to reveal the back text.
+   */
+  stats?:
+    | {
+        /**
+         * e.g. "€180B"
+         */
+        number: string;
+        /**
+         * e.g. "A year"
+         */
+        unit: string;
+        /**
+         * e.g. "Why they don't change"
+         */
+        tag: string;
+        frontText: string;
+        backText: string;
+        readMoreLabel?: string | null;
+        backLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold the opening clause; italicize the closing clause (renders teal), matching the mockup.
+   */
+  closingText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'biologyIndustryFlip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolHeroBlock".
+ */
+export interface ProtocolHeroBlock {
+  /**
+   * Apply the "Brand Teal" text color to "get built.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
+   * Bold the "6-person science board" phrase, matching the mockup.
+   */
+  sealText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  sealFaces?:
+    | {
+        image: number | Media;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  panel?: {
+    /**
+     * Exactly 4 stages, matching the panel's fixed timeline (start, +1.8s, +3.2s, +5s): Reading → Matching → Building → Ready.
+     */
+    stages?:
+      | {
+          /**
+           * e.g. "Reading your sample"
+           */
+          status: string;
+          /**
+           * e.g. "Step 1 of 3" or "Complete"
+           */
+          phase: string;
+          id?: string | null;
+        }[]
+      | null;
+    cardTitle?: string | null;
+    cardMeta?: string | null;
+    rows?:
+      | {
+          tagVariant?: ('act' | 'nour' | 'rest') | null;
+          /**
+           * e.g. "Activate"
+           */
+          tagLabel: string;
+          /**
+           * e.g. "B. longum"
+           */
+          name: string;
+          /**
+           * e.g. "10B CFU"
+           */
+          dose: string;
+          id?: string | null;
+        }[]
+      | null;
+    moreLabel?: string | null;
+    moreMeta?: string | null;
+    footNote?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolJourneyBlock".
+ */
+export interface ProtocolJourneyBlock {
+  /**
+   * Apply the "Brand Teal" text color to "end to end.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  steps?:
+    | {
+        icon?: ('kit' | 'collect' | 'lab' | 'clock' | 'delivery') | null;
+        /**
+         * e.g. "Day 1–3"
+         */
+        dayRange: string;
+        /**
+         * e.g. "Kit arrives"
+         */
+        name: string;
+        description: string;
+        /**
+         * Marks this as the "You pay here" step — adds the lime pay tag and lime rail segment.
+         */
+        isPayStep?: boolean | null;
+        payTagLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  paygate?: {
+    title?: string | null;
+    /**
+     * Bold the "unlocks your full health report" phrase, matching the mockup.
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * e.g. "Under 4 weeks, every time."
+   */
+  underBadge?: string | null;
+  footnote?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolJourney';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolKitBlock".
+ */
+export interface ProtocolKitBlock {
+  /**
+   * Apply the "Brand Teal" text color to "A few minutes, at home.", matching the mockup emphasis. Rendered twice (once above the image on mobile, once beside it on desktop) — same content, CSS-toggled.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  kitImage: number | Media;
+  /**
+   * Bold the "small stool sample" phrase, matching the mockup.
+   */
+  reassure1?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  reassure2?: string | null;
+  watchPill?: {
+    title?: string | null;
+    meta?: string | null;
+    ariaLabel?: string | null;
+  };
+  /**
+   * Video is uploaded manually after this block is built — leave empty until then. The watch-pill and modal render regardless, but the modal video element only appears once a video file is set here.
+   */
+  video?: {
+    file?: (number | null) | Media;
+    poster?: (number | null) | Media;
+    modalAriaLabel?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolKit';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolFormulaUnitsBlock".
+ */
+export interface ProtocolFormulaUnitsBlock {
+  /**
+   * Apply the "Brand Teal" text color to "unit by unit.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  /**
+   * Exactly 3: Activate, Restore, Nourish — order drives tab order.
+   */
+  parts?:
+    | {
+        key?: ('activate' | 'restore' | 'nourish') | null;
+        /**
+         * e.g. "Activate"
+         */
+        label: string;
+        /**
+         * e.g. "Morning protocol · taken with your first meal."
+         */
+        meta: string;
+        units?:
+          | {
+              icon?: ('capsule' | 'softgel' | 'prebiotic') | null;
+              /**
+               * e.g. "Probiotic Capsule"
+               */
+              name: string;
+              tagVariant?: ('strains' | 'fibres' | 'vitamins' | 'actives' | 'cond') | null;
+              /**
+               * e.g. "Live strains" or "Only if your reading calls for it"
+               */
+              tagLabel: string;
+              /**
+               * e.g. "Live-culture strains, matched to your reading."
+               */
+              role: string;
+              /**
+               * e.g. "from 19 strains" or "capsule · AM"
+               */
+              count: string;
+              defaultOpen?: boolean | null;
+              description: string;
+              chips?:
+                | {
+                    text: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              /**
+               * Optional, e.g. "+ 14 more in the library". Leave empty to omit.
+               */
+              moreNote?: string | null;
+              /**
+               * e.g. "Which strains, and how many, is decided by your reading"
+               */
+              decideText: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolFormulaUnits';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolLibraryBlock".
+ */
+export interface ProtocolLibraryBlock {
+  /**
+   * Exactly 4, matching the item categories below. "familyLabel" is shown under the big stat number (e.g. "Live-culture strains"); "pillLabel" is the shorter filter-pill text (e.g. "Strains"). Counts are computed automatically from the items below — never entered manually.
+   */
+  categories?:
+    | {
+        key?: ('strains' | 'fibres' | 'vitamins' | 'actives') | null;
+        /**
+         * e.g. "Live-culture strains"
+         */
+        familyLabel: string;
+        /**
+         * e.g. "Strains"
+         */
+        pillLabel: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold "Science-board vetted" line, matching the mockup.
+   */
+  vettedText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  vettedFaces?:
+    | {
+        image: number | Media;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold "A single reading typically draws on 15 to 25 of these.", matching the mockup.
+   */
+  footLine?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  toggleLabelClosed?: string | null;
+  toggleLabelOpen?: string | null;
+  allPillLabel?: string | null;
+  searchPlaceholder?: string | null;
+  searchAriaLabel?: string | null;
+  emptyText?: string | null;
+  /**
+   * The full ingredient library grid (search + filter operate over this list client-side).
+   */
+  items?:
+    | {
+        name: string;
+        category: 'strains' | 'fibres' | 'vitamins' | 'actives';
+        /**
+         * e.g. "Live culture", "Botanical", "Mineral"
+         */
+        type: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolLibrary';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolCredStripBlock".
+ */
+export interface ProtocolCredStripBlock {
+  /**
+   * Up to 6, rendered as two interlocking rows of 3.
+   */
+  faces?:
+    | {
+        image: number | Media;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
+  headline?: string | null;
+  /**
+   * Bold "independently reviewed" and the two names, matching the mockup.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  stats?:
+    | {
+        /**
+         * e.g. "254" or "17,000+"
+         */
+        value: string;
+        /**
+         * e.g. "published papers"
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolCredStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolWhatArrivesBlock".
+ */
+export interface ProtocolWhatArrivesBlock {
+  /**
+   * Apply the "Brand Teal" text color to "Your day is two moments, not seven bottles.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bold "morning pack" and "evening pack", matching the mockup.
+   */
+  dek?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Hidden on mobile (≤760px), matching the mockup.
+   */
+  intro?: string | null;
+  before: {
+    label?: string | null;
+    image: number | Media;
+  };
+  after: {
+    /**
+     * Apply the "Brand Teal" text color to "the whole thing", matching the mockup.
+     */
+    label?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    image: number | Media;
+  };
+  calls?:
+    | {
+        icon?: ('sorted' | 'travel' | 'refresh') | null;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolWhatArrives';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolLivingLifelineBlock".
+ */
+export interface ProtocolLivingLifelineBlock {
+  /**
+   * Apply the "Brand Teal" text color to "or a living protocol.", matching the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  originLabel?: string | null;
+  core?: {
+    name?: string | null;
+    copy?: string | null;
+  };
+  advanced?: {
+    name?: string | null;
+    badge?: string | null;
+    copy?: string | null;
+  };
+  /**
+   * Exactly 3: two dated milestones (e.g. "Retest: gut + blood" / "Month 3") plus a final open-ended one ("keeps adapting", muted, no month).
+   */
+  milestones?:
+    | {
+        label: string;
+        /**
+         * e.g. "Month 3". Leave empty for the final muted milestone.
+         */
+        month?: string | null;
+        muted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  compareLabel?: string | null;
+  compareUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'protocolLivingLifeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabHeroBlock".
+ */
+export interface LabHeroBlock {
+  /**
+   * Apply the "Brand Teal" text color to the second sentence to match the mockup emphasis.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  subheading?: string | null;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  /**
+   * e.g. "Built by our own science board:"
+   */
+  trustLeadIn?: string | null;
+  trustFaces?:
+    | {
+        image: number | Media;
+        name: string;
+        /**
+         * Optional, e.g. "TU Munich"
+         */
+        affiliation?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  trustLinkLabel?: string | null;
+  trustLinkUrl?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labHero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabRoadmapBlock".
+ */
+export interface LabRoadmapBlock {
+  /**
+   * e.g. "How this page goes"
+   */
+  eyebrow?: string | null;
+  items?:
+    | {
+        title: string;
+        description?: string | null;
+        /**
+         * In-page anchor (e.g. "#reads") or a URL
+         */
+        href: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labRoadmap';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabReadsBlock".
+ */
+export interface LabReadsBlock {
+  /**
+   * e.g. "How we read you"
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cards?:
+    | {
+        /**
+         * SVG path data inside viewBox="0 0 24 24"
+         */
+        iconSvg?: string | null;
+        name: string;
+        /**
+         * Optional pill next to the name, e.g. "The deep read"
+         */
+        tag?: string | null;
+        body?: string | null;
+        /**
+         * e.g. "Every plan" or "Advanced"
+         */
+        badgeLabel?: string | null;
+        badgeVariant?: ('plan' | 'advanced') | null;
+        /**
+         * Teal-tinted card with a thicker converge line (used for "Your gut")
+         */
+        highlighted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Your formula"
+   */
+  formulaNodeLabel?: string | null;
+  /**
+   * e.g. "Nothing goes into your formula"
+   */
+  closingLeadIn?: string | null;
+  /**
+   * e.g. "without a reason."
+   */
+  closingEmphasis?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labReads';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabComparisonBlock".
+ */
+export interface LabComparisonBlock {
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  intro?: string | null;
+  /**
+   * e.g. "⚡ Tap a glowing microbe to see its job"
+   */
+  hintText?: string | null;
+  /**
+   * e.g. "Almost every gut test"
+   */
+  leftTag?: string | null;
+  /**
+   * e.g. "Who’s there"
+   */
+  leftName?: string | null;
+  /**
+   * e.g. "16S rRNA" (technical term, not localized)
+   */
+  leftMethod?: string | null;
+  /**
+   * e.g. "Our method"
+   */
+  rightTag?: string | null;
+  /**
+   * e.g. "What each one can do"
+   */
+  rightName?: string | null;
+  /**
+   * e.g. "SHOTGUN SEQUENCING" (technical term, not localized)
+   */
+  rightMethod?: string | null;
+  legend?:
+    | {
+        label?: string | null;
+        /**
+         * Hex color, or leave empty + set dashed=true for "Missing"
+         */
+        color?: string | null;
+        dashed?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The 3 tappable microbes on the "our method" figure, in order.
+   */
+  nodes?:
+    | {
+        /**
+         * Species name (Latin binomial, not localized)
+         */
+        name: string;
+        job?: string | null;
+        status: 'Active' | 'Low' | 'Missing';
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "16S tells you, per microbe"
+   */
+  knowLeftLabel?: string | null;
+  knowLeftValue?: string | null;
+  /**
+   * e.g. "We tell you, per microbe"
+   */
+  knowRightLabel?: string | null;
+  knowRightValue?: string | null;
+  closingLeadIn?: string | null;
+  closingEmphasis?: string | null;
+  closingTail?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labComparison';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabBandBlock".
+ */
+export interface LabBandBlock {
+  image: number | Media;
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labBand';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabReadingPanelBlock".
+ */
+export interface LabReadingPanelBlock {
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "Your sample comes back as 200–400 species..."
+   */
+  leadIn?: string | null;
+  /**
+   * Bold "teams" / "ratios" / "balance score" to match the mockup.
+   */
+  transitionText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "What your sample comes back as"
+   */
+  rawSpeciesLabel?: string | null;
+  rawSpecies?:
+    | {
+        /**
+         * Species name (Latin binomial, not localized)
+         */
+        name: string;
+        percent: number;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "+ 390 more species"
+   */
+  rawMoreLabel?: string | null;
+  /**
+   * Desktop rail heading, e.g. "Select any pattern to see a typical reading"
+   */
+  railLabel?: string | null;
+  /**
+   * Mobile only, e.g. "Tap a pattern to open its full reading"
+   */
+  tapHintTitle?: string | null;
+  /**
+   * Mobile only, e.g. "Teams · ratios · score"
+   */
+  tapHintSub?: string | null;
+  /**
+   * The 3 evidence stats. Shown twice: a long form in the mobile rail, a short form under the panel.
+   */
+  seals?:
+    | {
+        /**
+         * e.g. "8,069"
+         */
+        number: string;
+        /**
+         * Long form (mobile rail)
+         */
+        railLabel?: string | null;
+        /**
+         * Short form (under panel)
+         */
+        panelLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "See the full reading"
+   */
+  seeFullReadingLabel?: string | null;
+  /**
+   * e.g. "Teams · Ratios · Balance"
+   */
+  seeFullReadingHint?: string | null;
+  tabTeamsLabel?: string | null;
+  tabRatiosLabel?: string | null;
+  tabBalanceLabel?: string | null;
+  teamsIntro?: string | null;
+  ratiosIntro?: string | null;
+  scoreIntro?: string | null;
+  /**
+   * The 8 gut patterns. Order here is the order shown in the rail.
+   */
+  archetypes?:
+    | {
+        /**
+         * Determines the icon and is the stable key for this pattern.
+         */
+        patternId: 'protein' | 'bifido' | 'fibre' | 'mucus' | 'crowded' | 'depletion' | 'gutbrain' | 'balance';
+        /**
+         * e.g. "Protein fermentation running hot"
+         */
+        name: string;
+        /**
+         * Short label, e.g. "Bloating and gas"
+         */
+        card: string;
+        /**
+         * 0–1, affects how full the population chart looks
+         */
+        density: number;
+        score: number;
+        band: 'Excellent' | 'Needs work';
+        /**
+         * This pattern comes from questionnaire signals, not composition (changes the score note copy)
+         */
+        stress?: boolean | null;
+        /**
+         * In-range pattern — the goal is to hold steady (changes the score note copy)
+         */
+        hold?: boolean | null;
+        /**
+         * Team %, in Fibre / Butyrate / Cross-feeders / Bifido / Mucus / Protein order
+         */
+        teams: {
+          fibre: number;
+          butyrate: number;
+          crossFeeders: number;
+          bifido: number;
+          mucus: number;
+          protein: number;
+        };
+        /**
+         * % of potential, in Health / Diversity / Metabolic / Team balance / Safety order
+         */
+        radar: {
+          health: number;
+          diversity: number;
+          metabolic: number;
+          teamBalance: number;
+          safety: number;
+        };
+        /**
+         * In the same order as the 4 ratio definitions (Main fuel / Fermentation / Gut-lining / By-products)
+         */
+        ratios: {
+          mainFuel: number;
+          fermentation: number;
+          gutLining: number;
+          byproducts: number;
+        };
+        /**
+         * Full explanation. The first sentence is shown as the short summary automatically.
+         */
+        whats: string;
+        /**
+         * Bold the key phrase, matching the mockup, e.g. "...tip fermentation back toward fibre."
+         */
+        focus?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labReadingPanel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabFormulaBlock".
+ */
+export interface LabFormulaBlock {
+  /**
+   * e.g. "We build it"
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  /**
+   * e.g. "First, the basics"
+   */
+  stage1Label?: string | null;
+  stage1Sub?: string | null;
+  liveCulturesLabel?: string | null;
+  liveCulturesText?: string | null;
+  prebioticsLabel?: string | null;
+  prebioticsText?: string | null;
+  combinedLabel?: string | null;
+  combinedText?: string | null;
+  /**
+   * e.g. "The cultures, up close"
+   */
+  stage2Label?: string | null;
+  /**
+   * e.g. "Living strains, with the evidence to back them."
+   */
+  stage2Heading?: string | null;
+  /**
+   * Bold the key word, matching the mockup, e.g. "We use **strains**: ..."
+   */
+  stage2Intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * e.g. "A few of the jobs your reading might call for"
+   */
+  jobsScopeLabel?: string | null;
+  /**
+   * e.g. "and more, as your reading shows"
+   */
+  jobsMoreLabel?: string | null;
+  /**
+   * e.g. "+ many more. Your reading decides which apply to you"
+   */
+  jobsMoreMobileNote?: string | null;
+  /**
+   * e.g. "One of them, in detail"
+   */
+  workedDetailLabel?: string | null;
+  /**
+   * e.g. "Your formula includes **only the jobs your reading calls for**, ..."
+   */
+  workedFootNote?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Job selector tags. The first is shown expanded by default.
+   */
+  jobs?:
+    | {
+        name: string;
+        sourceType: 'sample' | 'quest';
+        trigger?: string | null;
+        mode: 'flex' | 'combo';
+        leadName?: string | null;
+        leadNote?: string | null;
+        adds?:
+          | {
+              condition?: string | null;
+              strain?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        comboCaption?: string | null;
+        members?:
+          | {
+              name?: string | null;
+              note?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Precision prebiotics"
+   */
+  stage3Label?: string | null;
+  stage3Heading?: string | null;
+  stage3Intro?: string | null;
+  /**
+   * Mobile-only fibre dose bars (the desktop chart is a fixed illustration)
+   */
+  blendRows?:
+    | {
+        name: string;
+        position: number;
+        id?: string | null;
+      }[]
+    | null;
+  notInBlendLabel?: string | null;
+  notInBlendNote?: string | null;
+  /**
+   * Bold the lead phrase, e.g. "**A few fibres, chosen from dozens.** Only the ones..."
+   */
+  blendCaption?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bold the closing clause, matching the mockup.
+   */
+  quoteText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  quoteAuthorImage?: (number | null) | Media;
+  quoteAuthorName?: string | null;
+  quoteAuthorInst?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labFormula';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabProtocolBlock".
+ */
+export interface LabProtocolBlock {
+  /**
+   * e.g. "What you actually take"
+   */
+  eyebrow?: string | null;
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  /**
+   * e.g. "What drives your formula"
+   */
+  driverLabel?: string | null;
+  /**
+   * e.g. "Your gut"
+   */
+  driverGutLabel?: string | null;
+  /**
+   * e.g. "about two-thirds"
+   */
+  driverGutNote?: string | null;
+  /**
+   * e.g. "the rest"
+   */
+  driverRestLabel?: string | null;
+  /**
+   * e.g. "Your intake"
+   */
+  driverIntakeLabel?: string | null;
+  /**
+   * Width % of the gut segment; the rest fills the intake segment.
+   */
+  driverGutPercent: number;
+  layers?:
+    | {
+        /**
+         * SVG path data inside viewBox="0 0 24 24"
+         */
+        iconSvg?: string | null;
+        /**
+         * e.g. "From your gut"
+         */
+        sourceLabel?: string | null;
+        name: string;
+        body?: string | null;
+        chips?:
+          | {
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        hasMoreChip?: boolean | null;
+        /**
+         * e.g. "Every plan" or "Advanced"
+         */
+        badgeLabel?: string | null;
+        badgeVariant?: ('plan' | 'advanced') | null;
+        /**
+         * Gold-tinted card border (used for the Advanced-only layer)
+         */
+        highlighted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold the closing clause, e.g. "...**That's the rule: nothing goes in without a reason.**"
+   */
+  closingText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labProtocol';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabJourneyBlock".
+ */
+export interface LabJourneyBlock {
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  sub?: string | null;
+  legendYourPartLabel?: string | null;
+  legendOurPartLabel?: string | null;
+  scrollCueText?: string | null;
+  act0Label?: string | null;
+  act0Heading?: string | null;
+  act0Body?: string | null;
+  /**
+   * e.g. "10"
+   */
+  act0VizValue?: string | null;
+  act0VizUnit?: string | null;
+  act1Label?: string | null;
+  act1Heading?: string | null;
+  act1Body?: string | null;
+  act2Label?: string | null;
+  act2Heading?: string | null;
+  act2Body?: string | null;
+  /**
+   * Chapter 1 (teal) — e.g. Intake questionnaire, Gut sample
+   */
+  yourPartNodes?:
+    | {
+        name: string;
+        desc?: string | null;
+        /**
+         * e.g. "Day 0 · 10 min"
+         */
+        timestamp?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Chapter 2 (amber) — the 7 in-lab steps. Drives the "N/7" counter in the aside panel.
+   */
+  labNodes?:
+    | {
+        name: string;
+        desc?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Chapter 3 — e.g. First box, Take it daily, Retest
+   */
+  ongoingNodes?:
+    | {
+        kind: 'big' | 'inf' | 'gold';
+        name: string;
+        desc?: string | null;
+        /**
+         * e.g. "Day 0 · 10 min"
+         */
+        timestamp?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bold "Your part:" / "Ours:"; apply the "Amber" color to "Advanced", matching the mockup.
+   */
+  footNote?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labJourney';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabScienceBoardBlock".
+ */
+export interface LabScienceBoardBlock {
+  /**
+   * Apply "Brand Teal" color to the emphasized clause, matching the mockup.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  lede?: string | null;
+  stats?:
+    | {
+        /**
+         * e.g. "6" or "17,000+"
+         */
+        number: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "The team that builds it"
+   */
+  teamGroupLabel?: string | null;
+  teamGroupSub?: string | null;
+  cso: {
+    photo?: (number | null) | Media;
+    /**
+     * Shown if the photo fails to load
+     */
+    initials?: string | null;
+    /**
+     * e.g. "Chief Scientific Officer"
+     */
+    role?: string | null;
+    name: string;
+    bio?: string | null;
+    quote?: string | null;
+    tags?:
+      | {
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  teamMembers?:
+    | {
+        photo?: (number | null) | Media;
+        initials?: string | null;
+        discipline?: string | null;
+        name: string;
+        affiliation?: string | null;
+        quote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g. "Independently checked"
+   */
+  checkGroupLabel?: string | null;
+  /**
+   * Bold the emphasized clause, matching the mockup (rendered in teal).
+   */
+  checkStatement?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  checkStatementSub?: string | null;
+  validators?:
+    | {
+        photo?: (number | null) | Media;
+        initials?: string | null;
+        name: string;
+        affiliation?: string | null;
+        quote?: string | null;
+        tags?:
+          | {
+              label: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'labScienceBoard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "WhatArrivesBlock".
  */
 export interface WhatArrivesBlock {
@@ -5620,6 +7599,29 @@ export interface PagesSelect<T extends boolean = true> {
         twoModels?: T | TwoModelsBlockSelect<T>;
         gutFirst?: T | GutFirstBlockSelect<T>;
         howItWorks?: T | HowItWorksBlockSelect<T>;
+        biologyHero?: T | BiologyHeroBlockSelect<T>;
+        biologyTwoPeople?: T | BiologyTwoPeopleBlockSelect<T>;
+        biologyClearestRead?: T | BiologyClearestReadBlockSelect<T>;
+        biologyReadingToFormula?: T | BiologyReadingToFormulaBlockSelect<T>;
+        biologyIndustryFlip?: T | BiologyIndustryFlipBlockSelect<T>;
+        protocolHero?: T | ProtocolHeroBlockSelect<T>;
+        protocolJourney?: T | ProtocolJourneyBlockSelect<T>;
+        protocolKit?: T | ProtocolKitBlockSelect<T>;
+        protocolFormulaUnits?: T | ProtocolFormulaUnitsBlockSelect<T>;
+        protocolLibrary?: T | ProtocolLibraryBlockSelect<T>;
+        protocolCredStrip?: T | ProtocolCredStripBlockSelect<T>;
+        protocolWhatArrives?: T | ProtocolWhatArrivesBlockSelect<T>;
+        protocolLivingLifeline?: T | ProtocolLivingLifelineBlockSelect<T>;
+        labHero?: T | LabHeroBlockSelect<T>;
+        labRoadmap?: T | LabRoadmapBlockSelect<T>;
+        labReads?: T | LabReadsBlockSelect<T>;
+        labComparison?: T | LabComparisonBlockSelect<T>;
+        labBand?: T | LabBandBlockSelect<T>;
+        labReadingPanel?: T | LabReadingPanelBlockSelect<T>;
+        labFormula?: T | LabFormulaBlockSelect<T>;
+        labProtocol?: T | LabProtocolBlockSelect<T>;
+        labJourney?: T | LabJourneyBlockSelect<T>;
+        labScienceBoard?: T | LabScienceBoardBlockSelect<T>;
         whatArrives?: T | WhatArrivesBlockSelect<T>;
         outcomes?: T | OutcomesBlockSelect<T>;
         athletesSection?: T | AthletesSectionBlockSelect<T>;
@@ -7368,6 +9370,830 @@ export interface HowItWorksBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyHeroBlock_select".
+ */
+export interface BiologyHeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  proofText?: T;
+  proofAvatars?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        id?: T;
+      };
+  cardLabel?: T;
+  genomeValue?: T;
+  genomeLabel?: T;
+  microbiomeValue?: T;
+  microbiomeLabel?: T;
+  ratioTarget?: T;
+  ratioCaption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyTwoPeopleBlock_select".
+ */
+export interface BiologyTwoPeopleBlockSelect<T extends boolean = true> {
+  heading?: T;
+  body?: T;
+  note?: T;
+  personALabel?: T;
+  personAMeta?: T;
+  personBLabel?: T;
+  personBMeta?: T;
+  dnaCaption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyClearestReadBlock_select".
+ */
+export interface BiologyClearestReadBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  image?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  closingText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyReadingToFormulaBlock_select".
+ */
+export interface BiologyReadingToFormulaBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  readingTitle?: T;
+  readingSubtitle?: T;
+  bloodTitle?: T;
+  bloodBadge?: T;
+  bloodSubtitle?: T;
+  bloodNotePrefix?: T;
+  bloodNoteBadge?: T;
+  bloodNoteSuffix?: T;
+  bloodMeasuredLabel?: T;
+  signals?:
+    | T
+    | {
+        kind?: T;
+        gutName?: T;
+        gutSub?: T;
+        pillLabel?: T;
+        pillVariant?: T;
+        fillPercent?: T;
+        bloodName?: T;
+        outputs?:
+          | T
+          | {
+              name?: T;
+              dose?: T;
+              id?: T;
+            };
+        holdLabel?: T;
+        holdText?: T;
+        id?: T;
+      };
+  supportDividerLabel?: T;
+  supportItems?:
+    | T
+    | {
+        name?: T;
+        dose?: T;
+        id?: T;
+      };
+  moreLabel?: T;
+  moreDetail?: T;
+  formulaTitle?: T;
+  formulaEmptyText?: T;
+  formulaLinkLabel?: T;
+  formulaLinkUrl?: T;
+  captionText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BiologyIndustryFlipBlock_select".
+ */
+export interface BiologyIndustryFlipBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  stats?:
+    | T
+    | {
+        number?: T;
+        unit?: T;
+        tag?: T;
+        frontText?: T;
+        backText?: T;
+        readMoreLabel?: T;
+        backLabel?: T;
+        id?: T;
+      };
+  closingText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolHeroBlock_select".
+ */
+export interface ProtocolHeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  sealText?: T;
+  sealFaces?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        id?: T;
+      };
+  panel?:
+    | T
+    | {
+        stages?:
+          | T
+          | {
+              status?: T;
+              phase?: T;
+              id?: T;
+            };
+        cardTitle?: T;
+        cardMeta?: T;
+        rows?:
+          | T
+          | {
+              tagVariant?: T;
+              tagLabel?: T;
+              name?: T;
+              dose?: T;
+              id?: T;
+            };
+        moreLabel?: T;
+        moreMeta?: T;
+        footNote?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolJourneyBlock_select".
+ */
+export interface ProtocolJourneyBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  steps?:
+    | T
+    | {
+        icon?: T;
+        dayRange?: T;
+        name?: T;
+        description?: T;
+        isPayStep?: T;
+        payTagLabel?: T;
+        id?: T;
+      };
+  paygate?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  underBadge?: T;
+  footnote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolKitBlock_select".
+ */
+export interface ProtocolKitBlockSelect<T extends boolean = true> {
+  heading?: T;
+  kitImage?: T;
+  reassure1?: T;
+  reassure2?: T;
+  watchPill?:
+    | T
+    | {
+        title?: T;
+        meta?: T;
+        ariaLabel?: T;
+      };
+  video?:
+    | T
+    | {
+        file?: T;
+        poster?: T;
+        modalAriaLabel?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolFormulaUnitsBlock_select".
+ */
+export interface ProtocolFormulaUnitsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  parts?:
+    | T
+    | {
+        key?: T;
+        label?: T;
+        meta?: T;
+        units?:
+          | T
+          | {
+              icon?: T;
+              name?: T;
+              tagVariant?: T;
+              tagLabel?: T;
+              role?: T;
+              count?: T;
+              defaultOpen?: T;
+              description?: T;
+              chips?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              moreNote?: T;
+              decideText?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolLibraryBlock_select".
+ */
+export interface ProtocolLibraryBlockSelect<T extends boolean = true> {
+  categories?:
+    | T
+    | {
+        key?: T;
+        familyLabel?: T;
+        pillLabel?: T;
+        id?: T;
+      };
+  vettedText?: T;
+  vettedFaces?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        id?: T;
+      };
+  footLine?: T;
+  toggleLabelClosed?: T;
+  toggleLabelOpen?: T;
+  allPillLabel?: T;
+  searchPlaceholder?: T;
+  searchAriaLabel?: T;
+  emptyText?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        category?: T;
+        type?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolCredStripBlock_select".
+ */
+export interface ProtocolCredStripBlockSelect<T extends boolean = true> {
+  faces?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        id?: T;
+      };
+  headline?: T;
+  body?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolWhatArrivesBlock_select".
+ */
+export interface ProtocolWhatArrivesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  dek?: T;
+  intro?: T;
+  before?:
+    | T
+    | {
+        label?: T;
+        image?: T;
+      };
+  after?:
+    | T
+    | {
+        label?: T;
+        image?: T;
+      };
+  calls?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProtocolLivingLifelineBlock_select".
+ */
+export interface ProtocolLivingLifelineBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  originLabel?: T;
+  core?:
+    | T
+    | {
+        name?: T;
+        copy?: T;
+      };
+  advanced?:
+    | T
+    | {
+        name?: T;
+        badge?: T;
+        copy?: T;
+      };
+  milestones?:
+    | T
+    | {
+        label?: T;
+        month?: T;
+        muted?: T;
+        id?: T;
+      };
+  compareLabel?: T;
+  compareUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabHeroBlock_select".
+ */
+export interface LabHeroBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  trustLeadIn?: T;
+  trustFaces?:
+    | T
+    | {
+        image?: T;
+        name?: T;
+        affiliation?: T;
+        id?: T;
+      };
+  trustLinkLabel?: T;
+  trustLinkUrl?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabRoadmapBlock_select".
+ */
+export interface LabRoadmapBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        href?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabReadsBlock_select".
+ */
+export interface LabReadsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  cards?:
+    | T
+    | {
+        iconSvg?: T;
+        name?: T;
+        tag?: T;
+        body?: T;
+        badgeLabel?: T;
+        badgeVariant?: T;
+        highlighted?: T;
+        id?: T;
+      };
+  formulaNodeLabel?: T;
+  closingLeadIn?: T;
+  closingEmphasis?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabComparisonBlock_select".
+ */
+export interface LabComparisonBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  hintText?: T;
+  leftTag?: T;
+  leftName?: T;
+  leftMethod?: T;
+  rightTag?: T;
+  rightName?: T;
+  rightMethod?: T;
+  legend?:
+    | T
+    | {
+        label?: T;
+        color?: T;
+        dashed?: T;
+        id?: T;
+      };
+  nodes?:
+    | T
+    | {
+        name?: T;
+        job?: T;
+        status?: T;
+        id?: T;
+      };
+  knowLeftLabel?: T;
+  knowLeftValue?: T;
+  knowRightLabel?: T;
+  knowRightValue?: T;
+  closingLeadIn?: T;
+  closingEmphasis?: T;
+  closingTail?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabBandBlock_select".
+ */
+export interface LabBandBlockSelect<T extends boolean = true> {
+  image?: T;
+  heading?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabReadingPanelBlock_select".
+ */
+export interface LabReadingPanelBlockSelect<T extends boolean = true> {
+  heading?: T;
+  leadIn?: T;
+  transitionText?: T;
+  rawSpeciesLabel?: T;
+  rawSpecies?:
+    | T
+    | {
+        name?: T;
+        percent?: T;
+        id?: T;
+      };
+  rawMoreLabel?: T;
+  railLabel?: T;
+  tapHintTitle?: T;
+  tapHintSub?: T;
+  seals?:
+    | T
+    | {
+        number?: T;
+        railLabel?: T;
+        panelLabel?: T;
+        id?: T;
+      };
+  seeFullReadingLabel?: T;
+  seeFullReadingHint?: T;
+  tabTeamsLabel?: T;
+  tabRatiosLabel?: T;
+  tabBalanceLabel?: T;
+  teamsIntro?: T;
+  ratiosIntro?: T;
+  scoreIntro?: T;
+  archetypes?:
+    | T
+    | {
+        patternId?: T;
+        name?: T;
+        card?: T;
+        density?: T;
+        score?: T;
+        band?: T;
+        stress?: T;
+        hold?: T;
+        teams?:
+          | T
+          | {
+              fibre?: T;
+              butyrate?: T;
+              crossFeeders?: T;
+              bifido?: T;
+              mucus?: T;
+              protein?: T;
+            };
+        radar?:
+          | T
+          | {
+              health?: T;
+              diversity?: T;
+              metabolic?: T;
+              teamBalance?: T;
+              safety?: T;
+            };
+        ratios?:
+          | T
+          | {
+              mainFuel?: T;
+              fermentation?: T;
+              gutLining?: T;
+              byproducts?: T;
+            };
+        whats?: T;
+        focus?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabFormulaBlock_select".
+ */
+export interface LabFormulaBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  stage1Label?: T;
+  stage1Sub?: T;
+  liveCulturesLabel?: T;
+  liveCulturesText?: T;
+  prebioticsLabel?: T;
+  prebioticsText?: T;
+  combinedLabel?: T;
+  combinedText?: T;
+  stage2Label?: T;
+  stage2Heading?: T;
+  stage2Intro?: T;
+  jobsScopeLabel?: T;
+  jobsMoreLabel?: T;
+  jobsMoreMobileNote?: T;
+  workedDetailLabel?: T;
+  workedFootNote?: T;
+  jobs?:
+    | T
+    | {
+        name?: T;
+        sourceType?: T;
+        trigger?: T;
+        mode?: T;
+        leadName?: T;
+        leadNote?: T;
+        adds?:
+          | T
+          | {
+              condition?: T;
+              strain?: T;
+              id?: T;
+            };
+        comboCaption?: T;
+        members?:
+          | T
+          | {
+              name?: T;
+              note?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  stage3Label?: T;
+  stage3Heading?: T;
+  stage3Intro?: T;
+  blendRows?:
+    | T
+    | {
+        name?: T;
+        position?: T;
+        id?: T;
+      };
+  notInBlendLabel?: T;
+  notInBlendNote?: T;
+  blendCaption?: T;
+  quoteText?: T;
+  quoteAuthorImage?: T;
+  quoteAuthorName?: T;
+  quoteAuthorInst?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabProtocolBlock_select".
+ */
+export interface LabProtocolBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  lede?: T;
+  driverLabel?: T;
+  driverGutLabel?: T;
+  driverGutNote?: T;
+  driverRestLabel?: T;
+  driverIntakeLabel?: T;
+  driverGutPercent?: T;
+  layers?:
+    | T
+    | {
+        iconSvg?: T;
+        sourceLabel?: T;
+        name?: T;
+        body?: T;
+        chips?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+        hasMoreChip?: T;
+        badgeLabel?: T;
+        badgeVariant?: T;
+        highlighted?: T;
+        id?: T;
+      };
+  closingText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabJourneyBlock_select".
+ */
+export interface LabJourneyBlockSelect<T extends boolean = true> {
+  heading?: T;
+  sub?: T;
+  legendYourPartLabel?: T;
+  legendOurPartLabel?: T;
+  scrollCueText?: T;
+  act0Label?: T;
+  act0Heading?: T;
+  act0Body?: T;
+  act0VizValue?: T;
+  act0VizUnit?: T;
+  act1Label?: T;
+  act1Heading?: T;
+  act1Body?: T;
+  act2Label?: T;
+  act2Heading?: T;
+  act2Body?: T;
+  yourPartNodes?:
+    | T
+    | {
+        name?: T;
+        desc?: T;
+        timestamp?: T;
+        id?: T;
+      };
+  labNodes?:
+    | T
+    | {
+        name?: T;
+        desc?: T;
+        id?: T;
+      };
+  ongoingNodes?:
+    | T
+    | {
+        kind?: T;
+        name?: T;
+        desc?: T;
+        timestamp?: T;
+        id?: T;
+      };
+  footNote?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LabScienceBoardBlock_select".
+ */
+export interface LabScienceBoardBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  stats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        id?: T;
+      };
+  teamGroupLabel?: T;
+  teamGroupSub?: T;
+  cso?:
+    | T
+    | {
+        photo?: T;
+        initials?: T;
+        role?: T;
+        name?: T;
+        bio?: T;
+        quote?: T;
+        tags?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+      };
+  teamMembers?:
+    | T
+    | {
+        photo?: T;
+        initials?: T;
+        discipline?: T;
+        name?: T;
+        affiliation?: T;
+        quote?: T;
+        id?: T;
+      };
+  checkGroupLabel?: T;
+  checkStatement?: T;
+  checkStatementSub?: T;
+  validators?:
+    | T
+    | {
+        photo?: T;
+        initials?: T;
+        name?: T;
+        affiliation?: T;
+        quote?: T;
+        tags?:
+          | T
+          | {
+              label?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "WhatArrivesBlock_select".
  */
 export interface WhatArrivesBlockSelect<T extends boolean = true> {
@@ -7951,6 +10777,31 @@ export interface HeadersSelect<T extends boolean = true> {
   loginUrl?: T;
   loginTextColor?: T;
   navItems?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              localizedLabel?: T;
+            };
+        id?: T;
+      };
+  sectionNavEnabled?: T;
+  sectionNavItems?:
+    | T
+    | {
+        sectionId?: T;
+        label?: T;
+        id?: T;
+      };
+  discoverNavEnabled?: T;
+  discoverNavLabel?: T;
+  discoverNavItems?:
     | T
     | {
         link?:

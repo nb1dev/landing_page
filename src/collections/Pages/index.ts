@@ -66,8 +66,31 @@ import { CheckoutForm } from '@/blocks/checkoutBlocks/CheckoutForm/config'
 import { HomepageHeroBlock } from '@/blocks/HomepageHero/config'
 import { TheCaseBlock } from '@/blocks/TheCase/config'
 import { TwoModelsBlock } from '@/blocks/TwoModels/config'
+import { BiologyHeroBlock } from '@/blocks/BiologyHero/config'
+import { BiologyTwoPeopleBlock } from '@/blocks/BiologyTwoPeople/config'
+import { BiologyClearestReadBlock } from '@/blocks/BiologyClearestRead/config'
+import { BiologyReadingToFormulaBlock } from '@/blocks/BiologyReadingToFormula/config'
+import { BiologyIndustryFlipBlock } from '@/blocks/BiologyIndustryFlip/config'
+import { ProtocolHeroBlock } from '@/blocks/ProtocolHero/config'
+import { ProtocolJourneyBlock } from '@/blocks/ProtocolJourney/config'
+import { ProtocolKitBlock } from '@/blocks/ProtocolKit/config'
+import { ProtocolFormulaUnitsBlock } from '@/blocks/ProtocolFormulaUnits/config'
+import { ProtocolLibraryBlock } from '@/blocks/ProtocolLibrary/config'
+import { ProtocolCredStripBlock } from '@/blocks/ProtocolCredStrip/config'
+import { ProtocolWhatArrivesBlock } from '@/blocks/ProtocolWhatArrives/config'
+import { ProtocolLivingLifelineBlock } from '@/blocks/ProtocolLivingLifeline/config'
 import { GutFirstBlock } from '@/blocks/GutFirst/config'
 import { HowItWorksBlock } from '@/blocks/HowItWorks/config'
+import { LabHeroBlock } from '@/blocks/LabHero/config'
+import { LabRoadmapBlock } from '@/blocks/LabRoadmap/config'
+import { LabReadsBlock } from '@/blocks/LabReads/config'
+import { LabComparisonBlock } from '@/blocks/LabComparison/config'
+import { LabBandBlock } from '@/blocks/LabBand/config'
+import { LabReadingPanelBlock } from '@/blocks/LabReadingPanel/config'
+import { LabFormulaBlock } from '@/blocks/LabFormula/config'
+import { LabProtocolBlock } from '@/blocks/LabProtocol/config'
+import { LabJourneyBlock } from '@/blocks/LabJourney/config'
+import { LabScienceBoardBlock } from '@/blocks/LabScienceBoard/config'
 import { WhatArrivesBlock } from '@/blocks/WhatArrives/config'
 import { OutcomesBlock } from '@/blocks/Outcomes/config'
 import { AthletesBlock } from '@/blocks/Athletes/config'
@@ -243,6 +266,29 @@ export const Pages: CollectionConfig<'pages'> = {
                 TwoModelsBlock,
                 GutFirstBlock,
                 HowItWorksBlock,
+                BiologyHeroBlock,
+                BiologyTwoPeopleBlock,
+                BiologyClearestReadBlock,
+                BiologyReadingToFormulaBlock,
+                BiologyIndustryFlipBlock,
+                ProtocolHeroBlock,
+                ProtocolJourneyBlock,
+                ProtocolKitBlock,
+                ProtocolFormulaUnitsBlock,
+                ProtocolLibraryBlock,
+                ProtocolCredStripBlock,
+                ProtocolWhatArrivesBlock,
+                ProtocolLivingLifelineBlock,
+                LabHeroBlock,
+                LabRoadmapBlock,
+                LabReadsBlock,
+                LabComparisonBlock,
+                LabBandBlock,
+                LabReadingPanelBlock,
+                LabFormulaBlock,
+                LabProtocolBlock,
+                LabJourneyBlock,
+                LabScienceBoardBlock,
                 WhatArrivesBlock,
                 OutcomesBlock,
                 AthletesBlock,

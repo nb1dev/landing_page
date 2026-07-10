@@ -143,6 +143,10 @@ export const YpBuyBoxClient: React.FC<YpBuyBoxBlockType> = ({
     >
       <style jsx>{`
         .buy-close {
+          /* Mockup body font is --font (Inter); app global is Geist. Headings
+             override to Instrument Sans below. Shared block — also used on
+             the-lab-debug and our-plans. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           overflow: hidden;
           padding: 84px 0;
@@ -255,8 +259,8 @@ export const YpBuyBoxClient: React.FC<YpBuyBoxBlockType> = ({
           border-color: rgba(255, 255, 255, 0.32);
         }
         .bc-opt.rec {
-          border-color: rgba(198, 255, 91, 0.4);
-          background: rgba(198, 255, 91, 0.06);
+          border-color: rgba(166, 217, 63, 0.4);
+          background: rgba(166, 217, 63, 0.06);
         }
         .rec-flag {
           position: absolute;
