@@ -715,6 +715,13 @@ export const LabJourneyComponent: React.FC<LabJourneyBlockType> = ({
           color: #eaf3f8;
           font-weight: 600;
         }
+        /* A rich-text color mark wraps the bold word in <span style="color:…">;
+           the rule above sets color directly on the nested <strong>, which
+           beats the color it would inherit from the span — forcing e.g. the
+           gold "Advanced" back to white. Let a colored span win. */
+        .jxr-foot :global(span[style*='color'] strong) {
+          color: inherit;
+        }
         .jxr.revready [data-rev] {
           opacity: 0;
           transform: translateY(14px);
