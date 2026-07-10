@@ -364,6 +364,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
           font-size: clamp(17px, 1.95vw, 21px);
           line-height: 1.55;
           color: var(--ink-soft);
+          text-wrap: pretty;
         }
         .mi8-lede :global(em) {
           font-style: normal;
@@ -380,6 +381,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
           font-size: clamp(17px, 1.95vw, 21px);
           line-height: 1.55;
           color: var(--ink-soft);
+          text-wrap: pretty;
         }
         .mi8-transition :global(strong) {
           color: var(--ink);

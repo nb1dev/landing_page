@@ -99,6 +99,7 @@ export const ProtocolFormulaUnitsComponent: React.FC<ProtocolFormulaUnitsBlockTy
     <section className="pfu-sec" id="units" ref={sectionRef}>
       <style jsx>{`
         .pfu-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 88px 0 36px;
           background: #f6f9fc;

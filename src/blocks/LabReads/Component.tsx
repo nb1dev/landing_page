@@ -130,7 +130,7 @@ export const LabReadsComponent: React.FC<LabReadsBlockType> = ({
           --t4: #3e96be;
           --accent: #0a8fb0;
           --muted: #a9b7c2;
-          --lime: #c4f23e;
+          --lime: #c6ff5b;
           --gold-bg: #fbefd2;
           --gold-ink: #a97d14;
           font-family: 'Instrument Sans', 'Inter', sans-serif;
@@ -138,9 +138,9 @@ export const LabReadsComponent: React.FC<LabReadsBlockType> = ({
           padding: 70px 0 86px;
         }
         .wrap {
-          max-width: 1080px;
+          max-width: 1180px;
           margin: 0 auto;
-          padding: 0 32px;
+          padding: 0 40px;
         }
         .eyebrow {
           font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -241,12 +241,13 @@ export const LabReadsComponent: React.FC<LabReadsBlockType> = ({
           display: inline-block;
           align-self: flex-start;
           margin-top: auto;
-          font-size: 11px;
+          font-size: 9.5px;
           font-weight: 600;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-          padding: 6px 12px;
+          padding: 4px 10px;
           border-radius: 999px;
+          white-space: nowrap;
         }
         .badge.b-plan {
           background: #edf0f3;

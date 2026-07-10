@@ -71,6 +71,7 @@ export const ProtocolWhatArrivesComponent: React.FC<ProtocolWhatArrivesBlockType
     <section className="pwa-sec" id="formula" ref={sectionRef}>
       <style jsx>{`
         .pwa-sec {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           position: relative;
           padding: 88px 0;
           background: #fff;

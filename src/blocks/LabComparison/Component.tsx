@@ -126,7 +126,8 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
       <style jsx>{`
         .lab-cmp {
           padding: 94px 0;
-          background: #f3f6f9;
+          background: #fff;
+          scroll-margin-top: 84px;
           font-family: 'Instrument Sans', 'Inter', sans-serif;
         }
         .wrap {
@@ -248,7 +249,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           font-size: 11.5px;
           font-weight: 700;
           color: #12314d;
-          background: #c4f23e;
+          background: #c6ff5b;
           border-radius: 999px;
           padding: 5px 12px;
           margin-top: 10px;
