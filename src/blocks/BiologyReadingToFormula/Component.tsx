@@ -292,6 +292,10 @@ export const BiologyReadingToFormulaComponent: React.FC<BiologyReadingToFormulaB
         .brf {
           background: linear-gradient(180deg, #f3efe6 0%, #f0ebe0 100%);
           padding-block: clamp(72px, 10vw, 124px);
+          /* Base body font is Inter (app global is Geist, which otherwise leaks
+             into the lede/gut names/subs). Headings set Instrument Sans and the
+             mono captions set JetBrains Mono explicitly. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         .brf-wrap {
           max-width: 1160px;
@@ -714,6 +718,8 @@ export const BiologyReadingToFormulaComponent: React.FC<BiologyReadingToFormulaB
           margin-top: 22px;
           font-size: 12px;
           color: rgba(18, 49, 77, 0.4);
+          /* Mono caption in the mockup (.cap uses --mono). */
+          font-family: 'JetBrains Mono', ui-monospace, monospace;
         }
         @media (max-width: 900px) {
           .brf-demo {

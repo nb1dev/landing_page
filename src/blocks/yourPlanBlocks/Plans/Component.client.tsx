@@ -306,6 +306,10 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
           padding: 84px 0;
           position: relative;
           color: #12314d;
+          /* Base body font is Inter (app global is Geist, which otherwise leaks
+             into the lede/card copy). Headings/names/prices set Instrument Sans
+             explicitly below. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         .yp-plans.is-dark {
           color: #ffffff;
