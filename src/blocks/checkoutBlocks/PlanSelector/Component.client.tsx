@@ -13,6 +13,7 @@ import {
   resolveTokensDeep,
   extractBullets,
 } from '@/lib/plans/clientUtils'
+import { getStoredPlanSelection, storePlanSelection } from '@/lib/plans/selectionStore'
 
 type Plan = {
   planKey?: 'core' | 'advanced' | null
@@ -87,8 +88,22 @@ export const PlanSelectorClient: React.FC<Props> = ({
   )
   const [cmpOpen, setCmpOpen] = useState(false)
 
+  // Captured during the first render, BEFORE the effect below writes the
+  // default to storage — otherwise the visitor's earlier selection is lost.
+  const [storedPlanAtMount] = useState(() => getStoredPlanSelection().plan)
+
+  // Restore the funnel selection (e.g. coming back from checkout via "Edit
+  // plan"); post-mount so SSR markup and hydration stay identical.
+  useEffect(() => {
+    if (storedPlanAtMount && plansProp?.some((p) => p.planKey === storedPlanAtMount)) {
+      setSelectedKey(storedPlanAtMount)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('nb1:planselected', { detail: { key: selectedKey } }))
+    storePlanSelection({ plan: selectedKey })
   }, [selectedKey])
 
   useEffect(() => {

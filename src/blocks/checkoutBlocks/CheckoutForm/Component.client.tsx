@@ -23,12 +23,13 @@ import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
 import { PaymentFailedScreen } from './PaymentFailedScreen'
+import {
+  getStoredPlanSelection,
+  storePlanSelection,
+  type PlanSelection,
+} from '@/lib/plans/selectionStore'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
-
-// Selected plan/cycle survive refreshes here — the ?plan=&cycle= URL params are
-// stripped right after the first read (see the URL-cleanup effect).
-const PLAN_STORAGE_KEY = 'nb1_checkout_plan'
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
@@ -103,24 +104,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   // params, so without this a page refresh would silently reset the order to
   // core/4 while the form fields (also sessionStorage-backed) survive.
   const [{ planKey, cycleKey }] = useState(() => {
-    const VALID_PLANS = ['core', 'advanced']
-    const VALID_CYCLES = ['4', '8', '12', 'monthly']
-    let saved: { plan?: string; cycle?: string } = {}
-    try {
-      saved = JSON.parse(sessionStorage.getItem(PLAN_STORAGE_KEY) ?? '{}')
-    } catch {
-      /* noop (also covers SSR, where sessionStorage doesn't exist) */
+    const saved = getStoredPlanSelection()
+    const fromUrl: PlanSelection = {
+      plan: searchParams?.get('plan') ?? undefined,
+      cycle: searchParams?.get('cycle') ?? undefined,
     }
-    const rawPlan = searchParams?.get('plan') ?? saved.plan ?? 'core'
-    const rawCycle = searchParams?.get('cycle') ?? saved.cycle ?? '4'
-    const plan = VALID_PLANS.includes(rawPlan) ? rawPlan : 'core'
-    const cycle = VALID_CYCLES.includes(rawCycle) ? rawCycle : '4'
-    try {
-      sessionStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify({ plan, cycle }))
-    } catch {
-      /* noop */
-    }
-    return { planKey: plan, cycleKey: cycle }
+    storePlanSelection({ ...saved, ...fromUrl })
+    const applied = getStoredPlanSelection()
+    return { planKey: applied.plan ?? 'core', cycleKey: applied.cycle ?? '4' }
   })
 
   // Strip plan/cycle from URL once read — keeps Stripe redirect params intact
