@@ -90,6 +90,7 @@ export const nl = {
     next: 'Volgende →',
     edit: 'Bewerken',
     required: 'Verplicht.',
+    nameInvalid: 'Voer een geldige naam in.',
     email: {
       label: 'E-mail',
       placeholder: 'jij@email.nl',

@@ -90,6 +90,7 @@ export const fr = {
     next: 'Suivant →',
     edit: 'Modifier',
     required: 'Obligatoire.',
+    nameInvalid: 'Veuillez saisir un nom valide.',
     email: {
       label: 'E-mail',
       placeholder: 'toi@email.com',
