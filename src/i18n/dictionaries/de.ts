@@ -93,6 +93,7 @@ export const de = {
     next: 'Weiter →',
     edit: 'Bearbeiten',
     required: 'Pflichtfeld.',
+    nameInvalid: 'Bitte einen gültigen Namen eingeben.',
     email: {
       label: 'E-Mail',
       placeholder: 'du@email.de',
