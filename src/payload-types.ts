@@ -5827,9 +5827,9 @@ export interface LabReadingPanelBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * e.g. "Your sample comes back as 200–400 species..."
+   * e.g. "Your sample comes back as 200–400 species... complete, but unreadable." Italic-emphasize the closing phrase to match the mockup.
    */
-    leadIn?: {
+  leadIn?: {
     root: {
       type: string;
       children: {
