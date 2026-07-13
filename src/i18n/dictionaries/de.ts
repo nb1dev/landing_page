@@ -113,6 +113,7 @@ export const de = {
       phone: 'Telefon',
       phoneNote: '(für Lieferupdates)',
       phonePlaceholder: '+49 …',
+      phoneInvalid: 'Bitte eine gültige Telefonnummer für das gewählte Land eingeben.',
     },
     shipping: {
       standardName: 'Standard',

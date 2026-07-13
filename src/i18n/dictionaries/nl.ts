@@ -110,6 +110,7 @@ export const nl = {
       phone: 'Telefoon',
       phoneNote: '(voor bezorgupdates)',
       phonePlaceholder: '+31 …',
+      phoneInvalid: 'Voer een geldig telefoonnummer in voor het geselecteerde land.',
     },
     shipping: {
       standardName: 'Standaard',
