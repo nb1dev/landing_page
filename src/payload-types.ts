@@ -4345,7 +4345,7 @@ export interface CycleSelectorBlock {
   switchLinkLabel?: string | null;
   switchLinkHref?: string | null;
   /**
-   * The 4/8/12-month price grid below is fetched live from the subscriptions API for this plan family — it is not editable here. Checkout links are generated as /order-details?plan={family}&cycle={month}.
+   * The 4/8/12-month price grid below is fetched live from the subscriptions API for this plan family — it is not editable here. Checkout links are generated as {locale order-details slug}?plan={family}&cycle={month}.
    */
   planFamily: 'core' | 'advanced';
   showMonthlyOption?: boolean | null;
