@@ -26,6 +26,10 @@ import { PaymentFailedScreen } from './PaymentFailedScreen'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
+// Selected plan/cycle survive refreshes here — the ?plan=&cycle= URL params are
+// stripped right after the first read (see the URL-cleanup effect).
+const PLAN_STORAGE_KEY = 'nb1_checkout_plan'
+
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
 // Numeric EUR fallback rates, used only if the live /subscriptions/plans fetch
@@ -93,11 +97,31 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const router = useRouter()
   const pathname = usePathname()
 
-  // Snapshot plan/cycle on first render before the URL is cleaned
-  const planKeyRef = useRef(searchParams?.get('plan') ?? 'core')
-  const cycleKeyRef = useRef(searchParams?.get('cycle') ?? '4')
-  const planKey = planKeyRef.current
-  const cycleKey = cycleKeyRef.current
+  // Plan/cycle selection: snapshotted once before the URL is cleaned below.
+  // URL params win (fresh arrival from the cycle page); otherwise fall back to
+  // the selection persisted in sessionStorage — the URL cleanup removes the
+  // params, so without this a page refresh would silently reset the order to
+  // core/4 while the form fields (also sessionStorage-backed) survive.
+  const [{ planKey, cycleKey }] = useState(() => {
+    const VALID_PLANS = ['core', 'advanced']
+    const VALID_CYCLES = ['4', '8', '12', 'monthly']
+    let saved: { plan?: string; cycle?: string } = {}
+    try {
+      saved = JSON.parse(sessionStorage.getItem(PLAN_STORAGE_KEY) ?? '{}')
+    } catch {
+      /* noop (also covers SSR, where sessionStorage doesn't exist) */
+    }
+    const rawPlan = searchParams?.get('plan') ?? saved.plan ?? 'core'
+    const rawCycle = searchParams?.get('cycle') ?? saved.cycle ?? '4'
+    const plan = VALID_PLANS.includes(rawPlan) ? rawPlan : 'core'
+    const cycle = VALID_CYCLES.includes(rawCycle) ? rawCycle : '4'
+    try {
+      sessionStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify({ plan, cycle }))
+    } catch {
+      /* noop */
+    }
+    return { planKey: plan, cycleKey: cycle }
+  })
 
   // Strip plan/cycle from URL once read — keeps Stripe redirect params intact
   useEffect(() => {
@@ -1178,12 +1202,6 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       : payMethod === 'klarna'
         ? t.confirm.klarna
         : t.confirm.label.replace('{zeroPrice}', zero)
-
-  // Recomputed every render from state — drives the confirm button's disabled look
-  const formComplete =
-    !getEmailError() &&
-    Object.keys(getAddrErrors()).length === 0 &&
-    Object.keys(getPayErrors()).length === 0
 
   const [inboxBodyPrefix, inboxBodySuffix] = t.done.inboxBody.split('{email}')
   const [chargeNotePrefix, chargeNoteSuffix] = t.done.summary.chargeNote.split('{when}')
@@ -2737,17 +2755,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
               {accountErr && (
                 <p style={{ color: '#c0392b', fontSize: '13px', marginTop: 12 }}>{accountErr}</p>
               )}
-              {/* disabled is cosmetic (removable via DevTools) — nextPayment
-                  re-validates everything from state before charging anyway */}
+              {/* Stays clickable while the form is incomplete on purpose: the
+                  click runs validateBeforePay, which opens the first invalid
+                  section and shows what's missing. Only disabled while sending. */}
               <button
                 type="button"
                 className="nb1-confirm-btn"
                 onClick={nextPayment}
-                disabled={accountStatus === 'sending' || !formComplete}
+                disabled={accountStatus === 'sending'}
                 style={
-                  accountStatus === 'sending' || !formComplete
-                    ? { opacity: 0.65, cursor: 'not-allowed' }
-                    : undefined
+                  accountStatus === 'sending' ? { opacity: 0.65, cursor: 'not-allowed' } : undefined
                 }
               >
                 {accountStatus === 'sending' ? t.confirm.processing : confirmLabel}
