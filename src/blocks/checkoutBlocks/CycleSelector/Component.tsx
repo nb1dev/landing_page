@@ -1,5 +1,6 @@
 import React from 'react'
 import { CycleSelectorClient } from './Component.client'
+import { getLocalizedPagePath } from '@/utilities/localizedPagePath'
 
 type FaqItem = {
   question?: string | null
@@ -27,6 +28,10 @@ type Props = {
   locale?: string
 }
 
-export const CycleSelectorComponent: React.FC<Props> = (props) => {
-  return <CycleSelectorClient {...props} />
+export const CycleSelectorComponent: React.FC<Props> = async (props) => {
+  // Checkout links are code-generated; resolve the locale-specific slug of the
+  // order-details page so they don't bounce through the query-dropping
+  // cross-locale redirect (en slug ≠ localized slug, e.g. de `bestellen-details`).
+  const checkoutBasePath = await getLocalizedPagePath('order-details', props.locale ?? 'en')
+  return <CycleSelectorClient {...props} checkoutBasePath={checkoutBasePath} />
 }

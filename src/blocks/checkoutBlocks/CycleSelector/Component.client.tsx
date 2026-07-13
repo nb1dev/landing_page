@@ -48,6 +48,8 @@ type Props = {
   faqTitle?: string | null
   faqItems?: FaqItem[] | null
   locale?: string
+  /** Locale-correct path of the order-details page, e.g. /de/bestellen-details */
+  checkoutBasePath?: string | null
 }
 
 const CheckIcon = () => (
@@ -87,6 +89,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
   faqTitle,
   faqItems,
   locale = 'en',
+  checkoutBasePath,
 }) => {
   const { ref, revealed } = useReveal()
   const dict = getDictionary(locale)
@@ -126,7 +129,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
             monthlyRate: formatPrice(rate, currency, locale),
             saveLabel: formatSavingsLabel(savings, currency, locale),
             isBestValue: p.is_preferred,
-            checkoutHref: `/${locale}/order-details?plan=${planKey}&cycle=${p.month}`,
+            checkoutHref: `${checkoutBasePath ?? `/${locale}/order-details`}?plan=${planKey}&cycle=${p.month}`,
           }
         }),
       )
@@ -145,7 +148,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
     }
     window.addEventListener('nb1:currencychange', onCurrencyChange)
     return () => window.removeEventListener('nb1:currencychange', onCurrencyChange)
-  }, [planFamily, locale])
+  }, [planFamily, locale, checkoutBasePath])
 
   const activeTiers = tiers.length > 0 ? tiers : (tiersProp ?? [])
   const faqAnswerRefs = React.useRef<(HTMLDivElement | null)[]>([])
