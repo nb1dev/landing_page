@@ -12,7 +12,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
-import PhoneInput, { type Country } from 'react-phone-number-input'
+import PhoneInput, { isValidPhoneNumber, type Country } from 'react-phone-number-input'
 import AddressAutocomplete, { type GooglePlace } from './AddressAutocomplete'
 import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
@@ -780,6 +780,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     if (!zip.trim()) e.zip = t.required
     if (!city.trim()) e.city = t.required
     else if (!hasLetter(city)) e.city = t.nameInvalid
+    // Phone is required for delivery updates. The input keeps the value in
+    // E.164 (+49…), so isValidPhoneNumber checks it against the numbering
+    // rules of the country the visitor picked in the country-code selector.
+    if (!phone) e.phone = t.required
+    else if (!isValidPhoneNumber(phone)) e.phone = t.address.phoneInvalid
     return e
   }
 
@@ -797,6 +802,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       if (bFn.trim() && !hasLetter(bFn)) e.bFn = t.nameInvalid
       if (bLn.trim() && !hasLetter(bLn)) e.bLn = t.nameInvalid
       if (bEmail.trim() && !EMAIL_RE.test(bEmail)) e.bEmail = t.email.invalid
+      if (bPhone && !isValidPhoneNumber(bPhone)) e.bPhone = t.address.phoneInvalid
       if (!bA1.trim()) e.bA1 = t.required
       if (!bZip.trim()) e.bZip = t.required
       if (!bCity.trim()) e.bCity = t.required
@@ -1969,6 +1975,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           border-color: #0a8fb0;
           box-shadow: 0 0 0 3px rgba(10, 143, 176, 0.1);
         }
+        .nb1-phone-wrap.err .PhoneInput {
+          border-color: #c0392b;
+        }
         .nb1-phone-wrap .PhoneInputCountry {
           display: flex;
           align-items: center;
@@ -2238,7 +2247,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     {t.address.phone}{' '}
                     <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                   </label>
-                  <div className="nb1-phone-wrap">
+                  <div className={`nb1-phone-wrap${addrErr.phone ? ' err' : ''}`}>
                     <PhoneInput
                       id="nb1-phone"
                       country={phoneCountry}
@@ -2250,6 +2259,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       placeholder={t.address.phonePlaceholder}
                     />
                   </div>
+                  {addrErr.phone && <span className="nb1-err">{addrErr.phone}</span>}
                 </div>
               </div>
               <button type="button" className="nb1-acc-next" onClick={nextAddr}>
@@ -2587,7 +2597,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         {t.address.phone}{' '}
                         <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                       </label>
-                      <div className="nb1-phone-wrap">
+                      <div className={`nb1-phone-wrap${payErr.bPhone ? ' err' : ''}`}>
                         <PhoneInput
                           country={bPhoneCountry}
                           onCountryChange={(c) => setBPhoneCountry(c ?? 'DE')}
@@ -2598,6 +2608,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                           placeholder={t.address.phonePlaceholder}
                         />
                       </div>
+                      {payErr.bPhone && <span className="nb1-err">{payErr.bPhone}</span>}
                     </div>
                   </div>
                   <div className="nb1-frow full">
