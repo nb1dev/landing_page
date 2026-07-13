@@ -90,6 +90,7 @@ export const fr = {
     next: 'Suivant →',
     edit: 'Modifier',
     required: 'Obligatoire.',
+    nameInvalid: 'Veuillez saisir un nom valide.',
     email: {
       label: 'E-mail',
       placeholder: 'toi@email.com',
@@ -109,6 +110,7 @@ export const fr = {
       phone: 'Téléphone',
       phoneNote: '(pour le suivi de livraison)',
       phonePlaceholder: '+33 …',
+      phoneInvalid: 'Veuillez saisir un numéro de téléphone valide pour le pays sélectionné.',
     },
     shipping: {
       standardName: 'Standard',

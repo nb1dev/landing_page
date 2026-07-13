@@ -93,6 +93,7 @@ export const de = {
     next: 'Weiter →',
     edit: 'Bearbeiten',
     required: 'Pflichtfeld.',
+    nameInvalid: 'Bitte einen gültigen Namen eingeben.',
     email: {
       label: 'E-Mail',
       placeholder: 'du@email.de',
@@ -112,6 +113,7 @@ export const de = {
       phone: 'Telefon',
       phoneNote: '(für Lieferupdates)',
       phonePlaceholder: '+49 …',
+      phoneInvalid: 'Bitte eine gültige Telefonnummer für das gewählte Land eingeben.',
     },
     shipping: {
       standardName: 'Standard',

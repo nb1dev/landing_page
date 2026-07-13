@@ -1,8 +1,9 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { getStoredPlanSelection, PLAN_SELECTION_EVENT } from '@/lib/plans/selectionStore'
 
 type Props = {
   logo?: { url?: string | null; alt?: string | null } | number | null
@@ -36,7 +37,24 @@ export const OrderStepNavComponent: React.FC<Props> = ({
   const active = Number(activeStep === 'done' ? 4 : activeStep)
 
   const pathname = usePathname() || ''
-  const variant = pathname.includes('advanced') ? 'advanced' : pathname.includes('core') ? 'core' : null
+  // On family-agnostic pages (e.g. order-details) the pathname reveals no
+  // variant — fall back to the visitor's stored selection so "Plan"/"Duration"
+  // links go back to the family they actually picked, not urls[0] (core).
+  // Read post-mount to keep SSR markup and hydration identical.
+  const [storedPlan, setStoredPlan] = useState<string | null>(null)
+  useEffect(() => {
+    const sync = () => setStoredPlan(getStoredPlanSelection().plan ?? null)
+    sync()
+    // Blocks on the same page (e.g. the checkout form, plan selector) may write
+    // the selection AFTER this nav mounts — stay in sync via the store event.
+    window.addEventListener(PLAN_SELECTION_EVENT, sync)
+    return () => window.removeEventListener(PLAN_SELECTION_EVENT, sync)
+  }, [])
+  const variant = pathname.includes('advanced')
+    ? 'advanced'
+    : pathname.includes('core')
+      ? 'core'
+      : storedPlan
 
   function resolveUrl(raw?: string | null) {
     if (!raw) return raw

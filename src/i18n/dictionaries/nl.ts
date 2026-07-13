@@ -90,6 +90,7 @@ export const nl = {
     next: 'Volgende →',
     edit: 'Bewerken',
     required: 'Verplicht.',
+    nameInvalid: 'Voer een geldige naam in.',
     email: {
       label: 'E-mail',
       placeholder: 'jij@email.nl',
@@ -109,6 +110,7 @@ export const nl = {
       phone: 'Telefoon',
       phoneNote: '(voor bezorgupdates)',
       phonePlaceholder: '+31 …',
+      phoneInvalid: 'Voer een geldig telefoonnummer in voor het geselecteerde land.',
     },
     shipping: {
       standardName: 'Standaard',

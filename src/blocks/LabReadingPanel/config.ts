@@ -17,7 +17,16 @@ export const LabReadingPanelBlock: Block = {
       editor: makeHeadingEditor(['h1']),
       admin: { description: 'Apply "Brand Teal" color to the emphasized clause, matching the mockup.' },
     },
-    { name: 'leadIn', type: 'textarea', localized: true, admin: { description: 'e.g. "Your sample comes back as 200–400 species..."' } },
+    {
+      name: 'leadIn',
+      type: 'richText',
+      localized: true,
+      editor: inlineRichTextEditor,
+      admin: {
+        description:
+          'e.g. "Your sample comes back as 200–400 species... complete, but unreadable." Italic-emphasize the closing phrase to match the mockup.',
+      },
+    },
     {
       name: 'transitionText',
       type: 'richText',

@@ -27,6 +27,7 @@ export type LabComparisonBlockType = {
   leftTag?: string | null
   leftName?: string | null
   leftMethod?: string | null
+  leftCaption?: string | null
   rightTag?: string | null
   rightName?: string | null
   rightMethod?: string | null
@@ -66,6 +67,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
   leftTag,
   leftName,
   leftMethod,
+  leftCaption,
   rightTag,
   rightName,
   rightMethod,
@@ -128,7 +130,10 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           padding: 94px 0;
           background: #fff;
           scroll-margin-top: 84px;
-          font-family: 'Instrument Sans', 'Inter', sans-serif;
+          /* Base is --font (Inter); the labels/tags/legend inherit it. Display
+             elements (h2, .cmp2-set, .cmp2-name, .cmp2-know .v) set Instrument
+             Sans explicitly below. */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         .wrap {
           max-width: 1080px;
@@ -147,6 +152,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           text-wrap: balance;
         }
         .cmp2-set {
+          font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 500;
           font-size: clamp(19px, 2.3vw, 25px);
           line-height: 1.35;
@@ -189,6 +195,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           color: #0a8fb0;
         }
         .cmp2-name {
+          font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
           font-size: 18px;
           color: #12314d;
@@ -198,12 +205,21 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           font-family: 'JetBrains Mono', ui-monospace, monospace;
           font-size: 10.5px;
           letter-spacing: 0.08em;
-          text-transform: uppercase;
+          /* No text-transform: the values are fixed technical terms already
+             cased for display ("16S rRNA", "SHOTGUN SEQUENCING"). Uppercasing
+             would wrongly render "16S RRNA" — the mockup keeps "rRNA" lower. */
           color: #12314d;
         }
         .cmp2-svg {
           max-width: 250px;
           margin: 8px auto 0;
+        }
+        .cmp2-cap {
+          font-size: 13px;
+          line-height: 1.5;
+          color: rgba(18, 49, 77, 0.55);
+          margin-top: 12px;
+          min-height: 40px;
         }
         .cmp2-svg :global(svg) {
           width: 100%;
@@ -343,6 +359,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
           color: #12314d;
         }
         .cmp2-know .v {
+          font-family: 'Instrument Sans', 'Inter', sans-serif;
           font-weight: 600;
           font-size: 15px;
           color: #12314d;
@@ -463,6 +480,13 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
                 aria-label="Every microbe as an identical grey dot"
                 dangerouslySetInnerHTML={{ __html: COMPARISON_16S_INNER_SVG }}
               />
+            </div>
+            {/* Caption under the 16S figure. Hardcoded fallback for now — the
+               CMS field (leftCaption) needs a DB migration that's currently
+               blocked by unrelated local schema drift; once migrated, the CMS
+               value overrides this. */}
+            <div className="cmp2-cap">
+              {leftCaption || 'Every microbe is just a dot. All you learn is that it exists.'}
             </div>
           </figure>
 

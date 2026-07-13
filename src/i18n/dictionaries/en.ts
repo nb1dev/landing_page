@@ -90,6 +90,7 @@ export const en = {
     next: 'Next →',
     edit: 'Edit',
     required: 'Required.',
+    nameInvalid: 'Enter a valid name.',
     email: {
       label: 'Email',
       placeholder: 'you@email.com',
@@ -109,6 +110,7 @@ export const en = {
       phone: 'Phone',
       phoneNote: '(for delivery updates)',
       phonePlaceholder: '+49 …',
+      phoneInvalid: 'Enter a valid phone number for the selected country.',
     },
     shipping: {
       standardName: 'Standard',

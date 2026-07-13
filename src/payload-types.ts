@@ -5827,9 +5827,23 @@ export interface LabReadingPanelBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * e.g. "Your sample comes back as 200–400 species..."
+   * e.g. "Your sample comes back as 200–400 species... complete, but unreadable." Italic-emphasize the closing phrase to match the mockup.
    */
-  leadIn?: string | null;
+  leadIn?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Bold "teams" / "ratios" / "balance score" to match the mockup.
    */

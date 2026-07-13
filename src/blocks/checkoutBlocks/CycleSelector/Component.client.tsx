@@ -14,6 +14,11 @@ import {
 } from '@/lib/plans/clientUtils'
 import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import { sendMetaCapiEvent } from '@/lib/meta/browser'
+import { getStoredPlanSelection, storePlanSelection } from '@/lib/plans/selectionStore'
+
+// Tiers are always rendered in ascending 4/8/12 order (CMS seed and the API
+// path both sort that way), so tier index ↔ cycle key maps 1:1.
+const IDX_TO_CYCLE = ['4', '8', '12'] as const
 
 type Tier = {
   months?: string | null
@@ -102,6 +107,18 @@ export const CycleSelectorClient: React.FC<Props> = ({
   const rateMapRef = useRef<Record<string, number>>({})
   const planTitleRef = useRef<string>('Core')
 
+  // Being on this family's cycle page IS selecting that family (pages are
+  // per-family); also restore the previously chosen duration so coming back
+  // from checkout doesn't silently reset to 4 months. Post-mount to keep SSR
+  // markup and hydration identical.
+  useEffect(() => {
+    storePlanSelection({ plan: planFamily ?? undefined })
+    const storedCycle = getStoredPlanSelection().cycle
+    const idx = storedCycle ? IDX_TO_CYCLE.indexOf(storedCycle as (typeof IDX_TO_CYCLE)[number]) : -1
+    if (idx >= 0 && idx < (tiersProp?.length ?? IDX_TO_CYCLE.length)) setSelectedIdx(idx)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     if (!planFamily) return
     const family = planFamily === 'advanced' ? 'Advanced' : 'Core'
@@ -165,6 +182,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
   const selectTier = (idx: number) => {
     setSelectedIdx(idx)
     setMonthlySelected(false)
+    storePlanSelection({ plan: planFamily ?? undefined, cycle: IDX_TO_CYCLE[idx] })
   }
 
   const toggleFaq = (i: number) => {
@@ -560,6 +578,7 @@ export const CycleSelectorClient: React.FC<Props> = ({
             className={`nb1-cs-monthly${monthlySelected ? ' on' : ''}`}
             onClick={() => {
               setMonthlySelected(true)
+              storePlanSelection({ plan: planFamily ?? undefined, cycle: 'monthly' })
               if (monthlyCheckoutHref) window.location.href = monthlyCheckoutHref
             }}
           >

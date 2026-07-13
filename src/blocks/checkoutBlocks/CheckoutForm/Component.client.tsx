@@ -12,7 +12,7 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import type { PaymentRequestPaymentMethodEvent } from '@stripe/stripe-js'
-import PhoneInput, { type Country } from 'react-phone-number-input'
+import PhoneInput, { isValidPhoneNumber, type Country } from 'react-phone-number-input'
 import AddressAutocomplete, { type GooglePlace } from './AddressAutocomplete'
 import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
@@ -23,6 +23,11 @@ import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
 import { PaymentFailedScreen } from './PaymentFailedScreen'
+import {
+  getStoredPlanSelection,
+  storePlanSelection,
+  type PlanSelection,
+} from '@/lib/plans/selectionStore'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '')
 
@@ -93,11 +98,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const router = useRouter()
   const pathname = usePathname()
 
-  // Snapshot plan/cycle on first render before the URL is cleaned
-  const planKeyRef = useRef(searchParams?.get('plan') ?? 'core')
-  const cycleKeyRef = useRef(searchParams?.get('cycle') ?? '4')
-  const planKey = planKeyRef.current
-  const cycleKey = cycleKeyRef.current
+  // Plan/cycle selection: snapshotted once before the URL is cleaned below.
+  // URL params win (fresh arrival from the cycle page); otherwise fall back to
+  // the selection persisted in sessionStorage — the URL cleanup removes the
+  // params, so without this a page refresh would silently reset the order to
+  // core/4 while the form fields (also sessionStorage-backed) survive.
+  const [{ planKey, cycleKey }] = useState(() => {
+    const saved = getStoredPlanSelection()
+    const fromUrl: PlanSelection = {
+      plan: searchParams?.get('plan') ?? undefined,
+      cycle: searchParams?.get('cycle') ?? undefined,
+    }
+    storePlanSelection({ ...saved, ...fromUrl })
+    const applied = getStoredPlanSelection()
+    return { planKey: applied.plan ?? 'core', cycleKey: applied.cycle ?? '4' }
+  })
 
   // Strip plan/cycle from URL once read — keeps Stripe redirect params intact
   useEffect(() => {
@@ -232,6 +247,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* accordion */
   const [step, setStep] = useState(1)
   const [doneSteps, setDoneSteps] = useState<Set<number>>(new Set())
+  // Refs to the four accordion sections so validation can scroll to the first
+  // invalid one (DOM lookups by class would be spoofable / brittle).
+  const accRefs = useRef<(HTMLDivElement | null)[]>([])
   const [confirmed, setConfirmed] = useState(false)
   const [paymentFailed, setPaymentFailed] = useState(false)
   const [orderNumber, setOrderNumber] = useState<string | null>(null)
@@ -609,6 +627,13 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const accountError = t.confirm.accountError
     const accountExists = t.confirm.accountExists
     const handler = async (event: PaymentRequestPaymentMethodEvent) => {
+      // Backstop: the wallet sheet may have been opened from a tampered UI —
+      // never accept a wallet payment while email/address are missing. (The
+      // wallet path sends the shipping address from our form, not from the wallet.)
+      if (!validateBeforePay(false)) {
+        event.complete('fail')
+        return
+      }
       if (submittingRef.current) {
         event.complete('fail')
         return
@@ -710,6 +735,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     promoApplied,
     t.confirm.accountError,
     t.confirm.accountExists,
+    // validateBeforePay is re-created each render; listing it re-registers the
+    // handler so it always validates against the latest form state.
+    validateBeforePay,
   ])
 
   /* ── helpers ── */
@@ -728,22 +756,99 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     setStep(n + 1)
   }
 
-  function nextEmail() {
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailErr(t.email.invalid)
-      return
+  /* ── validation ──
+     All checks read React state, never the DOM. The accordion lock/done classes
+     and the disabled attribute on the confirm button are cosmetic only — anyone
+     can flip them via DevTools or seed step/doneSteps through sessionStorage —
+     so every path that can initiate a payment (confirm button, wallet sheet,
+     Klarna/PayPal redirects, which all start in nextPayment) must pass
+     validateBeforePay first. */
+  const hasLetter = (s: string) => /\p{L}/u.test(s)
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  function getEmailError(): string {
+    return !email || !EMAIL_RE.test(email) ? t.email.invalid : ''
+  }
+
+  function getAddrErrors(): Record<string, string> {
+    const e: Record<string, string> = {}
+    if (!fn.trim()) e.fn = t.required
+    else if (!hasLetter(fn)) e.fn = t.nameInvalid
+    if (!ln.trim()) e.ln = t.required
+    else if (!hasLetter(ln)) e.ln = t.nameInvalid
+    if (!a1.trim()) e.a1 = t.required
+    if (!zip.trim()) e.zip = t.required
+    if (!city.trim()) e.city = t.required
+    else if (!hasLetter(city)) e.city = t.nameInvalid
+    // Phone is required for delivery updates. The input keeps the value in
+    // E.164 (+49…), so isValidPhoneNumber checks it against the numbering
+    // rules of the country the visitor picked in the country-code selector.
+    if (!phone) e.phone = t.required
+    else if (!isValidPhoneNumber(phone)) e.phone = t.address.phoneInvalid
+    return e
+  }
+
+  function getPayErrors(): Record<string, string> {
+    const e: Record<string, string> = {}
+    if (payMethod === 'sepa') {
+      if (iban.replace(/\s/g, '').length < 15) e.iban = t.payment.ibanInvalid
+      if (!ibanName.trim()) e.ibanName = t.required
     }
-    setEmailErr('')
+    if (!billingSame) {
+      // bFn/bLn/bEmail/bPhone fall back to the shipping values when left empty,
+      // so they are only checked for validity when filled. The billing address
+      // core has no fallback and is required.
+      if (bAddrType === 'company' && !bCompany.trim()) e.bCompany = t.required
+      if (bFn.trim() && !hasLetter(bFn)) e.bFn = t.nameInvalid
+      if (bLn.trim() && !hasLetter(bLn)) e.bLn = t.nameInvalid
+      if (bEmail.trim() && !EMAIL_RE.test(bEmail)) e.bEmail = t.email.invalid
+      if (bPhone && !isValidPhoneNumber(bPhone)) e.bPhone = t.address.phoneInvalid
+      if (!bA1.trim()) e.bA1 = t.required
+      if (!bZip.trim()) e.bZip = t.required
+      if (!bCity.trim()) e.bCity = t.required
+      else if (!hasLetter(bCity)) e.bCity = t.nameInvalid
+    }
+    return e
+  }
+
+  /* Full-form gate run before any payment starts. On failure: shows the field
+     errors, revokes the done tick of every invalid step, opens the first
+     invalid step and scrolls to it. Returns true only when everything is valid. */
+  function validateBeforePay(includePayFields: boolean): boolean {
+    const emailError = getEmailError()
+    const addrErrors = getAddrErrors()
+    const payErrors = includePayFields ? getPayErrors() : {}
+    setEmailErr(emailError)
+    setAddrErr(addrErrors)
+    if (includePayFields) setPayErr(payErrors)
+
+    const badSteps: number[] = []
+    if (emailError) badSteps.push(1)
+    if (Object.keys(addrErrors).length) badSteps.push(2)
+    if (Object.keys(payErrors).length) badSteps.push(4)
+    if (badSteps.length === 0) return true
+
+    setDoneSteps((s) => {
+      const next = new Set(s)
+      badSteps.forEach((n) => next.delete(n))
+      return next
+    })
+    setStep(badSteps[0])
+    requestAnimationFrame(() => {
+      accRefs.current[badSteps[0] - 1]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    })
+    return false
+  }
+
+  function nextEmail() {
+    const err = getEmailError()
+    setEmailErr(err)
+    if (err) return
     markDone(1)
   }
 
   function nextAddr() {
-    const e: Record<string, string> = {}
-    if (!fn.trim()) e.fn = t.required
-    if (!ln.trim()) e.ln = t.required
-    if (!a1.trim()) e.a1 = t.required
-    if (!zip.trim()) e.zip = t.required
-    if (!city.trim()) e.city = t.required
+    const e = getAddrErrors()
     setAddrErr(e)
     if (Object.keys(e).length) return
     markDone(2)
@@ -770,13 +875,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   }
 
   async function nextPayment() {
-    const e: Record<string, string> = {}
-    if (payMethod === 'sepa') {
-      if (iban.replace(/\s/g, '').length < 15) e.iban = t.payment.ibanInvalid
-      if (!ibanName.trim()) e.ibanName = t.required
-    }
-    setPayErr(e)
-    if (Object.keys(e).length) return
+    // Re-validates EVERY step from state before touching Stripe/backend — a UI
+    // unlocked via DevTools or sessionStorage cannot pay with missing data.
+    if (!validateBeforePay(true)) return
 
     if (submittingRef.current) return
     submittingRef.current = true
@@ -1874,6 +1975,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           border-color: #0a8fb0;
           box-shadow: 0 0 0 3px rgba(10, 143, 176, 0.1);
         }
+        .nb1-phone-wrap.err .PhoneInput {
+          border-color: #c0392b;
+        }
         .nb1-phone-wrap .PhoneInputCountry {
           display: flex;
           align-items: center;
@@ -1937,6 +2041,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         <div className="nb1-det-left">
           {/* Accordion 1 — Email */}
           <div
+            ref={(el) => { accRefs.current[0] = el }}
             className={`nb1-acc${step === 1 ? ' open' : doneSteps.has(1) ? ' done' : ' locked'}`}
           >
             <div
@@ -1989,6 +2094,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 2 — Address */}
           <div
+            ref={(el) => { accRefs.current[1] = el }}
             className={`nb1-acc${step === 2 ? ' open' : doneSteps.has(2) ? ' done' : ' locked'}`}
           >
             <div
@@ -2141,7 +2247,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     {t.address.phone}{' '}
                     <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                   </label>
-                  <div className="nb1-phone-wrap">
+                  <div className={`nb1-phone-wrap${addrErr.phone ? ' err' : ''}`}>
                     <PhoneInput
                       id="nb1-phone"
                       country={phoneCountry}
@@ -2153,6 +2259,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       placeholder={t.address.phonePlaceholder}
                     />
                   </div>
+                  {addrErr.phone && <span className="nb1-err">{addrErr.phone}</span>}
                 </div>
               </div>
               <button type="button" className="nb1-acc-next" onClick={nextAddr}>
@@ -2163,6 +2270,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 3 — Shipping */}
           <div
+            ref={(el) => { accRefs.current[2] = el }}
             className={`nb1-acc${step === 3 ? ' open' : doneSteps.has(3) ? ' done' : ' locked'}`}
           >
             <div
@@ -2213,6 +2321,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 4 — Payment */}
           <div
+            ref={(el) => { accRefs.current[3] = el }}
             className={`nb1-acc${step === 4 ? ' open' : doneSteps.has(4) ? ' done' : ' locked'}`}
           >
             <div className="nb1-acc-hd">
@@ -2224,6 +2333,10 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                 <>
                   <div style={{ marginBottom: 14 }}>
                     <PaymentRequestButtonElement
+                      onClick={(event) => {
+                        // Don't open the wallet sheet while earlier steps are invalid
+                        if (!validateBeforePay(false)) event.preventDefault()
+                      }}
                       options={{
                         paymentRequest,
                         style: { paymentRequestButton: { height: '48px' } },
@@ -2417,7 +2530,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                             autoComplete="organization"
                             value={bCompany}
                             onChange={(e) => setBCompany(e.target.value)}
+                            className={payErr.bCompany ? 'err' : ''}
                           />
+                          {payErr.bCompany && <span className="nb1-err">{payErr.bCompany}</span>}
                         </div>
                       </div>
                       <div className="nb1-frow">
@@ -2449,7 +2564,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         autoComplete="billing given-name"
                         value={bFn}
                         onChange={(e) => setBFn(e.target.value)}
+                        className={payErr.bFn ? 'err' : ''}
                       />
+                      {payErr.bFn && <span className="nb1-err">{payErr.bFn}</span>}
                     </div>
                     <div className="nb1-fg">
                       <label>{t.address.lastName}</label>
@@ -2458,7 +2575,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         autoComplete="billing family-name"
                         value={bLn}
                         onChange={(e) => setBLn(e.target.value)}
+                        className={payErr.bLn ? 'err' : ''}
                       />
+                      {payErr.bLn && <span className="nb1-err">{payErr.bLn}</span>}
                     </div>
                   </div>
                   <div className="nb1-frow">
@@ -2469,14 +2588,16 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         autoComplete="billing email"
                         value={bEmail}
                         onChange={(e) => setBEmail(e.target.value)}
+                        className={payErr.bEmail ? 'err' : ''}
                       />
+                      {payErr.bEmail && <span className="nb1-err">{payErr.bEmail}</span>}
                     </div>
                     <div className="nb1-fg">
                       <label>
                         {t.address.phone}{' '}
                         <span style={{ fontWeight: 400, opacity: 0.6 }}>{t.address.phoneNote}</span>
                       </label>
-                      <div className="nb1-phone-wrap">
+                      <div className={`nb1-phone-wrap${payErr.bPhone ? ' err' : ''}`}>
                         <PhoneInput
                           country={bPhoneCountry}
                           onCountryChange={(c) => setBPhoneCountry(c ?? 'DE')}
@@ -2487,6 +2608,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                           placeholder={t.address.phonePlaceholder}
                         />
                       </div>
+                      {payErr.bPhone && <span className="nb1-err">{payErr.bPhone}</span>}
                     </div>
                   </div>
                   <div className="nb1-frow full">
@@ -2514,7 +2636,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         placeholder={t.address.addressPlaceholder}
                         value={bA1}
                         onChange={(e) => setBA1(e.target.value)}
+                        className={payErr.bA1 ? 'err' : ''}
                       />
+                      {payErr.bA1 && <span className="nb1-err">{payErr.bA1}</span>}
                     </div>
                   </div>
                   <div className="nb1-frow full">
@@ -2539,7 +2663,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         autoComplete="billing postal-code"
                         value={bZip}
                         onChange={(e) => setBZip(e.target.value)}
+                        className={payErr.bZip ? 'err' : ''}
                       />
+                      {payErr.bZip && <span className="nb1-err">{payErr.bZip}</span>}
                     </div>
                     <div className="nb1-fg">
                       <label>{t.address.city}</label>
@@ -2548,7 +2674,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         autoComplete="billing address-level2"
                         value={bCity}
                         onChange={(e) => setBCity(e.target.value)}
+                        className={payErr.bCity ? 'err' : ''}
                       />
+                      {payErr.bCity && <span className="nb1-err">{payErr.bCity}</span>}
                     </div>
                   </div>
                 </div>
@@ -2629,6 +2757,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
               {accountErr && (
                 <p style={{ color: '#c0392b', fontSize: '13px', marginTop: 12 }}>{accountErr}</p>
               )}
+              {/* Stays clickable while the form is incomplete on purpose: the
+                  click runs validateBeforePay, which opens the first invalid
+                  section and shows what's missing. Only disabled while sending. */}
               <button
                 type="button"
                 className="nb1-confirm-btn"

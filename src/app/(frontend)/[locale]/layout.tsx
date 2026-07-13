@@ -20,6 +20,13 @@ import '@fontsource/inter/500.css'
 import '@fontsource/instrument-sans/400.css'
 import '@fontsource/instrument-sans/500.css'
 import '@fontsource/instrument-sans/600.css'
+// Mono face used by .cmp2-method, eyebrow labels, etc. Previously only rendered
+// where JetBrains Mono was a system font; on servers without it, mono text fell
+// back to the platform monospace. Load it explicitly like the other faces.
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
+import '@fontsource/jetbrains-mono/600.css'
+import '@fontsource/jetbrains-mono/700.css'
 import Script from 'next/script'
 
 import { JsonLd, type JsonLdValue } from '@/components/JsonLd'
