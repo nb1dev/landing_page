@@ -154,7 +154,7 @@ export const LabFormulaComponent: React.FC<LabFormulaBlockType> = ({
     <section
       className="lab-formula"
       id="formula"
-      style={{ background: '#FAF8F2', scrollMarginTop: 80 }}
+      style={{ background: '#F7F9FB', scrollMarginTop: 80 }}
       ref={sectionRef as React.RefObject<HTMLElement>}
     >
       <style jsx>{`
@@ -426,8 +426,13 @@ export const LabFormulaComponent: React.FC<LabFormulaBlockType> = ({
           border-top: 1px solid var(--border);
           padding-top: 48px;
         }
-        .ph {
+        /* Pillar sub-headings. Scoped through .lab-formula so it out-specifies
+           the section-title h2 rule above (which would otherwise force these
+           into the title size 30-52 and weight 600). Mockup pillar heading is
+           clamp(24-32) at the browser-default bold 700. */
+        .lab-formula :global(.ph) {
           font-family: 'Instrument Sans', 'Inter', sans-serif;
+          font-weight: 700;
           font-size: clamp(24px, 3vw, 32px);
           line-height: 1.1;
           letter-spacing: -0.01em;
@@ -466,6 +471,13 @@ export const LabFormulaComponent: React.FC<LabFormulaBlockType> = ({
             overflow-x: auto;
             padding: 2px 2px 8px;
             margin: 0 -2px;
+            /* Mockup scrolls the pills horizontally on mobile but hides the
+               scrollbar (Firefox / IE-Edge / WebKit). */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          .scope-tags::-webkit-scrollbar {
+            display: none;
           }
         }
         .scope-more {

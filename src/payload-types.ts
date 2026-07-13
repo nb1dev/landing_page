@@ -5829,7 +5829,21 @@ export interface LabReadingPanelBlock {
   /**
    * e.g. "Your sample comes back as 200–400 species..."
    */
-  leadIn?: string | null;
+    leadIn?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Bold "teams" / "ratios" / "balance score" to match the mockup.
    */

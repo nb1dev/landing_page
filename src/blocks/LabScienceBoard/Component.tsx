@@ -291,6 +291,12 @@ export const LabScienceBoardComponent: React.FC<LabScienceBoardBlockType> = ({
           border: 1px solid #e1eaf0;
           padding: 6px 12px;
           border-radius: 999px;
+          /* Mockup renders these tags uppercase with wide tracking (0.14em);
+             the wider tracking also makes 3 tags overflow the 346px column so
+             they wrap to two rows, matching the handoff. Mobile tightens to
+             0.02em (below). */
+          text-transform: uppercase;
+          letter-spacing: 0.14em;
         }
         .quote {
           position: relative;

@@ -134,6 +134,7 @@ import * as migration_20260709_111426_protocol_cred_strip_block from './20260709
 import * as migration_20260709_112908_protocol_what_arrives_block from './20260709_112908_protocol_what_arrives_block';
 import * as migration_20260709_115454_protocol_living_lifeline_block from './20260709_115454_protocol_living_lifeline_block';
 import * as migration_20260709_150108_header_discover_nav from './20260709_150108_header_discover_nav';
+import * as migration_20260711_160000_lead_in_richtext from './20260711_160000_lead_in_richtext';
 
 export const migrations = [
   {
@@ -719,101 +720,106 @@ export const migrations = [
   {
     up: migration_20260707_084620.up,
     down: migration_20260707_084620.down,
-    name: '20260707_084620'
+    name: '20260707_084620',
   },
   {
     up: migration_20260707_122641.up,
     down: migration_20260707_122641.down,
-    name: '20260707_122641'
+    name: '20260707_122641',
   },
   {
     up: migration_20260707_123555.up,
     down: migration_20260707_123555.down,
-    name: '20260707_123555'
+    name: '20260707_123555',
   },
   {
     up: migration_20260707_125755.up,
     down: migration_20260707_125755.down,
-    name: '20260707_125755'
+    name: '20260707_125755',
   },
   {
     up: migration_20260707_130258.up,
     down: migration_20260707_130258.down,
-    name: '20260707_130258'
+    name: '20260707_130258',
   },
   {
     up: migration_20260707_165910_header_section_nav.up,
     down: migration_20260707_165910_header_section_nav.down,
-    name: '20260707_165910_header_section_nav'
+    name: '20260707_165910_header_section_nav',
   },
   {
     up: migration_20260707_181754_biology_hero_block.up,
     down: migration_20260707_181754_biology_hero_block.down,
-    name: '20260707_181754_biology_hero_block'
+    name: '20260707_181754_biology_hero_block',
   },
   {
     up: migration_20260707_183338_biology_two_people_block.up,
     down: migration_20260707_183338_biology_two_people_block.down,
-    name: '20260707_183338_biology_two_people_block'
+    name: '20260707_183338_biology_two_people_block',
   },
   {
     up: migration_20260708_065428_biology_clearest_read_block.up,
     down: migration_20260708_065428_biology_clearest_read_block.down,
-    name: '20260708_065428_biology_clearest_read_block'
+    name: '20260708_065428_biology_clearest_read_block',
   },
   {
     up: migration_20260708_071133_biology_reading_to_formula_block.up,
     down: migration_20260708_071133_biology_reading_to_formula_block.down,
-    name: '20260708_071133_biology_reading_to_formula_block'
+    name: '20260708_071133_biology_reading_to_formula_block',
   },
   {
     up: migration_20260708_080802_biology_industry_flip_block.up,
     down: migration_20260708_080802_biology_industry_flip_block.down,
-    name: '20260708_080802_biology_industry_flip_block'
+    name: '20260708_080802_biology_industry_flip_block',
   },
   {
     up: migration_20260708_145940_protocol_hero_block.up,
     down: migration_20260708_145940_protocol_hero_block.down,
-    name: '20260708_145940_protocol_hero_block'
+    name: '20260708_145940_protocol_hero_block',
   },
   {
     up: migration_20260708_203801_protocol_journey_block.up,
     down: migration_20260708_203801_protocol_journey_block.down,
-    name: '20260708_203801_protocol_journey_block'
+    name: '20260708_203801_protocol_journey_block',
   },
   {
     up: migration_20260708_210537_protocol_kit_block.up,
     down: migration_20260708_210537_protocol_kit_block.down,
-    name: '20260708_210537_protocol_kit_block'
+    name: '20260708_210537_protocol_kit_block',
   },
   {
     up: migration_20260709_105415_protocol_formula_units_block.up,
     down: migration_20260709_105415_protocol_formula_units_block.down,
-    name: '20260709_105415_protocol_formula_units_block'
+    name: '20260709_105415_protocol_formula_units_block',
   },
   {
     up: migration_20260709_105801_protocol_library_block.up,
     down: migration_20260709_105801_protocol_library_block.down,
-    name: '20260709_105801_protocol_library_block'
+    name: '20260709_105801_protocol_library_block',
   },
   {
     up: migration_20260709_111426_protocol_cred_strip_block.up,
     down: migration_20260709_111426_protocol_cred_strip_block.down,
-    name: '20260709_111426_protocol_cred_strip_block'
+    name: '20260709_111426_protocol_cred_strip_block',
   },
   {
     up: migration_20260709_112908_protocol_what_arrives_block.up,
     down: migration_20260709_112908_protocol_what_arrives_block.down,
-    name: '20260709_112908_protocol_what_arrives_block'
+    name: '20260709_112908_protocol_what_arrives_block',
   },
   {
     up: migration_20260709_115454_protocol_living_lifeline_block.up,
     down: migration_20260709_115454_protocol_living_lifeline_block.down,
-    name: '20260709_115454_protocol_living_lifeline_block'
+    name: '20260709_115454_protocol_living_lifeline_block',
   },
   {
     up: migration_20260709_150108_header_discover_nav.up,
     down: migration_20260709_150108_header_discover_nav.down,
-    name: '20260709_150108_header_discover_nav'
+    name: '20260709_150108_header_discover_nav',
+  },
+  {
+    up: migration_20260711_160000_lead_in_richtext.up,
+    down: migration_20260711_160000_lead_in_richtext.down,
+    name: '20260711_160000_lead_in_richtext',
   },
 ];

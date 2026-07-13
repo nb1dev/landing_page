@@ -47,7 +47,7 @@ type ArchetypeRow = {
 export type LabReadingPanelBlockType = {
   blockType?: 'labReadingPanel'
   heading?: DefaultTypedEditorState | null
-  leadIn?: string | null
+  leadIn?: DefaultTypedEditorState | null
   transitionText?: DefaultTypedEditorState | null
   rawSpeciesLabel?: string | null
   rawSpecies?: RawSpeciesRow[] | null
@@ -361,6 +361,9 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
         .mi8-lede {
           order: 1;
           margin: 0;
+          /* Body copy is Inter in the mockup (the block root defaults to
+             Instrument Sans, which the em would otherwise inherit). */
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           font-size: clamp(17px, 1.95vw, 21px);
           line-height: 1.55;
           color: var(--ink-soft);
@@ -378,6 +381,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
         .mi8-transition {
           order: 3;
           margin: 0;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           font-size: clamp(17px, 1.95vw, 21px);
           line-height: 1.55;
           color: var(--ink-soft);
@@ -649,8 +653,13 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
           color: var(--ink-soft);
           line-height: 1.5;
         }
-        .pat-eyebrow {
-          display: none;
+        /* Hidden on mobile only. This used to be an unconditional
+           display:none, which — sitting after the min-width:821px block above —
+           also killed the desktop rule, hiding the eyebrow everywhere. */
+        @media (max-width: 820px) {
+          .pat-eyebrow {
+            display: none;
+          }
         }
         .block-label {
           font-size: 10px;
@@ -1505,7 +1514,11 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
         <header className="hd">{heading && <RichText data={heading as any} enableGutter={false} enableProse={false} />}</header>
 
         <div className="mi8-intro">
-          {leadIn && <p className="mi8-lede">{leadIn}</p>}
+          {leadIn && (
+            <div className="mi8-lede">
+              <RichText data={leadIn as any} enableGutter={false} enableProse={false} />
+            </div>
+          )}
           {transitionText && (
             <div className="mi8-transition">
               <RichText data={transitionText as any} enableGutter={false} enableProse={false} />
