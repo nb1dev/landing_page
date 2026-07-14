@@ -910,6 +910,33 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
             </a>
           )
         })}
+        {/* Discover items — desktop shows these in the .nb1-disc dropdown (hidden
+            ≤860px); on mobile we surface them here as plain sheet links, directly
+            beneath the other nav links. */}
+        {hasDiscoverNav &&
+          discoverNavItems.map(({ link }, i) => {
+            if (!link) return null
+            const label = link.localizedLabel || link.label || ''
+            const rawD = link.url || ''
+            const isExternalD =
+              rawD.startsWith('http://') || rawD.startsWith('https://') || rawD.startsWith('#')
+            const localeFromPathD = pathname.split('/')[1] || locale
+            const hrefD =
+              rawD && !isExternalD && !rawD.startsWith(`/${localeFromPathD}`)
+                ? `/${localeFromPathD}${rawD.startsWith('/') ? rawD : `/${rawD}`}`
+                : rawD || '#'
+            return (
+              <a
+                key={`disc-${i}`}
+                href={hrefD}
+                target={link.newTab ? '_blank' : undefined}
+                rel={link.newTab ? 'noopener noreferrer' : undefined}
+                onClick={() => setSheetOpen(false)}
+              >
+                {label}
+              </a>
+            )
+          })}
         {loginText && loginUrl && (
           <a href={loginUrl} onClick={() => setSheetOpen(false)}>
             {loginText}
