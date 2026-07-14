@@ -2,11 +2,20 @@ import type { Block } from 'payload'
 import {
   FixedToolbarFeature,
   InlineToolbarFeature,
+  UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 const bodyEditor = lexicalEditor({
-  features: ({ rootFeatures }) => [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()],
+  // UploadFeature lets editors insert inline images (media) via the `/` menu or
+  // toolbar. Without it the body editor only offers Paragraph — which is why the
+  // original page's in-body images had to be added through the JSON/API import.
+  features: ({ rootFeatures }) => [
+    ...rootFeatures,
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
+    UploadFeature(),
+  ],
 })
 
 // Fields for a single Section Content item — its kind is chosen via the
