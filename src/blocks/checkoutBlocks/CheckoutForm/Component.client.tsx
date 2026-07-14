@@ -627,15 +627,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const accountError = t.confirm.accountError
     const accountExists = t.confirm.accountExists
     const handler = async (event: PaymentRequestPaymentMethodEvent) => {
+      // A PaymentRequestEvent may only be completed ONCE — a second call throws.
+      // The catch below would otherwise complete('fail') after a successful
+      // complete('success') (checkoutConfirm failure) and die mid-handler,
+      // leaving the spinner and the submitting lock stuck forever.
+      let completed = false
+      const complete = (status: 'success' | 'fail') => {
+        if (completed) return
+        completed = true
+        event.complete(status)
+      }
       // Backstop: the wallet sheet may have been opened from a tampered UI —
       // never accept a wallet payment while email/address are missing. (The
       // wallet path sends the shipping address from our form, not from the wallet.)
       if (!validateBeforePay(false)) {
-        event.complete('fail')
+        complete('fail')
         return
       }
       if (submittingRef.current) {
-        event.complete('fail')
+        complete('fail')
         return
       }
       submittingRef.current = true
@@ -658,13 +668,13 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           payment_method: event.paymentMethod.id,
         })
         if (stripeError) {
-          event.complete('fail')
+          complete('fail')
           setAccountErr(stripeError.message ?? accountError)
           setAccountStatus('error')
           submittingRef.current = false
           return
         }
-        event.complete('success')
+        complete('success')
         const walletConfirmation = await checkoutConfirm({
           setup_intent_id: intent.setup_intent_id,
           idempotency_key: idempotencyKeyRef.current || intent.setup_intent_id,
@@ -702,7 +712,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         setAccountStatus('sent')
         setConfirmed(true)
       } catch (err: unknown) {
-        event.complete('fail')
+        complete('fail')
         setAccountStatus('error')
         const code = (err as { code?: string })?.code
         setAccountErr(
@@ -931,15 +941,20 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       // 2. Confirm payment with Stripe.js
       if (payMethod === 'card') {
+        // Every early return here MUST release submittingRef — otherwise the
+        // first declined/invalid card permanently swallows all later attempts
+        // (the guard at the top of this function returns silently).
         if (!stripe || !elements) {
           setAccountErr(t.confirm.accountError)
           setAccountStatus('error')
+          submittingRef.current = false
           return
         }
         const cardElement = elements.getElement(CardElement)
         if (!cardElement) {
           setAccountErr(t.confirm.accountError)
           setAccountStatus('error')
+          submittingRef.current = false
           return
         }
         const { error: stripeError } = await stripe.confirmCardSetup(intent.client_secret, {
@@ -951,6 +966,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         if (stripeError) {
           setAccountErr(stripeError.message ?? t.confirm.accountError)
           setAccountStatus('error')
+          submittingRef.current = false
           return
         }
       }
