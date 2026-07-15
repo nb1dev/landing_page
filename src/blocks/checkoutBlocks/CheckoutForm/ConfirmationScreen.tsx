@@ -282,10 +282,8 @@ export function ConfirmationScreen({
             <a href={`/${locale}/login`} className="nb1-conf-cta">{td.dashboard}</a>
             <a href={`/${locale}/login`} className="nb1-conf-cta2">{td.trackOrder}</a>
             <div className="nb1-conf-support">
-              {/* Chatwoot disabled — chat button + "or" connector removed, email support kept
               <button type="button" className="nb1-conf-chat" onClick={() => { if (typeof window !== 'undefined' && (window as any).$chatwoot) (window as any).$chatwoot.toggle('open') }}>{td.chatUs}</button>
               {' '}{td.supportLine}{' '}
-              */}
               <a href={`mailto:${td.supportEmail}`}>{td.supportEmail}</a>
             </div>
           </aside>
