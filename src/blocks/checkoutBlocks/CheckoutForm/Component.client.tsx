@@ -17,7 +17,7 @@ import AddressAutocomplete, { type GooglePlace } from './AddressAutocomplete'
 import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
 import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/lib/checkoutApi'
-import { pushEvent, mintEventId, buildNb1Item } from '@/lib/dataLayer'
+import { pushEvent, pushEventWithUser, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import { sendMetaCapiEvent, getMetaSidecar } from '@/lib/meta/browser'
 import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
 import { getDictionary } from '@/i18n/getDictionary'
@@ -482,17 +482,31 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         })
         sessionStorage.removeItem('nb1_klarna_setup_intent_id')
         const klarnaItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
-        pushEvent('purchase', {
-          event_id: klarnaConfirmation.event_id,
-          external_id: klarnaConfirmation.external_id,
-          ecommerce: {
-            transaction_id: klarnaConfirmation.subscription_id,
-            currency,
-            value: rateNum,
-            shipping: (saved.shipping ?? shipping) === 'express' ? expressShipNum : 0,
-            items: [klarnaItem],
+        void pushEventWithUser(
+          'purchase',
+          {
+            event_id: klarnaConfirmation.event_id,
+            external_id: klarnaConfirmation.external_id,
+            ecommerce: {
+              transaction_id: klarnaConfirmation.subscription_id,
+              currency,
+              value: rateNum,
+              shipping: (saved.shipping ?? shipping) === 'express' ? expressShipNum : 0,
+              items: [klarnaItem],
+            },
           },
-        })
+          {
+            userId: klarnaConfirmation.external_id,
+            email: saved.email ?? email,
+            phone: saved.phone || phone || undefined,
+            firstName: saved.fn ?? fn,
+            lastName: saved.ln ?? ln,
+            address: [saved.a1 ?? a1, saved.a2 ?? a2].filter(Boolean).join(' '),
+            postalCode: saved.zip ?? zip,
+            city: saved.city ?? city,
+            country: COUNTRY_CODES[saved.country ?? country] ?? saved.country ?? country,
+          },
+        )
         sendMetaCapiEvent('purchase', klarnaConfirmation.event_id, {
           ecommerce: {
             transaction_id: klarnaConfirmation.subscription_id,
@@ -854,6 +868,20 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const err = getEmailError()
     setEmailErr(err)
     if (err) return
+    const esItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
+    void pushEventWithUser(
+      'email_submitted',
+      {
+        event_id: mintEventId(),
+        ecommerce: {
+          currency,
+          value: rateNum,
+          ...(promoApplied ? { coupon: promoApplied } : {}),
+          items: [esItem],
+        },
+      },
+      { email, phone: phone || undefined },
+    )
     markDone(1)
   }
 
@@ -867,16 +895,29 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   function nextShipping() {
     const siId = mintEventId()
     const siItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
-    pushEvent('add_shipping_info', {
-      event_id: siId,
-      ecommerce: {
-        currency,
-        value: rateNum,
-        ...(promoApplied ? { coupon: promoApplied } : {}),
-        shipping_tier: shipping === 'express' ? 'Express' : 'Standard',
-        items: [siItem],
+    void pushEventWithUser(
+      'add_shipping_info',
+      {
+        event_id: siId,
+        ecommerce: {
+          currency,
+          value: rateNum,
+          ...(promoApplied ? { coupon: promoApplied } : {}),
+          shipping_tier: shipping === 'express' ? 'Express' : 'Standard',
+          items: [siItem],
+        },
       },
-    })
+      {
+        email,
+        phone: phone || undefined,
+        firstName: fn,
+        lastName: ln,
+        address: [a1, a2].filter(Boolean).join(' '),
+        postalCode: zip,
+        city,
+        country: COUNTRY_CODES[country] ?? country,
+      },
+    )
     sendMetaCapiEvent('add_shipping_info', siId, {
       ecommerce: { currency, value: rateNum, items: [{ item_id: siItem.item_id, item_name: siItem.item_name, price: siItem.price, quantity: 1 }] },
       user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
@@ -896,25 +937,38 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
     const apiId = mintEventId()
     const apiItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
-    pushEvent('add_payment_info', {
-      event_id: apiId,
-      ecommerce: {
-        currency,
-        value: rateNum,
-        ...(promoApplied ? { coupon: promoApplied } : {}),
-        payment_type:
-          payMethod === 'card'
-            ? 'Card'
-            : payMethod === 'paypal'
-              ? 'PayPal'
-              : payMethod === 'klarna'
-                ? 'Klarna'
-                : payMethod === 'sepa'
-                  ? 'SEPA Direct Debit'
-                  : payMethod,
-        items: [apiItem],
+    void pushEventWithUser(
+      'add_payment_info',
+      {
+        event_id: apiId,
+        ecommerce: {
+          currency,
+          value: rateNum,
+          ...(promoApplied ? { coupon: promoApplied } : {}),
+          payment_type:
+            payMethod === 'card'
+              ? 'Card'
+              : payMethod === 'paypal'
+                ? 'PayPal'
+                : payMethod === 'klarna'
+                  ? 'Klarna'
+                  : payMethod === 'sepa'
+                    ? 'SEPA Direct Debit'
+                    : payMethod,
+          items: [apiItem],
+        },
       },
-    })
+      {
+        email,
+        phone: phone || undefined,
+        firstName: fn,
+        lastName: ln,
+        address: [a1, a2].filter(Boolean).join(' '),
+        postalCode: zip,
+        city,
+        country: COUNTRY_CODES[country] ?? country,
+      },
+    )
     sendMetaCapiEvent('add_payment_info', apiId, {
       ecommerce: { currency, value: rateNum, items: [{ item_id: apiItem.item_id, item_name: apiItem.item_name, price: apiItem.price, quantity: 1 }] },
       user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
@@ -1096,18 +1150,32 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         planTitle: planLabel,
         discount: promoPreview?.promo_discount,
       })
-      pushEvent('purchase', {
-        event_id: confirmation.event_id,
-        external_id: confirmation.external_id,
-        ecommerce: {
-          transaction_id: confirmation.subscription_id,
-          currency,
-          value: rateNum,
-          shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? expressShipNum : 0),
-          ...(promoApplied ? { coupon: promoApplied } : {}),
-          items: [purchaseItem],
+      void pushEventWithUser(
+        'purchase',
+        {
+          event_id: confirmation.event_id,
+          external_id: confirmation.external_id,
+          ecommerce: {
+            transaction_id: confirmation.subscription_id,
+            currency,
+            value: rateNum,
+            shipping: promoPreview?.shipping_price ?? (shipping === 'express' ? expressShipNum : 0),
+            ...(promoApplied ? { coupon: promoApplied } : {}),
+            items: [purchaseItem],
+          },
         },
-      })
+        {
+          userId: confirmation.external_id,
+          email,
+          phone: phone || undefined,
+          firstName: fn,
+          lastName: ln,
+          address: [a1, a2].filter(Boolean).join(' '),
+          postalCode: zip,
+          city,
+          country: COUNTRY_CODES[country] ?? country,
+        },
+      )
       sendMetaCapiEvent('purchase', confirmation.event_id, {
         ecommerce: {
           transaction_id: confirmation.subscription_id,
@@ -1171,6 +1239,19 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       const data = await res.json()
       if (data.discount_code_valid) {
         setPromoApplied(code)
+        const voucherItem = buildNb1Item(planKey, cycleKey, rateNum, {
+          planTitle: planLabel,
+          discount: data.promo_discount,
+        })
+        pushEvent('add_voucher', {
+          event_id: mintEventId(),
+          ecommerce: {
+            coupon: code,
+            currency,
+            value: rateNum,
+            items: [voucherItem],
+          },
+        })
         setPromoPreview({
           promo_discount: data.promo_discount,
           first_month_price: data.first_month_price,
