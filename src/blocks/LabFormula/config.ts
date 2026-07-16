@@ -90,7 +90,7 @@ export const LabFormulaBlock: Block = {
           admin: { condition: (_, siblingData) => siblingData?.mode !== 'combo' },
           fields: [
             { name: 'condition', type: 'text', localized: true },
-            { name: 'strain', type: 'text' },
+            { name: 'strain', type: 'text', localized: true },
           ],
         },
         {

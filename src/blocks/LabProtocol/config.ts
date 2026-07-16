@@ -39,7 +39,7 @@ export const LabProtocolBlock: Block = {
         {
           name: 'chips',
           type: 'array',
-          fields: [{ name: 'label', type: 'text', required: true }],
+          fields: [{ name: 'label', type: 'text', required: true, localized: true }],
         },
         { name: 'hasMoreChip', type: 'checkbox', defaultValue: false },
         { name: 'badgeLabel', type: 'text', localized: true, admin: { description: 'e.g. "Every plan" or "Advanced"' } },
