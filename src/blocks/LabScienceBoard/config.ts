@@ -1,7 +1,7 @@
 import type { Block } from 'payload'
 import { makeHeadingEditor, inlineRichTextEditor } from '@/fields/headingLexical'
 
-const tagsField = { name: 'tags' as const, type: 'array' as const, fields: [{ name: 'label', type: 'text' as const, required: true }] }
+const tagsField = { name: 'tags' as const, type: 'array' as const, fields: [{ name: 'label', type: 'text' as const, required: true, localized: true }] }
 
 export const LabScienceBoardBlock: Block = {
   slug: 'labScienceBoard',

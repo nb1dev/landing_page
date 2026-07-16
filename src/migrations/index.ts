@@ -135,6 +135,7 @@ import * as migration_20260709_112908_protocol_what_arrives_block from './202607
 import * as migration_20260709_115454_protocol_living_lifeline_block from './20260709_115454_protocol_living_lifeline_block';
 import * as migration_20260709_150108_header_discover_nav from './20260709_150108_header_discover_nav';
 import * as migration_20260711_160000_lead_in_richtext from './20260711_160000_lead_in_richtext';
+import * as migration_20260716_100000_lab_localize_label_fields from './20260716_100000_lab_localize_label_fields';
 
 export const migrations = [
   {
@@ -821,5 +822,10 @@ export const migrations = [
     up: migration_20260711_160000_lead_in_richtext.up,
     down: migration_20260711_160000_lead_in_richtext.down,
     name: '20260711_160000_lead_in_richtext',
+  },
+  {
+    up: migration_20260716_100000_lab_localize_label_fields.up,
+    down: migration_20260716_100000_lab_localize_label_fields.down,
+    name: '20260716_100000_lab_localize_label_fields',
   },
 ];
