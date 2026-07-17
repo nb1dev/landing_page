@@ -1,4 +1,5 @@
 import { DIMS, RATIO_DEFS, TEAM_DEFS } from './constants'
+import type { LRPStrings } from './i18n'
 
 export type ArchetypeData = {
   id: string
@@ -29,10 +30,14 @@ function mulberry32(seed: number) {
   }
 }
 
-export function teamStatus(pct: number, team: { lo: number; hi: number }): { label: string; cls: string } {
-  if (pct < team.lo) return { label: 'Low', cls: 's-low' }
-  if (pct > team.hi) return { label: 'High', cls: 's-high' }
-  return { label: 'In range', cls: 's-in' }
+export function teamStatus(
+  pct: number,
+  team: { lo: number; hi: number },
+  S: LRPStrings,
+): { key: 'Low' | 'High' | 'In range'; label: string; cls: string } {
+  if (pct < team.lo) return { key: 'Low', label: S.status.Low, cls: 's-low' }
+  if (pct > team.hi) return { key: 'High', label: S.status.High, cls: 's-high' }
+  return { key: 'In range', label: S.status['In range'], cls: 's-in' }
 }
 
 export function renderTeamsSvg(a: ArchetypeData): string {
@@ -56,7 +61,7 @@ export function renderTeamsSvg(a: ArchetypeData): string {
   return s
 }
 
-export function renderRadarSvg(a: ArchetypeData): string {
+export function renderRadarSvg(a: ArchetypeData, S: LRPStrings): string {
   const cx = 150
   const cy = 150
   const R = 108
@@ -83,31 +88,35 @@ export function renderRadarSvg(a: ArchetypeData): string {
       .join(','),
   ).join(' ')
   g += `<polygon points="${dataPts}" fill="rgba(10,143,176,.15)" stroke="#0A8FB0" stroke-width="2"/>`
-  DIMS.forEach((d, i) => {
+  DIMS.forEach((_, i) => {
     const p = pt(i, a.radar[i] / 100)
     const lp = pt(i, 1.23)
     g += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.5" fill="#0A8FB0"/>`
     const anc = Math.abs(lp[0] - cx) < 6 ? 'middle' : lp[0] > cx ? 'start' : 'end'
-    g += `<text x="${lp[0].toFixed(1)}" y="${(lp[1] - 2).toFixed(1)}" fill="rgba(18,49,77,.82)" font-size="12.5" font-weight="500" text-anchor="${anc}" font-family="Instrument Sans,sans-serif">${d}</text>`
+    g += `<text x="${lp[0].toFixed(1)}" y="${(lp[1] - 2).toFixed(1)}" fill="rgba(18,49,77,.82)" font-size="12.5" font-weight="500" text-anchor="${anc}" font-family="Instrument Sans,sans-serif">${S.dims[i]}</text>`
     g += `<text x="${lp[0].toFixed(1)}" y="${(lp[1] + 13).toFixed(1)}" fill="rgba(18,49,77,.45)" font-size="11" text-anchor="${anc}" font-family="Instrument Sans,sans-serif">${a.radar[i]}%</text>`
   })
   return g
 }
 
-export function ratioZone(pos: number): { label: string; cls: string; colorVar: string } {
-  if (pos >= 60) return { label: 'In range', cls: 'r-good', colorVar: 'var(--accent)' }
-  if (pos >= 45) return { label: 'Watch', cls: 'r-mid', colorVar: 'var(--low)' }
-  return { label: 'Needs work', cls: 'r-bad', colorVar: 'var(--high)' }
+export function ratioZone(
+  pos: number,
+  S: LRPStrings,
+): { key: 'In range' | 'Watch' | 'Needs work'; label: string; cls: string; colorVar: string } {
+  if (pos >= 60) return { key: 'In range', label: S.zone['In range'], cls: 'r-good', colorVar: 'var(--accent)' }
+  if (pos >= 45) return { key: 'Watch', label: S.zone.Watch, cls: 'r-mid', colorVar: 'var(--low)' }
+  return { key: 'Needs work', label: S.zone['Needs work'], cls: 'r-bad', colorVar: 'var(--high)' }
 }
 
-export function scoreNote(a: ArchetypeData): string {
-  if (a.hold) return 'The job here is to <b>hold this</b>, not disturb it.'
-  if (a.stress) return 'The score reads well. The work here is <b>a targeted strain set</b>, not an ecological rebuild.'
+export function scoreNote(a: ArchetypeData, S: LRPStrings): string {
+  if (a.hold) return S.note.hold
+  if (a.stress) return S.note.stress
   let lowIdx = 0
   a.radar.forEach((v, i) => {
     if (v < a.radar[lowIdx]) lowIdx = i
   })
-  return `Lowest pillar: <b>${DIMS[lowIdx].toLowerCase()}.</b> That is what the formula is built to move.`
+  const pillar = S.note.lowerPillar ? S.dims[lowIdx].toLowerCase() : S.dims[lowIdx]
+  return S.note.lowest.replace('{p}', pillar)
 }
 
 export function whatsShort(whats: string): string {

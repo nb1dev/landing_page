@@ -245,7 +245,7 @@ export const de = {
         step2: {
           label: '~3 Tage',
           title: 'Dein Kit kommt an',
-          body: 'Eine kleine Darmprobe - dauert zwei Minuten - im Beutel versiegeln, in der Box zurücksenden und online einen kurzen Gesundheitsfragebogen ausfüllen.',
+          body: 'Eine kleine Darmprobe - dauert zwei Minuten -  im Beutel versiegeln, in der Box zurücksenden und online einen kurzen Gesundheitsfragebogen ausfüllen.',
         },
         step3: {
           label: 'Wochen 1–2',
