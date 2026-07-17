@@ -8,6 +8,7 @@ import { useReveal } from '@/hooks/useReveal'
 import { ARCHETYPE_ICONS, RATIO_DEFS, TEAM_DEFS } from './constants'
 import { ArchetypeData, ratioZone, renderRadarSvg, renderTeamsSvg, scoreNote, teamStatus, whatsShort } from './render'
 import { BAND_LABELS, enumLabel } from '@/blocks/_shared/enumLabels'
+import { getLRPStrings } from './i18n'
 import type { AppLocale } from '@/i18n/config'
 
 type RawSpeciesRow = { name?: string | null; percent?: number | null }
@@ -150,8 +151,9 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
 
   const current = data[selectedIndex]
   const displayed = data[displayIndex] ?? current
+  const S = useMemo(() => getLRPStrings(locale), [locale])
   const teamsSvgMarkup = useMemo(() => (displayed ? renderTeamsSvg(displayed) : ''), [displayed])
-  const radarSvgMarkup = useMemo(() => (displayed ? renderRadarSvg(displayed) : ''), [displayed])
+  const radarSvgMarkup = useMemo(() => (displayed ? renderRadarSvg(displayed, S) : ''), [displayed, S])
 
   useEffect(() => {
     setFading(true)
@@ -1649,7 +1651,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                 >
                   {enumLabel(BAND_LABELS, current.band, locale)}
                 </div>
-                <div className="pr-note" dangerouslySetInnerHTML={{ __html: scoreNote(current) }} />
+                <div className="pr-note" dangerouslySetInnerHTML={{ __html: scoreNote(current, S) }} />
               </div>
             </div>
 
@@ -1697,7 +1699,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                       </div>
                       <div className="key">
                         {TEAM_DEFS.map((t, i) => {
-                          const st = teamStatus(displayed.teams[i], t)
+                          const st = teamStatus(displayed.teams[i], t, S)
                           return (
                             <div className="key-row" key={i}>
                               <span className="swatch">
@@ -1706,8 +1708,8 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                                 <i style={{ background: `var(${t.cssVar})` }} />
                               </span>
                               <span className="k-tx">
-                                <span className="k-name">{t.name}</span>
-                                <span className="k-sub">{t.sub}</span>
+                                <span className="k-name">{S.teams[i].name}</span>
+                                <span className="k-sub">{S.teams[i].sub}</span>
                               </span>
                               <span className="k-pct">
                                 {displayed.teams[i].toFixed(1)}
@@ -1724,15 +1726,16 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                   <div className={['module', 'module-ratios', activeTab === 'ratios' ? 'shown' : ''].join(' ')}>
                     {ratiosIntro && <p className="m-sub">{ratiosIntro}</p>}
                     <div className={['ratios', fading ? 'fading' : ''].join(' ')}>
-                      {RATIO_DEFS.map((d, i) => {
+                      {RATIO_DEFS.map((_ratio, i) => {
                         const pos = displayed.ratios[i]
-                        const zone = ratioZone(pos)
+                        const zone = ratioZone(pos, S)
+                        const r = S.ratios[i]
                         return (
                           <div className="ratio" key={i}>
                             <div className="ratio-top">
-                              <span className="ratio-name">{d.name}</span>
+                              <span className="ratio-name">{r.name}</span>
                               <span className={['ratio-state', zone.cls].join(' ')}>
-                                {zone.label === 'In range' ? d.good : zone.label === 'Watch' ? 'Borderline' : d.bad} · {zone.label}
+                                {zone.key === 'In range' ? r.good : zone.key === 'Watch' ? S.borderline : r.bad} · {zone.label}
                               </span>
                             </div>
                             <div className="track">
@@ -1741,8 +1744,8 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                               <div className="marker" style={{ left: `${pos}%`, borderColor: zone.colorVar }} />
                             </div>
                             <div className="poles">
-                              <span>{d.bad}</span>
-                              <span>{d.good}</span>
+                              <span>{r.bad}</span>
+                              <span>{r.good}</span>
                             </div>
                           </div>
                         )
@@ -1768,7 +1771,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { loc
                         >
                           {enumLabel(BAND_LABELS, displayed.band, locale)}
                         </div>
-                        <div className="score-note" dangerouslySetInnerHTML={{ __html: scoreNote(displayed) }} />
+                        <div className="score-note" dangerouslySetInnerHTML={{ __html: scoreNote(displayed, S) }} />
                       </div>
                       <div className={['radar-wrap', fading ? 'fading' : ''].join(' ')}>
                         <svg viewBox="0 0 430 300" role="img" aria-label="Five-pillar score profile" dangerouslySetInnerHTML={{ __html: radarSvgMarkup }} />

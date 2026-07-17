@@ -158,15 +158,18 @@ export default async function RootLayout({
           `}</Script>
         )} */}
 
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-                    window.codebase = window.codebase || {};
-                    window.codebase.iid = 'B330E7E18FB3';
-                  `,
-          }}
+        {/* conversion.io A/B testing — beforeInteractive so the install id is set and the
+            tracker loads before paint (anti-flicker) and is present when the visual editor
+            inspects the page. Order matters: iid must be defined before conversion.js runs;
+            next/script preserves order among beforeInteractive scripts. */}
+        <Script id="conversion-iid" strategy="beforeInteractive">{`
+          window.codebase = window.codebase || {};
+          window.codebase.iid = 'B330E7E18FB3';
+        `}</Script>
+        <Script
+          src="https://scripts.conversion.io/conversion.js"
+          strategy="beforeInteractive"
         />
-        <script src="https://scripts.conversion.io/conversion.js" async></script>
 
         <link href="/favicon-1.ico" rel="icon" sizes="32x32" />
         <link href="/favicon-1.svg" rel="icon" type="image/svg+xml" />
