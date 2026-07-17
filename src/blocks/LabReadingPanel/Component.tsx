@@ -7,6 +7,8 @@ import RichText from '@/components/RichText'
 import { useReveal } from '@/hooks/useReveal'
 import { ARCHETYPE_ICONS, RATIO_DEFS, TEAM_DEFS } from './constants'
 import { ArchetypeData, ratioZone, renderRadarSvg, renderTeamsSvg, scoreNote, teamStatus, whatsShort } from './render'
+import { BAND_LABELS, enumLabel } from '@/blocks/_shared/enumLabels'
+import type { AppLocale } from '@/i18n/config'
 
 type RawSpeciesRow = { name?: string | null; percent?: number | null }
 type SealRow = { number?: string | null; railLabel?: string | null; panelLabel?: string | null }
@@ -105,7 +107,8 @@ function toArchetypeData(row: ArchetypeRow): ArchetypeData {
 
 type Tab = 'teams' | 'ratios' | 'score'
 
-export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
+export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType & { locale?: AppLocale }> = ({
+  locale,
   heading,
   leadIn,
   transitionText,
@@ -1644,7 +1647,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
                       : { background: 'rgba(176,131,43,.14)', color: '#9A6B1E' }
                   }
                 >
-                  {current.band}
+                  {enumLabel(BAND_LABELS, current.band, locale)}
                 </div>
                 <div className="pr-note" dangerouslySetInnerHTML={{ __html: scoreNote(current) }} />
               </div>
@@ -1763,7 +1766,7 @@ export const LabReadingPanelComponent: React.FC<LabReadingPanelBlockType> = ({
                               : { background: 'rgba(176,131,43,.14)', color: '#9A6B1E' }
                           }
                         >
-                          {displayed.band}
+                          {enumLabel(BAND_LABELS, displayed.band, locale)}
                         </div>
                         <div className="score-note" dangerouslySetInnerHTML={{ __html: scoreNote(displayed) }} />
                       </div>

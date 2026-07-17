@@ -11,6 +11,8 @@ import {
   COMPARISON_US_INNER_SVG,
   COMPARISON_US_VIEWBOX,
 } from './art'
+import { STATUS_LABELS, enumLabel } from '@/blocks/_shared/enumLabels'
+import type { AppLocale } from '@/i18n/config'
 
 type LegendItem = { label?: string | null; color?: string | null; dashed?: boolean | null }
 type ComparisonNode = {
@@ -60,7 +62,8 @@ function injectNodeData(svg: string, nodes: ComparisonNode[]): string {
   })
 }
 
-export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
+export const LabComparisonComponent: React.FC<LabComparisonBlockType & { locale?: AppLocale }> = ({
+  locale,
   heading,
   intro,
   hintText,
@@ -522,7 +525,7 @@ export const LabComparisonComponent: React.FC<LabComparisonBlockType> = ({
               <div className="cmp2-pop" style={{ left: popover.x, top: popover.y }}>
                 <div className="pp-n">{popover.name}</div>
                 <div className="pp-j">{popover.job}</div>
-                <div className={`pp-s s-${popover.status.toLowerCase()}`}>{popover.status}</div>
+                <div className={`pp-s s-${popover.status.toLowerCase()}`}>{enumLabel(STATUS_LABELS, popover.status, locale)}</div>
               </div>
             )}
           </figure>
