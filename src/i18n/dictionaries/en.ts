@@ -79,7 +79,8 @@ export const en = {
     hero: {
       titlePrefix: 'Almost ',
       titleAccent: 'there.',
-      subtitle: 'Your email, your address, how it ships, and payment, all here. Nothing is charged today.',
+      subtitle:
+        'Your email, your address, how it ships, and payment, all here. Nothing is charged today.',
     },
     steps: {
       email: 'Your email',
@@ -132,15 +133,18 @@ export const en = {
       cvc: 'CVC',
       cvcDigits: '3–4 digits.',
       nameOnCard: 'Name on card',
-      paypalNote: "You'll be redirected to PayPal to approve your plan. Nothing is charged today — your first payment is taken only when your formula is manufactured.",
+      paypalNote:
+        "You'll be redirected to PayPal to approve your plan. Nothing is charged today — your first payment is taken only when your formula is manufactured.",
       klarna: 'Klarna',
-      klarnaNote: "Pay with Klarna on invoice or instant bank transfer. You'll approve in Klarna — your first charge is taken only at manufacture.",
+      klarnaNote:
+        "Pay with Klarna on invoice or instant bank transfer. You'll approve in Klarna — your first charge is taken only at manufacture.",
       sepa: 'SEPA Direct Debit',
       iban: 'IBAN',
       ibanPlaceholder: 'DE00 0000 0000 0000 0000 00',
       ibanInvalid: 'Enter a valid IBAN.',
       accountHolder: 'Account holder',
-      sepaConsent: 'By providing your IBAN you authorise NB1 and Stripe to debit your account by SEPA Direct Debit, beginning only when your formula is manufactured.',
+      sepaConsent:
+        'By providing your IBAN you authorise NB1 and Stripe to debit your account by SEPA Direct Debit, beginning only when your formula is manufactured.',
       billingSame: 'Billing address same as delivery',
       streetNumber: 'Street & number',
       billingIndividual: 'Individual',
@@ -178,7 +182,8 @@ export const en = {
     },
     whatsNext: {
       heading: 'What happens next',
-      step1: 'Your kit ships. Then: a quick gut sample. You seal it in the bag and send it back in the box.',
+      step1:
+        'Your kit ships, a two-minute gut sample, sealed in its bag and posted back in the box it came in.',
       step2: 'We sequence it and our science team approves your formula.',
       step3: 'First charge, then your one-of-one formula ships.',
     },
@@ -200,12 +205,13 @@ export const en = {
       body: "Your kit's on its way. We won't charge you anything yet, your first payment only happens once your formula's being made.",
       eyebrow: 'Order',
       inboxTitle: 'Check your inbox',
-      inboxBody: "We've sent your confirmation to {email}. Open it to set your password and access your dashboard.",
+      inboxBody:
+        "We've sent your confirmation to {email}. Open it to set your password and access your dashboard.",
       dashboard: 'Go to my dashboard →',
       trackOrder: 'Track your order',
       helpLink: 'Need help?',
       failed: {
-        heading: 'Payment didn\'t go through',
+        heading: "Payment didn't go through",
         body: 'Something went wrong with your payment. No charge was made. Please try again or get in touch.',
         retry: 'Try again →',
         help: 'Need help?',
@@ -228,11 +234,32 @@ export const en = {
       },
       timeline: {
         heading: 'What happens next',
-        step1: { label: 'Today', title: 'Order confirmed', body: 'Check your inbox, we\'ve emailed your receipt and a link to set your password and follow your kit\'s tracking.' },
-        step2: { label: '~3 days', title: 'Your kit arrives', body: 'A two-minute gut sample, sealed in its bag and sent back in the box, plus a short health questionnaire online.' },
-        step3: { label: 'Weeks 1–2', title: 'We sequence your sample', body: 'Read at species level, then our science team drafts your personalised formula from your data.' },
-        step4: { label: 'Week 3', title: 'Formula approved · first charge', badge: 'First charge', body: 'Your formula is signed off and your first payment is taken, only now, once it enters manufacture. Never before.' },
-        step5: { label: 'Week 4', title: 'Your formula ships', body: 'Activate, Restore and Nourish, blister-packed for 30 days, travel-ready. Your first cycle begins.' },
+        step1: {
+          label: 'Today',
+          title: 'Order confirmed',
+          body: "Check your inbox, we've emailed your receipt and a link to set your password and follow your kit's tracking.",
+        },
+        step2: {
+          label: '~3 days',
+          title: 'Your kit arrives',
+          body: 'A two-minute gut sample, sealed in its bag and posted back in the box it came in, plus a short health questionnaire online.',
+        },
+        step3: {
+          label: 'Weeks 1–2',
+          title: 'We sequence your sample',
+          body: 'Read at species level, then our science team drafts your personalised formula from your data.',
+        },
+        step4: {
+          label: 'Week 3',
+          title: 'Formula approved · first charge',
+          badge: 'First charge',
+          body: 'Your formula is signed off and your first payment is taken, only now, once it enters manufacture. Never before.',
+        },
+        step5: {
+          label: 'Week 4',
+          title: 'Your formula ships',
+          body: 'Activate, Restore and Nourish, blister-packed for 30 days, travel-ready. Your first cycle begins.',
+        },
       },
       summary: {
         heading: 'Order summary',
@@ -255,7 +282,8 @@ export const en = {
           heading: 'Give a month, get a month.',
           body: 'Your friend gets their <strong>first month free</strong>. You get a <strong>free month</strong> too, credited once their order goes into manufacture.',
           msgLabel: 'Your message',
-          defaultMsg: "I just started NB1, supplements personalised from my own gut data, not guesswork. Use my link and your first month is on me:",
+          defaultMsg:
+            'I just started NB1, supplements personalised from my own gut data, not guesswork. Use my link and your first month is on me:',
           copy: 'Copy',
           copied: 'Copied!',
           whatsapp: 'WhatsApp',
