@@ -1269,10 +1269,34 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           ok: true,
         })
       } else {
-        setPromoMsg({ text: data.discount_message ?? dict.promo.invalid, ok: false })
+        const errMsg = data.discount_message ?? dict.promo.invalid
+        setPromoMsg({ text: errMsg, ok: false })
+        const voucherItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
+        pushEvent('add_voucher_error', {
+          event_id: mintEventId(),
+          error: errMsg,
+          ecommerce: {
+            coupon: code,
+            currency,
+            value: rateNum,
+            items: [voucherItem],
+          },
+        })
       }
-    } catch {
+    } catch (err) {
+      const errMsg = (err as Error)?.message || dict.promo.invalid
       setPromoMsg({ text: dict.promo.invalid, ok: false })
+      const voucherItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
+      pushEvent('add_voucher_error', {
+        event_id: mintEventId(),
+        error: errMsg,
+        ecommerce: {
+          coupon: code,
+          currency,
+          value: rateNum,
+          items: [voucherItem],
+        },
+      })
     } finally {
       setPromoLoading(false)
     }
