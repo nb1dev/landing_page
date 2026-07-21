@@ -63,6 +63,8 @@ export const en = {
     Ireland: 'Ireland',
     'United Kingdom': 'United Kingdom',
     'United Arab Emirates': 'United Arab Emirates',
+    Switzerland: 'Switzerland',
+    Romania: 'Romania',
   } as Record<string, string>,
   promo: {
     codes: {
