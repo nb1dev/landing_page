@@ -303,7 +303,8 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
     >
       <style jsx>{`
         .yp-plans {
-          padding: 84px 0;
+          /* v2 mockup .order → padding-block: clamp(80px, 11vw, 140px) */
+          padding: clamp(80px, 11vw, 140px) 0;
           position: relative;
           color: #12314d;
           /* Base body font is Inter (app global is Geist, which otherwise leaks
@@ -363,7 +364,8 @@ export const YpPlansClient: React.FC<YpPlansBlockType> = ({
 
         /* section head */
         .section-head {
-          max-width: 680px;
+          /* v2 mockup .order h2 caps at 22ch (~760px); widened from 680px */
+          max-width: 760px;
         }
         .section-head.center {
           margin: 0 auto;
