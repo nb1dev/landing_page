@@ -1,306 +1,460 @@
-# Payload Website Template
+# NB1 Landing Page
 
-This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+Welcome! This doc is written for someone opening this repository for the
+first time. It explains what the project is, how the pieces fit together, how
+to get it running on your machine, and where to look for specific things
+(tracking, deploys, checkout, etc).
 
-This template is right for you if you are working on:
+> Companion docs: [`DEV_SETUP.md`](DEV_SETUP.md) is a short, day-to-day
+> cheat sheet for the local Postgres/migration workflow.
+> [`AGENTS.md`](AGENTS.md) is a Payload CMS coding-convention reference aimed
+> at AI coding assistants. This file is the one meant to be read
+> start-to-finish when you're new here. For generic Payload CMS feature docs
+> (not specific to this project), see [payloadcms.com/docs](https://payloadcms.com/docs).
 
-- A personal or enterprise-grade website, blog, or portfolio
-- A content publishing platform with a fully featured publication workflow
-- Exploring the capabilities of Payload
+## Contents
 
-Core features:
+1. [What is this project?](#1-what-is-this-project)
+2. [The big picture](#2-the-big-picture)
+3. [Getting it running locally](#3-getting-it-running-locally)
+4. [Repository layout](#4-repository-layout)
+5. [Configuration (environment variables)](#5-configuration-environment-variables)
+6. [Languages & country detection](#6-languages--country-detection)
+7. [How checkout works](#7-how-checkout-works)
+8. [Tracking & analytics](#8-tracking--analytics)
+9. [Testing](#9-testing)
+10. [How deploys work](#10-how-deploys-work)
+11. [Database migrations](#11-database-migrations)
+12. [Good to know / grab bag](#12-good-to-know--grab-bag)
 
-- [Pre-configured Payload Config](#how-it-works)
-- [Authentication](#users-authentication)
-- [Access Control](#access-control)
-- [Layout Builder](#layout-builder)
-- [Draft Preview](#draft-preview)
-- [Live Preview](#live-preview)
-- [On-demand Revalidation](#on-demand-revalidation)
-- [SEO](#seo)
-- [Search](#search)
-- [Redirects](#redirects)
-- [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
-- [Website](#website)
+## 1. What is this project?
 
-## Quick Start
+This is the website for **NB1**, a health/supplements brand. It's a single
+Next.js application that does three jobs at once:
 
-To spin up this example locally, follow these steps:
+1. **Marketing website** — the public pages (homepage, science/lab pages,
+   blog posts, etc), all editable through a CMS admin panel.
+2. **Order/checkout funnel** — a multi-step flow where a visitor picks a
+   plan, enters shipping/billing details, and pays.
+3. **CMS admin panel** — where content editors log in and manage pages,
+   posts, navigation, redirects, etc, without touching code.
 
-### Clone
+Note the important boundary: this app **does not** own subscriptions or
+payments. When a visitor actually pays, this app forwards the request to a
+**separate backend service** (a different codebase, reached over HTTP via
+`NEXT_PUBLIC_BACKEND_URL`) that owns Stripe, subscriptions, and order state.
+This app's checkout code is mostly UI + a thin proxy in front of that
+backend. Keep this in mind — if you're debugging "why didn't my order go
+through", the bug is more likely in that other backend than in this repo.
 
-If you have not done so already, you need to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## 2. The big picture
 
-Use the `create-payload-app` CLI to clone this template directly to your machine:
+```
+                     ┌───────────────────────────────────────────┐
+                     │   This repo (Next.js + Payload CMS)        │
+                     │                                             │
+  visitor  ───────▶  │  Public pages   Checkout UI   CMS admin     │
+                     │  (/[locale]/*)  (/order/...)  (/cms/admin)  │
+                     │        │              │              │      │
+                     └────────┼──────────────┼──────────────┼──────┘
+                              │              │              │
+                              │              │              ▼
+                              │              │      Postgres (content,
+                              │              │       pages, redirects...)
+                              │              ▼
+                              │      External backend (separate
+                              │      codebase) — owns Stripe,
+                              │      subscriptions, order state
+                              ▼
+                    Third-party services: Google Tag Manager / GA4,
+                    Meta Pixel + Conversions API, Klaviyo (email lead
+                    capture), Chatwoot (support chat), Ketch (cookie
+                    consent), Firebase (frontend auth), SMTP (email)
+```
+
+**Payload CMS**, if you haven't used it before, is a headless CMS that runs
+*inside* your Next.js app rather than as a separate hosted product — content
+types ("collections", e.g. Pages, Posts, Products) are defined in code
+(`src/collections/`), and Payload generates an admin UI and a REST/GraphQL
+API for them automatically. In this project the admin UI lives at `/cms/admin`.
+
+## 3. Getting it running locally
+
+You'll need: **Node** `^18.20.2` or `>=20.9.0`, **npm** `>=8`, and **Docker**
+(used only to run a local Postgres database — you don't need to containerize
+the app itself).
 
 ```bash
-pnpx create-payload-app my-project -t website
+# 1. Start a local Postgres database in Docker
+docker compose up -d postgres
+
+# 2. Create your local env file from the template
+cp .env.local.example .env
+# open .env and fill in PAYLOAD_SECRET (see step below) — everything else
+# already has sane local defaults
+
+# 3. Create the database tables (runs the checked-in migrations)
+npm run migrate
+
+# 4. Start the app
+npm run dev
 ```
 
-### Development
-
-1. First [clone the repo](#clone) if you have not done so already
-1. `cd my-project && cp .env.example .env` to copy the example environment variables
-1. `pnpm install && pnpm dev` to install dependencies and start the dev server
-1. open `http://localhost:3000` to open the app in your browser
-
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
-
-## How it works
-
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
-
-### Collections
-
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
-
-- #### Users (Authentication)
-
-  Users are auth-enabled collections that have access to the admin panel and unpublished content. See [Access Control](#access-control) for more details.
-
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
-
-- #### Posts
-
-  Posts are used to generate blog posts, news articles, or any other type of content that is published over time. All posts are layout builder enabled so you can generate unique layouts for each post using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Posts are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
-
-- #### Pages
-
-  All pages are layout builder enabled so you can generate unique layouts for each page using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Pages are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
-
-- #### Media
-
-  This is the uploads enabled collection used by pages, posts, and projects to contain media like images, videos, downloads, and other assets. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
-
-- #### Categories
-
-  A taxonomy used to group posts together. Categories can be nested inside of one another, for example "News > Technology". See the official [Payload Nested Docs Plugin](https://payloadcms.com/docs/plugins/nested-docs) for more details.
-
-### Globals
-
-See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for details on how to extend this functionality.
-
-- `Header`
-
-  The data required by the header on your front-end like nav links.
-
-- `Footer`
-
-  Same as above but for the footer of your site.
-
-## Access control
-
-Basic access control is setup to limit access to various content based based on publishing status.
-
-- `users`: Users can access the admin panel and create or edit content.
-- `posts`: Everyone can access published posts, but only users can create, update, or delete them.
-- `pages`: Everyone can access published pages, but only users can create, update, or delete them.
-
-For more details on how to extend this functionality, see the [Payload Access Control](https://payloadcms.com/docs/access-control/overview#access-control) docs.
-
-## Layout Builder
-
-Create unique page layouts for any type of content using a powerful layout builder. This template comes pre-configured with the following layout building blocks:
-
-- Hero
-- Content
-- Media
-- Call To Action
-- Archive
-
-Each block is fully designed and built into the front-end website that comes with this template. See [Website](#website) for more details.
-
-## Lexical editor
-
-A deep editorial experience that allows complete freedom to focus just on writing content without breaking out of the flow with support for Payload blocks, media, links and other features provided out of the box. See [Lexical](https://payloadcms.com/docs/rich-text/overview) docs.
-
-## Draft Preview
-
-All posts and pages are draft-enabled so you can preview them before publishing them to your website. To do this, these collections use [Versions](https://payloadcms.com/docs/configuration/collections#versions) with `drafts` set to `true`. This means that when you create a new post, project, or page, it will be saved as a draft and will not be visible on your website until you publish it. This also means that you can preview your draft before publishing it to your website. To do this, we automatically format a custom URL which redirects to your front-end to securely fetch the draft version of your content.
-
-Since the front-end of this template is statically generated, this also means that pages, posts, and projects will need to be regenerated as changes are made to published documents. To do this, we use an `afterChange` hook to regenerate the front-end when a document has changed and its `_status` is `published`.
-
-For more details on how to extend this functionality, see the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/examples/draft-preview).
-
-## Live preview
-
-In addition to draft previews you can also enable live preview to view your end resulting page as you're editing content with full support for SSR rendering. See [Live preview docs](https://payloadcms.com/docs/live-preview/overview) for more details.
-
-## On-demand Revalidation
-
-We've added hooks to collections and globals so that all of your pages, posts, footer, or header changes will automatically be updated in the frontend via on-demand revalidation supported by Nextjs.
-
-> Note: if an image has been changed, for example it's been cropped, you will need to republish the page it's used on in order to be able to revalidate the Nextjs image cache.
-
-## SEO
-
-This template comes pre-configured with the official [Payload SEO Plugin](https://payloadcms.com/docs/plugins/seo) for complete SEO control from the admin panel. All SEO data is fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
-
-## Search
-
-This template also pre-configured with the official [Payload Search Plugin](https://payloadcms.com/docs/plugins/search) to showcase how SSR search features can easily be implemented into Next.js with Payload. See [Website](#website) for more details.
-
-## Redirects
-
-If you are migrating an existing site or moving content to a new URL, you can use the `redirects` collection to create a proper redirect from old URLs to new ones. This will ensure that proper request status codes are returned to search engines and that your users are not left with a broken link. This template comes pre-configured with the official [Payload Redirects Plugin](https://payloadcms.com/docs/plugins/redirects) for complete redirect control from the admin panel. All redirects are fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
-
-## Jobs and Scheduled Publish
-
-We have configured [Scheduled Publish](https://payloadcms.com/docs/versions/drafts#scheduled-publish) which uses the [jobs queue](https://payloadcms.com/docs/jobs-queue/jobs) in order to publish or unpublish your content on a scheduled time. The tasks are run on a cron schedule and can also be run as a separate instance if needed.
-
-> Note: When deployed on Vercel, depending on the plan tier, you may be limited to daily cron only.
-
-## Website
-
-This template includes a beautifully designed, production-ready front-end built with the [Next.js App Router](https://nextjs.org), served right alongside your Payload app in a instance. This makes it so that you can deploy both your backend and website where you need it.
-
-Core features:
-
-- [Next.js App Router](https://nextjs.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [React Hook Form](https://react-hook-form.com)
-- [Payload Admin Bar](https://github.com/payloadcms/payload/tree/main/packages/admin-bar)
-- [TailwindCSS styling](https://tailwindcss.com/)
-- [shadcn/ui components](https://ui.shadcn.com/)
-- User Accounts and Authentication
-- Fully featured blog
-- Publication workflow
-- Dark mode
-- Pre-made layout building blocks
-- SEO
-- Search
-- Redirects
-- Live preview
-
-### Cache
-
-Although Next.js includes a robust set of caching strategies out of the box, Payload Cloud proxies and caches all files through Cloudflare using the [Official Cloud Plugin](https://www.npmjs.com/package/@payloadcms/payload-cloud). This means that Next.js caching is not needed and is disabled by default. If you are hosting your app outside of Payload Cloud, you can easily reenable the Next.js caching mechanisms by removing the `no-store` directive from all fetch requests in `./src/app/_api` and then removing all instances of `export const dynamic = 'force-dynamic'` from pages files, such as `./src/app/(pages)/[slug]/page.tsx`. For more details, see the official [Next.js Caching Docs](https://nextjs.org/docs/app/building-your-application/caching).
-
-## Development
-
-To spin up this example locally, follow the [Quick Start](#quick-start). Then [Seed](#seed) the database with a few pages, posts, and projects.
-
-### Working with Postgres
-
-Postgres and other SQL-based databases follow a strict schema for managing your data. In comparison to our MongoDB adapter, this means that there's a few extra steps to working with Postgres.
-
-Note that often times when making big schema changes you can run the risk of losing data if you're not manually migrating it.
-
-#### Local development
-
-Ideally we recommend running a local copy of your database so that schema updates are as fast as possible. By default the Postgres adapter has `push: true` for development environments. This will let you add, modify and remove fields and collections without needing to run any data migrations.
-
-If your database is pointed to production you will want to set `push: false` otherwise you will risk losing data or having your migrations out of sync.
-
-#### Migrations
-
-[Migrations](https://payloadcms.com/docs/database/migrations) are essentially SQL code versions that keeps track of your schema. When deploy with Postgres you will need to make sure you create and then run your migrations.
-
-Locally create a migration
+Then open `http://localhost:3000` in your browser. The app will redirect you
+to a locale-prefixed URL like `http://localhost:3000/en` — that's expected,
+see [§6](#6-languages--country-detection). The CMS admin panel is at
+`http://localhost:3000/cms/admin`; the first time you open it, it'll ask you
+to create an admin user (there's no seed admin account).
+
+For `PAYLOAD_SECRET`, generate any random string, e.g.:
 
 ```bash
-pnpm payload migrate:create
+openssl rand -hex 32
 ```
 
-This creates the migration files you will need to push alongside with your new configuration.
+**Important:** never point your local `.env` at the staging (STG) or
+production (PROD) database. `.env.local.example` already defaults to a local
+`DATABASE_URL` for exactly this reason. See [`DEV_SETUP.md`](DEV_SETUP.md)
+for the full day-to-day workflow of changing the database schema locally.
 
-On the server after building and before running `pnpm start` you will want to run your migrations
+### Common commands
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the app in dev mode (hot reload) |
+| `npm run build` then `npm run start` | Build and run a production build locally |
+| `npm run migrate` | Apply any pending database migrations |
+| `npm run migrate:create -- --name my-change` | Generate a new migration after you change a collection/global |
+| `npm run migrate:status` | See which migrations have/haven't run |
+| `npm run db:sync-stg` | Overwrite your **local** DB with a copy of staging's data (useful to get realistic content to develop against) |
+| `npm run generate:types` | Regenerate TypeScript types (`src/payload-types.ts`) after changing a collection/global — do this whenever you edit `src/collections/` or `src/globals/` |
+| `npm run generate:importmap` | Regenerate Payload's admin panel component registry after adding/moving a custom admin component |
+| `npm run lint` / `npm run lint:fix` | Check / fix lint issues |
+| `npm test` | Run all tests (see [§9](#9-testing)) |
+
+### Optional: Docker for the app itself
+
+There's a `Dockerfile` and `docker-compose.stg.yml` / `docker-compose.prod.yml`
+that can build and run the whole app in a container. In practice, though,
+staging and production are **not** deployed this way today — they run
+directly on a server via PM2 (a Node.js process manager), as described in
+[§10](#10-how-deploys-work). The Docker setup exists but isn't the live path;
+don't be surprised if it's slightly behind.
+
+## 4. Repository layout
+
+```
+src/
+├── app/
+│   ├── (frontend)/[locale]/   # Public site — every page URL starts with a locale, e.g. /en/...
+│   ├── api/checkout/          # Checkout proxy route (forwards to the external backend)
+│   ├── api/meta/              # Receives browser tracking events, forwards to Meta's API
+│   └── cms/(payload)/         # The Payload admin panel + its REST/GraphQL API
+├── middleware.ts              # Runs on every request: locale detection, redirects
+├── payload.config.ts          # The main Payload setup file: collections, database, locales, plugins
+├── collections/                # Content types: Pages, Posts, Products, Users, Media, Categories, Authors
+├── globals/                    # Site-wide singletons: Navigation, SiteSettings, FAQ
+├── blocks/                     # "Layout builder" building blocks editors use to compose a Page.
+│                                #   There are a lot of these — this is a large, marketing-heavy site.
+├── lib/
+│   ├── checkoutApi.ts          # Functions that call the external checkout backend
+│   ├── dataLayer.ts            # Helpers for pushing Google Analytics events
+│   └── meta/                   # Meta (Facebook) Pixel + server-side tracking helpers
+├── components/                  # Shared React components (chat widget, tracking scripts, etc)
+├── i18n/                       # List of supported locales + translated text
+├── migrations/                 # Database migration files (checked into git — never edit old ones)
+└── plugins/index.ts            # Payload plugins in use: redirects, SEO, search, nested categories, forms
+scripts/                        # One-off / maintenance scripts (e.g. copying STG data to local)
+tests/
+├── int/                        # Integration tests (Vitest)
+└── e2e/                        # End-to-end browser tests (Playwright)
+```
+
+If you're looking for **where a specific page's content structure is
+defined**, start in `src/collections/Pages/`. If you're looking for **how a
+visual section of a page renders**, look under `src/blocks/<BlockName>/`. If
+you're trying to understand **checkout**, start at [§7](#7-how-checkout-works).
+
+## 5. Configuration (environment variables)
+
+Environment files (`.env`, `.env.stg`, `.env.prod`) are git-ignored — only
+[`.env.local.example`](.env.local.example) is checked in, as a template you
+copy from. Below is what each variable is for, grouped by what it configures.
+
+**Database & Payload core**
+
+| Variable | What it's for |
+|---|---|
+| `DATABASE_URL` / `DATABASE_URI` | Postgres connection string the app uses day-to-day |
+| `DATABASE_URL_DIRECT` | A connection that bypasses PgBouncer (a connection-pooling proxy sitting in front of the production database). Migrations and the STG→PROD data sync need this because they hold locks that a pooled connection can't sustain. Not needed locally. |
+| `PAYLOAD_SECRET` | Random secret Payload uses to sign login tokens. Generate with `openssl rand -hex 32`. |
+| `NEXT_PUBLIC_SERVER_URL` | This site's own public URL — used for building links, CORS, and image loading |
+| `CRON_SECRET` | Lets scheduled jobs (e.g. scheduled publish) authenticate without a logged-in user |
+| `PREVIEW_SECRET` | Confirms a "preview this draft page" link is legitimate |
+| `PG_POOL_MAX` / `PG_POOL_MAX_BUILD` | Advanced: override how many DB connections the app opens. Rarely needed — see the comment in `payload.config.ts` if curious. |
+
+**Email**
+
+| Variable | What it's for |
+|---|---|
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USERNAME` / `SMTP_PASSWORD` / `SMTP_FROM` | Outgoing email (e.g. account emails). Locally you can point these at a tool like Mailpit/Mailtrap. |
+
+**Checkout & payments**
+
+| Variable | What it's for |
+|---|---|
+| `NEXT_PUBLIC_BACKEND_URL` | Base URL of the external backend that actually owns subscriptions/payments. Checkout requests get forwarded here. |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe's publishable (safe-for-browser) key, used only to render the payment form — no payment logic runs in this repo |
+
+**Accounts**
+
+| Variable | What it's for |
+|---|---|
+| `NEXT_PUBLIC_FIREBASE_API_KEY`, `_AUTH_DOMAIN`, `_PROJECT_ID`, `_STORAGE_BUCKET`, `_MESSAGING_SENDER_ID`, `_APP_ID` | Firebase config for frontend user accounts (shares a Firebase project with another NB1 app, "frontend-web") |
+
+**Support chat**
+
+| Variable | What it's for |
+|---|---|
+| `NEXT_PUBLIC_CHATWOOT_WEBSITE_TOKEN` / `NEXT_PUBLIC_CHATWOOT_BASE_URL` | Configures the Chatwoot support-chat widget |
+
+**Analytics & marketing tracking** (see [§8](#8-tracking--analytics) for how these are used)
+
+| Variable | What it's for |
+|---|---|
+| `NEXT_PUBLIC_GTM_ID` | Google Tag Manager / GA4 container ID |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta (Facebook) Pixel ID — used in the browser |
+| `META_PIXEL_ID` | Same Pixel ID, used server-side |
+| `META_CAPI_ACCESS_TOKEN` | Access token for Meta's server-side Conversions API |
+| `META_GRAPH_API_VERSION` | Which version of Meta's Graph API to call |
+| `META_TEST_EVENT_CODE` | Marks server-side events as test events in Meta's dashboard — **should only ever be set outside production** |
+
+Note: the **Klaviyo** company ID (email lead-capture, [§8](#8-tracking--analytics))
+is currently hardcoded in `src/app/(frontend)/[locale]/layout.tsx` rather than
+coming from an environment variable.
+
+Payload's own configuration (which collections exist, which plugins are
+enabled, which locales, where the admin panel is mounted) lives in
+[`src/payload.config.ts`](src/payload.config.ts), not in environment
+variables — that file is the place to look if you want to understand what
+the CMS is capable of.
+
+## 6. Languages & country detection
+
+The site supports 8 locales: `en, de, fr, nl, ch, be, uk, uae` (defined in
+`src/i18n/config.ts`, and again in `payload.config.ts` so content in the CMS
+can be translated per-locale). Every public URL is prefixed with one of
+these, e.g. `/de/some-page`.
+
+`src/middleware.ts` runs on every request and decides which locale to send a
+visitor to:
+
+- If the URL is already locale-prefixed, it's left alone (other than setting
+  currency/country cookies).
+- Otherwise, it looks at the visitor's country (from a header set by the
+  hosting platform) to guess a locale + currency, unless the visitor already
+  has a saved locale preference cookie — that always wins.
+- It also checks for old URLs that should redirect elsewhere (the CMS's
+  "Redirects" feature) before doing the locale redirect.
+- `/cms/*` (the admin panel) is never locale-prefixed.
+
+You don't need to touch this file often, but it's the first place to check
+if a page is "redirecting to the wrong language" or "showing the wrong
+currency".
+
+## 7. How checkout works
+
+As mentioned in [§1](#1-what-is-this-project), the actual business logic —
+pricing, Stripe payment intents, creating the subscription — happens on a
+**separate backend**, not in this repo. This app's job in checkout is:
+
+1. Render the multi-step order UI (plan picker, shipping form, payment form,
+   confirmation screen) — these are the blocks under
+   `src/blocks/checkoutBlocks/*`.
+2. Call that external backend to create a payment intent and confirm the
+   order. The typed functions for this live in
+   [`src/lib/checkoutApi.ts`](src/lib/checkoutApi.ts).
+3. Fire tracking events at the right funnel steps (see [§8](#8-tracking--analytics)).
+
+Four payment methods are supported — card, PayPal, Klarna, and SEPA Direct
+Debit — all via Stripe.js, wired up in
+[`CheckoutForm/Component.client.tsx`](src/blocks/checkoutBlocks/CheckoutForm/Component.client.tsx).
+Klarna and PayPal use a Stripe SetupIntent + off-site redirect (the visitor
+approves on Klarna's/PayPal's site and is redirected back), so nothing is
+charged until the subscription is actually manufactured — the redirect
+return handler restores in-flight form data from `sessionStorage`.
+
+One extra wrinkle worth knowing: the final "confirm order" call doesn't go
+straight to the external backend from the browser. It goes to this app's own
+route, [`src/app/api/checkout/confirm/route.ts`](src/app/api/checkout/confirm/route.ts),
+which forwards it to the real backend **and then**, if the visitor consented
+to marketing tracking, also reports the purchase to Meta's server-side
+Conversions API before responding. It's a small proxy step, but it exists
+specifically so that server-side purchase tracking is reliable (it doesn't
+depend on the visitor's browser still being open, or an ad-blocker not
+interfering).
+
+Plan/pricing content that editors manage lives in the `Products` collection
+(`src/collections/Products`) and `src/lib/plans`.
+
+## 8. Tracking & analytics
+
+There's a fair amount of tracking wired up, because marketing needs accurate
+conversion data. Here's the map of it. **All of it is gated on cookie
+consent** — nothing marketing-related fires until the visitor has consented.
+
+### Consent management: Ketch
+
+[Ketch](https://www.ketch.com/) is the "cookie consent" tool (a "CMP" —
+Consent Management Platform) used here. It's loaded by
+`src/app/(frontend)/[locale]/KetchScriptLoader.tsx`. Once loaded, other code
+checks `window.__nb1Consent?.targeted_advertising` before sending any
+marketing event. If you're wondering why a tracking event isn't firing in
+dev, check consent first — it's the most common reason.
+
+### Google Tag Manager / GA4
+
+- The GTM/`gtag.js` script itself is injected by
+  `src/components/ConditionalGoogleTagManager/index.tsx` (using
+  `NEXT_PUBLIC_GTM_ID`). It's skipped on `/cms/admin` pages.
+- `src/lib/dataLayer.ts` has the helper functions used everywhere else to
+  actually send events: `pushEvent(name, data)` pushes onto `window.dataLayer`,
+  which is the array GTM reads from. It also implements **Enhanced
+  Conversions** — before sending someone's email/phone/name, it's hashed
+  (SHA-256, via the browser's built-in Web Crypto API) so raw PII never
+  touches the dataLayer. (Postal code / city / country are sent as-is — that's
+  allowed and expected by Google's spec.)
+- `src/components/DataLayerEvents/PageViewTracker.tsx` automatically fires a
+  `page_view` event on every page change, and a `start_order` event when the
+  visitor lands on a URL ending in `/order`.
+
+### Meta (Facebook) Pixel + Conversions API
+
+This one is tracked **twice**, once from the browser (the classic Pixel) and
+once from the server (Meta's "Conversions API", or "CAPI") — this is Meta's
+recommended setup because browser-only tracking is unreliable with ad
+blockers, while server-side tracking alone loses some browser signals. Both
+copies of an event share the same `event_id` so Meta can de-duplicate them
+into a single event.
+
+- `src/lib/meta/browser.ts` — client-side: reads Meta's tracking cookies,
+  checks consent, and sends the event to this app's own
+  `/api/meta/events` route.
+- `src/app/api/meta/events/route.ts` — receives that and hands it to:
+- `src/lib/meta/server.ts` — actually POSTs to Meta's Conversions API, adding
+  IP address and browser user-agent server-side (more trustworthy than
+  anything the browser reports), with automatic retries on transient errors.
+- The **purchase** event is a special case: it's also sent server-to-server
+  directly from the checkout confirm route (see [§7](#7-how-checkout-works)),
+  independent of whatever happens in the browser.
+
+### Klaviyo (email lead capture)
+
+Used to collect email signups (footer newsletter form, and the `ReserveCta`
+landing block) — separate from the transactional/account email sent via SMTP.
+
+- The Klaviyo script + async-queue shim is loaded globally in
+  `src/app/(frontend)/[locale]/layout.tsx` (company ID is hardcoded there,
+  not an env var).
+- `src/Footer/FooterClient.tsx` and
+  `src/blocks/newLandingBlocks/ReserveCta/Component.tsx` each render an empty
+  `<div class="klaviyo-form-{id}">` that Klaviyo's script fills with an
+  embedded form — the form ID differs by locale (a German-specific form vs.
+  one for everyone else).
+- Both listen for the `klaviyoForms` window event to detect a successful
+  submit (deduped via `window.__lastLeadTime`) and optionally redirect
+  afterwards.
+- Both also push a `klaviyo_form_status` dataLayer event ~3s after mount,
+  reporting whether the form actually rendered and whether the script
+  loaded — useful as a quick health check if leads seem to be silently
+  failing.
+- `Footer/config.ts` has a CMS field ("Klaviyo Form (Payload submission)")
+  that lets editors attach a Payload form-builder form purely to *log*
+  Klaviyo submissions inside the CMS — it doesn't power the actual form.
+
+### Chatwoot (support chat)
+
+`src/components/ChatwootWidget/index.tsx` loads the Chatwoot chat widget
+script, and if a visitor is logged in, tells Chatwoot who they are so
+support agents see their identity. It also nudges the widget's position so
+it doesn't overlap the site's sticky "buy now" bars.
+
+## 9. Testing
+
+- **Integration tests** — `tests/int/*.int.spec.ts`, run with Vitest:
+  `npm run test:int`
+- **End-to-end tests** — `tests/e2e/*.e2e.spec.ts`, run with Playwright
+  (drives a real browser): `npm run test:e2e`
+- `npm test` runs both. `test.env` provides the environment variables used
+  during test runs.
+
+## 10. How deploys work
+
+There are two environments: **STG** (staging — for internal review) and
+**PROD** (production — the live site). Both deploy automatically via GitHub
+Actions when the right branch is pushed:
+
+- **Push to `main`** → merged into the `stg` branch → GitHub Actions SSHes
+  into the staging server and runs `deploy-stg.sh`, which reinstalls
+  dependencies, applies pending database migrations, builds the app, and
+  restarts it under PM2 (a process manager that keeps the Node.js app
+  running and restarts it if it crashes).
+- **Push to `prod`** → merged into the `prod` branch → GitHub Actions SSHes
+  into the production server, and — **before** deploying the new code — copies
+  the *entire staging database* over the production database, then runs
+  `deploy-prod.sh` (same shape as staging: install, migrate, build, restart).
+
+> ⚠️ **Important thing to know:** every production deploy overwrites all of
+> production's data with a copy of staging's data. Staging is treated as the
+> single source of truth for content; production has no independent content
+> of its own. If someone edits something directly in the production CMS
+> admin panel, that edit will be lost on the next deploy — it needs to be
+> made in staging instead (or it'll get wiped).
+
+Neither deploy actually uses the `Dockerfile`/`docker-compose.*.yml` in this
+repo, despite them existing — both servers run the app directly via PM2.
+
+## 11. Database migrations
+
+Payload is configured with `push: false` (in `payload.config.ts`), which
+means schema changes are **never** applied automatically — they always go
+through an explicit, checked-in migration file. If you change a collection
+or global (e.g. add a field to `Pages`), you need to:
 
 ```bash
-pnpm payload migrate
+npm run migrate:create -- --name add-my-field   # generates a migration file
+npm run migrate                                  # applies it to your local DB
 ```
 
-This command will check for any migrations that have not yet been run and try to run them and it will keep a record of migrations that have been run in the database.
+Commit the generated file(s) in `src/migrations/` along with your code
+change. Staging applies pending migrations automatically as part of its
+deploy; production does too (its own schema needs to match staging's even
+though its *data* gets overwritten by the sync described in [§10](#10-how-deploys-work)).
 
-### Docker
+Other useful commands: `npm run migrate:status` (see what's pending),
+`npm run migrate:down` (rollback the last migration — **local use only**,
+never run this against a shared environment).
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+## 12. Good to know / grab bag
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
-### Seed
-
-To seed the database with a few pages, posts, and projects you can click the 'seed database' link from the admin panel.
-
-The seed script will also create a demo user for demonstration purposes only:
-
-- Demo Author
-  - Email: `demo-author@payloadcms.com`
-  - Password: `password`
-
-> NOTICE: seeding the database is destructive because it drops your current database to populate a fresh one from the seed template. Only run this command if you are starting a new project or can afford to lose your current data.
-
-## Production
-
-To run Payload in production, you need to build and start the Admin panel. To do so, follow these steps:
-
-1. Invoke the `next build` script by running `pnpm build` or `npm run build` in your project root. This creates a `.next` directory with a production-ready admin bundle.
-1. Finally run `pnpm start` or `npm run start` to run Node in production and serve Payload from the `.build` directory.
-1. When you're ready to go live, see Deployment below for more details.
-
-### Deploying to Vercel
-
-This template can also be deployed to Vercel for free. You can get started by choosing the Vercel DB adapter during the setup of the template or by manually installing and configuring it:
-
-```bash
-pnpm add @payloadcms/db-vercel-postgres
-```
-
-```ts
-// payload.config.ts
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
-
-export default buildConfig({
-  // ...
-  db: vercelPostgresAdapter({
-    pool: {
-      connectionString: process.env.POSTGRES_URL || '',
-    },
-  }),
-  // ...
-```
-
-We also support Vercel's blob storage:
-
-```bash
-pnpm add @payloadcms/storage-vercel-blob
-```
-
-```ts
-// payload.config.ts
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-
-export default buildConfig({
-  // ...
-  plugins: [
-    vercelBlobStorage({
-      collections: {
-        [Media.slug]: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
-    }),
-  ],
-  // ...
-```
-
-There is also a simplified [one click deploy](https://github.com/payloadcms/payload/tree/templates/with-vercel-postgres) to Vercel should you need it.
-
-### Self-hosting
-
-Before deploying your app, you need to:
-
-1. Ensure your app builds and serves in production. See [Production](#production) for more details.
-2. You can then deploy Payload as you would any other Node.js or Next.js application either directly on a VPS, DigitalOcean's Apps Platform, via Coolify or more. More guides coming soon.
-
-You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
-
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
-
-<!-- deploy trigger -->
-
+- **This is a big, block-heavy site.** Beyond Payload's standard template
+  blocks (Hero, Content, CTA, Archive), `src/blocks/` has dozens of
+  purpose-built sections for landing pages, checkout, and "your plan" pages.
+  If you need a new page layout, it's usually faster to compose existing
+  blocks than to build a new one from scratch — skim `src/blocks/` first.
+- **SEO, search, and redirects** are handled by official Payload plugins
+  (`plugin-seo`, `plugin-search`, `plugin-redirects`), wired up in
+  `src/plugins/index.ts`. Redirects are also checked directly in
+  `middleware.ts` before the locale-redirect logic runs.
+- **Draft preview & auto-revalidation**: Pages and Posts use Payload's
+  Versions/drafts feature, so a new or edited document is saved as a draft
+  and isn't visible on the live site until published. A custom URL lets
+  editors securely preview a draft before publishing (`PREVIEW_SECRET`
+  validates these requests). Because the front-end isn't fully static, an
+  `afterChange` hook triggers on-demand revalidation whenever a document's
+  status flips to published, so the live pages stay in sync automatically.
+- **`patches/` + `postinstall: patch-package`**: at least one npm dependency
+  has a manual patch applied automatically after `npm install`. If a
+  dependency is behaving oddly after an upgrade, check `patches/*.patch`.
+- **`.npmrc` sets `legacy-peer-deps=true`**: expect peer-dependency
+  conflicts if this gets removed — it's there on purpose.
