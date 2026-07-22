@@ -125,7 +125,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     params.delete('cycle')
     const query = params.toString()
     router.replace(pathname + (query ? `?${query}` : ''), { scroll: false })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Numeric live prices per (plan, cycle, currency): { core: { '4': { EUR: 99, GBP: 89 } } }
@@ -281,7 +281,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       // Block back-navigation to checkout steps after confirmation (4.6)
       history.pushState(null, '', window.location.href)
-      const onPopState = () => { history.pushState(null, '', window.location.href) }
+      const onPopState = () => {
+        history.pushState(null, '', window.location.href)
+      }
       window.addEventListener('popstate', onPopState)
       return () => window.removeEventListener('popstate', onPopState)
     }
@@ -367,7 +369,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       (place?.formatted_address || '').split(',')[0].trim()
     const postal = get('postal_code')
     const cityName =
-      get('locality') || get('postal_town') || get('administrative_area_level_2') || get('sublocality') || ''
+      get('locality') ||
+      get('postal_town') ||
+      get('administrative_area_level_2') ||
+      get('sublocality') ||
+      ''
     if (line1) setA1(line1)
     if (postal) setZip(postal)
     if (cityName) setCity(cityName)
@@ -411,12 +417,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* sync phone prefix with shipping/billing country when phone field is empty */
   useEffect(() => {
     if (!phone) setPhoneCountry((COUNTRY_CODES[country] as Country) ?? 'DE')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [country])
 
   useEffect(() => {
     if (!bPhone) setBPhoneCountry((COUNTRY_CODES[bCountry] as Country) ?? 'DE')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bCountry])
 
   /* ── Klarna/PayPal redirect return handler ── */
@@ -516,7 +522,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             transaction_id: klarnaConfirmation.subscription_id,
             currency,
             value: rateNum,
-            items: [{ item_id: klarnaItem.item_id, item_name: klarnaItem.item_name, price: klarnaItem.price, quantity: 1 }],
+            items: [
+              {
+                item_id: klarnaItem.item_id,
+                item_name: klarnaItem.item_name,
+                price: klarnaItem.price,
+                quantity: 1,
+              },
+            ],
           },
           user: {
             email: saved.email ?? email,
@@ -566,7 +579,18 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     })
     sendMetaCapiEvent('begin_checkout', bcId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: bcItem.item_id, item_name: bcItem.item_name, price: bcItem.price, quantity: 1 }] },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: bcItem.item_id,
+            item_name: bcItem.item_name,
+            price: bcItem.price,
+            quantity: 1,
+          },
+        ],
+      },
     })
     // Fire once on mount only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -923,8 +947,27 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     )
     sendMetaCapiEvent('add_shipping_info', siId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: siItem.item_id, item_name: siItem.item_name, price: siItem.price, quantity: 1 }] },
-      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: siItem.item_id,
+            item_name: siItem.item_name,
+            price: siItem.price,
+            quantity: 1,
+          },
+        ],
+      },
+      user: {
+        email,
+        first_name: fn,
+        last_name: ln,
+        city,
+        zip,
+        country: COUNTRY_CODES[country] ?? country,
+        phone,
+      },
     })
     markDone(3)
   }
@@ -974,8 +1017,27 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     )
     sendMetaCapiEvent('add_payment_info', apiId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: apiItem.item_id, item_name: apiItem.item_name, price: apiItem.price, quantity: 1 }] },
-      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: apiItem.item_id,
+            item_name: apiItem.item_name,
+            price: apiItem.price,
+            quantity: 1,
+          },
+        ],
+      },
+      user: {
+        email,
+        first_name: fn,
+        last_name: ln,
+        city,
+        zip,
+        country: COUNTRY_CODES[country] ?? country,
+        phone,
+      },
     })
 
     try {
@@ -1185,7 +1247,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           transaction_id: confirmation.subscription_id,
           currency,
           value: rateNum,
-          items: [{ item_id: purchaseItem.item_id, item_name: purchaseItem.item_name, price: purchaseItem.price, quantity: 1 }],
+          items: [
+            {
+              item_id: purchaseItem.item_id,
+              item_name: purchaseItem.item_name,
+              price: purchaseItem.price,
+              quantity: 1,
+            },
+          ],
         },
         user: {
           email,
@@ -1334,11 +1403,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       <PaymentFailedScreen
         locale={locale ?? 'en'}
         t={t}
-        onRetry={() =>
-          window.location.replace(
-            window.location.pathname + window.location.search.split('&redirect_status')[0],
-          )
-        }
+        onRetry={() => {
+          const params = new URLSearchParams(window.location.search)
+          for (const key of [
+            'redirect_status',
+            'payment_intent',
+            'payment_intent_client_secret',
+            'setup_intent',
+            'setup_intent_client_secret',
+            'source_redirect_slug',
+          ]) {
+            params.delete(key)
+          }
+          const query = params.toString()
+          window.location.replace(window.location.pathname + (query ? `?${query}` : ''))
+        }}
       />
     )
   }
@@ -2094,7 +2173,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           border-radius: 11px;
           background: #fff;
           overflow: hidden;
-          transition: border-color 0.15s, box-shadow 0.15s;
+          transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
         }
         .nb1-phone-wrap .PhoneInput--focus {
           border-color: #0a8fb0;
@@ -2166,7 +2247,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         <div className="nb1-det-left">
           {/* Accordion 1 — Email */}
           <div
-            ref={(el) => { accRefs.current[0] = el }}
+            ref={(el) => {
+              accRefs.current[0] = el
+            }}
             className={`nb1-acc${step === 1 ? ' open' : doneSteps.has(1) ? ' done' : ' locked'}`}
           >
             <div
@@ -2219,7 +2302,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 2 — Address */}
           <div
-            ref={(el) => { accRefs.current[1] = el }}
+            ref={(el) => {
+              accRefs.current[1] = el
+            }}
             className={`nb1-acc${step === 2 ? ' open' : doneSteps.has(2) ? ' done' : ' locked'}`}
           >
             <div
@@ -2319,7 +2404,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       }
                     }}
                     onPick={handleAddressPick}
-                    countries={COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null}
+                    countries={
+                      COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null
+                    }
                     className={addrErr.a1 ? 'err' : ''}
                   />
                   {addrErr.a1 && <span className="nb1-err">{addrErr.a1}</span>}
@@ -2395,7 +2482,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 3 — Shipping */}
           <div
-            ref={(el) => { accRefs.current[2] = el }}
+            ref={(el) => {
+              accRefs.current[2] = el
+            }}
             className={`nb1-acc${step === 3 ? ' open' : doneSteps.has(3) ? ' done' : ' locked'}`}
           >
             <div
@@ -2424,10 +2513,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             </div>
             <div className="nb1-acc-body">
               <div className="nb1-ship-opts">
-                <div
-                  className="nb1-ship-opt sel"
-                  onClick={() => setShipping('standard')}
-                >
+                <div className="nb1-ship-opt sel" onClick={() => setShipping('standard')}>
                   <div className="nb1-ship-radio">
                     <div className="nb1-ship-radio-dot" />
                   </div>
@@ -2446,7 +2532,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 4 — Payment */}
           <div
-            ref={(el) => { accRefs.current[3] = el }}
+            ref={(el) => {
+              accRefs.current[3] = el
+            }}
             className={`nb1-acc${step === 4 ? ' open' : doneSteps.has(4) ? ' done' : ' locked'}`}
           >
             <div className="nb1-acc-hd">
