@@ -1,4 +1,4 @@
-name: Merge Main into STG & Deploy
+name: Sync Main to STG & Deploy
 
 on:
   push:
@@ -18,15 +18,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Merge main → stg
+      - name: Sync stg to main
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git fetch origin
-          git checkout stg
-          git merge origin/main --no-edit || true
-          git push origin stg
+          # stg is a deploy mirror of main. Reset it to main (instead of merging)
+          # so a stale/diverged stg or a doc conflict can never silently block the
+          # sync again — the old `git merge ... || true` swallowed the README
+          # conflict and left stg frozen while the workflow still went green.
+          git checkout -B stg origin/main
+          git push origin stg --force
 
       - name: Deploy to Staging via SSH
         uses: appleboy/ssh-action@v1.0.0
