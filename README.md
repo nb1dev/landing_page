@@ -70,6 +70,42 @@ through", the bug is more likely in that other backend than in this repo.
                     Meta Pixel + Conversions API, Klaviyo (email lead
                     capture), Chatwoot (support chat), Ketch (cookie
                     consent), Firebase (frontend auth), SMTP (email)
+
+This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+
+This template is right for you if you are working on:
+
+- A personal or enterprise-grade website, blog, or portfolio
+- A content publishing platform with a fully featured publication workflow
+- Exploring the capabilities of Payload
+
+Core features:
+
+- [Pre-configured Payload Config](#how-it-works)
+- [Authentication](#users-authentication)
+- [Access Control](#access-control)
+- [Layout Builder](#layout-builder)
+- [Draft Preview](#draft-preview)
+- [Live Preview](#live-preview)
+- [On-demand Revalidation](#on-demand-revalidation)
+- [SEO](#seo)
+- [Search](#search)
+- [Redirects](#redirects)
+- [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
+- [Website](#website)
+
+## Quick Start
+
+To spin up this example locally, follow these steps:
+
+### Clone
+
+If you have not done so already, you need to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+
+Use the `create-payload-app` CLI to clone this template directly to your machine:
+
+```bash
+pnpx create-payload-app my-project -t website
 ```
 
 **Payload CMS**, if you haven't used it before, is a headless CMS that runs
