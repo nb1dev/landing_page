@@ -141,15 +141,8 @@ export default async function Page({ params: paramsPromise }: Args) {
   return (
     <>
       <JsonLd data={pageJsonLd} />
-      {pageSlugsByLocale && (
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.__NB1_PAGE_SLUGS__=${JSON.stringify(pageSlugsByLocale)};`,
-          }}
-        />
-      )}
 
-      {!hideHeader && <Header locale={locale} id={headerId} />}
+      {!hideHeader && <Header locale={locale} id={headerId} pageSlugs={pageSlugsByLocale} />}
 
       <article
         style={{

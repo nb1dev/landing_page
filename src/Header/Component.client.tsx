@@ -15,6 +15,9 @@ type HeaderVariant = {
 
 export interface HeaderClientProps {
   locale: string
+  /** Per-locale slug map for the page currently being viewed (see Header/Component.tsx
+   * for why this is a prop rather than a global). */
+  pageSlugs?: Partial<Record<string, string>> | null
   /** Resolved server-side from the currency cookie (see src/utilities/currency.ts).
    * Used as the initial state below instead of reading localStorage, so the
    * SSR markup and the first client render match exactly — reading
@@ -157,6 +160,7 @@ function lsSet(k: string, v: string) {
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({
   locale,
+  pageSlugs = null,
   initialCurrency,
   logo,
   logoDark,
@@ -461,11 +465,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({
     document.documentElement.setAttribute('lang', lang)
     const segments = pathname.split('/')
     segments[1] = targetLocale
-    // If the page injected a per-locale slug map, use the target locale's slug
-    // instead of keeping the current locale's slug (which would 404 on the new locale).
-    const pageSlugs = (window as any).__NB1_PAGE_SLUGS__ as
-      | Partial<Record<string, string>>
-      | undefined
+    // Use the current page's own per-locale slug map (passed as a prop, so it's
+    // always current — see Header/Component.tsx) instead of keeping the current
+    // locale's slug, which would 404 or belong to a different page on the target
+    // locale (slugs are localized per-page, e.g. en "our-plans" vs de "unsere-plane").
     if (pageSlugs) {
       const targetSlug = pageSlugs[targetLocale] ?? pageSlugs['en']
       if (targetSlug && segments[2] !== undefined) segments[2] = targetSlug
