@@ -124,7 +124,7 @@ const LOCALE_DEFAULT_CURRENCY: Record<string, string> = {
   nl: 'EUR',
   fr: 'EUR',
   de: 'EUR',
-  en: 'EUR',
+  en: 'GBP',
 }
 
 // Currencies allowed per locale

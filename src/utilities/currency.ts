@@ -33,7 +33,7 @@ export const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
 
 // Default currency for each locale path when no cookie is set
 const LOCALE_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
-  en: 'EUR',
+  en: 'GBP',
   de: 'EUR',
   ch: 'CHF',
   fr: 'EUR',
