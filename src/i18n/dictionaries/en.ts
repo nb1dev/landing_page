@@ -99,6 +99,8 @@ export const en = {
       placeholder: 'you@email.com',
       hint: "We'll create your account and send kit tracking + results here. You'll set a password when your kit arrives.",
       invalid: 'Enter a valid email address.',
+      typoSuggestion: 'Did you mean {domain}?',
+      useSuggestion: 'Use this',
     },
     address: {
       firstName: 'First name',

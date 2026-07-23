@@ -98,6 +98,8 @@ export const fr = {
       placeholder: 'toi@email.com',
       hint: "Nous créons ton compte et envoyons ici le suivi du kit et les résultats. Tu définiras un mot de passe à l'arrivée de ton kit.",
       invalid: 'Saisissez une adresse e-mail valide.',
+      typoSuggestion: 'Vouliez-vous dire {domain} ?',
+      useSuggestion: 'Utiliser',
     },
     address: {
       firstName: 'Prénom',

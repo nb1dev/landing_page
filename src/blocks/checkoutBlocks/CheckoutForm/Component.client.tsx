@@ -20,6 +20,7 @@ import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/
 import { pushEvent, pushEventWithUser, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import { sendMetaCapiEvent, getMetaSidecar } from '@/lib/meta/browser'
 import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
+import { suggestEmailDomain } from '@/lib/emailDomainCheck'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
 import { PaymentFailedScreen } from './PaymentFailedScreen'
@@ -292,6 +293,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* step 1 */
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState('')
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null)
+  const emailAcknowledged = useRef<string | null>(null)
 
   /* step 2 */
   const [fn, setFn] = useState('')
@@ -401,6 +404,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [bTaxId, setBTaxId] = useState('')
   const [bRegNum, setBRegNum] = useState('')
   const [bEmail, setBEmail] = useState('')
+  const [bEmailSuggestion, setBEmailSuggestion] = useState<string | null>(null)
   const [bPhone, setBPhone] = useState('')
   const [bPhoneCountry, setBPhoneCountry] = useState<Country>('DE')
   const [bA1, setBA1] = useState('')
@@ -822,6 +826,33 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     return !email || !EMAIL_RE.test(email) ? t.email.invalid : ''
   }
 
+  /* Soft, non-blocking "did you mean gmail.com?" nudge for likely domain
+     typos. Distinct from getEmailError: a lingering suggestion never stops
+     checkout, it only surfaces once the field is well-formed and blurred. */
+  function handleEmailBlur() {
+    if (EMAIL_RE.test(email)) setEmailSuggestion(suggestEmailDomain(email))
+  }
+
+  function applyEmailSuggestion() {
+    if (!emailSuggestion) return
+    const atIndex = email.lastIndexOf('@')
+    if (atIndex === -1) return
+    setEmail(email.slice(0, atIndex + 1) + emailSuggestion)
+    setEmailSuggestion(null)
+  }
+
+  function handleBEmailBlur() {
+    if (EMAIL_RE.test(bEmail)) setBEmailSuggestion(suggestEmailDomain(bEmail))
+  }
+
+  function applyBEmailSuggestion() {
+    if (!bEmailSuggestion) return
+    const atIndex = bEmail.lastIndexOf('@')
+    if (atIndex === -1) return
+    setBEmail(bEmail.slice(0, atIndex + 1) + bEmailSuggestion)
+    setBEmailSuggestion(null)
+  }
+
   function getAddrErrors(): Record<string, string> {
     const e: Record<string, string> = {}
     if (!fn.trim()) e.fn = t.required
@@ -896,6 +927,22 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const err = getEmailError()
     setEmailErr(err)
     if (err) return
+
+    // Clicking "Next" fires blur (which sets emailSuggestion via
+    // handleEmailBlur) and then this click handler in the same tick, so
+    // emailSuggestion is already truthy by the time we get here even on
+    // the very first click — it can't tell "just shown by blur" apart
+    // from "shown and clicked through". emailAcknowledged tracks that
+    // distinction directly: only once the user clicks Next again for this
+    // exact address does it proceed, so the warning can never be skipped
+    // by the blur+click race, but still never becomes a hard block.
+    const suggestion = suggestEmailDomain(email)
+    if (suggestion && emailAcknowledged.current !== email) {
+      setEmailSuggestion(suggestion)
+      emailAcknowledged.current = email
+      return
+    }
+
     const esItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
     void pushEventWithUser(
       'email_submitted',
@@ -1641,6 +1688,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           font-size: 12.5px;
           color: rgba(18, 49, 77, 0.5);
         }
+        .nb1-fg .nb1-suggest {
+          display: block;
+          font-size: 12.5px;
+          color: #8a5a00;
+        }
+        .nb1-fg .nb1-suggest button {
+          background: none;
+          border: none;
+          padding: 0;
+          margin-left: 6px;
+          font: inherit;
+          font-weight: 600;
+          color: #0a8fb0;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+        .nb1-fg .nb1-suggest button.nb1-suggest-dismiss {
+          text-decoration: none;
+        }
 
         /* ── Next button ── */
         .nb1-acc-next {
@@ -2286,11 +2352,31 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     autoComplete="email"
                     placeholder={t.email.placeholder}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      setEmailSuggestion(null)
+                    }}
+                    onBlur={handleEmailBlur}
                     className={emailErr ? 'err' : ''}
                     onKeyDown={(e) => e.key === 'Enter' && nextEmail()}
                   />
                   {emailErr && <span className="nb1-err">{emailErr}</span>}
+                  {!emailErr && emailSuggestion && (
+                    <span className="nb1-suggest">
+                      {t.email.typoSuggestion.replace('{domain}', emailSuggestion)}{' '}
+                      <button type="button" onClick={applyEmailSuggestion}>
+                        {t.email.useSuggestion}
+                      </button>
+                      <button
+                        type="button"
+                        className="nb1-suggest-dismiss"
+                        aria-label="Dismiss"
+                        onClick={() => setEmailSuggestion(null)}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )}
                   <span className="nb1-hint">{t.email.hint}</span>
                 </div>
               </div>
@@ -2800,10 +2886,30 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         type="email"
                         autoComplete="billing email"
                         value={bEmail}
-                        onChange={(e) => setBEmail(e.target.value)}
+                        onChange={(e) => {
+                          setBEmail(e.target.value)
+                          setBEmailSuggestion(null)
+                        }}
+                        onBlur={handleBEmailBlur}
                         className={payErr.bEmail ? 'err' : ''}
                       />
                       {payErr.bEmail && <span className="nb1-err">{payErr.bEmail}</span>}
+                      {!payErr.bEmail && bEmailSuggestion && (
+                        <span className="nb1-suggest">
+                          {t.email.typoSuggestion.replace('{domain}', bEmailSuggestion)}{' '}
+                          <button type="button" onClick={applyBEmailSuggestion}>
+                            {t.email.useSuggestion}
+                          </button>
+                          <button
+                            type="button"
+                            className="nb1-suggest-dismiss"
+                            aria-label="Dismiss"
+                            onClick={() => setBEmailSuggestion(null)}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      )}
                     </div>
                     <div className="nb1-fg">
                       <label>

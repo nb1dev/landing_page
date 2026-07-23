@@ -98,6 +98,8 @@ export const nl = {
       placeholder: 'jij@email.nl',
       hint: 'We maken je account aan en sturen hier je trackinginformatie en resultaten naartoe. Zodra je de kit hebt ontvangen, stel je een wachtwoord in.',
       invalid: 'Voer een geldig e-mailadres in.',
+      typoSuggestion: 'Bedoelde je {domain}?',
+      useSuggestion: 'Gebruik dit',
     },
     address: {
       firstName: 'Voornaam',
