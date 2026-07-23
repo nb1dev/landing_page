@@ -20,6 +20,24 @@ const CURRENCY_COOKIE = 'nb1_currency'
 const COUNTRY_COOKIE = 'nb1_country'
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 
+// Default currency for the RESOLVED locale (path segment), used instead of
+// GEO_MAP's country-derived currency once we know which locale the visitor
+// is actually landing on — otherwise e.g. a German visitor (country DE)
+// directly opening /en/... would get DE's EUR default instead of en's own
+// default, since GEO_MAP only maps country -> locale/currency as a pair.
+// Keep in sync with LOCALE_DEFAULT_CURRENCY in src/utilities/currency.ts and
+// src/Header/Component.client.tsx.
+const LOCALE_DEFAULT_CURRENCY: Record<string, string> = {
+  en: 'GBP',
+  de: 'EUR',
+  ch: 'CHF',
+  fr: 'EUR',
+  nl: 'EUR',
+  be: 'EUR',
+  uk: 'GBP',
+  uae: 'AED',
+}
+
 function geoLocale(req: NextRequest): { locale: string; currency: string; country: string } {
   // Vercel sets this header automatically; falls back to empty string locally
   const country = req.headers.get('x-vercel-ip-country') ?? ''
@@ -159,12 +177,14 @@ export async function middleware(req: NextRequest) {
 
   if (isLocalePath(normalizedPath)) {
     const res = NextResponse.next()
+    const pathLocale = normalizedPath.split('/')[1] ?? defaultLocale
     // Set geo cookies even on direct locale-path hits so the switcher can read them
     if (!req.cookies.get(COUNTRY_COOKIE) && geoCountry) {
       res.cookies.set(COUNTRY_COOKIE, geoCountry, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
     }
     if (!req.cookies.get(CURRENCY_COOKIE)) {
-      res.cookies.set(CURRENCY_COOKIE, geoCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+      const localeCurrency = LOCALE_DEFAULT_CURRENCY[pathLocale] ?? geoCurrency
+      res.cookies.set(CURRENCY_COOKIE, localeCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
     }
     return res
   }
@@ -179,7 +199,8 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.redirect(url, 307)
 
   if (!req.cookies.get(CURRENCY_COOKIE)) {
-    res.cookies.set(CURRENCY_COOKIE, geoCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
+    const localeCurrency = LOCALE_DEFAULT_CURRENCY[targetLocale] ?? geoCurrency
+    res.cookies.set(CURRENCY_COOKIE, localeCurrency, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })
   }
   if (!req.cookies.get(COUNTRY_COOKIE) && geoCountry) {
     res.cookies.set(COUNTRY_COOKIE, geoCountry, { path: '/', maxAge: COOKIE_MAX_AGE, sameSite: 'lax' })

@@ -101,6 +101,8 @@ export const de = {
       placeholder: 'du@email.de',
       hint: 'Wir erstellen dein Konto und senden Sendungsverfolgung + Ergebnisse hierhin. Ein Passwort legst du fest, sobald dein Kit ankommt.',
       invalid: 'Bitte gib eine gültige E-Mail-Adresse ein.',
+      typoSuggestion: 'Meintest du {domain}?',
+      useSuggestion: 'Übernehmen',
     },
     address: {
       firstName: 'Vorname',

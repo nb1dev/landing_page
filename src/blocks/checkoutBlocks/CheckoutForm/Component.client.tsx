@@ -20,6 +20,7 @@ import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/
 import { pushEvent, pushEventWithUser, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import { sendMetaCapiEvent, getMetaSidecar } from '@/lib/meta/browser'
 import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
+import { suggestEmailDomain } from '@/lib/emailDomainCheck'
 import { getDictionary } from '@/i18n/getDictionary'
 import { ConfirmationScreen } from './ConfirmationScreen'
 import { PaymentFailedScreen } from './PaymentFailedScreen'
@@ -125,7 +126,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     params.delete('cycle')
     const query = params.toString()
     router.replace(pathname + (query ? `?${query}` : ''), { scroll: false })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Numeric live prices per (plan, cycle, currency): { core: { '4': { EUR: 99, GBP: 89 } } }
@@ -281,7 +282,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
       // Block back-navigation to checkout steps after confirmation (4.6)
       history.pushState(null, '', window.location.href)
-      const onPopState = () => { history.pushState(null, '', window.location.href) }
+      const onPopState = () => {
+        history.pushState(null, '', window.location.href)
+      }
       window.addEventListener('popstate', onPopState)
       return () => window.removeEventListener('popstate', onPopState)
     }
@@ -290,6 +293,8 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* step 1 */
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState('')
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null)
+  const emailAcknowledged = useRef<string | null>(null)
 
   /* step 2 */
   const [fn, setFn] = useState('')
@@ -367,7 +372,11 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       (place?.formatted_address || '').split(',')[0].trim()
     const postal = get('postal_code')
     const cityName =
-      get('locality') || get('postal_town') || get('administrative_area_level_2') || get('sublocality') || ''
+      get('locality') ||
+      get('postal_town') ||
+      get('administrative_area_level_2') ||
+      get('sublocality') ||
+      ''
     if (line1) setA1(line1)
     if (postal) setZip(postal)
     if (cityName) setCity(cityName)
@@ -395,6 +404,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const [bTaxId, setBTaxId] = useState('')
   const [bRegNum, setBRegNum] = useState('')
   const [bEmail, setBEmail] = useState('')
+  const [bEmailSuggestion, setBEmailSuggestion] = useState<string | null>(null)
   const [bPhone, setBPhone] = useState('')
   const [bPhoneCountry, setBPhoneCountry] = useState<Country>('DE')
   const [bA1, setBA1] = useState('')
@@ -411,12 +421,12 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   /* sync phone prefix with shipping/billing country when phone field is empty */
   useEffect(() => {
     if (!phone) setPhoneCountry((COUNTRY_CODES[country] as Country) ?? 'DE')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [country])
 
   useEffect(() => {
     if (!bPhone) setBPhoneCountry((COUNTRY_CODES[bCountry] as Country) ?? 'DE')
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bCountry])
 
   /* ── Klarna/PayPal redirect return handler ── */
@@ -516,7 +526,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             transaction_id: klarnaConfirmation.subscription_id,
             currency,
             value: rateNum,
-            items: [{ item_id: klarnaItem.item_id, item_name: klarnaItem.item_name, price: klarnaItem.price, quantity: 1 }],
+            items: [
+              {
+                item_id: klarnaItem.item_id,
+                item_name: klarnaItem.item_name,
+                price: klarnaItem.price,
+                quantity: 1,
+              },
+            ],
           },
           user: {
             email: saved.email ?? email,
@@ -566,7 +583,18 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     })
     sendMetaCapiEvent('begin_checkout', bcId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: bcItem.item_id, item_name: bcItem.item_name, price: bcItem.price, quantity: 1 }] },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: bcItem.item_id,
+            item_name: bcItem.item_name,
+            price: bcItem.price,
+            quantity: 1,
+          },
+        ],
+      },
     })
     // Fire once on mount only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -798,6 +826,33 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     return !email || !EMAIL_RE.test(email) ? t.email.invalid : ''
   }
 
+  /* Soft, non-blocking "did you mean gmail.com?" nudge for likely domain
+     typos. Distinct from getEmailError: a lingering suggestion never stops
+     checkout, it only surfaces once the field is well-formed and blurred. */
+  function handleEmailBlur() {
+    if (EMAIL_RE.test(email)) setEmailSuggestion(suggestEmailDomain(email))
+  }
+
+  function applyEmailSuggestion() {
+    if (!emailSuggestion) return
+    const atIndex = email.lastIndexOf('@')
+    if (atIndex === -1) return
+    setEmail(email.slice(0, atIndex + 1) + emailSuggestion)
+    setEmailSuggestion(null)
+  }
+
+  function handleBEmailBlur() {
+    if (EMAIL_RE.test(bEmail)) setBEmailSuggestion(suggestEmailDomain(bEmail))
+  }
+
+  function applyBEmailSuggestion() {
+    if (!bEmailSuggestion) return
+    const atIndex = bEmail.lastIndexOf('@')
+    if (atIndex === -1) return
+    setBEmail(bEmail.slice(0, atIndex + 1) + bEmailSuggestion)
+    setBEmailSuggestion(null)
+  }
+
   function getAddrErrors(): Record<string, string> {
     const e: Record<string, string> = {}
     if (!fn.trim()) e.fn = t.required
@@ -872,6 +927,22 @@ function CheckoutFormInner({ backHref, locale }: Props) {
     const err = getEmailError()
     setEmailErr(err)
     if (err) return
+
+    // Clicking "Next" fires blur (which sets emailSuggestion via
+    // handleEmailBlur) and then this click handler in the same tick, so
+    // emailSuggestion is already truthy by the time we get here even on
+    // the very first click — it can't tell "just shown by blur" apart
+    // from "shown and clicked through". emailAcknowledged tracks that
+    // distinction directly: only once the user clicks Next again for this
+    // exact address does it proceed, so the warning can never be skipped
+    // by the blur+click race, but still never becomes a hard block.
+    const suggestion = suggestEmailDomain(email)
+    if (suggestion && emailAcknowledged.current !== email) {
+      setEmailSuggestion(suggestion)
+      emailAcknowledged.current = email
+      return
+    }
+
     const esItem = buildNb1Item(planKey, cycleKey, rateNum, { planTitle: planLabel })
     void pushEventWithUser(
       'email_submitted',
@@ -923,8 +994,27 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     )
     sendMetaCapiEvent('add_shipping_info', siId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: siItem.item_id, item_name: siItem.item_name, price: siItem.price, quantity: 1 }] },
-      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: siItem.item_id,
+            item_name: siItem.item_name,
+            price: siItem.price,
+            quantity: 1,
+          },
+        ],
+      },
+      user: {
+        email,
+        first_name: fn,
+        last_name: ln,
+        city,
+        zip,
+        country: COUNTRY_CODES[country] ?? country,
+        phone,
+      },
     })
     markDone(3)
   }
@@ -974,8 +1064,27 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
     )
     sendMetaCapiEvent('add_payment_info', apiId, {
-      ecommerce: { currency, value: rateNum, items: [{ item_id: apiItem.item_id, item_name: apiItem.item_name, price: apiItem.price, quantity: 1 }] },
-      user: { email, first_name: fn, last_name: ln, city, zip, country: COUNTRY_CODES[country] ?? country, phone },
+      ecommerce: {
+        currency,
+        value: rateNum,
+        items: [
+          {
+            item_id: apiItem.item_id,
+            item_name: apiItem.item_name,
+            price: apiItem.price,
+            quantity: 1,
+          },
+        ],
+      },
+      user: {
+        email,
+        first_name: fn,
+        last_name: ln,
+        city,
+        zip,
+        country: COUNTRY_CODES[country] ?? country,
+        phone,
+      },
     })
 
     try {
@@ -1185,7 +1294,14 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           transaction_id: confirmation.subscription_id,
           currency,
           value: rateNum,
-          items: [{ item_id: purchaseItem.item_id, item_name: purchaseItem.item_name, price: purchaseItem.price, quantity: 1 }],
+          items: [
+            {
+              item_id: purchaseItem.item_id,
+              item_name: purchaseItem.item_name,
+              price: purchaseItem.price,
+              quantity: 1,
+            },
+          ],
         },
         user: {
           email,
@@ -1334,11 +1450,21 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       <PaymentFailedScreen
         locale={locale ?? 'en'}
         t={t}
-        onRetry={() =>
-          window.location.replace(
-            window.location.pathname + window.location.search.split('&redirect_status')[0],
-          )
-        }
+        onRetry={() => {
+          const params = new URLSearchParams(window.location.search)
+          for (const key of [
+            'redirect_status',
+            'payment_intent',
+            'payment_intent_client_secret',
+            'setup_intent',
+            'setup_intent_client_secret',
+            'source_redirect_slug',
+          ]) {
+            params.delete(key)
+          }
+          const query = params.toString()
+          window.location.replace(window.location.pathname + (query ? `?${query}` : ''))
+        }}
       />
     )
   }
@@ -1561,6 +1687,25 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         .nb1-fg .nb1-hint {
           font-size: 12.5px;
           color: rgba(18, 49, 77, 0.5);
+        }
+        .nb1-fg .nb1-suggest {
+          display: block;
+          font-size: 12.5px;
+          color: #8a5a00;
+        }
+        .nb1-fg .nb1-suggest button {
+          background: none;
+          border: none;
+          padding: 0;
+          margin-left: 6px;
+          font: inherit;
+          font-weight: 600;
+          color: #0a8fb0;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+        .nb1-fg .nb1-suggest button.nb1-suggest-dismiss {
+          text-decoration: none;
         }
 
         /* ── Next button ── */
@@ -2094,7 +2239,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
           border-radius: 11px;
           background: #fff;
           overflow: hidden;
-          transition: border-color 0.15s, box-shadow 0.15s;
+          transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
         }
         .nb1-phone-wrap .PhoneInput--focus {
           border-color: #0a8fb0;
@@ -2166,7 +2313,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
         <div className="nb1-det-left">
           {/* Accordion 1 — Email */}
           <div
-            ref={(el) => { accRefs.current[0] = el }}
+            ref={(el) => {
+              accRefs.current[0] = el
+            }}
             className={`nb1-acc${step === 1 ? ' open' : doneSteps.has(1) ? ' done' : ' locked'}`}
           >
             <div
@@ -2203,11 +2352,31 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                     autoComplete="email"
                     placeholder={t.email.placeholder}
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      setEmail(e.target.value)
+                      setEmailSuggestion(null)
+                    }}
+                    onBlur={handleEmailBlur}
                     className={emailErr ? 'err' : ''}
                     onKeyDown={(e) => e.key === 'Enter' && nextEmail()}
                   />
                   {emailErr && <span className="nb1-err">{emailErr}</span>}
+                  {!emailErr && emailSuggestion && (
+                    <span className="nb1-suggest">
+                      {t.email.typoSuggestion.replace('{domain}', emailSuggestion)}{' '}
+                      <button type="button" onClick={applyEmailSuggestion}>
+                        {t.email.useSuggestion}
+                      </button>
+                      <button
+                        type="button"
+                        className="nb1-suggest-dismiss"
+                        aria-label="Dismiss"
+                        onClick={() => setEmailSuggestion(null)}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  )}
                   <span className="nb1-hint">{t.email.hint}</span>
                 </div>
               </div>
@@ -2219,7 +2388,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 2 — Address */}
           <div
-            ref={(el) => { accRefs.current[1] = el }}
+            ref={(el) => {
+              accRefs.current[1] = el
+            }}
             className={`nb1-acc${step === 2 ? ' open' : doneSteps.has(2) ? ' done' : ' locked'}`}
           >
             <div
@@ -2319,7 +2490,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                       }
                     }}
                     onPick={handleAddressPick}
-                    countries={COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null}
+                    countries={
+                      COUNTRY_CODES[country] ? [COUNTRY_CODES[country].toLowerCase()] : null
+                    }
                     className={addrErr.a1 ? 'err' : ''}
                   />
                   {addrErr.a1 && <span className="nb1-err">{addrErr.a1}</span>}
@@ -2395,7 +2568,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 3 — Shipping */}
           <div
-            ref={(el) => { accRefs.current[2] = el }}
+            ref={(el) => {
+              accRefs.current[2] = el
+            }}
             className={`nb1-acc${step === 3 ? ' open' : doneSteps.has(3) ? ' done' : ' locked'}`}
           >
             <div
@@ -2424,10 +2599,7 @@ function CheckoutFormInner({ backHref, locale }: Props) {
             </div>
             <div className="nb1-acc-body">
               <div className="nb1-ship-opts">
-                <div
-                  className="nb1-ship-opt sel"
-                  onClick={() => setShipping('standard')}
-                >
+                <div className="nb1-ship-opt sel" onClick={() => setShipping('standard')}>
                   <div className="nb1-ship-radio">
                     <div className="nb1-ship-radio-dot" />
                   </div>
@@ -2446,7 +2618,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
 
           {/* Accordion 4 — Payment */}
           <div
-            ref={(el) => { accRefs.current[3] = el }}
+            ref={(el) => {
+              accRefs.current[3] = el
+            }}
             className={`nb1-acc${step === 4 ? ' open' : doneSteps.has(4) ? ' done' : ' locked'}`}
           >
             <div className="nb1-acc-hd">
@@ -2712,10 +2886,30 @@ function CheckoutFormInner({ backHref, locale }: Props) {
                         type="email"
                         autoComplete="billing email"
                         value={bEmail}
-                        onChange={(e) => setBEmail(e.target.value)}
+                        onChange={(e) => {
+                          setBEmail(e.target.value)
+                          setBEmailSuggestion(null)
+                        }}
+                        onBlur={handleBEmailBlur}
                         className={payErr.bEmail ? 'err' : ''}
                       />
                       {payErr.bEmail && <span className="nb1-err">{payErr.bEmail}</span>}
+                      {!payErr.bEmail && bEmailSuggestion && (
+                        <span className="nb1-suggest">
+                          {t.email.typoSuggestion.replace('{domain}', bEmailSuggestion)}{' '}
+                          <button type="button" onClick={applyBEmailSuggestion}>
+                            {t.email.useSuggestion}
+                          </button>
+                          <button
+                            type="button"
+                            className="nb1-suggest-dismiss"
+                            aria-label="Dismiss"
+                            onClick={() => setBEmailSuggestion(null)}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      )}
                     </div>
                     <div className="nb1-fg">
                       <label>

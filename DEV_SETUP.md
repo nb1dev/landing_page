@@ -1,107 +1,107 @@
-# 🚀 Ghid Setup Local Dev — Payload CMS + PostgreSQL
+# 🚀 Local Dev Setup Guide — Payload CMS + PostgreSQL
 
-## Setup inițial (o singură dată per developer)
+## Initial setup (once per developer)
 
-### 1. Pornește Docker Desktop
-Deschide aplicația Docker Desktop din Applications.
+### 1. Start Docker Desktop
+Open the Docker Desktop application from Applications.
 
-### 2. Pornește PostgreSQL local
+### 2. Start local PostgreSQL
 ```bash
 docker compose up -d postgres
 ```
 
-### 3. Copiază și configurează `.env` local
+### 3. Copy and configure your local `.env`
 ```bash
 cp .env.local.example .env
 ```
-> ⚠️ **NU modifica** `.env` să pointeze spre STG sau PROD!
+> ⚠️ **DO NOT modify** `.env` to point at STG or PROD!
 
-### 4. Aplică migrările pe baza ta locală
+### 4. Apply migrations to your local database
 ```bash
 npm run migrate
 ```
-Aceasta creează toate tabelele în PostgreSQL-ul local (din migrările existente).
+This creates all the tables in your local PostgreSQL (from the existing migrations).
 
-### 5. Pornește aplicația
+### 5. Start the app
 ```bash
 npm run dev
 ```
 
 ---
 
-## Workflow zilnic — Cum faci schimbări de schemă
+## Daily workflow — How to make schema changes
 
-### Situație: Vrei să adaugi un câmp nou la o colecție
+### Scenario: You want to add a new field to a collection
 
-**1. Tu faci schimbarea în cod** (ex: adaugi un câmp în `src/collections/Posts.ts`)
+**1. You make the change in code** (e.g. add a field in `src/collections/Posts.ts`)
 
-**2. Generezi migrarea**
+**2. Generate the migration**
 ```bash
-npm run migrate:create -- --name descriere-scurta
+npm run migrate:create -- --name short-description
 ```
-Aceasta creează un fișier nou în `src/migrations/` cu SQL-ul necesar.
+This creates a new file in `src/migrations/` with the necessary SQL.
 
-**3. Aplici migrarea local**
+**3. Apply the migration locally**
 ```bash
 npm run migrate
 ```
 
-**4. Faci commit și push**
+**4. Commit and push**
 ```bash
 git add src/migrations/
 git commit -m "feat: add field X to Posts"
 git push
 ```
 
-**5. Pe STG** — deploy-ul rulează automat `npm run migrate` (deja în `deploy-stg.sh`)
+**5. On STG** — the deploy automatically runs `npm run migrate` (already wired into `deploy-stg.sh`)
 
-**6. Colegul tău** — după git pull, rulează:
+**6. Your teammate** — after `git pull`, runs:
 ```bash
 npm run migrate
 ```
 
 ---
 
-## Verificare status migrări
+## Checking migration status
 ```bash
 npm run migrate:status
 ```
 
 ---
 
-## Reguli importante
+## Important rules
 
 | ✅ DO | ❌ DON'T |
 |-------|----------|
-| Conectează-te local la `localhost:5432` | Nu te conecta local la STG/PROD |
-| Commitează fișierele din `src/migrations/` | Nu șterge migrări existente |
-| Rulează `migrate` după git pull | Nu rula `migrate:fresh` pe STG/PROD |
-| Testează migrările local înainte de push | Nu modifica manual schema în DB |
+| Connect locally to `localhost:5432` | Don't connect locally to STG/PROD |
+| Commit the files in `src/migrations/` | Don't delete existing migrations |
+| Run `migrate` after `git pull` | Don't run `migrate:fresh` on STG/PROD |
+| Test migrations locally before pushing | Don't manually modify the DB schema |
 
 ---
 
-## Structura environments
+## Environment structure
 
-| Environment | DATABASE_URL | Cine o aplică |
+| Environment | DATABASE_URL | Who applies it |
 |------------|-------------|---------------|
-| **Local** | `localhost:5432/landing_page_local` | Developer manual: `npm run migrate` |
-| **STG** | DigitalOcean STG | Automat la deploy: `deploy-stg.sh` |
-| **PROD** | DigitalOcean PROD | Automat la deploy: `deploy-prod.sh` |
+| **Local** | `localhost:5432/landing_page_local` | Developer, manually: `npm run migrate` |
+| **STG** | DigitalOcean STG | Automatically on deploy: `deploy-stg.sh` |
+| **PROD** | DigitalOcean PROD | Automatically on deploy: `deploy-prod.sh` |
 
 ---
 
-## Comenzi utile
+## Useful commands
 
 ```bash
-# Verifică ce migrări sunt aplicate vs. pending
+# Check which migrations are applied vs. pending
 npm run migrate:status
 
-# Creează o migrare nouă după ce ai modificat schema
-npm run migrate:create -- --name numele-migrarii
+# Create a new migration after modifying the schema
+npm run migrate:create -- --name migration-name
 
-# Aplică migrările pending
+# Apply pending migrations
 npm run migrate
 
-# Rollback ultima migrare (NUMAI LOCAL!)
+# Rollback the last migration (LOCAL ONLY!)
 npm run migrate:down
 ```

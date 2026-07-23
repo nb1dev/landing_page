@@ -75,9 +75,17 @@ function pickMedia(val: number | Media | null | undefined) {
 type Props = {
   locale: string
   id?: string | null
+  /** Per-locale slug map for the page currently being viewed, so the language/
+   * currency switcher can navigate to the correct localized slug. Passed down
+   * from the page template (which already fetches this for hreflang) rather
+   * than read off a global — a global set via a server-rendered <script> tag
+   * only executes on a hard page load, so it goes stale after any client-side
+   * navigation (e.g. clicking a nav link) and silently points the switcher at
+   * whatever page was last hard-loaded instead of the current one. */
+  pageSlugs?: Partial<Record<string, string>> | null
 }
 
-export async function Header({ locale, id }: Props) {
+export async function Header({ locale, id, pageSlugs }: Props) {
   const data = (await getCachedHeader(id, locale)()) as HeaderData | null
   // Resolved server-side from the cookie so the initial currency label
   // matches what HeaderClient hydrates with — previously HeaderClient read
@@ -93,6 +101,7 @@ export async function Header({ locale, id }: Props) {
     <Suspense>
       <HeaderClient
         locale={locale}
+        pageSlugs={pageSlugs ?? null}
         initialCurrency={initialCurrency}
         logo={pickMedia(data?.logo)}
         logoDark={pickMedia(data?.logoDark)}

@@ -58,7 +58,7 @@ const LANG_CURRENCIES: Record<string, CurrencyCode[]> = {
 }
 
 const LOCALE_DEFAULT_CURRENCY: Record<string, CurrencyCode> = {
-  en: 'EUR', de: 'EUR', fr: 'EUR', nl: 'EUR',
+  en: 'GBP', de: 'EUR', fr: 'EUR', nl: 'EUR',
   ch: 'CHF', uk: 'GBP', uae: 'AED', be: 'EUR',
 }
 
