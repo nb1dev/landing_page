@@ -16,7 +16,7 @@ import PhoneInput, { isValidPhoneNumber, type Country } from 'react-phone-number
 import AddressAutocomplete, { type GooglePlace } from './AddressAutocomplete'
 import 'react-phone-number-input/style.css'
 import { createFirebaseAccount } from '@/lib/createAccount'
-import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy } from '@/lib/checkoutApi'
+import { checkoutPaymentIntent, checkoutConfirm, checkoutConfirmProxy, trackLanguagePublic } from '@/lib/checkoutApi'
 import { pushEvent, pushEventWithUser, mintEventId, buildNb1Item } from '@/lib/dataLayer'
 import { sendMetaCapiEvent, getMetaSidecar } from '@/lib/meta/browser'
 import { getClientCurrency, type CurrencyCode } from '@/lib/plans/clientUtils'
@@ -99,6 +99,15 @@ function CheckoutFormInner({ backHref, locale }: Props) {
   const elements = useElements()
   const dict = getDictionary(locale)
   const t = dict.checkout
+
+  // Page locale → 2-letter UI language for Klaviyo (mirrors LocaleSwitcher.localeToLanguage).
+  const uiLanguage = (() => {
+    const l = (locale || 'en').toLowerCase()
+    if (l === 'de' || l === 'ch') return 'de'
+    if (l === 'fr') return 'fr'
+    if (l === 'nl' || l === 'be') return 'nl'
+    return 'en'
+  })()
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -957,6 +966,9 @@ function CheckoutFormInner({ backHref, locale }: Props) {
       },
       { email, phone: phone || undefined },
     )
+    // Record the visitor's UI language on their Klaviyo profile (keyed by this email),
+    // so `language` shows up alongside order_number / plan_title. Best-effort.
+    void trackLanguagePublic(email, uiLanguage)
     markDone(1)
   }
 
