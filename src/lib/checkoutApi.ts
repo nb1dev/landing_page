@@ -143,3 +143,27 @@ export async function checkoutConfirmProxy(
   }
   return res.json()
 }
+
+/**
+ * Fire-and-forget: record the visitor's UI language on their Klaviyo profile via the
+ * PUBLIC (unauthenticated) backend endpoint — the guest has no login, so the profile is
+ * identified by their checkout email. Sent at checkout so `language` lands on the same
+ * Klaviyo profile as order_number / plan_title. Never throws: analytics must not block checkout.
+ */
+export async function trackLanguagePublic(email: string, language: string): Promise<void> {
+  if (!email || !language) return
+  try {
+    await fetch(`${BACKEND}/klaviyo/events/track-public`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({
+        event_name: 'changed_language',
+        email,
+        language,
+        promote_to_profile: true,
+      }),
+    })
+  } catch {
+    /* best-effort analytics — ignore network errors */
+  }
+}
